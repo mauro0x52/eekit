@@ -11,12 +11,16 @@ app.routes.frame('/', function (params, data) {
     	{
     		tag : 'h3',
     		html : 'Olá, seja bem vindo!',
-    		attributes : {style : 'margin:20px'}
+    		attributes : {
+    			style : 'margin:20px'
+    		}
     	},
     	{
     		tag : 'p',
     		html : 'Cadastre-se agora e escolha a sua ferramenta.',
-    		attributes : {style : 'margin:20px'}
+    		attributes : {
+    			style : 'margin:20px'
+    		}
     	}
 	]);
 });
