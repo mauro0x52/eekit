@@ -36,6 +36,7 @@ empreendemia.user = {
             close : function (token) {
                 empreendemia.user.token = token;
                 setCookie('token', token, 1);
+                empreendemia.routes.set('ee/usuario-cadastrado');
                 empreendemia.load();
             }
         });
