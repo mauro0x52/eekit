@@ -48,6 +48,7 @@ install() {
 
         cd ..
     done
+}
 
 # Chamada da funcao
 install
