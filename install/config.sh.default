@@ -8,8 +8,8 @@
 CONFIG_PROJECT_FOLDER="/pasta/para/o/projeto"
 
 # Repositorio GIT
-$CONFIG_GIT_REPOSITORY="origin"
-$CONFIG_GIT_BRANCH="master"
+CONFIG_GIT_REPOSITORY="origin"
+CONFIG_GIT_BRANCH="master"
 
 # Serviços a serem instalados
 # core

@@ -53,7 +53,6 @@ deploy() {
         do
             cd $SERVICE
             echo "- Atualizando $SERVICE"
-            forever stop $SERVICE.js
 
             # config.js
             if [ ! -f config.js ];
@@ -61,25 +60,33 @@ deploy() {
                 cp config.js.default config.js
                 echo "--- config.js copiado"
             else
-                echo "--- config.js já existe"
-
                 CONFIGJS_MODDATE=$(stat -c %Y config.js)
                 CONFIGJSDEFAULT_MODDATE=$(stat -c %Y config.js.default)
                 if [ ${CONFIGJSDEFAULT_MODDATE} -gt ${CONFIGJS_MODDATE} ]
                 then
-                    echo -e "\033[31m" #vermelho
-                    echo "--- seu config.js está desatualizado!"
-                    echo -e "\033[37m" #branco
+                    echo -e "\033[31m--- seu config.js está desatualizado! \033[37m"
                 fi
             fi
 
-            # atualiza pacotes
-            echo "-- Instalando e atualizando pacotes"
-            npm install &>/dev/null &
-            npm update &>/dev/null &
+            GIT_UPDATES_SERVICE=$(git diff $CONFIG_GIT_REPOSITORY/$CONFIG_GIT_BRANCH | grep -c a/$SERVICE)
+            if [ $GIT_UPDATES_SERVICE != 0 ]
+            then
+                GIT_UPDATES_PACKAGE=$(git diff $CONFIG_GIT_REPOSITORY/$CONFIG_GIT_BRANCH | grep -c a/$SERVICE/package.json)
+                if [ $GIT_UPDATES_PACKAGE != 0 ]
+                then
+                    # atualiza pacotes
+                    echo "-- Instalando e atualizando pacotes"
+                    npm install &>/dev/null &
+                    npm update &>/dev/null &
+                fi
 
-            echo "-- Reiniciando serviço..."
-            forever start $SERVICE.js
+                echo "-- Reiniciando serviço..."
+                forever stop $SERVICE.js
+                forever start $SERVICE.js
+            else
+                echo "-- Nenhuma atualização para $SERVICE"
+            fi
+
             echo
             cd ..
         done
