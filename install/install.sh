@@ -44,7 +44,7 @@ install() {
 
         # instala pacotes
         echo "-- Instalando pacotes"
-        npm install &>/dev/null &
+        npm install
 
         cd ..
     done
