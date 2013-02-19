@@ -40,22 +40,27 @@ sdk.modules.ui.frame = function (app) {
 
     /* Métodos públicos */
     this.height = function (value) {
-        var height = 460;
+        var height = 460,
+            width;
 
         if (document.body && document.body.offsetWidth) {
             height = document.body.offsetHeight;
+            width  = document.body.offsetWidth;
         }
         if (document.compatMode=='CSS1Compat' &&
             document.documentElement &&
             document.documentElement.offsetWidth
         ) {
             height = document.documentElement.offsetHeight;
+            width  = document.documentElement.offsetWidth;
         }
         if (window.innerWidth && window.innerHeight) {
             height = window.innerHeight;
+            width  = window.innerWidth;
         }
 
-        body_div.style.height = height-155;
+        body_div.style.height = height-120;
+        body_div.style.width = width;
     };
     this.loading = function (value) {
         if (value) {

@@ -348,6 +348,7 @@ form {
     z-index: 100000;
     position: relative;
     min-width: 1000px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.8);
 }
 
 .content > .tool > .navigation > .sheets {
@@ -489,6 +490,10 @@ form {
 
 .content > .tool > .roll > .sheets> .sheet:first-child {
     width: 890px;
+}
+
+.content > .tool > .roll > .sheets> .sheet.frame:first-child {
+    width: auto;
 }
 
 .sheets  > .sheet > .header {
