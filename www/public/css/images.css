@@ -1,0 +1,88 @@
+.image {
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Icones das ferramentas                                                     */
+/* -------------------------------------------------------------------------- */
+
+.image.tool {
+    background-image: url('../images/tools.png');
+    width: 40px;
+    height: 40px;
+}
+
+.image.tool.tools    { background-position: 0 0; }
+.image.tool.tarefas  { background-position: -40px 0; }
+.image.tool.contatos { background-position: -80px 0; }
+.image.tool.financas { background-position: -120px 0; }
+
+/* -------------------------------------------------------------------------- */
+/* Icones do menu da ferramenta                                               */
+/* -------------------------------------------------------------------------- */
+
+.image.menu {
+    background-image: url('../images/menu.png');
+    width: 40px;
+    height: 40px;
+}
+
+.image.menu.home        { background-position: 0 0; }
+.image.menu.check       { background-position: -40px 0; }
+.image.menu.uncheck     { background-position: -80px 0; }
+.image.menu.star        { background-position: -120px 0; }
+.image.menu.tag         { background-position: -160px 0; }
+.image.menu.clock       { background-position: -200px 0; }
+.image.menu.money       { background-position: -240px 0; }
+.image.menu.wallet      { background-position: -280px 0; }
+.image.menu.person      { background-position: -320px 0; }
+
+
+/* -------------------------------------------------------------------------- */
+/* Imagens de um item da Lista                                                */
+/* -------------------------------------------------------------------------- */
+
+.image.icon {
+    background-image: url('../images/icons.png');
+    width: 12px;
+    height: 12px;
+}
+
+.image.icon.calendar  { background-position: 0 0; }
+.image.icon.check     { background-position: -12px 0; }
+.image.icon.alert     { background-position: -24px 0; }
+.image.icon.bell      { background-position: -36px 0; }
+.image.icon.back      { background-position: -48px 0; }
+.image.icon.phone     { background-position: -60px 0; }
+.image.icon.envelope  { background-position: -72px 0; }
+.image.icon.note      { background-position: -84px 0; }
+.image.icon.add       { background-position: -96px 0; }
+.image.icon.sub       { background-position: -108px 0; }
+
+.image.icon.wallet    { background-position: 0 -12px; }
+.image.icon.money     { background-position: -12px -12px; }
+.image.icon.uncheck   { background-position: -24px -12px; }
+
+/* -------------------------------------------------------------------------- */
+/* Imagens de a��o                                                            */
+/* -------------------------------------------------------------------------- */
+
+.image.action {
+    background-image: url('../images/actions.png');
+    width: 20px;
+    height: 20px;
+}
+
+.image.action.check     { background-position: 0 0; }
+.image.action.uncheck   { background-position: -20px 0; }
+.image.action.trash     { background-position: -40px 0; }
+.image.action.pencil    { background-position: -60px 0; }
+.image.action.add       { background-position: -80px 0; }
+.image.action.sub       { background-position: -100px 0; }
+.image.action.move      { background-position: -120px 0; }
+.image.action.star      { background-position: -140px 0; }
+.image.action.download  { background-position: -160px 0; }
+.image.action.upload    { background-position: -180px 0; }
+
+.image.action.transfer  { background-position: 0 -20px; }

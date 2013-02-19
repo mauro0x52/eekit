@@ -1,0 +1,55 @@
+module.exports = {
+    host : {
+        port : 8000,
+        url  : 'localhost',
+        debuglevel : 1 // 0 sem erros, 1 com erros
+    },
+    emails : {
+        contact : {
+            name : 'Contato EmpreendeKit',
+            address : 'testes+contato@empreendemia.com.br'
+        },
+        noreply : {
+            name : 'No-Reply EmpreendeKit',
+            address : 'testes+noreply@empreendemia.com.br'
+        }
+    },
+    sendgrid : {
+        username : '',
+        password : '',
+    },
+    services : {
+        www : {
+            url  : 'localhost',
+            port : 8000
+        },
+        auth : {
+            url  : 'localhost',
+            port : 8001
+        },
+        apps : {
+            url  : 'localhost',
+            port : 8002
+        },
+        profiles : {
+            url  : 'localhost',
+            port : 8004
+        },
+        tasks : {
+            url  : 'localhost',
+            port : 8005
+        },
+        contacts : {
+            url   : 'localhost',
+            port : 8006
+        },
+        tracker : {
+            url   : 'localhost',
+            port : 8003
+        },
+        finances : {
+            url  : 'localhost',
+            port : 8007
+        }
+    }
+};

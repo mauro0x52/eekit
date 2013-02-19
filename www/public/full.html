@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>EmpreendeKit</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/www.css" />
+        <link rel="stylesheet" type="text/css" href="css/images.css" />
+        <link rel="stylesheet" type="text/css" href="css/colors.css" />
+    </head>
+    <body>
+        <div class="body">
+            <div class="header">
+                <div class="logo">
+                    <a class="anchor" href="#" title="Página principal">
+                        <div class="image"></div>
+                        <h1 class="title">EmpreendeKit</h1>
+                    </a>
+                </div>
+                <menu class="menu">
+                    <li class="tools">
+                        <menu class="list">
+                            <li class="item">
+                                <a href="#" class="anchor" title="Gerencie suas tarefas">
+                                    <div class="image tool tarefas"></div>
+                                    <h2 class="legend">tarefas</h2>
+                                </a>
+                                <div class="arrow"><div class="fill"></div></div>
+                            </li>
+                            <li class="item selected">
+                                <a href="#" class="anchor" title="Gerencie seus clientes">
+                                    <div class="image tool clientes"></div>
+                                    <h2 class="legend">clientes</h2>
+                                </a>
+                                <div class="arrow"><div class="fill"></div></div>
+                            </li>
+                            <li class="item">
+                                <a href="#" class="anchor" title="Gerencie suas finanças">
+                                    <div class="image tool financas"></div>
+                                    <h2 class="legend">finanças</h2>
+                                </a>
+                                <div class="arrow"><div class="fill"></div></div>
+                            </li>
+                        </menu>
+                    </li>
+                    <li class="more">
+                        <menu class="list">
+                            <li class="item">
+                                <a href="#" class="anchor" title="Procure outras ferramentas para sua empresa!">
+                                    <div class="image tool tools"></div>
+                                    <h2 class="legend">mais</h2>
+                                </a>
+                                <div class="arrow"><div class="fill"></div></div>
+                            </li>
+                            <div class="arrow"></div>
+                        </menu>
+                    </li>
+                    <li class="search">
+                        <form class="form">
+                            <div class="field"><input class="input" type="text" placeholder="buscar" /></div>
+                            <div class="submit"><div class="image"></div><input class="input" type="submit" value="" /></div>
+                        </form>
+                    </li>
+                </menu>
+                <div class="user">
+                    <menu class="options">
+                        <li class="option name">
+                            <a href="#" class="anchor">Fulano de Tal</a>
+                        </li>
+                        <li class="option settings">
+                            <a href="#" class="anchor">configurações</a>
+                        </li>
+                        <li class="option logout">
+                            <a href="#" class="anchor">sair</a>
+                        </li>
+                    </menu>
+                    <div class="thumbnail">
+                        <a href="#" class="anchor"><div class="image"></div></a>
+                    </div>
+                </div>
+                <!--
+                <div class="visitor">
+                    <menu class="options">
+                        <li class="option signup">
+                            <a href="#" class="anchor">cadastre-se</a>
+                        </li>
+                        <li class="option login">
+                            <a href="#" class="anchor">login</a>
+                        </li>
+                    </menu>
+                </div>
+                -->
+            </div>
+            <div class="content">
+                <div class="tool">
+                    <div class="navigation">
+                        <menu class="sheets">
+                            <li class="sheet selected">
+                                <a href="#" class="anchor">Sheet principal</a>
+                            </li>
+                            <li class="sheet">
+                                <a href="#" class="anchor">Sheet A</a>
+                            </li>
+                            <li class="sheet">
+                                <a href="#" class="anchor">Sheet B</a>
+                            </li>
+                            <li class="sheet">
+                                <a href="#" class="anchor">Sheet C</a>
+                            </li>
+                            <li class="sheet">
+                                <a href="#" class="anchor">Sheet D</a>
+                            </li>
+                            <li class="sheet">
+                                <a href="#" class="anchor">Sheet E</a>
+                            </li>
+                        </menu>
+                    </div>
+                    <div class="roll">
+                        <div class="menu">
+                            <menu class="list">
+                                <li class="item selected">
+                                    <a href="#" class="anchor" title="Gerencie suas finanças">
+                                        <div class="image menu check"></div>
+                                        <h3 class="legend">entidade</h3>
+                                    </a>
+                                    <div class="arrow"><div class="fill"></div></div>
+                                </li>
+                                <li class="item">
+                                    <a href="#" class="anchor" title="Gerencie suas finanças">
+                                        <div class="image menu uncheck"></div>
+                                        <h3 class="legend">entidade</h3>
+                                    </a>
+                                    <div class="arrow"><div class="fill"></div></div>
+                                </li>
+                                <li class="item">
+                                    <a href="#" class="anchor" title="Gerencie suas finanças">
+                                        <div class="image menu star"></div>
+                                        <h3 class="legend">entidade</h3>
+                                    </a>
+                                    <div class="arrow"><div class="fill"></div></div>
+                                </li>
+                            </menu>
+                        </div>
+                        <div class="sheets">
+                            <div class="sheet list" style="z-index:9999">
+                                <div class="header">
+                                    <h4 class="title">Sheet Principal</h4>
+                                </div>
+                                <div class="body">
+                                    <ol class="groups">
+                                        <li class="group">
+                                            <div class="header">
+                                                <h3 class="name">Grupo A</h3>
+                                                <ul class="icons">
+                                                    <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                    <li class="icon"><div class="image icon check"></div><span class="legend">ma oe!</span></li>
+                                                </ul>
+                                                <menu class="actions">
+                                                    <li class="action"><a href="#" class="anchor"><div class="image action add"></div><div class="legend">ação A</div></a></li>
+                                                    <li class="action"><a href="#" class="anchor"><div class="image action sub"></div><div class="legend">ação B</div></a></li>
+                                                    <li class="action"><a href="#" class="anchor"><div class="image action trash"></div><div class="legend">ação C</div></a></li>
+                                                </menu>
+                                            </div>
+                                            <ol class="items">
+                                                <li class="item">
+                                                    <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                    <ul class="icons">
+                                                        <li class="icon"><div class="image icon envelop"></div><span class="legend">alguma descrição pequena</span></li>
+                                                        <li class="icon"><div class="image icon bell"></div><span class="legend">ma oe!</span></li>
+                                                    </ul>
+                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                    <menu class="actions">
+                                                        <li class="action"><a href="#" class="anchor"><div class="image action pencil"></div><div class="legend">ação A</div></a></li>
+                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                        <li class="action"><a href="#" class="anchor"><div class="image action uncheck"></div><div class="legend">ação C</div></a></li>
+                                                    </menu>
+                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                </li>
+                                                <li class="item selected">
+                                                    <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                    <ul class="icons">
+                                                        <li class="icon"><div class="image icon back"></div><span class="legend">alguma descrição pequena</span></li>
+                                                        <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                    </ul>
+                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                    <menu class="actions">
+                                                        <li class="action"><a href="#" class="anchor"><div class="image action pencil"></div><div class="legend">ação A</div></a></li>
+                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                        <li class="action"><a href="#" class="anchor"><div class="image action uncheck"></div><div class="legend">ação C</div></a></li>
+                                                    </menu>
+                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                </li>
+                                            </ol>
+                                            <div class="footer">
+                                                <div class="name">Footer Grupo B01</div>
+                                                <ul class="icons">
+                                                    <li class="icon"><div class="image icon note"></div><span class="legend">alguma descrição pequena</span></li>
+                                                    <li class="icon"><div class="image icon phone"></div><span class="legend">ma oe!</span></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="group">
+                                            <div class="header">
+                                                <h3 class="name">Grupo B</h3>
+                                                <ul class="icons">
+                                                    <li class="icon"><div class="image icon wallet"></div><span class="legend">alguma descrição pequena</span></li>
+                                                    <li class="icon"><div class="image icon money"></div><span class="legend">ma oe!</span></li>
+                                                </ul>
+                                                <menu class="actions">
+                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                </menu>
+                                            </div>
+                                            <ol class="groups">
+                                                <li class="group">
+                                                    <div class="header">
+                                                        <h3 class="name">Grupo B0</h3>
+                                                        <ul class="icons">
+                                                            <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                            <li class="icon"><div class="image icon alert"></div><span class="legend">ma oe!</span></li>
+                                                        </ul>
+                                                        <menu class="actions">
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                        </menu>
+                                                    </div>
+                                                    <ol class="groups">
+                                                        <li class="group">
+                                                            <div class="header">
+                                                                <h3 class="name">Grupo B01</h3>
+                                                                <ul class="icons">
+                                                                    <li class="icon"><div class="image icon add"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                    <li class="icon"><div class="image icon sub"></div><span class="legend">ma oe!</span></li>
+                                                                </ul>
+                                                                <menu class="actions">
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                </menu>
+                                                            </div>
+                                                            <ol class="items">
+                                                                <li class="item">
+                                                                    <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                    <ul class="icons">
+                                                                        <li class="icon"><div class="image icon add"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                    </ul>
+                                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                    <menu class="actions">
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                    </menu>
+                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                </li>
+                                                            </ol>
+                                                            <div class="footer">
+                                                                <div class="name">Footer Grupo B01</div>
+                                                                <ul class="icons">
+                                                                    <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                    <li class="icon"><div class="image icon sub"></div><span class="legend">ma oe!</span></li>
+                                                                </ul>
+                                                            </div>
+                                                        </li>
+                                                        <li class="group">
+                                                            <div class="header">
+                                                                <h3 class="name">Grupo B02</h3>
+                                                                <ul class="icons">
+                                                                    <li class="icon"><div class="image icon add"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                    <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                </ul>
+                                                                <menu class="actions">
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action uncheck"></div><div class="legend">ação B</div></a></li>
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action trashcheck"></div><div class="legend">ação C</div></a></li>
+                                                                </menu>
+                                                            </div>
+                                                            <ol class="items">
+                                                                <li class="item">
+                                                                    <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                    <ul class="icons">
+                                                                        <li class="icon"><div class="image icon wallet"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                    </ul>
+                                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                    <menu class="actions">
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action pencil"></div><div class="legend">ação A</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action add"></div><div class="legend">ação B</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action sub"></div><div class="legend">ação C</div></a></li>
+                                                                    </menu>
+                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                </li>
+                                                            </ol>
+                                                        </li>
+                                                    </ol>
+                                                </li>
+                                                <li class="group">
+                                                    <div class="header">
+                                                        <h3 class="name">Grupo B1</h3>
+                                                        <ul class="icons">
+                                                            <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                            <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                        </ul>
+                                                        <menu class="actions">
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action add"></div><div class="legend">ação B</div></a></li>
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action sub"></div><div class="legend">ação C</div></a></li>
+                                                        </menu>
+                                                    </div>
+                                                    <ol class="items">
+                                                        <li class="item">
+                                                            <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                            <ul class="icons">
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                            </ul>
+                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                            <menu class="actions">
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                            </menu>
+                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                        </li>
+                                                    </ol>
+                                                </li>
+                                                <li class="group">
+                                                    <div class="header">
+                                                        <h3 class="name">Grupo B2</h3>
+                                                        <ul class="icons">
+                                                            <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                            <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                        </ul>
+                                                        <menu class="actions">
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                        </menu>
+                                                    </div>
+                                                    <ol class="items">
+                                                        <li class="item">
+                                                            <div class="label color-brown">reuniões</div>
+                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                            <ul class="icons">
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                            </ul>
+                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                            <menu class="actions">
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                            </menu>
+                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                        </li>
+                                                        <li class="item">
+                                                            <div class="label color-blue">geral</div>
+                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                            <ul class="icons">
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                            </ul>
+                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                            <menu class="actions">
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                            </menu>
+                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                        </li>
+                                                        <li class="item">
+                                                            <div class="label color-blue">geral</div>
+                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                            <ul class="icons">
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                            </ul>
+                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                            <menu class="actions">
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                            </menu>
+                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                        </li>
+                                                        <li class="item">
+                                                            <div class="label color-olive">vendas</div>
+                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                            <ul class="icons">
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                            </ul>
+                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                            <menu class="actions">
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                            </menu>
+                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                        </li>
+                                                        <li class="item">
+                                                            <div class="label color-cyan">projetos</div>
+                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                            <ul class="icons">
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                            </ul>
+                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                            <menu class="actions">
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                            </menu>
+                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                        </li>
+                                                        <li class="item">
+                                                            <div class="label color-green">finanças</div>
+                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                            <ul class="icons">
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                            </ul>
+                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                            <menu class="actions">
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                            </menu>
+                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                        </li>
+                                                        <li class="item">
+                                                            <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                            <ul class="icons">
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                            </ul>
+                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                            <menu class="actions">
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                            </menu>
+                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                        </li>
+                                                        <li class="item fade">
+                                                            <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                            <ul class="icons">
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                            </ul>
+                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                            <menu class="actions">
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                            </menu>
+                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                        </li>
+                                                        <li class="item">
+                                                            <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                            <ul class="icons">
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                            </ul>
+                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                            <menu class="actions">
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                            </menu>
+                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                        </li>
+                                                    </ol>
+                                                </li>
+                                            </ol>
+                                        </li>
+                                    </ol>
+                                </div>
+                                <div class="filter">
+                                    <form class="form">
+                                        <div class="field-sets">
+                                            <fieldset class="field-set">
+                                                <legend class="legend">Fieldset</legend>
+                                                <ul class="fields">
+                                                    <li class="field select">
+                                                        <div class="legend"><label class="text" for="form-inputa">Select Grande</label></div>
+                                                        <div class="data">
+                                                            <input class="input" type="text" value="escolher opções" />
+                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                            <div class="selected-list">
+                                                                <div class="legend">selecionados:</div>
+                                                                <ul class="list">
+                                                                    <li class="item">Opção A.2.1</li>
+                                                                    <li class="item">Opção A.2.5</li>
+                                                                    <li class="item">Opção A.2.6</li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="select-box hide">
+                                                                <div class="image close"></div>
+                                                                <div class="filter"><input class="input" type="text" placeholder="filtrar grupos" /></div>
+                                                                <ul class="groups">
+                                                                    <li class="group selected">
+                                                                        <div class="label color-blue"></div>
+                                                                        <div class="legend">Grupo A</div>
+                                                                        <div class="image arrow"><div class="fill"></div></div>
+                                                                        <div class="select-box">
+                                                                            <div class="image close"></div>
+                                                                            <div class="filter"><input class="input" type="text" placeholder="filtrar Grupo A" /></div>
+                                                                            <ul class="groups">
+                                                                                <li class="group">
+                                                                                    <div class="legend">Grupo A.1</div>
+                                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                                    <div class="select-box">
+                                                                                        <div class="image close"></div>
+                                                                                        <div class="filter"><input class="input" type="text"  placeholder="filtrar Grupo A.2" /></div>
+                                                                                        <ul class="options">
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="label color-blue"></div><div class="icon"><div class="image"></div></div>
+                                                                                                <div class="legend">Opção A.1.1</div>
+                                                                                            </li>
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="label color-blue"></div><div class="icon"><div class="image"></div></div>
+                                                                                                <div class="legend">Opção A.1.2</div>
+                                                                                            </li>
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="label color-blue"></div><div class="icon"><div class="image"></div></div>
+                                                                                                <div class="legend">Opção A.1.3</div>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                        <div class="all">
+                                                                                            <span class="select">marcar</span> ou <span class="unselect">desmarcar</span> todos
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="group selected">
+                                                                                    <div class="legend">Grupo A.2</div>
+                                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                                    <div class="select-box">
+                                                                                        <div class="image close"></div>
+                                                                                        <div class="filter"><input class="input" type="text"  placeholder="filtrar Grupo A.2" /></div>
+                                                                                        <ul class="options">
+                                                                                            <li class="option selected">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon calendar"></div>
+                                                                                                <div class="legend">Opção A.2.1</div>
+                                                                                            </li>
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon alert"></div>
+                                                                                                <div class="legend">Opção A.2.2</div>
+                                                                                            </li>
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon bell"></div>
+                                                                                                <div class="legend">Opção A.2.3</div>
+                                                                                            </li>
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon back"></div>
+                                                                                                <div class="legend">Opção A.2.4</div>
+                                                                                            </li>
+                                                                                            <li class="option selected">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon check"></div>
+                                                                                                <div class="legend">Opção A.2.5</div>
+                                                                                            </li>
+                                                                                            <li class="option selected">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon phone"></div>
+                                                                                                <div class="legend">Opção A.2.6</div>
+                                                                                            </li>
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon envelope"></div>
+                                                                                                <div class="legend">Opção A.2.7</div>
+                                                                                            </li>
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon note"></div>
+                                                                                                <div class="legend">Opção A.2.8</div>
+                                                                                            </li>
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon add"></div>
+                                                                                                <div class="legend">Opção A.2.9</div>
+                                                                                            </li>
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon sub"></div>
+                                                                                                <div class="legend">Opção A.2.10</div>
+                                                                                            </li>
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon wallet"></div>
+                                                                                                <div class="legend">Opção A.2.11</div>
+                                                                                            </li>
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon money"></div>
+                                                                                                <div class="legend">Opção A.2.12</div>
+                                                                                            </li>
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon check"></div>
+                                                                                                <div class="legend">Opção A.2.13</div>
+                                                                                            </li>
+                                                                                            <li class="option">
+                                                                                                <div class="image check-box"></div>
+                                                                                                <div class="image icon phone"></div>
+                                                                                                <div class="legend">Opção A.2.14</div>
+                                                                                            </li>
+                                                                                        </ul>
+                                                                                        <div class="all">
+                                                                                            <span class="select">marcar</span> ou <span class="unselect">desmarcar</span> todos
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li class="group">
+                                                                                    <div class="legend">Grupo A.3</div>
+                                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                                </li>
+                                                                                <li class="group">
+                                                                                    <div class="legend">Grupo A.4</div>
+                                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                                </li>
+                                                                                <li class="group has-selected">
+                                                                                    <div class="legend">Grupo A.5</div>
+                                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                                </li>
+                                                                                <li class="group has-selected">
+                                                                                    <div class="legend">Grupo A.6</div>
+                                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                                </li>
+                                                                                <li class="group">
+                                                                                    <div class="legend">Grupo A.7</div>
+                                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                                </li>
+                                                                                <li class="group">
+                                                                                    <div class="legend">Grupo A.8</div>
+                                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                                </li>
+                                                                                <li class="group">
+                                                                                    <div class="legend">Grupo A.9</div>
+                                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                                </li>
+                                                                                <li class="group">
+                                                                                    <div class="legend">Grupo A.10</div>
+                                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                                </li>
+                                                                                <li class="group">
+                                                                                    <div class="legend">Grupo A.11</div>
+                                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                                </li>
+                                                                                <li class="group">
+                                                                                    <div class="legend">Grupo A.12</div>
+                                                                                </li>
+                                                                            </ul>
+                                                                            <div class="all">
+                                                                                <span class="select">marcar</span> ou <span class="unselect">desmarcar</span> todos
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="group">
+                                                                        <div class="label color-green"></div>
+                                                                        <div class="legend">Grupo B</div>
+                                                                        <div class="image arrow"><div class="fill"></div></div>
+                                                                    </li>
+                                                                    <li class="group">
+                                                                        <div class="label color-red"></div>
+                                                                        <div class="legend">Grupo C</div>
+                                                                        <div class="image arrow"><div class="fill"></div></div>
+                                                                    </li>
+                                                                </ul>
+                                                                <div class="all">
+                                                                    <span class="select">marcar</span> ou <span class="unselect">desmarcar</span> todos
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="field select">
+                                                        <div class="legend"><label class="text" for="form-inputb">Select Pequeno</label></div>
+                                                        <div class="data">
+                                                            <ul class="options">
+                                                                <li class="option selected">
+                                                                    <div class="image check-box"></div>
+                                                                    <div class="label color-green"></div>
+                                                                    <div class="legend">Opção A</div>
+                                                                </li>
+                                                                <li class="option">
+                                                                    <div class="image check-box"></div>
+                                                                    <div class="label color-blue"></div>
+                                                                    <div class="legend">Opção B</div>
+                                                                </li>
+                                                                <li class="option">
+                                                                    <div class="image check-box"></div>
+                                                                    <div class="image icon money"></div>
+                                                                    <div class="legend">Opção C</div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </fieldset>
+                                            <fieldset class="field-set">
+                                                <legend class="legend">Fieldset</legend>
+                                                <ul class="fields">
+                                                    <li class="field text">
+                                                        <div class="legend"><label class="text" for="form-inputa">Input A</label></div>
+                                                        <div class="data"><input class="input" id="form-inputa" type="text" name="inputa" /></div>
+                                                    </li>
+                                                    <li class="field text">
+                                                        <div class="legend"><label class="text" for="form-inputb">Input B</label></div>
+                                                        <div class="data"><input class="input" id="form-inputb" type="text" name="inputa" /></div>
+                                                    </li>
+                                                </ul>
+                                            </fieldset>
+                                        </div>
+                                        <div class="submit">
+                                            <input class="input" id="submit" type="submit" value="Filtrar" />
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="loading">
+                                    <div class="legend">carregando</div>
+                                    <div class="image"></div>
+                                </div>
+                            </div>
+                            <div class="sheet entity" style="z-index:9998">
+                                <div class="header">
+                                    <h4 class="title">Sheet A</h4>
+                                </div>
+                                <div class="body">
+                                    <div class="menu">
+                                        <menu class="actions">
+                                            <li class="action">
+                                                <a class="anchor" href="#">
+                                                    <div class="image action check"></div>
+                                                    <div class="legend">ação 1</div>
+                                                </a>
+                                            </li>
+                                            <li class="action">
+                                                <a class="anchor" href="#">
+                                                    <div class="image action uncheck"></div>
+                                                    <div class="legend">ação 2</div>
+                                                </a>
+                                            </li>
+                                            <li class="action">
+                                                <a class="anchor" href="#">
+                                                    <div class="image action trash"></div>
+                                                    <div class="legend">ação 3</div>
+                                                </a>
+                                            </li>
+                                        </menu>
+                                    </div>
+                                    <h5 class="title">Nome da instância</h5>
+                                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris mattis convallis dolor quis blandit. Fusce rutrum feugiat nibh, consequat tempor urna tempor at. Donec id lorem mi. Proin mollis cursus mauris at bibendum. Aliquam erat urna, dignissim et imperdiet et, molestie in nisl. Nunc varius lacus et tellus pellentesque eget dictum nunc hendrerit.</p>
+                                    <div class="data-sets">
+                                        <div class="data-set">
+                                            <h6 class="legend">Nome dos dados</h6>
+                                            <ul class="fields">
+                                                <li class="field text">
+                                                    <div class="legend">Dado A</div>
+                                                    <ul class="values">
+                                                        <li class="value">
+                                                            <div class="data">valor do dado</div>
+                                                            <menu class="actions">
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action add"></div>
+                                                                        <div class="legend">ação 1</div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action sub"></div>
+                                                                        <div class="legend">ação 2</div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action pencil"></div>
+                                                                        <div class="legend">ação 3</div>
+                                                                    </a>
+                                                                </li>
+                                                            </menu>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="field text">
+                                                    <div class="legend">Dado B</div>
+                                                    <ul class="values">
+                                                        <li class="value">
+                                                            <div class="data">valor do dado</div>
+                                                            <menu class="actions">
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action add"></div>
+                                                                        <div class="legend">ação 1</div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action sub"></div>
+                                                                        <div class="legend">ação 2</div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action pencil"></div>
+                                                                        <div class="legend">ação 3</div>
+                                                                    </a>
+                                                                </li>
+                                                            </menu>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="field">
+                                                    <div class="legend">Dados Múltiplos</div>
+                                                    <ul class="values">
+                                                        <li class="value">
+                                                            <div class="data">valor do dado</div>
+                                                            <menu class="actions">
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action add"></div>
+                                                                        <div class="legend">ação 1</div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action sub"></div>
+                                                                        <div class="legend">ação 2</div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action pencil"></div>
+                                                                        <div class="legend">ação 3</div>
+                                                                    </a>
+                                                                </li>
+                                                            </menu>
+                                                        </li>
+                                                        <li class="value">
+                                                            <div class="data">valor do dado</div>
+                                                            <menu class="actions">
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action add"></div>
+                                                                        <div class="legend">ação 1</div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action sub"></div>
+                                                                        <div class="legend">ação 2</div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action pencil"></div>
+                                                                        <div class="legend">ação 3</div>
+                                                                    </a>
+                                                                </li>
+                                                            </menu>
+                                                        </li>
+                                                        <li class="value">
+                                                            <div class="data">valor do dado</div>
+                                                            <menu class="actions">
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action add"></div>
+                                                                        <div class="legend">ação 1</div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action sub"></div>
+                                                                        <div class="legend">ação 2</div>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="action">
+                                                                    <a class="anchor" href="#">
+                                                                        <div class="image action pencil"></div>
+                                                                        <div class="legend">ação 3</div>
+                                                                    </a>
+                                                                </li>
+                                                            </menu>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="related entity">
+                                        <div class="header">
+                                            <h4 class="title">Instância relacionada</h4>
+                                        </div>
+                                    </div>
+                                    <div class="related list">
+                                        <div class="header">
+                                            <h4 class="title">Lista relacionada</h4>
+                                        </div>
+                                        <div class="body">
+                                            <ol class="groups">
+                                                <li class="group">
+                                                    <div class="header">
+                                                        <h3 class="name">Grupo A</h3>
+                                                        <ul class="icons">
+                                                            <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                            <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                        </ul>
+                                                        <menu class="actions">
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                        </menu>
+                                                    </div>
+                                                    <ol class="items">
+                                                        <li class="item">
+                                                            <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                            <ul class="icons">
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                            </ul>
+                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                            <menu class="actions">
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                            </menu>
+                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                        </li>
+                                                        <li class="item selected">
+                                                            <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                            <ul class="icons">
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                            </ul>
+                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                            <menu class="actions">
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                            </menu>
+                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                        </li>
+                                                    </ol>
+                                                </li>
+                                                <li class="group">
+                                                    <div class="header">
+                                                        <h3 class="name">Grupo B</h3>
+                                                        <ul class="icons">
+                                                            <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                            <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                        </ul>
+                                                        <menu class="actions">
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                        </menu>
+                                                    </div>
+                                                    <ol class="groups">
+                                                        <li class="group">
+                                                            <div class="header">
+                                                                <h3 class="name">Grupo B0</h3>
+                                                                <ul class="icons">
+                                                                    <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                    <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                </ul>
+                                                                <menu class="actions">
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                </menu>
+                                                            </div>
+                                                            <ol class="groups">
+                                                                <li class="group">
+                                                                    <div class="header">
+                                                                        <h3 class="name">Grupo B01</h3>
+                                                                        <ul class="icons">
+                                                                            <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                            <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                        </ul>
+                                                                        <menu class="actions">
+                                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                        </menu>
+                                                                    </div>
+                                                                    <ol class="items">
+                                                                        <li class="item">
+                                                                            <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                            <ul class="icons">
+                                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                            </ul>
+                                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                            <menu class="actions">
+                                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                            </menu>
+                                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                                        </li>
+                                                                    </ol>
+                                                                </li>
+                                                                <li class="group">
+                                                                    <div class="header">
+                                                                        <h3 class="name">Grupo B02</h3>
+                                                                        <ul class="icons">
+                                                                            <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                            <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                        </ul>
+                                                                        <menu class="actions">
+                                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                            <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                        </menu>
+                                                                    </div>
+                                                                    <ol class="items">
+                                                                        <li class="item">
+                                                                            <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                                            <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                            <ul class="icons">
+                                                                                <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                                <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                            </ul>
+                                                                            <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                            <menu class="actions">
+                                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                                <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                            </menu>
+                                                                            <div class="image arrow"><div class="fill"></div></div>
+                                                                        </li>
+                                                                    </ol>
+                                                                </li>
+                                                            </ol>
+                                                        </li>
+                                                        <li class="group">
+                                                            <div class="header">
+                                                                <h3 class="name">Grupo B1</h3>
+                                                                <ul class="icons">
+                                                                    <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                    <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                </ul>
+                                                                <menu class="actions">
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                </menu>
+                                                            </div>
+                                                            <ol class="items">
+                                                                <li class="item">
+                                                                    <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                    <ul class="icons">
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                    </ul>
+                                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                    <menu class="actions">
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                    </menu>
+                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                </li>
+                                                            </ol>
+                                                        </li>
+                                                        <li class="group">
+                                                            <div class="header">
+                                                                <h3 class="name">Grupo B2</h3>
+                                                                <ul class="icons">
+                                                                    <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                    <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                </ul>
+                                                                <menu class="actions">
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                    <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                </menu>
+                                                            </div>
+                                                            <ol class="items">
+                                                                <li class="item">
+                                                                    <div class="label color-brown">reuniões</div>
+                                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                    <ul class="icons">
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                    </ul>
+                                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                    <menu class="actions">
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                    </menu>
+                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                </li>
+                                                                <li class="item">
+                                                                    <div class="label color-blue">geral</div>
+                                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                    <ul class="icons">
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                    </ul>
+                                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                    <menu class="actions">
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                    </menu>
+                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                </li>
+                                                                <li class="item">
+                                                                    <div class="label color-blue">geral</div>
+                                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                    <ul class="icons">
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                    </ul>
+                                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                    <menu class="actions">
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                    </menu>
+                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                </li>
+                                                                <li class="item">
+                                                                    <div class="label color-olive">vendas</div>
+                                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                    <ul class="icons">
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                    </ul>
+                                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                    <menu class="actions">
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                    </menu>
+                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                </li>
+                                                                <li class="item">
+                                                                    <div class="label color-cyan">projetos</div>
+                                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                    <ul class="icons">
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                    </ul>
+                                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                    <menu class="actions">
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                    </menu>
+                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                </li>
+                                                                <li class="item">
+                                                                    <div class="label color-green">finanças</div>
+                                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                    <ul class="icons">
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                    </ul>
+                                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                    <menu class="actions">
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                    </menu>
+                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                </li>
+                                                                <li class="item">
+                                                                    <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                    <ul class="icons">
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                    </ul>
+                                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                    <menu class="actions">
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                    </menu>
+                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                </li>
+                                                                <li class="item fade">
+                                                                    <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                    <ul class="icons">
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                    </ul>
+                                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                    <menu class="actions">
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                    </menu>
+                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                </li>
+                                                                <li class="item">
+                                                                    <div class="thumbnail"><a class="anchor" href="#"><img class="image" src="https://encrypted-tbn2.google.com/images?q=tbn:ANd9GcTn-N6xaYApp_l2TzA2oGIFE3RLi8UEyHoy0ZqcXHTTXwztwLAuMw" /></a></div>
+                                                                    <h4 class="title"><a class="anchor" href="#">Nome da Entidade Muito Maneira</a></h4>
+                                                                    <ul class="icons">
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">alguma descrição pequena</span></li>
+                                                                        <li class="icon"><div class="image icon"></div><span class="legend">ma oe!</span></li>
+                                                                    </ul>
+                                                                    <p class="description">Um texto gigante descrevendo alguma coisa muito bacana assim podemos ser felizes porque o cachorro que mijou na calçada da esquina de casa morreu de tuberculose 3 dias depois da tempestade.</p>
+
+                                                                    <menu class="actions">
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação A</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação B</div></a></li>
+                                                                        <li class="action"><a href="#" class="anchor"><div class="image action check"></div><div class="legend">ação C</div></a></li>
+                                                                    </menu>
+                                                                    <div class="image arrow"><div class="fill"></div></div>
+                                                                </li>
+                                                            </ol>
+                                                        </li>
+                                                    </ol>
+                                                </li>
+                                            </ol>
+                                        </div>
+
+                                        <div class="filter">
+                                            <form class="form">
+                                                <div class="field-sets">
+                                                    <fieldset class="field-set">
+                                                        <legend class="legend">Fieldset</legend>
+                                                        <ul class="fields">
+                                                            <li class="field text">
+                                                                <div class="legend"><label class="text" for="form-inputa">Input A</label></div>
+                                                                <div class="data"><input class="input" id="form-inputa" type="text" name="inputa" /></div>
+                                                            </li>
+                                                            <li class="field text">
+                                                                <div class="legend"><label class="text" for="form-inputb">Input B</label></div>
+                                                                <div class="data"><input class="input" id="form-inputb" type="text" name="inputa" /></div>
+                                                            </li>
+                                                        </ul>
+                                                    </fieldset>
+                                                    <fieldset class="field-set">
+                                                        <legend class="legend">Fieldset</legend>
+                                                        <ul class="fields">
+                                                            <li class="field text">
+                                                                <div class="legend"><label class="text" for="form-inputa">Input A</label></div>
+                                                                <div class="data"><input class="input" id="form-inputa" type="text" name="inputa" /></div>
+                                                            </li>
+                                                            <li class="field text">
+                                                                <div class="legend"><label class="text" for="form-inputb">Input B</label></div>
+                                                                <div class="data"><input class="input" id="form-inputb" type="text" name="inputa" /></div>
+                                                            </li>
+                                                        </ul>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="submit">
+                                                    <input class="input" id="submit" type="submit" value="Filtrar" />
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sheet entity" style="z-index:9997">
+                                <div class="header">
+                                    <h4 class="title">Sheet B</h4>
+                                </div>
+                            </div>
+                            <div class="sheet entity" style="z-index:9996">
+                                <div class="header">
+                                    <h4 class="title">Sheet C</h4>
+                                </div>
+                            </div>
+                            <div class="sheet entity" style="z-index:9995">
+                                <div class="header">
+                                    <h4 class="title">Sheet D</h4>
+                                </div>
+                            </div>
+                            <div class="sheet entity" style="z-index:9994">
+                                <div class="header">
+                                    <h4 class="title">Sheet E</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-wrapper hide">
+            <div class="background"></div>
+            <div class="centralizer">
+                <div class="modal width-400">
+                    <div class="header">
+                        <h1 class="title">Olá, como vai você?</h1>
+                    </div>
+                    <div class="close"><div class="image"></div><div class="legend">fechar</div></div>
+                    <div class="flash error">Um erro aconteceu!</div>
+                    <div class="description">
+                        <p>Bla bla bla bla bla blolololoolo</p>
+                        <p>Sério, sério mesmo, mutcho loko la bagaça.</p>
+                    </div>
+                    <form class="form">
+                        <div class="field-sets">
+                            <fieldset class="field-set">
+                                <legend class="legend">Fieldset</legend>
+                                <ul class="fields">
+                                    <li class="field text">
+                                        <div class="legend"><label class="text" for="form-inputa">Input A</label></div>
+                                        <div class="data"><input class="input" id="form-inputa" type="text" name="inputa" /></div>
+                                    </li>
+                                    <li class="field text">
+                                        <div class="legend"><label class="text" for="form-inputb">Input B</label></div>
+                                        <div class="data"><input class="input" id="form-inputb" type="text" name="inputa" /><div class="error">Teste</div></div>
+                                    </li>
+                                    <li class="field date">
+                                        <div class="legend"><label class="text" for="form-inputb">Input B</label></div>
+                                        <div class="data">
+                                            <input class="input" type="text" name="login">
+                                            <div class="date-picker hide">
+                                                <div class="calendar">
+                                                    <div class="month">
+                                                        <div class="previous-month">&laquo;</div>
+                                                        <div class="date">outubro de 2012</div>
+                                                        <div class="next-month">&raquo;</div>
+                                                    </div>
+                                                    <ul class="week-days">
+                                                        <li class="day weekend">D</li>
+                                                        <li class="day">S</li>
+                                                        <li class="day">T</li>
+                                                        <li class="day">Q</li>
+                                                        <li class="day">Q</li>
+                                                        <li class="day">S</li>
+                                                        <li class="day weekend">S</li>
+                                                    </ul>
+                                                    <ul class="month-days">
+                                                        <li class="day previous-month weekend">30</li>
+                                                        <li class="day today">1</li>
+                                                        <li class="day">2</li>
+                                                        <li class="day">3</li>
+                                                        <li class="day">4</li>
+                                                        <li class="day">5</li>
+                                                        <li class="day weekend">6</li>
+                                                        <li class="day weekend">7</li>
+                                                        <li class="day">8</li>
+                                                        <li class="day selected">9</li>
+                                                        <li class="day">10</li>
+                                                        <li class="day">11</li>
+                                                        <li class="day">12</li>
+                                                        <li class="day weekend">13</li>
+                                                        <li class="day weekend">14</li>
+                                                        <li class="day">15</li>
+                                                        <li class="day">16</li>
+                                                        <li class="day">17</li>
+                                                        <li class="day">18</li>
+                                                        <li class="day">19</li>
+                                                        <li class="day weekend">20</li>
+                                                        <li class="day weekend">21</li>
+                                                        <li class="day">22</li>
+                                                        <li class="day">23</li>
+                                                        <li class="day">24</li>
+                                                        <li class="day">25</li>
+                                                        <li class="day">26</li>
+                                                        <li class="day weekend">27</li>
+                                                        <li class="day weekend">28</li>
+                                                        <li class="day">29</li>
+                                                        <li class="day">30</li>
+                                                        <li class="day">31</li>
+                                                        <li class="day next-month">1</li>
+                                                        <li class="day next-month">2</li>
+                                                        <li class="day next-month weekend">3</li>
+                                                        <li class="day next-month weekend">4</li>
+                                                        <li class="day next-month">5</li>
+                                                        <li class="day next-month">6</li>
+                                                        <li class="day next-month">7</li>
+                                                        <li class="day next-month">8</li>
+                                                        <li class="day next-month">9</li>
+                                                        <li class="day next-month weekend">10</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="presets">
+                                                    <menu class="menu">
+                                                        <li class="item">hoje</li>
+                                                        <li class="item">amanhã</li>
+                                                    </menu>
+                                                </div>
+                                                <div class="image arrow"><div class="fill"></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </fieldset>
+                            <div class="submit">
+                                <input class="input" id="submit" type="submit" value="Filtrar" />
+                            </div>
+                        </form>
+                    <div class="footer">
+                        Aqui um pouco de footer e um <a class="anchor" href="#">link maneiro</a>.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feedback">
+            feedback
+        </div>
+    </body>
+</html>

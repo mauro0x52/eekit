@@ -1,0 +1,24 @@
+module.exports = {
+    host : {
+        port : 8001,
+        url  : 'localhost',
+        debuglevel : 1 // 0 sem erros, 1 com erros
+    },
+    mongodb : {
+        port : 27017,
+        url : 'localhost',
+        username : undefined,
+        password : undefined,
+        db : 'auth'
+    },
+    services : {
+        auth : {
+            port : 8001,
+            url  : 'localhost'
+        }
+    },
+    security : {
+        token    : 'Digite qualquer hash aleatória',
+        password : 'Digite qualquer hash aleatória'
+    }
+};

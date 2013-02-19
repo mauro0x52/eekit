@@ -1,0 +1,21 @@
+/* -------------------------------------------------------------------------- */
+/* Labels                                                                     */
+/* -------------------------------------------------------------------------- */
+
+.label.navy       { color: #ffffff; background-color: #006; }
+.label.blue       { color: #ffffff; background-color: #026; }
+.label.cyan       { color: #ffffff; background-color: #099; }
+.label.green      { color: #ffffff; background-color: #080; }
+.label.olive      { color: #ffffff; background-color: #680; }
+.label.beige      { color: #ffffff; background-color: #A86; }
+.label.yellow     { color: #ffffff; background-color: #AA0; }
+.label.gold       { color: #ffffff; background-color: #CA0; }
+.label.orange     { color: #ffffff; background-color: #C80; }
+.label.red        { color: #ffffff; background-color: #C00; }
+.label.brown      { color: #ffffff; background-color: #830; }
+.label.pink       { color: #ffffff; background-color: #A28; }
+.label.coral      { color: #ffffff; background-color: #A96; }
+.label.purple     { color: #ffffff; background-color: #80A; }
+
+.label.gray       { color: #ffffff; background-color: #888; }
+.label.black      { color: #ffffff; background-color: #000; }
