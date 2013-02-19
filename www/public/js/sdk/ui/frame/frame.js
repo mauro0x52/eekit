@@ -35,6 +35,9 @@ sdk.modules.ui.frame = function (app) {
         }
     };
 
+    /* Elementos específicos de ferramenta */
+    this.tag = new sdk.modules.ui.tag(app);
+
     /* Métodos públicos */
     this.height = function (value) {
         var height = 460;
@@ -63,10 +66,17 @@ sdk.modules.ui.frame = function (app) {
     };
     this.heading = function (value) {};
     this.html = function (value) {
-        if (value) {
-            body_div.innerHTML = value
+        var content,
+            i;
+
+        if (value.constructor === Array) {
+            for (i in value) {
+                content = new app.ui.tag(value[i]);
+                content.attach(body_div, ['temp']);
+            }
         } else {
-            return body_div.innerHTML;
+            content = new app.ui.tag(value);
+            content.attach(body_div, ['temp']);
         }
     };
 }
