@@ -20,6 +20,10 @@ var empreendemia = {
         empreendemia.ui.content.roll.menu.remove();
         /* Exibindo user section */
         empreendemia.user.profile(function (profile) {
+            var routes,
+                slug,
+                route;
+
             empreendemia.ui.header.user.options.remove();
             if (profile) {
                 /* Usuário logado */
@@ -33,6 +37,10 @@ var empreendemia = {
                     style  : 'logout',
                     click  : empreendemia.user.logout
                 }));
+                /* Monta a rota */
+                routes = empreendemia.routes.get() || 'tarefas/';
+                slug = routes.split('/')[0];
+                route = routes.replace(slug, '') || '/';
             } else {
                 /* Usuário deslogado */
                 empreendemia.ui.header.user.logout();
@@ -46,7 +54,20 @@ var empreendemia = {
                     style  : 'login',
                     click  : empreendemia.user.login
                 }));
+                /* Monta a rota */
+                routes = empreendemia.routes.get() || 'ee/';
+                slug = routes.split('/')[0];
+                route = routes.replace(slug, '') || '/';
             }
+            /* Exibindo aplicativo da rota */
+            empreendemia.apps.open({
+                app   : slug,
+                route : route,
+                open  : function (tool) {
+                    tool.open();
+                    empreendemia.apps.render(tool, true);
+                }
+            });
         });
         /* Exibindo lista de aplicativos */
         empreendemia.user.apps(function (apps) {
@@ -60,18 +81,6 @@ var empreendemia = {
                         href   : apps[i].slug
                     }));
                 }
-            }
-        });
-        /* Exibindo aplicativo da rota */
-        var routes = empreendemia.routes.get() || 'ee/',
-            slug = routes.split('/')[0],
-            route = routes.replace(slug, '') || '/';
-        empreendemia.apps.open({
-            app   : slug,
-            route : route,
-            open  : function (tool) {
-                tool.open();
-                empreendemia.apps.render(tool, true);
             }
         });
     },

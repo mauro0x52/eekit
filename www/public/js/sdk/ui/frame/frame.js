@@ -35,24 +35,32 @@ sdk.modules.ui.frame = function (app) {
         }
     };
 
+    /* Elementos específicos de ferramenta */
+    this.tag = new sdk.modules.ui.tag(app);
+
     /* Métodos públicos */
     this.height = function (value) {
-        var height = 460;
+        var height = 460,
+            width;
 
         if (document.body && document.body.offsetWidth) {
             height = document.body.offsetHeight;
+            width  = document.body.offsetWidth;
         }
         if (document.compatMode=='CSS1Compat' &&
             document.documentElement &&
             document.documentElement.offsetWidth
         ) {
             height = document.documentElement.offsetHeight;
+            width  = document.documentElement.offsetWidth;
         }
         if (window.innerWidth && window.innerHeight) {
             height = window.innerHeight;
+            width  = window.innerWidth;
         }
 
-        body_div.style.height = height-155;
+        body_div.style.height = height-120;
+        body_div.style.width = width;
     };
     this.loading = function (value) {
         if (value) {
@@ -63,10 +71,17 @@ sdk.modules.ui.frame = function (app) {
     };
     this.heading = function (value) {};
     this.html = function (value) {
-        if (value) {
-            body_div.innerHTML = value
+        var content,
+            i;
+        body_div.innerHTML = '';
+        if (value.constructor === Array) {
+            for (i in value) {
+                content = new app.ui.tag(value[i]);
+                content.attach(body_div, ['temp']);
+            }
         } else {
-            return body_div.innerHTML;
+            content = new app.ui.tag(value);
+            content.attach(body_div, ['temp']);
         }
     };
 }

@@ -17,7 +17,7 @@ empreendemia.user = {
                 empreendemia.apps.dialog(tool);
             },
             close : function (params) {
-                if (params) {
+                if (params && params.token) {
                     empreendemia.user.token = params.token;
                     empreendemia.load();
                 }
@@ -34,9 +34,12 @@ empreendemia.user = {
                 empreendemia.apps.dialog(tool);
             },
             close : function (token) {
-                empreendemia.user.token = token;
-                setCookie('token', token, 1);
-                empreendemia.load();
+                if (token) {
+                    empreendemia.user.token = token;
+                    setCookie('token', token, 1);
+                    empreendemia.routes.set('ee/usuario-cadastrado');
+                    empreendemia.load();
+                }
             }
         });
     },

@@ -25,17 +25,28 @@ empreendemia.ui.logo = function () {
     element.appendChild(anchor);
     anchor.appendChild(image_div);
     anchor.appendChild(title_h1);
-    
+
     /* Eventos */
     element.addEventListener('click', function () {
-        empreendemia.apps.open({
-            app   : 'ee',
-            route : '/',
-            open  : function (tool) {
-                tool.open();
-                empreendemia.apps.render(tool, true);
-            }
-        });
+        if (empreendemia.user.token !== undefined) {
+            empreendemia.apps.open({
+                app   : 'ee',
+                route : '/usuario-cadastrado',
+                open  : function (tool) {
+                    tool.open();
+                    empreendemia.apps.render(tool, true);
+                }
+            });
+        } else {
+            empreendemia.apps.open({
+                app   : 'ee',
+                route : '/',
+                open  : function (tool) {
+                    tool.open();
+                    empreendemia.apps.render(tool, true);
+                }
+            });
+        }
     }, true);
 
     /* Métodos protegidos */

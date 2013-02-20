@@ -172,7 +172,7 @@ function ajaxRequest (url, method, data, cb, local) {
 function Collection (HTMLobject, constructors) {
     var childs_objects = [],
         that = this,
-        classAttr = HTMLobject.getAttribute('class').replace('hide', '');
+        classAttr = (HTMLobject.getAttribute('class') ? HTMLobject.getAttribute('class') : '').replace('hide', '');
 
     HTMLobject.setAttribute('class', classAttr + ' hide');
 
