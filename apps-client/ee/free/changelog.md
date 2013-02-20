@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 0.3
+
+Features
+- Home de usuário deslogado
+- Perguntas para usuário recém-cadastrado
+
 ## 0.2 (2013-01-23)
 
 Features

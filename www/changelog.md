@@ -1,6 +1,14 @@
 Changelog
 =========
 
+## 0.4
+
+Features
+- SDK para os frames
+
+Melhorias
+- Ajustes para nova home
+
 ## 0.3 (2013-02-18)
 
 Features
