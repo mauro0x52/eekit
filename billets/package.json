@@ -1,0 +1,11 @@
+{
+  "name": "Billet",
+  "description": "",
+  "version": "0.0.1",
+  "author": "Empreendemia",
+  "dependencies": {
+    "jade": "0.28.x",
+    "express": "3.0.0rc3"
+  },
+  "devDependencies": {}
+}
