@@ -159,7 +159,10 @@ app.routes.frame('/usuario-cadastrado', function (params, data) {
                         name : 'question-answer'
                     },
                     events : {
-                        click : function () { answer = 'contacts' }
+                        click : function () {
+                            answer = 'contacts';
+                            app.tracker.event('marcar: contatos');
+                        }
                     }
                 },
                 {
@@ -179,7 +182,10 @@ app.routes.frame('/usuario-cadastrado', function (params, data) {
                         name : 'question-answer'
                     },
                     events : {
-                        click : function () { answer = 'finances' }
+                        click : function () {
+                            answer = 'finances';
+                            app.tracker.event('marcar: finanças');
+                        }
                     }
                 },
                 {
@@ -199,7 +205,10 @@ app.routes.frame('/usuario-cadastrado', function (params, data) {
                         name : 'question-answer'
                     },
                     events : {
-                        click : function () { answer = 'tasks' }
+                        click : function () {
+                            answer = 'tasks';
+                            app.tracker.event('marcar: tarefas');
+                        }
                     }
                 },
                 {

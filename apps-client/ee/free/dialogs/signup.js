@@ -16,6 +16,18 @@ app.routes.dialog('/cadastro', function (params, data) {
             login_confirmation.errors.add(new app.ui.inputError({ message : 'os emails não conferem' }));
             validate = false;
         }
+        if (!size.value().length) {
+            validate = false;
+            app.ui.error('Escolha um tamanho');
+        }
+        if (!sector.value().length) {
+            validate = false;
+             app.ui.error('Escolha um setor');
+        }
+        if (!role.value().length) {
+            validate = false;
+            app.ui.error('Escolha uma função');
+        }
         return validate;
     }
 
