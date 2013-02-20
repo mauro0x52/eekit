@@ -1,8 +1,8 @@
 /**
  * Home
  *
- * @author Rafael Erthal
- * @since 2013-01
+ * @author Mauro Ribeiro
+ * @since  2013-02
  */
 
 app.routes.frame('/', function (params, data) {
@@ -268,12 +268,17 @@ app.routes.frame('/', function (params, data) {
                                         tag : 'span',
                                         html : '!'
                                     }
-                                ]
+                                ],
+                                events : {
+                                    click : function () {
+                                        app.empreendemia.user.signup();
+                                    }
+                                }
                             }
                         ]
                     }
                 ]
             }
         },
-	]);
+    ]);
 });

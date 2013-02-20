@@ -73,7 +73,7 @@ sdk.modules.ui.frame = function (app) {
     this.html = function (value) {
         var content,
             i;
-
+        body_div.innerHTML = '';
         if (value.constructor === Array) {
             for (i in value) {
                 content = new app.ui.tag(value[i]);
