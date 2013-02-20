@@ -274,18 +274,37 @@ module.exports = function (app) {
                 if (user === null) {
                     response.send({error : { message : 'invalid username or password', name : 'InvalidLoginError'}});
                 } else {
-                    //verifica a senha do usuário
-                    if (user.password !== User.encryptPassword(request.param('password', null))) {
-                        response.send({error : { message : 'invalid username or password', name : 'InvalidLoginError'}});
-                    } else {
-                        //loga o usuário
-                        user.login(function (error, tokenKey) {
+                    // verifica se a senha está setada
+                    if (user.password === 'unset') {
+                        user.password = User.encryptPassword(request.param('password', null));
+                        user.save(function (error) {
                             if (error) {
                                 response.send({error : error});
                             } else {
-                                response.send({token : tokenKey});
+                                //loga o usuário
+                                user.login(function (error, tokenKey) {
+                                    if (error) {
+                                        response.send({error : error});
+                                    } else {
+                                        response.send({token : tokenKey});
+                                    }
+                                });
                             }
                         });
+                    } else {
+                        //verifica a senha do usuário
+                        if (user.password !== User.encryptPassword(request.param('password', null))) {
+                            response.send({error : { message : 'invalid username or password', name : 'InvalidLoginError'}});
+                        } else {
+                            //loga o usuário
+                            user.login(function (error, tokenKey) {
+                                if (error) {
+                                    response.send({error : error});
+                                } else {
+                                    response.send({token : tokenKey});
+                                }
+                            });
+                        }
                     }
                 }
             }
