@@ -151,71 +151,81 @@ app.routes.frame('/usuario-cadastrado', function (params, data) {
         {
             tag : 'div',
             attributes : { style : 'margin: 10px 20px; font-size: 12px;'},
-            html : [
-                {
-                    tag : 'input',
-                    attributes : {
-                        type : 'radio',
-                        name : 'question-answer'
-                    },
-                    events : {
-                        click : function () {
-                            answer = 'contacts';
-                            app.tracker.event('marcar: contatos');
-                        }
-                    }
-                },
+            html :
                 {
                     tag : 'label',
-                    html : ' 1. Preciso cuidar dos meus clientes de forma mais eficiente'
+                    html : [
+                        {
+                            tag : 'input',
+                            attributes : {
+                                type : 'radio',
+                                name : 'question-answer'
+                            },
+                            events : {
+                                click : function () {
+                                    answer = 'contacts';
+                                    app.tracker.event('marcar: contatos');
+                                }
+                            }
+                        },
+                        {
+                            tag : 'span',
+                            html : ' 1. Preciso cuidar dos meus clientes de forma mais eficiente'
+                        }
+                    ]
                 }
-            ]
         },
         {
             tag : 'div',
             attributes : { style : 'margin: 10px 20px; font-size: 12px;'},
-            html : [
-                {
-                    tag : 'input',
-                    attributes : {
-                        type : 'radio',
-                        name : 'question-answer'
-                    },
-                    events : {
-                        click : function () {
-                            answer = 'finances';
-                            app.tracker.event('marcar: finanças');
+            html : {
+                tag : 'label',
+                html : [
+                    {
+                        tag : 'input',
+                        attributes : {
+                            type : 'radio',
+                            name : 'question-answer'
+                        },
+                        events : {
+                            click : function () {
+                                answer = 'finances';
+                                app.tracker.event('marcar: finanças');
+                            }
                         }
+                    },
+                    {
+                        tag : 'span',
+                        html : ' 2. Tenho dificuldade em gerenciar o fluxo de caixa da minha empresa'
                     }
-                },
-                {
-                    tag : 'label',
-                    html : ' 2. Tenho dificuldade em gerenciar o fluxo de caixa da minha empresa'
-                }
-            ]
+                ]
+            }
         },
         {
             tag : 'div',
             attributes : { style : 'margin: 10px 20px; font-size: 12px;'},
-            html : [
-                {
-                    tag : 'input',
-                    attributes : {
-                        type : 'radio',
-                        name : 'question-answer'
-                    },
-                    events : {
-                        click : function () {
-                            answer = 'tasks';
-                            app.tracker.event('marcar: tarefas');
+            html : {
+                tag : 'label',
+                html : [
+                    {
+                        tag : 'input',
+                        attributes : {
+                            type : 'radio',
+                            name : 'question-answer'
+                        },
+                        events : {
+                            click : function () {
+                                answer = 'tasks';
+                                app.tracker.event('marcar: tarefas');
+                            }
                         }
+                    },
+                    {
+                        tag : 'span',
+                        html : ' 3. Quero uma forma simples de lembrar das minhas tarefas diárias'
                     }
-                },
-                {
-                    tag : 'label',
-                    html : ' 3. Quero uma forma simples de lembrar das minhas tarefas diárias'
-                }
-            ]
+                ]
+            }
         },
         {
             tag : 'div',
