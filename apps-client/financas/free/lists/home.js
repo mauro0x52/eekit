@@ -28,7 +28,7 @@ app.routes.list('/', function (params, data) {
                 legend : 'receita',
                 image : 'add',
                 click : function () {
-                    app.apps.dialog({
+                    app.apps.open({
                         app : 'financas',
                         route : '/adicionar-receita',
                         close : function (data) {
@@ -51,7 +51,7 @@ app.routes.list('/', function (params, data) {
                 legend : 'despesa',
                 image : 'sub',
                 click : function () {
-                    app.apps.dialog({
+                    app.apps.open({
                         app : 'financas',
                         route : '/adicionar-despesa',
                         close : function (data) {
@@ -73,7 +73,7 @@ app.routes.list('/', function (params, data) {
                 legend : 'transferencia',
                 image : 'transfer',
                 click : function () {
-                    app.apps.dialog({
+                    app.apps.open({
                         app : 'financas',
                         route : '/adicionar-transferencia',
                         close : function (data) {
@@ -252,7 +252,7 @@ app.routes.list('/', function (params, data) {
             item = new app.ui.item({
                 title : transaction.name,
                 click : function () {
-                    app.apps.entity({
+                    app.apps.open({
                         app : app.slug,
                         route : '/transacao/' + transaction._id,
                         data : {
@@ -289,7 +289,7 @@ app.routes.list('/', function (params, data) {
          * @param  cb: callback após edição
          */
         this.update = function (cb) {
-            app.apps.dialog({
+            app.apps.open({
                 app : 'financas',
                 route : '/editar-transacao/' + transaction._id,
                 close : function (data) {
@@ -740,7 +740,7 @@ app.routes.list('/', function (params, data) {
             legend : 'receita',
             image : 'add',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'financas',
                     route : '/adicionar-receita',
                     close : function (data) {
@@ -758,7 +758,7 @@ app.routes.list('/', function (params, data) {
             legend : 'despesa',
             image : 'sub',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'financas',
                     route : '/adicionar-despesa',
                     close : function (data) {
@@ -776,7 +776,7 @@ app.routes.list('/', function (params, data) {
             legend : 'transferencia',
             image : 'transfer',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'financas',
                     route : '/adicionar-transferencia',
                     close : function (data) {

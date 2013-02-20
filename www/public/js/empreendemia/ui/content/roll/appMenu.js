@@ -46,7 +46,7 @@ empreendemia.ui.appMenu = function (params) {
                 open  : function (tool) {
                     tool.open();
                     tool.slug = slug;
-                    empreendemia.apps.render(tool, true, tool);
+                    empreendemia.apps.render(tool);
                 }
             });
         }

@@ -70,17 +70,6 @@ empreendemia.apps = {
         }
     },
 
-    /** dialog
-     *
-     * @autor : Rafael Erthal
-     * @since : 2012-11
-     *
-     * @description : abre um dialogo
-     */
-     dialog : function (tool) {
-         tool.ui.attach(document.body);
-     },
-
     /** list
      *
      * @autor : Rafael Erthal
@@ -88,66 +77,67 @@ empreendemia.apps = {
      *
      * @description : abre um app
      */
-     render : function (tool, main, caller) {
+     render : function (tool) {
         var apps = empreendemia.ui.content.roll.sheets.apps.get(),
             nav = empreendemia.ui.content.navigation.navigables.get(),
             position,
             i,j;
 
-        if (caller) {
-            for (i in apps) {
-                var containers = apps[i].embbeds ? apps[i].embbeds.get() : [];
-                    containers.push(apps[i]);
+        if (tool.ui.type() === 'dialog') {
+            tool.ui.attach(document.body);
+        } else {
+            if (tool.caller()) {
+                for (i in apps) {
+                    var containers = apps[i].embbeds ? apps[i].embbeds.get() : [];
+                        containers.push(apps[i]);
 
-                for (j in containers) {
-                    if (caller && caller.ui && containers[j] === caller.ui) {
-                       position = i;
-                   }
+                    for (j in containers) {
+                        if (tool.caller() && tool.caller().ui && containers[j] === tool.caller().ui) {
+                           position = i;
+                       }
+                    }
+                }
+                for (i in apps) {
+                    if (i > position || ! position) {
+                       empreendemia.ui.content.navigation.navigables.remove(nav[i]);
+                       empreendemia.ui.content.roll.sheets.apps.remove(apps[i]);
+                    }
+                }
+            } else {
+                empreendemia.ui.content.roll.menu.remove();
+                empreendemia.ui.content.roll.sheets.apps.remove();
+                empreendemia.ui.content.navigation.navigables.remove();
+                for (var i in tool.menu) {
+                    empreendemia.ui.content.roll.menu.add(new empreendemia.ui.appMenu({
+                        legend   : tool.menu[i].legend,
+                        image    : tool.menu[i].image,
+                        href     : tool.slug + tool.menu[i].href,
+                        selected : tool.menu[i].href === tool.routes.route()
+                    }));
+                }
+                tool.ui.menu = empreendemia.ui.content.roll.menu;
+            }
+
+            var navigable = new empreendemia.ui.appNavigable({
+                legend : tool.ui.heading(),
+                href   : tool.slug + tool.routes.route(),
+                click  : function () {
+                    empreendemia.ui.content.navigation.focus(tool.ui);
+                }
+            });
+
+            tool.ui.title = function (value) {
+                if (value) {
+                    navigable.legend(value);
+                    tool.ui.heading(value);
+                } else {
+                    return tool.ui.heading()
                 }
             }
+
+            empreendemia.ui.content.navigation.navigables.add(navigable);
+            empreendemia.ui.content.roll.sheets.apps.add(tool.ui);
+            navigable.click();
         }
-        for (i in apps) {
-            if (i > position || ! position) {
-               empreendemia.ui.content.navigation.navigables.remove(nav[i]);
-               empreendemia.ui.content.roll.sheets.apps.remove(apps[i]);
-            }
-        }
-
-        if (main) {
-            empreendemia.ui.content.roll.menu.remove();
-            empreendemia.ui.content.roll.sheets.apps.remove();
-            empreendemia.ui.content.navigation.navigables.remove();
-
-            for (var i in tool.menu) {
-                empreendemia.ui.content.roll.menu.add(new empreendemia.ui.appMenu({
-                    legend   : tool.menu[i].legend,
-                    image    : tool.menu[i].image,
-                    href     : tool.slug + tool.menu[i].href,
-                    selected : tool.menu[i].href === tool.routes.route()
-                }));
-            }
-            tool.ui.menu = empreendemia.ui.content.roll.menu;
-        }
-
-        var navigable = new empreendemia.ui.appNavigable({
-            legend : tool.ui.heading(),
-            href   : tool.slug + tool.routes.route(),
-            click  : function () {
-                empreendemia.ui.content.navigation.focus(tool.ui);
-            }
-        });
-
-        tool.ui.title = function (value) {
-            if (value) {
-                navigable.legend(value);
-                tool.ui.heading(value);
-            } else {
-                return tool.ui.heading()
-            }
-        }
-
-        empreendemia.ui.content.navigation.navigables.add(navigable);
-        empreendemia.ui.content.roll.sheets.apps.add(tool.ui);
-        navigable.click();
      }
 };

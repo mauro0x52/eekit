@@ -219,7 +219,7 @@ app.routes.list('/feitas', function (params, data) {
             description : task.description,
             label : label(task.category),
             click : function () {
-                app.apps.entity({
+                app.apps.open({
                     app : app.slug,
                     route : '/tarefa/' + task._id,
                     data : {

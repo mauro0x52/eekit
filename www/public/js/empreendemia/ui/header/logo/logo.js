@@ -34,7 +34,7 @@ empreendemia.ui.logo = function () {
                 route : '/usuario-cadastrado',
                 open  : function (tool) {
                     tool.open();
-                    empreendemia.apps.render(tool, true);
+                    empreendemia.apps.render(tool);
                 }
             });
         } else {
@@ -43,7 +43,7 @@ empreendemia.ui.logo = function () {
                 route : '/',
                 open  : function (tool) {
                     tool.open();
-                    empreendemia.apps.render(tool, true);
+                    empreendemia.apps.render(tool);
                 }
             });
         }

@@ -40,7 +40,7 @@ app.routes.list('/categorias', function (params, data) {
             image : 'pencil',
             legend : 'editar',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'financas',
                     route : '/editar-categoria/' + categoryItem.category._id,
                     close : function (data) {
@@ -57,7 +57,7 @@ app.routes.list('/categorias', function (params, data) {
             legend : 'remover',
             image : 'trash',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'financas',
                     route : '/remover-categoria/' + categoryItem.category._id,
                     close : function (data) {
@@ -176,7 +176,7 @@ app.routes.list('/categorias', function (params, data) {
         image : 'add',
         legend : 'adicionar categoria',
         click : function () {
-            app.apps.dialog({
+            app.apps.open({
                 app : 'financas',
                 route : '/adicionar-categoria',
                 close : function (category) {
@@ -210,7 +210,7 @@ app.routes.list('/categorias', function (params, data) {
                         image : 'add',
                         legend : 'adicionar categoria',
                         click : function () {
-                            app.apps.dialog({
+                            app.apps.open({
                                 app : 'financas',
                                 route : '/adicionar-categoria',
                                 data : {
@@ -240,7 +240,7 @@ app.routes.list('/categorias', function (params, data) {
                         image : 'add',
                         legend : 'adicionar categoria',
                         click : function () {
-                            app.apps.dialog({
+                            app.apps.open({
                                 app : 'financas',
                                 route : '/adicionar-categoria',
                                 data : {

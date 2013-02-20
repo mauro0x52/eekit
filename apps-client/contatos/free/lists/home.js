@@ -84,7 +84,7 @@ app.routes.list('/', function (params, data) {
             legend : 'editar',
             image : 'pencil',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'contatos',
                     route : '/editar-contato/'+contactItem.contact._id,
                     close : function (data) {
@@ -106,7 +106,7 @@ app.routes.list('/', function (params, data) {
             legend : 'excluir',
             image : 'trash',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'contatos',
                     route : '/remover-contato/'+contactItem.contact._id,
                     close : function (data) {
@@ -181,7 +181,7 @@ app.routes.list('/', function (params, data) {
                     return response;
                 })(),
                 click : function () {
-                    app.apps.entity({
+                    app.apps.open({
                         app : 'contatos',
                         route : '/contato/' + contact._id,
                         data : {
@@ -219,7 +219,7 @@ app.routes.list('/', function (params, data) {
             legend : 'adicionar contato',
             image : 'add',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'contatos',
                     route : '/adicionar-contato',
                     data : {
@@ -458,7 +458,7 @@ app.routes.list('/', function (params, data) {
                 legend : 'adicionar contato',
                 image : 'add',
                 click : function () {
-                    app.apps.dialog({
+                    app.apps.open({
                         app : 'contatos',
                         route : '/adicionar-contato',
                         close : function (data) {

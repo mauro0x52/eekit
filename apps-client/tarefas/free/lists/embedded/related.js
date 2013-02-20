@@ -206,7 +206,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
             label : 'editar tarefa',
             image : 'pencil',
             click : function() {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'tarefas',
                     route : '/editar-tarefa/'+taskItem.task._id,
                     data : {
@@ -269,7 +269,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
             description : task.description,
             label : label(task.category),
             click : function () {
-                app.apps.entity({
+                app.apps.open({
                     app : app.slug,
                     route : '/tarefa/' + task._id,
                     data : {
@@ -314,7 +314,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
         legend : 'adicionar tarefa',
         image : 'add',
         click : function () {
-            app.apps.dialog({
+            app.apps.open({
                 app : 'tarefas',
                 route : '/adicionar-tarefa',
                 data : {

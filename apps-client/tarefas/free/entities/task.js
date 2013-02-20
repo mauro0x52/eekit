@@ -133,7 +133,7 @@ app.routes.entity('/tarefa/:id', function (params, data) {
                         label : 'editar tarefa',
                         image : 'pencil',
                         click : function() {
-                            app.apps.dialog({
+                            app.apps.open({
                                 app : 'tarefas',
                                 route : '/editar-tarefa/'+task._id,
                                 close : function (data) {
@@ -228,7 +228,7 @@ app.routes.entity('/tarefa/:id', function (params, data) {
                 var appa = task.embeddeds[0].split('/')[1],
                     route = task.embeddeds[0].replace('/' + appa, '');
 
-                app.apps.embeddedEntity({
+                app.apps.open({
                     app : appa,
                     route : route,
                     open : function (tool) {

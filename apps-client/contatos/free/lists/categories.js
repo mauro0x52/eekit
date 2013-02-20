@@ -36,7 +36,7 @@
             legend : 'editar',
             image : 'pencil',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'contatos',
                     route : '/editar-categoria/' + categoryItemData.category._id,
                     close : function (data) {
@@ -61,7 +61,7 @@
             legend : 'remover',
             image : 'trash',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'contatos',
                     route : '/remover-categoria/'+categoryItemData.category._id,
                     close : function (data) {
@@ -154,7 +154,7 @@
         image : 'add',
         legend : 'adicionar categoria',
         click : function () {
-            app.apps.dialog({
+            app.apps.open({
                 app : 'contatos',
                 route : '/adicionar-categoria',
                 close : function (category) {
@@ -176,7 +176,7 @@
         legend : 'adicionar categoria',
         image : 'add',
         click : function () {
-            app.apps.dialog({
+            app.apps.open({
                 app : 'contatos',
                 route : '/adicionar-categoria',
                 data : {
@@ -197,7 +197,7 @@
         legend : 'adicionar categoria',
         image : 'add',
         click : function () {
-            app.apps.dialog({
+            app.apps.open({
                 app : 'contatos',
                 route : '/adicionar-categoria',
                 data : {
@@ -218,7 +218,7 @@
         legend : 'adicionar categoria',
         image : 'add',
         click : function () {
-            app.apps.dialog({
+            app.apps.open({
                 app : 'contatos',
                 route : '/adicionar-categoria',
                 data : {
@@ -239,7 +239,7 @@
         legend : 'adicionar categoria',
         image : 'add',
         click : function () {
-            app.apps.dialog({
+            app.apps.open({
                 app : 'contatos',
                 route : '/adicionar-categoria',
                 data : {

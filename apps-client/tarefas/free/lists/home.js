@@ -248,7 +248,7 @@ app.routes.list('/', function (params, data) {
             label : 'editar tarefa',
             image : 'pencil',
             click : function() {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'tarefas',
                     route : '/editar-tarefa/'+taskItem.task._id,
                     close : function (data) {
@@ -272,7 +272,7 @@ app.routes.list('/', function (params, data) {
             label : 'remover tarefa',
             image : 'trash',
             click : function() {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'tarefas',
                     route : '/remover-tarefa/'+taskItem.task._id,
                     close : function (data) {
@@ -342,7 +342,7 @@ app.routes.list('/', function (params, data) {
                 task.save(function(task) {});
             },
             click : function () {
-                app.apps.entity({
+                app.apps.open({
                     app : app.slug,
                     route : '/tarefa/' + task._id,
                     data : {
@@ -393,7 +393,7 @@ app.routes.list('/', function (params, data) {
             legend : 'adicionar tarefa',
             image : 'add',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'tarefas',
                     route : '/adicionar-tarefa',
                     data : {
@@ -553,7 +553,7 @@ app.routes.list('/', function (params, data) {
                 legend : 'adicionar tarefa',
                 image : 'add',
                 click : function () {
-                    app.apps.dialog({
+                    app.apps.open({
                         app : 'tarefas',
                         route : '/adicionar-tarefa',
                         close : function(data) {
@@ -608,7 +608,7 @@ app.routes.list('/', function (params, data) {
         legend : 'adicionar tarefa',
         image : 'add',
         click : function () {
-            app.apps.dialog({
+            app.apps.open({
                 app : 'tarefas',
                 route : '/adicionar-tarefa',
                 data : {
@@ -641,7 +641,7 @@ app.routes.list('/', function (params, data) {
         legend : 'adicionar tarefa',
         image : 'add',
         click : function () {
-            app.apps.dialog({
+            app.apps.open({
                 app : 'tarefas',
                 route : '/adicionar-tarefa',
                 data : {
@@ -660,7 +660,7 @@ app.routes.list('/', function (params, data) {
         legend : 'adicionar tarefa',
         image : 'add',
         click : function () {
-            app.apps.dialog({
+            app.apps.open({
                 app : 'tarefas',
                 route : '/adicionar-tarefa',
                 close : function(data) {

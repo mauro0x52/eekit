@@ -72,7 +72,7 @@ app.routes.embeddedEntity('/contato-relacionado/:id', function (params, data) {
             app.ui.subtitle(contact.name)
 
             app.ui.click(function () {
-                app.apps.entity({
+                app.apps.open({
                     app : 'contatos',
                     route : '/contato/'+contact._id
                 })

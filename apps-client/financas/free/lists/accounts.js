@@ -35,7 +35,7 @@ app.routes.list('/contas', function (params, data) {
             image : 'pencil',
             legend : 'editar',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'financas',
                     route : '/editar-conta/' + accountItem.account._id,
                     close : function (data) {
@@ -185,7 +185,7 @@ app.routes.list('/contas', function (params, data) {
         image : 'add',
         legend : 'adicionar conta',
         click : function () {
-            app.apps.dialog({
+            app.apps.open({
                 app : 'financas',
                 route : '/adicionar-conta',
                 close : function (account) {

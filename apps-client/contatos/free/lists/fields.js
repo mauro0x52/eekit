@@ -33,7 +33,7 @@
             legend : 'editar',
             image : 'pencil',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'contatos',
                     route : '/editar-campo-personalizado/' + fieldItem.field._id,
                     close : function (data) {
@@ -58,7 +58,7 @@
             legend : 'remover',
             image : 'trash',
             click : function () {
-                app.apps.dialog({
+                app.apps.open({
                     app : 'contatos',
                     route : '/remover-campo-personalizado/'+fieldItem.field._id,
                     close : function (data) {
@@ -155,7 +155,7 @@
         image : 'add',
         legend : 'adicionar campo personalizado',
         click : function () {
-            app.apps.dialog({
+            app.apps.open({
                 app : 'contatos',
                 route : '/adicionar-campo-personalizado',
                 close : function (field) {

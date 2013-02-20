@@ -106,7 +106,7 @@ app.routes.entity('/contato/:id', function (params, data) {
                         label : 'editar contato',
                         image : 'pencil',
                         click : function() {
-                            app.apps.dialog({
+                            app.apps.open({
                                 app : 'contatos',
                                 route : '/editar-contato/'+contact._id,
                                 close : function (data) {
@@ -129,7 +129,7 @@ app.routes.entity('/contato/:id', function (params, data) {
                         label : 'remover contato',
                         image : 'trash',
                         click : function() {
-                            app.apps.dialog({
+                            app.apps.open({
                                 app : 'contatos',
                                 route : '/remover-contato/'+contact._id,
                                 close : function (data) {
@@ -190,7 +190,7 @@ app.routes.entity('/contato/:id', function (params, data) {
                     })
                 );
 
-                app.apps.embeddedList({
+                app.apps.open({
                     app : 'tarefas',
                     route : '/relacionadas',
                     data : {

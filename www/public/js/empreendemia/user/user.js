@@ -14,7 +14,7 @@ empreendemia.user = {
             route : '/login',
             open  : function (tool) {
                 tool.open();
-                empreendemia.apps.dialog(tool);
+                empreendemia.apps.render(tool);
             },
             close : function (params) {
                 if (params && params.token) {
@@ -31,7 +31,7 @@ empreendemia.user = {
             route : '/cadastro',
             open  : function (tool) {
                 tool.open();
-                empreendemia.apps.dialog(tool);
+                empreendemia.apps.render(tool);
             },
             close : function (token) {
                 if (token) {
@@ -92,7 +92,7 @@ empreendemia.user = {
                     events : empreendemia.tracker.events,
                     html : document.body.innerHTML
                 });
-                empreendemia.apps.dialog(tool);
+                empreendemia.apps.render(tool);
             }
         });
     }
