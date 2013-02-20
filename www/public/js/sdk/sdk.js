@@ -54,6 +54,9 @@ var sdk = {
         for (var prop in sdk.modules) {
             app[prop] = new sdk.modules[prop](app);
         }
+        if (app.slug === 'ee') {
+            app.empreendemia = empreendemia;
+        }
 
         app.start();
         app.start = undefined;
