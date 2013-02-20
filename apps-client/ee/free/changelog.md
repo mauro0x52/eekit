@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 0.3
+## 0.3 (2013-02-20)
 
 Features
 - Home de usuário deslogado

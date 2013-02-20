@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 0.4
+## 0.4 (2013-02-20)
 
 Features
 - SDK para os frames
