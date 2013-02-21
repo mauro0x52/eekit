@@ -30,7 +30,7 @@ sdk.modules.events = function (app) {
      * @param data : dados do evento
      */
     this.trigger = function (event, data) {
-        empreendemia.events.bind(event, data);
+        empreendemia.events.trigger(event, data);
     };
 
 };

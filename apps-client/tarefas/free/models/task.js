@@ -84,7 +84,24 @@ app.models.task = function (params) {
         app.ajax.post({
             url : 'http://' + app.config.services.tasks.host + ':' + app.config.services.tasks.port + '/task/' + this._id + '/done'
         }, cb);
+        app.events.trigger('do task ' + this._id, this);
         app.tracker.event('marcar tarefa como feita');
+    };
+
+   /**
+    * Drag'n drop da tarefa
+    *
+    * @author Rafael Erthal
+    * @since  2013-02
+    *
+    * @param  cb : callback a ser chamado após a edição
+    */
+    this.changePriority = function (priority, date) {
+        this.priority = priority;
+        this.dateDeadline = date;
+        this.save();
+
+        app.events.trigger('drop task ' + this._id, this);
     };
 
 
@@ -122,7 +139,9 @@ app.models.task = function (params) {
                     if (response.error) {
                         console.log(error);
                     } else {
-                        cb(response.task);
+                        if (cb) {
+                            cb(response.task);
+                        }
                     }
                 }
             });

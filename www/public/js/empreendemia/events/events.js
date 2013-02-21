@@ -20,7 +20,7 @@ empreendemia.events = {
      * @param callback : função a ser chamada
      */
     bind : function (app, event, callback) {
-        registered.push({
+        empreendemia.events.registered.push({
             app : app,
             event : event,
             callback : callback
@@ -38,9 +38,9 @@ empreendemia.events = {
      */
     trigger : function (event, data) {
         var i;
-        for (i in registered) {
-            if (registered[i].event === event) {
-                registered[i].callback.apply(registered[i].app, [data]);
+        for (i in empreendemia.events.registered) {
+            if (empreendemia.events.registered[i].event === event) {
+                empreendemia.events.registered[i].callback.apply(empreendemia.events.registered[i].app, [data]);
             }
         }
     }
