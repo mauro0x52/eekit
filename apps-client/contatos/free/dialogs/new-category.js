@@ -90,6 +90,7 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
             };
             var category = new app.models.category(data);
             category.save(function () {
+                app.events.trigger('create category', category);
                 app.close(category);
             });
         });
@@ -103,6 +104,7 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
      * @since  2013-02
      */
     app.ui.title("Adicionar categoria");
+    app.ui.form.action("Adicionar!");
 
     form();
 });

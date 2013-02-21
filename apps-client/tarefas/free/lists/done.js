@@ -8,9 +8,9 @@ app.routes.list('/feitas', function (params, data) {
 
     var
     /*
-     * Vetor com as categorias do usuário
+     * Classe que representa um item
      */
-    categories,
+    Item,
 
     /*
      * Objeto com os grupos
@@ -18,14 +18,14 @@ app.routes.list('/feitas', function (params, data) {
     groups,
 
     /*
+     * Vetor com as categorias do usuário
+     */
+    categories,
+
+    /*
      * Objeto com as datas
      */
     dates,
-
-    /*
-     * Classe que representa um item
-     */
-    Item,
 
     /*
      * dia de hoje
@@ -191,9 +191,9 @@ app.routes.list('/feitas', function (params, data) {
         /* Botões do item */
         actions = {
             remove       : new app.ui.action({
-                label : 'remover tarefa',
-                image : 'trash',
-                click : function() {
+                legend : 'remover tarefa',
+                image  : 'trash',
+                click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-tarefa/' + task._id});
                 }
             })

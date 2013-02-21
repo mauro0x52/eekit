@@ -103,9 +103,9 @@ app.routes.entity('/contato/:id', function (params, data) {
 
                 app.ui.actions.add(
                     new app.ui.action({
-                        label : 'editar contato',
-                        image : 'pencil',
-                        click : function() {
+                        legend : 'editar contato',
+                        image  : 'pencil',
+                        click  : function() {
                             app.apps.open({
                                 app : 'contatos',
                                 route : '/editar-contato/'+contact._id,
@@ -126,9 +126,9 @@ app.routes.entity('/contato/:id', function (params, data) {
                 );
                 app.ui.actions.add(
                     new app.ui.action({
-                        label : 'remover contato',
-                        image : 'trash',
-                        click : function() {
+                        legend : 'remover contato',
+                        image  : 'trash',
+                        click  : function() {
                             app.apps.open({
                                 app : 'contatos',
                                 route : '/remover-contato/'+contact._id,

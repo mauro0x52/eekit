@@ -9,9 +9,9 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
 
     var
     /*
-     * Vetor com as categorias do usuário
+     * Classe que representa um item
      */
-    categories,
+    Item,
 
     /*
      * Objeto com os grupos
@@ -19,14 +19,14 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
     groups,
 
     /*
-     * Classe que representa um item
+     * Vetor com as categorias do usuário
      */
-    Item,
+    categories,
 
     /*
      * Identificador do embbed
      */
-    embed = data.embed,
+    response = data,
 
     /*
      * dia de hoje
@@ -65,9 +65,9 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
                             app   : 'tarefas',
                             route : '/adicionar-tarefa',
                             data  : {
-                                embeddeds : embed,
-                                title     : data.insert.title,
-                                category  : data.insert.category
+                                embeddeds : response.embed,
+                                title     : response.insert.title,
+                                category  : response.insert.category
                             }
                         })
                     }
@@ -120,23 +120,23 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
         /* Botões do item */
         actions = {
             done         : new app.ui.action({
-                label : 'marcar tarefa como feita',
-                image : 'check',
-                click : function () {
+                legend : 'marcar tarefa como feita',
+                image  : 'check',
+                click  : function () {
                     task.markAsDone();
                 }
             }),
             edit         : new app.ui.action({
-                label : 'editar tarefa',
-                image : 'pencil',
-                click : function() {
+                legend : 'editar tarefa',
+                image  : 'pencil',
+                click  : function() {
                     app.apps.open({app : app.slug, route : '/editar-tarefa/' + task._id});
                 }
             }),
             remove       : new app.ui.action({
-                label : 'remover tarefa',
-                image : 'trash',
-                click : function() {
+                legend : 'remover tarefa',
+                image  : 'trash',
+                click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-tarefa/' + task._id});
                 }
             })
@@ -314,6 +314,23 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
         categories = data;
 
         app.ui.title('Tarefas relacionadas');
+
+        /* Botão global de adicionar tarefa */
+        app.ui.actions.add(new app.ui.action({
+            legend : 'adicionar tarefa',
+            image : 'add',
+            click : function () {
+                app.apps.open({
+                    app : app.slug,
+                    route : '/adicionar-tarefa',
+                    data  : {
+                        embeddeds : response.embed,
+                        title     : response.insert.title,
+                        category  : response.insert.category
+                    }
+                })
+            }
+        }));
 
         /* montando a listagem */
         app.models.task.list({ filterByEmbeddeds : embed }, function (tasks) {

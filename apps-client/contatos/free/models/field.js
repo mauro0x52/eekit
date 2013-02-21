@@ -33,6 +33,21 @@ app.models.field = function (params) {
         }, cb);
     };
 
+   /**
+    * Drag'n drop 
+    *
+    * @author Rafael Erthal
+    * @since  2013-02
+    *
+    * @param  cb : callback a ser chamado após a edição
+    */
+    this.changePosition = function (position) {
+        this.position = position;
+        this.save();
+
+        app.events.trigger('drop field ' + this._id, this);
+    };
+
     /**
      * Cria ou atualiza o campo personalizado
      *

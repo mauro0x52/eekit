@@ -8,24 +8,24 @@ app.routes.list('/', function (params, data) {
 
     var
     /*
-     * Vetor com as categorias do usuário
+     * Classe que representa um item
      */
-    categories,
+    Item,
 
     /*
      * Objeto com os grupos
      */
     groups,
+    
+    /*
+     * Vetor com as categorias do usuário
+     */
+    categories,
 
     /*
      * Objeto com as datas
      */
     dates,
-
-    /*
-     * Classe que representa um item
-     */
-    Item,
 
     /*
      * dia de hoje
@@ -108,7 +108,7 @@ app.routes.list('/', function (params, data) {
                     image : 'add',
                     click : function () {
                         app.apps.open({
-                            app : 'tarefas',
+                            app : app.slug,
                             route : '/adicionar-tarefa',
                             data : {date : date}
                         })
@@ -268,28 +268,28 @@ app.routes.list('/', function (params, data) {
         /* Botões do item */
         actions = {
             done         : new app.ui.action({
-                label : 'marcar tarefa como feita',
-                image : 'check',
-                click : function () {
+                legend : 'marcar tarefa como feita',
+                image  : 'check',
+                click  : function () {
                     task.markAsDone();
                 }
             }),
             edit         : new app.ui.action({
-                label : 'editar tarefa',
-                image : 'pencil',
-                click : function() {
+                legend : 'editar tarefa',
+                image  : 'pencil',
+                click  : function() {
                     app.apps.open({app : app.slug, route : '/editar-tarefa/' + task._id});
                 }
             }),
             drag         : new app.ui.action({
-                label : 'mover tarefa',
-                image : 'move',
-                click : that.item.drag
+                legend : 'mover tarefa',
+                image  : 'move',
+                click  : that.item.drag
             }),
             remove       : new app.ui.action({
-                label : 'remover tarefa',
-                image : 'trash',
-                click : function() {
+                legend : 'remover tarefa',
+                image  : 'trash',
+                click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-tarefa/' + task._id});
                 }
             })
@@ -392,10 +392,14 @@ app.routes.list('/', function (params, data) {
 
         /* Pegando a edição da tarefa */
         app.events.bind('update task ' + task._id, function (data) {
+            var oldGroup = fitGroup(task);
+
             task = new app.models.task(data);
 
-            that.item.detach();
-            fitGroup(task).items.add(that.item);
+            if (oldGroup !== fitGroup(task)) {
+                that.item.detach();
+                fitGroup(task).items.add(that.item);
+            }
 
             if (task) {
                 that.title(task.title);
@@ -459,6 +463,18 @@ app.routes.list('/', function (params, data) {
 
         app.ui.title('Tarefas pendentes');
         app.tracker.event('visualizar tarefas pendentes');
+
+        /* Botão global de adicionar tarefa */
+        app.ui.actions.add(new app.ui.action({
+            legend : 'adicionar tarefa',
+            image : 'add',
+            click : function () {
+                app.apps.open({
+                    app : app.slug,
+                    route : '/adicionar-tarefa',
+                })
+            }
+        }));
 
         /* Monta o filtro */
         app.ui.filter.action('filtrar');

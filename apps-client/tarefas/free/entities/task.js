@@ -45,23 +45,23 @@ app.routes.entity('/tarefa/:id', function (params, data) {
         /* Botões do item */
         actions = {
             done         : new app.ui.action({
-                label : 'marcar tarefa como feita',
-                image : 'check',
-                click : function () {
+                legend : 'marcar tarefa como feita',
+                image  : 'check',
+                click  : function () {
                     task.markAsDone();
                 }
             }),
             edit         : new app.ui.action({
-                label : 'editar tarefa',
-                image : 'pencil',
-                click : function() {
+                legend : 'editar tarefa',
+                image  : 'pencil',
+                click  : function() {
                     app.apps.open({app : app.slug, route : '/editar-tarefa/' + task._id});
                 }
             }),
             remove       : new app.ui.action({
-                label : 'remover tarefa',
-                image : 'trash',
-                click : function() {
+                legend : 'remover tarefa',
+                image  : 'trash',
+                click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-tarefa/' + task._id});
                 }
             })
