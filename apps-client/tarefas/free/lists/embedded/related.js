@@ -1,121 +1,37 @@
 /**
- * Lista de tarefas pendentes
+ * Lista de tarefas relacionadas
  *
- * @author Mauro Ribeiro
- * @since  2012-12
- *
- * @param  data : {
- *              list : {
- *                  embeddeds : lista de urls a ser embedada
- *              },
- *              add : {
- *                  embeddeds : lista de urls a ser embedada
- *                  category : categoria pré-definida
- *                  title : informação a ser adicionada no título
- *              }
- *         }
+ * @author Rafael Erthal
+ * @since  2013-01
+ * data : {embeddeds : [], insert : {title, category}}
  */
 app.routes.embeddedList('/relacionadas', function (params, data) {
 
     var
-    /**
-     * Índice usado em loops
-     */
-    i,
-
-    /**
-     * Grupos ui.group
-     */
-    groups = {},
-
-    /**
-     * Lista de duplas {task : models.task, item ui.item}
-     */
-    tasksItems = {},
-
-    /**
-     * Lista de categorias
+    /*
+     * Vetor com as categorias do usuário
      */
     categories,
 
-    /**
-     * Dados enviados pela requisição
+    /*
+     * Objeto com os grupos
      */
-    request = data ? data : {};
+    groups,
 
-
-    /**
-     * Atualiza as informações de uma dupla task-item após edição
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  taskItem : dupla task-item
-     * @param  data : models.task recém atualizada
+    /*
+     * Classe que representa um item
      */
-    function edit (taskItem, data) {
-        var newLabel = label(data.category);
-        if (taskItem.task.dateDeadline === data.dateDeadline) {
-            taskItem.item.title(data.title);
-            taskItem.item.icons.remove();
-            taskItem.item.icons.add(icons(data));
-            taskItem.item.label.color(newLabel.color);
-            taskItem.item.label.legend(newLabel.legend);
-            taskItem.task.title = data.title;
-            taskItem.task.description = data.description;
-        } else {
-            fitGroup(taskItem).items.remove(taskItem.item);
-            delete taskItem;
-            item(data);
-        }
-    }
+    Item,
 
-    /**
-     * Atualiza as informações de uma dupla task-item após exclusão
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  taskItem : dupla task-item
+    /*
+     * Identificador do embbed
      */
-    function remove (taskItem) {
-        fitGroup(taskItem).items.remove(taskItem.item);
-        delete taskItem;
-    }
+    embed = data.embed,
 
-    /**
-     * Atualiza as informações de uma dupla task-item após marcá-la como feita
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  taskItem : dupla task-item
+    /*
+     * dia de hoje
      */
-    function done (taskItem) {
-        taskItem.task.done = true;
-        groups.undone.items.remove(taskItem.item);
-        groups.done.items.add(taskItem.item);
-        taskItem.item.actions.remove();
-        taskItem.item.actions.add(actions(taskItem));
-    }
-
-    /**
-     * Grupo que uma tarefa se encaixa
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  taskItem : dupla task-item
-     * @return ui.group
-     */
-    function fitGroup (taskItem) {
-        var taskDate;
-        if (taskItem.task.done) {
-            return groups.done;
-        } else {
-            return groups.undone;
-        }
-    }
+    now = new Date();
 
     /**
      * Cor de uma categoria
@@ -127,229 +43,301 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
      * @return nome da cor
      */
     function categoryColor (name) {
-        var color;
         switch (name) {
-            case 'Geral' : color = 'blue'; break;
-            case 'Reuniões' : color = 'brown'; break;
-            case 'Finanças' : color = 'green'; break;
-            case 'Vendas' : color = 'olive'; break;
-            case 'Projetos' : color = 'cyan'; break;
+            case 'Geral'    : return 'blue';
+            case 'Reuniões' : return 'brown';
+            case 'Finanças' : return 'green';
+            case 'Vendas'   : return 'olive';
+            case 'Projetos' : return 'cyan';
         }
-        return color;
     }
 
-    /**
-     * Ícones de uma tarefa
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  task : tarefa models.task
-     * @return [ui.icon]
-     */
-    function icons (task) {
-        var icons = [], date,
-            months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
-            days = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
-
-        /* Exibir icone de calendario */
-        if (task.dateDeadline || task.done) {
-            date = task.done ? new Date(task.dateUpdated) : new Date(task.dateDeadline);
-            icons.push(new app.ui.icon({image : 'date', legend : days[date.getDay()]  + ', ' + date.getDate() + '/' + months[date.getMonth()] + '/' + date.getFullYear()}));
-        }
-        /* Exibir icone de importante */
-        if (task.important && task.important == true) {
-            icons.push(new app.ui.icon({image : 'alert', legend : 'importante'}));
-        }
-        /* Exibir icone de recorrente */
-        if (task.recurrence && task.recurrence > 0) {
-            if (task.recurrence == 1) {
-                icons.push(new app.ui.icon({image : 'back', legend : 'diariamente'}));
-            } else if (task.recurrence == 7) {
-                icons.push(new app.ui.icon({image : 'back', legend : 'semanalmente'}));
-            } else if (task.recurrence == 14) {
-                icons.push(new app.ui.icon({image : 'back', legend : 'quinzenalmente'}));
-            } else if (task.recurrence == 30) {
-                icons.push(new app.ui.icon({image : 'back', legend : 'mensalmente'}));
+    /* montando os grupos */
+    groups = {
+        pending : new app.ui.group({
+            header : {
+                title   : 'Tarefas pendentes',
+                actions : new app.ui.action({
+                    legend : 'adicionar tarefa',
+                    image : 'add',
+                    click : function () {
+                        app.apps.open({
+                            app   : 'tarefas',
+                            route : '/adicionar-tarefa',
+                            data  : {
+                                embeddeds : embed,
+                                title     : data.insert.title,
+                                category  : data.insert.category
+                            }
+                        })
+                    }
+                })
             }
-        }
+        }),
+        done    : new app.ui.group({header : {title   : 'Tarefas feitas'}}),
+    };
 
-        return icons
-    }
+    app.ui.groups.add([groups.pending, groups.done]);
 
     /**
-     * Ações de uma tarefa
+     * Grupo que uma tarefa se encaixa
      *
      * @author Mauro Ribeiro
      * @since  2012-12
      *
-     * @param  taskItem : dupla task-item
-     * @return [ui.action]
+     * @param  task : task
+     * @return ui.group
      */
-    function actions (taskItem) {
-        var actions = [], i;
+    function fitGroup (task) {
+        if (task.done) {
+            return groups.done
+        } else {
+            return groups.pending;
+        }
+    }
 
-        /* Botão de marcar como feita */
-        if (!taskItem.task.done) {
-            actions.push(new app.ui.action({
+    /* montando os items */
+    Item = function (data) {
+        var that = this,
+            task = new app.models.task(data),
+            icons,
+            actions;
+
+        this.item = new app.ui.item({
+            click : function () {
+                app.apps.open({app : app.slug, route : '/tarefa/' + task._id});
+            }
+        });
+        
+        /* Icones do item */
+        icons = {
+            important    : new app.ui.icon({image : 'alert', legend : 'importante'}),
+            recurrence   : new app.ui.icon({image : 'back',  legend : '-'}),
+            reminder     : new app.ui.icon({image : 'note',  legend : '-'}),
+            dateDeadline : new app.ui.icon({image : 'date',  legend : '-'})
+        };
+
+        /* Botões do item */
+        actions = {
+            done         : new app.ui.action({
                 label : 'marcar tarefa como feita',
                 image : 'check',
-                click : function() {
-                    taskItem.task.markAsDone(function () {
-                        done(taskItem)
-                    });
+                click : function () {
+                    task.markAsDone();
                 }
-            }));
+            }),
+            edit         : new app.ui.action({
+                label : 'editar tarefa',
+                image : 'pencil',
+                click : function() {
+                    app.apps.open({app : app.slug, route : '/editar-tarefa/' + task._id});
+                }
+            }),
+            remove       : new app.ui.action({
+                label : 'remover tarefa',
+                image : 'trash',
+                click : function() {
+                    app.apps.open({app : app.slug, route : '/remover-tarefa/' + task._id});
+                }
+            })
+        };
+        if (!task.done) {
+            this.item.actions.add([actions.done, actions.edit]);
         }
-        /* Botão de editar */
-        actions.push(new app.ui.action({
-            label : 'editar tarefa',
-            image : 'pencil',
-            click : function() {
-                app.apps.open({
-                    app : 'tarefas',
-                    route : '/editar-tarefa/'+taskItem.task._id,
-                    data : {
-                        embeddeds : request.embeddeds
-                    },
-                    close : function (data) {
-                        edit(taskItem, data);
-                    }
-                })
-            }
-        }));
-        /* Botão de excluir */
-        actions.push(new app.ui.action({
-            label : 'remover tarefa',
-            image : 'trash',
-            click : function() {
-                taskItem.task.remove(function () {
-                    remove(taskItem);
-                });
-            }
-        }));
+        this.item.actions.add(actions.remove);
 
-        return actions
-    }
+        /* Exibe o titulo da tarefa */
+        this.title = function (value) {
+            this.item.title(value);
+        };
 
-    /**
-     * Label de uma categoria
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  category_id : id da categoria
-     * @return {legend, color}
-     */
-    function label (category_id) {
-        var i;
-        for (var i in categories) {
-            if (category_id.toString() === categories[i]._id.toString()) {
-                return {legend : categories[i].name, color : categoryColor(categories[i].name)}
+        /* Exibe a descrição da tarefa */
+        this.description = function (value) {
+            this.item.description(value);
+        };
+
+        /* Exibe a importância da tarefa */
+        this.important = function (value) {
+            if (value) {
+                this.item.icons.add(icons.important);
+                icons.important.legend('importante');
+            } else {
+                this.item.icons.remove(icons.important);
+                icons.important.legend('-');
+            }
+        };
+
+        /* Exibe a recorrência da tarefa */
+        this.recurrence = function (value) {
+            if (value) {
+                if (value == 1) {
+                    icons.recurrence.legend('diariamente');
+                } else if (value == 7) {
+                    icons.recurrence.legend('semanalmente');
+                } else if (value == 14) {
+                    icons.recurrence.legend('quinzenalmente');
+                } else if (value == 30) {
+                    icons.recurrence.legend('mensalmente');
+                }
+                this.item.icons.add(icons.recurrence);
+            } else {
+                icons.recurrence.legend('-');
+                this.item.icons.remove(icons.recurrence);
+            }
+        };
+
+        /* Exibe o lembrete da tarefa */
+        this.reminder = function (value) {
+            if (value) {
+                if (value == 0) {
+                    icons.reminder.legend('lembrar no dia');
+                } else if (value == 1) {
+                    icons.reminder.legend('lembrar 1 dia antes');
+                } else if (value == 2) {
+                    icons.reminder.legend('lembrar 2 dias antes');
+                } else if (value == 7) {
+                    icons.reminder.legend('lembrar 1 semana antes');
+                }
+                this.item.icons.add(icons.reminder);
+            } else {
+                icons.reminder.legend('-');
+                this.item.icons.remove(icons.reminder);
+            }
+        };
+
+        /* Exibe o prazo da tarefa */
+        this.dateDeadline = function (value) {
+            var date = new Date(value),
+                months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
+                days = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+
+            if (value) {
+                icons.dateDeadline.legend(days[date.getDay()]  + ', ' + date.getDate() + '/' + months[date.getMonth()] + '/' + date.getFullYear());
+                this.item.icons.add(icons.dateDeadline);
+            } else {
+                icons.dateDeadline.legend('-');
+                this.item.icons.remove(icons.dateDeadline);
+            }
+        };
+
+        /* Exibe a categoria da tarefa */
+        this.category = function (value) {
+            var i;
+
+            /* Busca categoria */
+            for (i in categories) {
+                if (categories[i]._id === value) {
+                    this.item.label.legend(categories[i].name);
+                    this.item.label.color(categoryColor(categories[i].name));
+                }
             }
         }
-        return {legend : 'Geral', color : 'blue'}
-    }
 
-    /**
-     * Cria o item de uma tarefa
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  data : dados da tarefa
-     * @return ui.item
-     */
-    function item (data) {
-        var task = new app.models.task(data);
+        /* Pegando a edição da tarefa */
+        app.events.bind('update task ' + task._id, function (data) {
+            task = new app.models.task(data);
 
-        /* cria o item */
-        var item = new app.ui.item({
-            title : task.title,
-            description : task.description,
-            label : label(task.category),
-            click : function () {
-                app.apps.open({
-                    app : app.slug,
-                    route : '/tarefa/' + task._id,
-                    data : {
-                        remove : function () {
-                            remove(tasksItems[task._id])
-                        },
-                        edit : function (data) {
-                            edit(tasksItems[task._id], data)
-                        },
-                        done : function () {
-                            done(tasksItems[task._id]);
-                        }
-                    }
-                })
+            that.item.detach();
+            fitGroup(task).items.add(that.item);
+
+            if (task) {
+                that.title(task.title);
+                that.description(task.description);
+                that.important(task.important);
+                that.recurrence(task.recurrence);
+                that.reminder(task.reminder);
+                if (task.done) {
+                    that.dateDeadline(task.dateUpdated);
+                } else {
+                    that.dateDeadline(task.dateDeadline);
+                }
+                that.category(task.category);
             }
         });
 
-        /* adiciona na lista de itens e tarefas */
-        tasksItems[task._id] = {
-            task : task,
-            item : item
-        };
+        /* Pegando o drop da tarefa */
+        app.events.bind('drop task ' + task._id, function (data) {
+            task = new app.models.task(data);
 
-        item.icons.add(icons(task));
-        item.actions.add(actions(tasksItems[task._id]));
-
-        fitGroup(tasksItems[task._id]).items.add(tasksItems[task._id].item);
-
-        return item;
-    }
-
-    /**
-     * Monta ferramenta
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     */
-    app.ui.title('Tarefas relacionadas');
-
-    groups.undone = new app.ui.group({ header : { title : 'Tarefas pendentes' }});
-    groups.undone.header.actions.add(new app.ui.action({
-        legend : 'adicionar tarefa',
-        image : 'add',
-        click : function () {
-            app.apps.open({
-                app : 'tarefas',
-                route : '/adicionar-tarefa',
-                data : {
-                    embeddeds : request.add ? request.add.embeddeds : undefined,
-                    category : request.add ? request.add.category : undefined,
-                    title : request.add ? request.add.title : undefined
-                },
-                close : function(data) {
-                    item(data)
+            if (task) {
+                if (task.done) {
+                    that.dateDeadline(task.dateUpdated);
+                } else {
+                    that.dateDeadline(task.dateDeadline);
                 }
-            })
+            }
+        });
+
+        /* Pegando a exclusão da tarefa */
+        app.events.bind('remove task ' + task._id, this.item.detach);
+
+        /* Pegando a marcação como feita da tarefa */
+        app.events.bind('do task ' + task._id, function (data) {
+            task = new app.models.task(data);
+
+            that.item.detach();
+            fitGroup(task).items.add(that.item);
+
+            /* Exibe o dateUpdate */
+            if (task) {
+                if (task.done) {
+                    that.dateDeadline(task.dateUpdated);
+                } else {
+                    that.dateDeadline(task.dateDeadline);
+                }
+            }
+            /* Exibe os botões */
+            that.item.actions.remove();
+            that.item.actions.add(actions.remove);
+        });
+
+        /* Montando o item */
+        if (task) {
+            this.title(task.title);
+            this.description(task.description);
+            this.important(task.important);
+            this.recurrence(task.recurrence);
+            this.reminder(task.reminder);
+            if (task.done) {
+                this.dateDeadline(task.dateUpdated);
+            } else {
+                this.dateDeadline(task.dateDeadline);
+            }
+            this.category(task.category);
         }
-    }));
-
-    groups.done = new app.ui.group({ header : { title : 'Tarefas feitas' }});
-
-    app.ui.groups.add(groups.undone);
-    app.ui.groups.add(groups.done);
+    };
 
     /* autenticando usuário e pegando categorias */
     app.models.category.list(function (data) {
+
+        /* variável global com categorias */
         categories = data;
+
+        app.ui.title('Tarefas relacionadas');
+
         /* montando a listagem */
-        app.models.task.list({ filterByEmbeddeds : request.list ? request.list.embeddeds[0] : undefined }, function (tasks) {
+        app.models.task.list({ filterByEmbeddeds : embed }, function (tasks) {
+
+            /* ordenando as tarefas */
             tasks.sort(function (a,b) {
                 var a_priority = a.priority || 1;
                 var b_priority = b.priority || 1;
 
-                if (a_priority < b_priority)  return -1;
-                if (a_priority > b_priority)  return  1;
+                if (a_priority < b_priority) return -1;
+                if (a_priority > b_priority) return  1;
                 return 0;
             });
+
+            /* listando as tarefas */
             for (i in tasks) {
-                item(tasks[i]);
+                fitGroup(tasks[i]).items.add((new Item(tasks[i])).item);
             }
+
+            /* Pegando tarefas que são cadastradas ao longo do uso do app */
+            app.events.bind('create task', function (task) {
+                groups.pending.items.add((new Item(task)).item);
+            });
         });
     });
+
 });

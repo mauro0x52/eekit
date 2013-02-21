@@ -213,6 +213,7 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
      * @since  2012-12
      */
     app.ui.title("Adicionar tarefa");
+    app.ui.form.action("Adicionar!");
 
     app.models.category.list(function(categories) {
         form(categories);

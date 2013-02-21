@@ -194,13 +194,9 @@ app.routes.entity('/contato/:id', function (params, data) {
                     app : 'tarefas',
                     route : '/relacionadas',
                     data : {
-                        add : {
-                            embeddeds : ['/contatos/contato-relacionado/' + contact._id],
-                            category : 'Vendas',
+                        embed  : ['/contatos/contato-relacionado/' + contact._id],
+                        insert : {
                             title : contact.name
-                        },
-                        list : {
-                            embeddeds : ['/contatos/contato-relacionado/' + contact._id]
                         }
                     },
                     open : function (tool) {

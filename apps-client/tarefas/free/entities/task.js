@@ -234,7 +234,19 @@ app.routes.entity('/tarefa/:id', function (params, data) {
         categories = data;
         app.models.task.find(params.id, function (task) {
             new Entity(task);
-            //@TODO fazer embbed
+            
+            if (task.embeddeds) {
+                var appa = task.embeddeds[0].split('/')[1],
+                    route = task.embeddeds[0].replace('/' + appa, '');
+
+                app.apps.open({
+                    app : appa,
+                    route : route,
+                    open : function (tool) {
+                        app.ui.embbeds.add(tool);
+                    }
+                })
+            }
         });
     });
 });

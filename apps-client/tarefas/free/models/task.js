@@ -5,6 +5,7 @@
  * @since  2012-11
  */
 app.models.task = function (params) {
+    var that = this;
     /**
      * Id da categoria da tarefa
      */
@@ -32,7 +33,7 @@ app.models.task = function (params) {
     /**
      * Recorrência da tarefa
      */
-    this.recurrence = params.recurrence;
+    this.recurrence = params.recurrence*1;
     /**
      * Data de criação
      */
@@ -83,9 +84,17 @@ app.models.task = function (params) {
     this.markAsDone = function (cb) {
         app.ajax.post({
             url : 'http://' + app.config.services.tasks.host + ':' + app.config.services.tasks.port + '/task/' + this._id + '/done'
-        }, cb);
-        app.events.trigger('do task ' + this._id, this);
-        app.tracker.event('marcar tarefa como feita');
+        }, function (task) {
+            that.done = true;
+            that.dateUpdate = new Date(task.dateUpdated);
+
+            if (cb) {
+                cb();
+            }
+
+            app.events.trigger('do task ' + that._id, that);
+            app.tracker.event('marcar tarefa como feita');    
+        });
     };
 
    /**
