@@ -1,0 +1,480 @@
+<%
+function dateFormat(string) {
+    var day, month, year,
+        date = new Date(string);
+
+    day = date.getDate();
+    day = day > 9 ? day : '0' + day;
+    month = date.getMonth() + 1;
+    month = month > 9 ? month : '0' + month;
+    year = date.getFullYear();
+    return day + '/' + month + '/' + year;
+}
+%>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Boletos EmpreendeKit</title>
+<style type="text/css">
+
+#parceiro {
+    width: 666px;
+    border-bottom: 1px dashed #000;
+}
+
+#cliente {
+    margin-top: 20px;
+    width: 666px;
+    border-bottom: 1px dashed #000;
+}
+
+.titulo {
+    color: #333;
+    font: "Arial Narrow";
+    font-size: 10px;
+    margin: 4px 0 10px 0;
+    height: 10px;
+    line-height: 10px;
+    font-weight: normal;
+}
+
+.cabecalho {
+    border-bottom: 2px solid #000;
+}
+
+.cabecalho .nome-do-banco {
+    width: 170px;
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 24px;
+}
+
+.cabecalho .numero-do-banco {
+    display: inline-block;
+    border-left: 2px solid #000;
+    border-right: 2px solid #000;
+    padding: 2px 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+.cabecalho .linha-digitavel {
+    float: right;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 15px;
+    padding-top: 7px;
+}
+
+.campos {
+    position: relative;
+    display: block;
+    clear: both;
+    border-bottom: 1px solid #000;
+    min-height: 30px;
+}
+
+.campos.sozinho {
+    border-bottom: none;
+}
+
+dl {
+    display: inline-block;
+    border-left: 1px solid #000;
+    padding-left: 4px;
+    margin: 0;
+    min-height: 30px;
+}
+
+dl.direita {
+    width: 160px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+dl dt {
+    display: block;
+    font: "Arial Narrow";
+    font-size: 9px;
+    color: #333;
+    margin: 4px;
+    height: 9px;
+    line-height: 9px;
+    padding-right: 4px;
+}
+
+dl dd {
+    color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 10px;
+    display: block;
+    margin: 3px;
+    height: 10px;
+    line-height: 10px;
+    padding-right: 4px;
+}
+
+.campos.sozinho dl.direita {
+    border-bottom: 1px solid #000;
+}
+
+dl.direita dd {
+    text-align: right;
+    padding-right: 0;
+}
+
+.demonstrativo {
+    position: relative;
+    width: 496px;
+    height: 120px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 14px;
+    padding-top: 4px;
+    padding-left: 11px;
+}
+
+.instrucoes {
+    position: relative;
+    width: 496px;
+    margin-top: -152px;
+    height: 152px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 14px;
+    border-left: 1px solid #000;
+    padding-top: 4px;
+    padding-left: 10px;
+}
+
+#parceiro .autenticacao-mecanica {
+    position: relative;
+    text-align: right;
+    top: -120px;
+    height: 0;
+}
+
+.demonstrativo p,
+.instrucoes p {
+    margin: 2px 0;
+}
+
+.sacado dt {
+    margin-bottom: 8px;
+}
+
+.cod-baixa {
+    min-height: 0;
+}
+
+.cod-barras {
+    position: relative;
+    height: 80px;
+    padding-top: 4px;
+    padding-left: 11px;
+}
+
+.cod-barras .barras {
+
+}
+
+.cod-barras .barras .barra {
+    height: 50px;
+    border: 0;
+    float: left;
+}
+
+.barra.branca.pequena {
+    border-right: 1px solid #fff;
+}
+.barra.branca.grande {
+    border-right: 3px solid #fff;
+}
+.barra.preta.pequena {
+    border-right: 1px solid #000;
+}
+.barra.preta.grande {
+    border-right: 3px solid #000;
+}
+
+#cliente .autenticacao-mecanica {
+    position: relative;
+    text-align: right;
+    top: -80px;
+    line-height: 0;
+    height: 0;
+}
+
+</style>
+</head>
+<body>
+
+<div id="parceiro">
+    <div class="boleto">
+
+        <div class="cabecalho">
+            <div class="nome-do-banco"><%= bank %></div>
+            <div class="numero-do-banco"><%= bankId %>-<%= bankIdVD %></div>
+            <div class="linha-digitavel"><%= digitCode %></div>
+        </div>
+
+        <div class="campos">
+            <dl>
+                <dt>Cedente</dt>
+                <dd><%= receiver ? receiver : '&nbsp;' %></dd>
+            </dl>
+            <dl>
+                <dt>Agência/Código do Cedente</dt>
+                <dd><%= agency %> / <%= account %>-<%= accountDV %></dd>
+            </dl>
+            <dl>
+                <dt>Espécie</dt>
+                <dd>R$</dd>
+            </dl>
+            <dl>
+                <dt>Quantidade</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+            <dl class="direita">
+                <dt>Nosso número</dt>
+                <dd><%= wallet %>/<%= ourNumber %>-<%= ourNumberVD %></dd>
+            </dl>
+        </div>
+
+        <div class="campos">
+            <dl>
+                <dt>Número do documento</dt>
+                <dd><%= documentNumber ? documentNumber : '&nbsp;' %></dd>
+            </dl>
+            <dl>
+                <dt>CPF/CNPJ</dt>
+                <dd><%= cpfCnpj ? cpfCnpj : '&nbsp;' %></dd>
+            </dl>
+            <dl>
+                <dt>Vencimento</dt>
+                <dd><%= dateFormat(dueDate) %></dd>
+            </dl>
+            <dl class="direita">
+                <dt>Valor documento</dt>
+                <dd><%= value %></dd>
+            </dl>
+        </div>
+
+        <div class="campos">
+            <dl>
+                <dt>(-) Desconto / Abatimentos</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+            <dl>
+                <dt>(-) Outras deduções</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+            <dl>
+                <dt>(+) Mora / Mdivta</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+            <dl>
+                <dt>(+) Outros acréscimos</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+            <dl class="direita">
+                <dt>(=) Valor cobrado</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+        </div>
+
+        <div class="campos">
+            <dl>
+                <dt>Sacado</dt>
+                <dd><%= clientName ? clientName : '&nbsp;' %></dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="demonstrativo">
+        <h1 class="titulo">Demonstrativo</h1>
+        <%= demonstrative ? demonstrative : '&nbsp;' %>
+    </div>
+
+    <div class="autenticacao-mecanica">
+        <p class="titulo">Autenticação mecânica</p>
+    </div>
+
+</div>
+
+<div id="cliente">
+    <table class="boleto">
+
+        <div class="cabecalho">
+            <div class="nome-do-banco"><%= bank %></div>
+            <div class="numero-do-banco"><%= bankId %>-<%= bankIdVD %></div>
+            <div class="linha-digitavel"><%= digitCode %></div>
+        </div>
+
+        <div class="campos">
+            <dl>
+                <dt>Local de pagamento</dt>
+                <dd><%= local ? local : '&nbsp;' %></dd>
+            </dl>
+            <dl class="direita">
+                <dt>Vencimento</dt>
+                <dd><%= dateFormat(dueDate) %></dd>
+            </dl>
+        </div>
+
+        <div class="campos">
+            <dl>
+                <dt>Cedente</dt>
+                <dd><%= receiver ? receiver : '&nbsp;' %></dd>
+            </dl>
+            <dl class="direita">
+                <dt>Agência/Código cedente</dt>
+                <dd><%= agency %> / <%= account %>-<%= accountDV %></dd>
+            </dl>
+        </div>
+
+        <div class="campos">
+            <dl>
+                <dt>Data do documento</dt>
+                <dd><%= dateFormat(creationDate) %></dd>
+            </dl>
+            <dl>
+                <dt>Número do documento</dt>
+                <dd><%= documentNumber ? documentNumber : '&nbsp;' %></dd>
+            </dl>
+            <dl>
+                <dt>Espécie doc.</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+            <dl>
+                <dt>Aceite</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+            <dl>
+                <dt>Data processamento</dt>
+                <dd><%= dateFormat(creationDate) %></dd>
+            </dl>
+            <dl class="direita">
+                <dt>Nosso número</dt>
+                <dd><%= wallet %>/<%= ourNumber %>-<%= ourNumberVD %></dd>
+            </dl>
+        </div>
+
+
+        <div class="campos">
+            <dl>
+                <dt>Uso do banco</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+            <dl>
+                <dt>Carteira</dt>
+                <dd><%= wallet %></dd>
+            </dl>
+            <dl>
+                <dt>Espécie</dt>
+                <dd>R$</dd>
+            </dl>
+            <dl>
+                <dt>Quantidade</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+            <dl>
+                <dt>Valor Documento</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+            <dl class="direita">
+                <dt>(=) Valor documento</dt>
+                <dd><%= value %></dd>
+            </dl>
+        </div>
+
+        <div class="campos sozinho">
+            <dl class="direita">
+                <dt>(-) Desconto / Abatimentos</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+        </div>
+
+        <div class="campos sozinho">
+            <dl class="direita">
+                <dt>(-) Outras deduções</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+        </div>
+
+        <div class="campos sozinho">
+            <dl class="direita">
+                <dt>(+) Mora / Multa</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+        </div>
+
+        <div class="campos sozinho">
+            <dl class="direita">
+                <dt>(+) Outros acréscimos</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+        </div>
+
+        <div class="campos">
+            <dl class="direita">
+                <dt>(=) Valor cobrado</dt>
+                <dd>&nbsp;</dd>
+            </dl>
+        </div>
+
+        <div class="instrucoes">
+            <h1 class="titulo">Instruções (Texto de responsabilidade do cedente)</h1>
+            <p><%= instructions ? instructions : '&nbsp;' %></p>
+        </div>
+
+
+
+        <div class="campos ultima">
+            <dl class="sacado">
+                <dt>Sacado</dt>
+                <dd><%= clientName ? clientName : '' %></dd>
+                <dd><%= clientAddress ? clientAddress : '' %></dd>
+                <dd><%= clientCity && clientState ? clientCity+' - '+clientState : '' %> <%= clientZipCode ? clientZipCode : '' %></dd>
+            </dl>
+            <dl class="cod-baixa direita">
+                <dt>Cód. baixa</dt>
+            </dl>
+        </div>
+    </div>
+
+    <div class="cod-barras">
+        <div class="titulo">Sacador/Avalista</div>
+        <div class="barras">
+            <% for (var i in barCode) { %>
+                <% if (barCode[i] === "B") { %>
+                    <div class="barra preta grande"></div>
+                <% } else if (barCode[i] === "b") { %>
+                    <div class="barra preta pequena"></div>
+                <% } else if (barCode[i] === "W") { %>
+                    <div class="barra branca grande"></div>
+                <% } else { %>
+                    <div class="barra branca pequena"></div>
+                <% } %>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="autenticacao-mecanica">
+        <p class="titulo">Autenticação mecânica <span class="ficha-de-compensacao">- Ficha de Compensação</span></p>
+    </div>
+</div>
+
+</body>
+</html>

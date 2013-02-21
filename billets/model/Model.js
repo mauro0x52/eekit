@@ -4,11 +4,8 @@
  *
  * @description : Montagem da model
  */
-var config   = require('./../config.js'),
-    mongoose = require('mongoose');
-
-/*  Conectar com o banco de dados  */
-mongoose.connect('mongodb://' + config.mongodb.username + ':' + config.mongodb.password + '@' + config.mongodb.url + ':' + config.mongodb.port + '/' + config.mongodb.db);
+var config   = require('./../config.js');
 
 /*  Exportar name-space  */
+exports.Billet= require('./Billet.js').Billet;
 exports.Itau= require('./Itau.js').Itau;
