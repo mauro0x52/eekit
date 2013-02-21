@@ -13,7 +13,7 @@ var Billet = function (params) {
     this.bank = params.bank;
     this.bankIdVD = '';
     this.currency = '9';
-    this.value = params.value;
+    this.value = params.value.replace('.', ',');
     this.receiver = params.receiver;
     this.agency = params.agency;
     this.account = params.account;
@@ -25,16 +25,15 @@ var Billet = function (params) {
     this.cpfCnpj = params.cpfCnpj;
     this.dueDate = new Date(params.dueDate);
     this.creationDate = params.creationDate;
-    this.payer = params.payer;
     this.demonstrative = params.demonstrative;
-    this.local = params.local;
+    this.local = params.local || 'Pagável em qualquer Banco até o vencimento';
     this.instructions = params.instructions;
     this.clientName = params.clientName;
     this.clientAddress = params.clientAddress;
     this.clientCity = params.clientCity;
     this.clientState = params.clientState;
     this.clientZipCode = params.clientZipCode;
-
+    
     this.digitCode = '';
     this.barCodeNumber = '';
     this.barCode = '';

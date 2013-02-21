@@ -50,6 +50,10 @@ module.exports = {
         finances : {
             url  : 'localhost',
             port : 8007
+        },
+        billets : {
+            url  : 'localhost',
+            port : 8009
         }
     }
 };

@@ -155,4 +155,15 @@ sdk.modules.routes = function (app) {
     this.embeddedList = function (route, callback) {
         routes.push({route : route, callback : callback, type : 'embbed list'});
     };
+
+    /** redirect
+     *
+     * @autor : Rafael Erthal
+     * @since : 2013-01
+     *
+     * @description : abre uma nova janela
+     */
+    this.redirect = function (url, data) {
+        window.open(url + '?' + jsonToQuery(data));
+    }
 };

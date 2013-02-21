@@ -2,3 +2,4 @@
 { "_id" : { "$oid" : "000000000000000000000002" } , "slug" : "tarefas" , "name" : "tarefas", "compulsory" : true, "type" : "free" }
 { "_id" : { "$oid" : "000000000000000000000003" } , "slug" : "contatos" , "name" : "contatos", "compulsory" : true, "type" : "free" }
 { "_id" : { "$oid" : "000000000000000000000004" } , "slug" : "financas" , "name" : "finanças", "compulsory" : true, "type" : "free" }
+{ "_id" : { "$oid" : "000000000000000000000005" } , "slug" : "boletos" , "name" : "boletos", "compulsory" : false, "type" : "free" }

@@ -27,7 +27,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
     /**
      * Lista de contas do usuário
      */
-    accounts;
+    accounts
 
     /**
      * Retorna o nome da categoria
@@ -68,6 +68,24 @@ app.routes.entity('/transacao/:id', function (params, data) {
     }
 
     /**
+     * Retorna o nome da conta
+     *
+     * @author Rafael Erthal
+     * @since  2013-01
+     *
+     * @param  id : id da categoria
+     */
+    function getAccount (id) {
+        var i;
+        for (var i in accounts) {
+            if (id.toString() === accounts[i]._id.toString()) {
+                return accounts[i];
+            }
+        }
+        return null;
+    }
+
+    /**
      * Monta ferramenta
      *
      * @author Rafael Erthal
@@ -75,15 +93,37 @@ app.routes.entity('/transacao/:id', function (params, data) {
      */
 
     app.models.account.list(function (data) {
+        var account;
         accounts = data;
         app.models.category.list(function (data) {
             categories = data;
             app.models.transaction.find(params.id, function (transaction) {
                 app.ui.title('Transação: ' + transaction.name);
+                account = getAccount(transaction.account);
+                if (transaction.type === 'credit') {
+                    app.ui.actions.add(
+                        new app.ui.action({
+                            legend : 'boleto',
+                            image : 'download',
+                            click : function() {
+                                app.apps.dialog({
+                                    app : 'boletos',
+                                    route : '/adicionar-boleto',
+                                    data : {
+                                        dueDate : transaction.date,
+                                        value : transaction.value,
+                                        account : account && account.account ? account.account : undefined,
+                                        agency : account && account.agency ? account.agency : undefined
+                                    }
+                                });
+                            }
+                        })
+                    );
+                }
 
                 app.ui.actions.add(
                     new app.ui.action({
-                        label : 'editar transação',
+                        legend : 'editar',
                         image : 'pencil',
                         click : function() {
                             edit(function (transaction) {
@@ -98,7 +138,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
 
                 app.ui.actions.add(
                     new app.ui.action({
-                        label : 'remover transação',
+                        legend : 'remover',
                         image : 'trash',
                         click : function() {
                             remove(function () {

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 0.1.3
+
+Melhorias
+- Deixando menu opcional
+
 ## 0.1.2 (2013-02-18)
 
 - Corrigindo o install

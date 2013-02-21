@@ -56,9 +56,11 @@ Source.findOne = function (params, cb) {
             var i = 0;
             source = 'app={';
 
-            source += 'menu:'
-            source += fs.readFileSync(srcMenu.path, 'utf-8');
-            source += ','
+            if (srcMenu) {
+                source += 'menu:'
+                source += fs.readFileSync(srcMenu.path, 'utf-8');
+                source += ','
+            }
 
             source += 'models : function (){'
             for (i = 0; i < srcModels.length; i++) {
