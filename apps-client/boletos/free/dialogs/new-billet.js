@@ -105,35 +105,42 @@ console.log(request)
 
         /* campos do recebedor */
         fields.receiver = new app.ui.inputText({
-            legend : 'Razão social',
+            legend : 'Sua razão social',
             name : 'receiver',
-            rules : [
-                {rule : /.{3,}/, message : 'campo obrigatório'}
-            ]
+            rules : [{rule : /.{3,}/, message : 'campo obrigatório'}]
         });
+        fields.cpfCnpj = new app.ui.inputText({
+            legend : 'Seu cnpj',
+            name : 'cpfCnpj',
+            rules : [{rule : /\d\d\.?\d\d\d\.?\d\d\d\/?\d\d\d\d\-?\d\d/, message : 'formato inválido (ex: 12.345.678/9999-00'}]
+        });
+
+        fieldsets.receiver = new app.ui.fieldset({
+            legend : 'Recebedor'
+        });
+        fieldsets.receiver.fields.add([
+            fields.receiver,
+            fields.cpfCnpj
+        ]);
+
+        /* dados bancários */
         fields.bankId = new app.ui.inputSelector({
             type : 'single',
             name : 'bankId',
             legend : 'Banco',
-            options : [
-                banksOptions.itau
-            ]
+            options : [banksOptions.itau]
         });
         fields.agency = new app.ui.inputText({
             legend : 'Agência',
             name : 'agency',
             value : request.agency ? request.agency : '',
-            rules : [
-                {rule : /\d{4}/, message : 'formato inválido (ex: 1234)'}
-            ]
+            rules : [{rule : /\d{4}/, message : 'formato inválido (ex: 1234)'}]
         });
         fields.account = new app.ui.inputText({
             legend : 'Conta corrente',
             name : 'account',
             value : request.account ? request.account : '',
-            rules : [
-                {rule : /\d{5}\-\d{1}/, message : 'formato inválido (ex: 12345-6)'}
-            ]
+            rules : [{rule : /\d{5}\-\d{1}/, message : 'formato inválido (ex: 12345-6)'}]
         });
         fields.wallet = new app.ui.inputSelector({
             type : 'single',
@@ -156,11 +163,10 @@ console.log(request)
             rules : [{rule:/^[0-9]{1,8}([\.\,][0-9]{2})?$/, message : 'valor inválido'}]
         });
 
-        fieldsets.receiver = new app.ui.fieldset({
-            legend : 'Recebedor'
+        fieldsets.bank = new app.ui.fieldset({
+            legend : 'Dados bancários'
         });
-        fieldsets.receiver.fields.add([
-            fields.receiver,
+        fieldsets.bank.fields.add([
             fields.bankId,
             fields.agency,
             fields.account,
@@ -200,8 +206,9 @@ console.log(request)
             name : 'demonstrative'
         });
         fields.instructions = new app.ui.inputText({
-            legend : 'Instruções',
-            name : 'instructions'
+            legend : 'Instruções ao caixa',
+            name : 'instructions',
+            value : 'Não aceitar após o vencimento.'
         });
 
         fieldsets.client = new app.ui.fieldset({
@@ -214,6 +221,7 @@ console.log(request)
         ]);
 
         app.ui.form.fieldsets.add(fieldsets.receiver);
+        app.ui.form.fieldsets.add(fieldsets.bank);
         app.ui.form.fieldsets.add(fieldsets.dates);
         app.ui.form.fieldsets.add(fieldsets.client);
 
