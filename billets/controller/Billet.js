@@ -1,5 +1,5 @@
 /**
- * Controllet Billet
+ * Controller Billet
  *
  * @author Mauro Ribeiro
  * @since  2013-02
@@ -21,7 +21,7 @@ module.exports = function (app) {
             receiver : request.param('receiver', null),
             agency : request.param('agency', null),
             account : request.param('account', null),
-            accountDV : request.param('accountDV', null),
+            accountVD : request.param('accountVD', null),
             wallet : request.param('wallet', null),
             ourNumber : request.param('ourNumber', null),
             documentNumber : request.param('documentNumber', null),
@@ -38,11 +38,13 @@ module.exports = function (app) {
             clientState : request.param('clientState', null),
             clientZipCode : request.param('clientZipCode', null)
         });
-        if (billet.bankId) {
-            response.render('../view/billet.ejs', billet);
-        } else {
-            response.send('Dados inválidos');
-        }
+        billet.print(function (error, print) {
+            if (error) {
+                response.send({ error : error });
+            } else {
+                response.render('../view/billet.ejs', print);
+            }
+        })
     });
 
 }

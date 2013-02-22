@@ -1,51 +1,162 @@
-/** Itau
- * @author : Rafael Erthal
- * @since : 2013-02
+/**
+ * Itau
+ *
+ * @author : Mauro Ribeiro
+ * @since : 2013-03
  *
  * @description : Representação da entidade de boleto do itau
  */
 
 var Billet = {
     bank : 'Banco Itaú',
+    bankId : '341',
     wallets : ['175', '174', '178', '104', '109', '157']
 }
 
-Billet.billet = function (billet) {
-    var line, code,
-        fValue, fOurNumber, fAgency, fAccount, dv;
+/**
+ * Valida os dados do boleto para o Banco Itaú
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-02
+ *
+ * @param billet boleto
+ * @param cb callback
+ */
+Billet.validate = function (billet, cb) {
+    var valid = true, error = null, errors = {};
 
-    billet.ourNumber = this.generateOurNumber();
+    constructError = function (path, type) {
+        return { message : 'Validator "'+type+'" failed for path '+path, name : 'ValidatorError', path : path, type : type };
+    }
 
-    fValue = this.formatNumber(billet.value, 10, 0, 'value');
-    fOurNumber = this.formatNumber(billet.ourNumber, 8, 0);
-    fAgency = this.formatNumber(billet.agency, 4, 0);
-    fAccount = this.formatNumber(billet.account, 5, 0);
+    /* obrigatórios */
+    if (!billet.wallet || this.wallets.indexOf(billet.wallet.toString()) === -1) {
+        valid = false;
+        errors.wallet = constructError('wallet', 'enum');
+    }
+    if (!billet.agency || /\d{4}/.test(billet.agency) === false) {
+        valid = false;
+        errors.agency = constructError('agency', '\\d{4}');
+    }
+    if (!billet.account || /\d{5}/.test(billet.account) === false) {
+        valid = false;
+        errors.account = constructError('account', '\\d{5}');
+    }
+    if (!billet.accountVD || /\d/.test(billet.accountVD) === false) {
+        valid = false;
+        errors.accountVD = constructError('accountVD', '\\d');
+    }
+    if (!billet.dueDate) {
+        valid = false;
+        errors.dueDate = constructError('dueDate', 'required');
+    }
+    if (!billet.creationDate) {
+        valid = false;
+        errors.creationDate = constructError('creationDate', 'required');
+    }
+    if (!billet.value) {
+        valid = false;
+        errors.value = constructError('value', 'required');
+    }
 
-    code = billet.bankId +''+ billet.currency +''+ this.dueFactor(billet.dueDate) +''+ fValue +''+ billet.wallet +''+ fOurNumber +''+ this.modulus10(fAgency+fAccount+billet.wallet+fOurNumber) +''+ fAgency +''+ fAccount +''+ this.modulus10(fAgency+fAccount) + '000';
+    if (valid) {
+        /* opcional */
+        if (!billet.ourNumber) {
+            billet.ourNumber = this.generateOurNumber();
+        } else if (/\d{8}/.test(billet.ourNumber) === false) {
+            valid = false;
+        }
+    } else {
+        error = {
+            message : 'Validation failed',
+            name : 'ValidationError',
+            errors : errors
+        }
+    }
 
-    dv = this.codeVerificationDigit(code);
-    line = code.substring(0,4) + dv + code.substring(4,code.length);
-
-    billet.bankIdVD = this.bankVerificationDigit(billet.bankId);
-    billet.ourNumberVD = this.modulus10(fAgency + fAccount + billet.wallet + fOurNumber);
-    billet.bank = this.bank;
-    billet.digitCode = this.digitCode(line);
-    billet.barCodeNumber = line;
-    billet.barCode = this.barCode(line);
+    cb(error);
 }
 
+/**
+ * Formata os dados tudo bonitinho para imprimir o boleto
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-02
+ *
+ * @param billet boleto
+ * @param cb callback
+ */
+Billet.print = function (billet, cb) {
+    var line, code,
+        fValue, fOurNumber, fAgency, fAccount, dv,
+        print = {},
+        that = this;
+
+    this.validate(billet, function (error) {
+        if (error) {
+            cb(error);
+        } else {
+            fValue = that.formatNumber(billet.value, 10, 0, 'value');
+            fOurNumber = that.formatNumber(billet.ourNumber, 8, 0);
+            fAgency = that.formatNumber(billet.agency, 4, 0);
+            fAccount = that.formatNumber(billet.account, 5, 0);
+
+            code = billet.bankId +''+ billet.currency +''+ that.dueFactor(billet.dueDate) +''+ fValue +''+ billet.wallet +''+ fOurNumber +''+ that.modulus10(fAgency+fAccount+billet.wallet+fOurNumber) +''+ fAgency +''+ fAccount +''+ that.modulus10(fAgency+fAccount) + '000';
+
+            dv = that.codeVerificationDigit(code);
+            line = code.substring(0,4) + dv + code.substring(4,code.length);
+
+            for (var i in billet) {
+                if (typeof billet[i] !== 'function' && billet.hasOwnProperty(i)) {
+                    print[i] = billet[i];
+                }
+            }
+
+            print.bankIdVD = that.bankVerificationDigit(billet.bankId);
+            print.ourNumberVD = that.modulus10(fAgency + fAccount + billet.wallet + fOurNumber);
+            print.bank = that.bank;
+            print.digitCode = that.digitCode(line);
+            print.barCodeNumber = line;
+            print.barCode = that.barCode(line);
+            cb(null, print);
+        }
+    });
+}
+
+/**
+ * Gera nosso número
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-02
+ */
 Billet.generateOurNumber = function () {
     var date = new Date();
     return (parseInt(date.getTime()/1000)%100000000).toString();
 }
 
-Billet.bankVerificationDigit = function (number) {
+/**
+ * Calcula dígito de verificação do banco
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-02
+ *
+ * @param bankId string contendo o id do banco
+ */
+Billet.bankVerificationDigit = function (bankId) {
     var part1, part2;
-    part1 = number.substring(0, 3);
+    part1 = bankId.substring(0, 3);
     part2 = this.modulus11(part1);
     return part2;
 }
 
+/**
+ * Calcula dígito de verificação do número do código de barra
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-02
+ *
+ * @param number string de caracteres com os dados do boleto
+ */
 Billet.codeVerificationDigit = function (number) {
     var mod, digit, verificationDigit;
     mod = this.modulus11(number, 9, 1);
@@ -59,6 +170,18 @@ Billet.codeVerificationDigit = function (number) {
     return verificationDigit;
 }
 
+/**
+ * Formata número preenchendo vazios com caracteres
+ * baseado no BoletoPHP
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-02
+ *
+ * @param number string de caracteres
+ * @param loop número de caracteres
+ * @param insert caracter a ser inserido
+ * @param type tipo de valor
+ */
 Billet.formatNumber = function (number, loop, insert, type) {
     number = number.toString();
 
@@ -82,6 +205,15 @@ Billet.formatNumber = function (number, loop, insert, type) {
     return number;
 }
 
+/**
+ * Gera o código de barras
+ * baseado no BoletoPHP
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-02
+ *
+ * @param value número do código de barras
+ */
 Billet.barCode = function (value) {
     var bars = ['00110', '10001', '01001', '11000', '00101', '10100', '01100', '00011', '10010', '01010'],
         f1, f2, f, text, i, barCode;
@@ -126,6 +258,15 @@ Billet.barCode = function (value) {
     return barCode;
 }
 
+/**
+ * Calcula a linha digitável do número do código de barras
+ * baseado no BoletoPHP
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-02
+ *
+ * @param code número do código de barras
+ */
 Billet.digitCode = function (code) {
     var bank, moeda, ccc, ddnnum, dv1,
         resnum, dac1, dddag, dv2,
@@ -167,10 +308,19 @@ Billet.digitCode = function (code) {
     return field1 + ' ' + field2 + ' ' + field3 + ' ' + field4 + ' ' + field5;
 }
 
-Billet.dueFactor = function (string) {
+/**
+ * Fator da data de vencimento
+ * baseado no BoletoPHP
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-02
+ *
+ * @param date data de vencimento
+ */
+Billet.dueFactor = function (date) {
     var dateEnd, dateStart, days;
 
-    dateEnd = new Date(string);
+    dateEnd = new Date(date);
     dateStart = new Date(1997, 9, 7);
 
     days = Math.floor((dateEnd.getTime() - dateStart.getTime())/86400000);
@@ -178,6 +328,15 @@ Billet.dueFactor = function (string) {
     return days;
 }
 
+/**
+ * Módulo 10
+ * baseado no BoletoPHP
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-02
+ *
+ * @param number string de caracteres numéricos
+ */
 Billet.modulus10 = function (number) {
     var total = 0 , factor = 2,
         temp, temp0, mod10, digit;
@@ -212,6 +371,15 @@ Billet.modulus10 = function (number) {
     return digit;
 }
 
+/**
+ * Módulo 11
+ * baseado no BoletoPHP
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-02
+ *
+ * @param number string de caracteres numéricos
+ */
 Billet.modulus11 = function (number, base, r) {
     var sum = 0, factor = 2,
         digit;
@@ -243,7 +411,6 @@ Billet.modulus11 = function (number, base, r) {
         return sum % 11;
     }
 }
-
 
 /*  Exportando o pacote  */
 exports.Itau = Billet;

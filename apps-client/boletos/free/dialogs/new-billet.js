@@ -195,12 +195,22 @@ console.log(request)
             legend : 'Nome do cliente',
             name : 'clientName'
         });
+        fields.demonstrative = new app.ui.inputText({
+            legend : 'Demonstrativo',
+            name : 'demonstrative'
+        });
+        fields.instructions = new app.ui.inputText({
+            legend : 'Instruções',
+            name : 'instructions'
+        });
 
         fieldsets.client = new app.ui.fieldset({
             legend : 'Cliente'
         });
         fieldsets.client.fields.add([
-            fields.clientName
+            fields.clientName,
+            fields.demonstrative,
+            fields.instructions
         ]);
 
         app.ui.form.fieldsets.add(fieldsets.receiver);
@@ -217,15 +227,16 @@ console.log(request)
                 bankId : fields.bankId.value()[0],
                 agency : fields.agency.value(),
                 account : fields.account.value().split('-')[0],
-                accountDV : fields.account.value().split('-')[1],
+                accountVD : fields.account.value().split('-')[1],
                 wallet : fields.wallet.value()[0],
-                documentNumber : fields.documentNumber.value(),
                 value : fields.value.value(),
                 /* datas */
                 creationDate : fields.creationDate.date(),
                 dueDate : fields.dueDate.date(),
                 /* cliente */
-                clientName : fields.clientName.value()
+                clientName : fields.clientName.value(),
+                demonstrative : fields.demonstrative.value(),
+                instructions : fields.instructions.value()
             }
             if (data.value.indexOf(',') === -1) {
                 data.value += '.00';

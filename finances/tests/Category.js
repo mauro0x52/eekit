@@ -13,7 +13,7 @@ var should = require("should"),
 
 describe('POST /category', function () {
     var token;
-    
+
     before(function (done) {
         // cria usuario
         api.post('auth', '/user', {
@@ -27,7 +27,7 @@ describe('POST /category', function () {
             });
         });
     });
-    
+
     it('url tem que existir', function (done) {
         api.post('finances', '/category', {}, function (error, data, response) {
             if (error) {
@@ -39,7 +39,7 @@ describe('POST /category', function () {
             }
         });
     });
-    
+
     it('token inválido', function (done) {
         api.post('finances', '/category', {
             token : 'invalido',
@@ -53,7 +53,7 @@ describe('POST /category', function () {
             }
         });
     });
-    
+
     it('nome em branco', function (done) {
         api.post('finances', '/category', {
             token : token
@@ -66,7 +66,7 @@ describe('POST /category', function () {
             }
         });
     });
-    
+
     it('cadastra categoria', function (done) {
         api.post('finances', '/category', {
             token : token,
@@ -105,7 +105,7 @@ describe('GET /category/id', function () {
             });
         });
     });
-    
+
     it('url tem que existir', function (done) {
         api.get('finances', '/category/id', {}, function (error, data, response) {
             if (error) {
@@ -117,7 +117,7 @@ describe('GET /category/id', function () {
             }
         });
     });
-    
+
     it('token inválido', function (done) {
         api.get('finances', '/category/' + category._id, {token : 'invalido'}, function (error, data, response) {
             if (error) {
@@ -128,7 +128,7 @@ describe('GET /category/id', function () {
             }
         });
     });
-    
+
     it('categoria inexistente', function (done) {
         api.get('finances', '/category/inexistnte', {token : token}, function (error, data, response) {
             if (error) {
@@ -139,7 +139,7 @@ describe('GET /category/id', function () {
             }
         });
     });
-    
+
     it('pega categoria', function (done) {
         api.get('finances', '/category/' + category._id, {token : token}, function (error, data, response) {
             if (error) {
@@ -150,7 +150,7 @@ describe('GET /category/id', function () {
             }
         });
     });
-    
+
 });
 
 describe('POST /category/id/delete', function () {
@@ -176,7 +176,7 @@ describe('POST /category/id/delete', function () {
             });
         });
     });
-    
+
     it('url tem que existir', function (done) {
         api.post('finances', '/category/id/delete', {}, function (error, data, response) {
             if (error) {
@@ -188,7 +188,7 @@ describe('POST /category/id/delete', function () {
             }
         });
     });
-    
+
     it('token inválido', function (done) {
         api.post('finances', '/category/' + category._id + '/delete', {token : 'invalido'}, function (error, data, response) {
             if (error) {
@@ -199,7 +199,7 @@ describe('POST /category/id/delete', function () {
             }
         });
     });
-    
+
     it('categoria inexistente', function (done) {
         api.post('finances', '/category/inexistente/delete', {token : token}, function (error, data, response) {
             if (error) {
@@ -210,7 +210,7 @@ describe('POST /category/id/delete', function () {
             }
         });
     });
-    
+
     it('exclui categoria', function (done) {
         api.post('finances', '/category/' + category._id + '/delete', {token : token}, function (error, data, response) {
             if (error) {
@@ -252,7 +252,7 @@ describe('POST /category/id/update', function () {
             });
         });
     });
-    
+
     it('url tem que existir', function (done) {
         api.post('finances', '/category/id/update', {}, function (error, data, response) {
             if (error) {
@@ -264,7 +264,7 @@ describe('POST /category/id/update', function () {
             }
         });
     });
-    
+
     it('token inválido', function (done) {
         api.post('finances', '/category/' + category._id + '/update', {token : 'invalido'}, function (error, data, response) {
             if (error) {
@@ -275,7 +275,7 @@ describe('POST /category/id/update', function () {
             }
         });
     });
-    
+
     it('categoria inexistente', function (done) {
         api.post('finances', '/category/inexistente/update', {token : token}, function (error, data, response) {
             if (error) {
@@ -286,7 +286,7 @@ describe('POST /category/id/update', function () {
             }
         });
     });
-    
+
     it('nome em branco', function (done) {
         api.post('finances', '/category/' + category._id + '/update', {
             token : token
@@ -305,7 +305,7 @@ describe('POST /category/id/update', function () {
             }
         });
     });
-    
+
     it('edita categoria', function (done) {
         var newName = 'Nome' + rand()
         api.post('finances', '/category/' + category._id + '/update', {
