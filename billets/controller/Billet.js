@@ -36,7 +36,9 @@ module.exports = function (app) {
             clientAddress : request.param('clientAddress', null),
             clientCity : request.param('clientCity', null),
             clientState : request.param('clientState', null),
-            clientZipCode : request.param('clientZipCode', null)
+            clientZipCode : request.param('clientZipCode', null),
+            /* banco do brasil */
+            agreement : request.param('agreement', null)
         });
         billet.print(function (error, print) {
             if (error) {

@@ -88,31 +88,20 @@ console.log(request)
 
         /* input com os bancos */
         banksOptions = {
+            bb : new app.ui.inputOption({ legend : 'Banco do Brasil', value : '001' }),
             itau : new app.ui.inputOption({ legend : 'Itaú', value : '341' })
-        }
-
-        /* input com as carteiras */
-        walletsOptions = {
-            itau : {
-                'wallet104' : new app.ui.inputOption({ legend : '104', value : '104' }),
-                'wallet109' : new app.ui.inputOption({ legend : '109', value : '109' }),
-                'wallet157' : new app.ui.inputOption({ legend : '157', value : '157' }),
-                'wallet174' : new app.ui.inputOption({ legend : '174', value : '174' }),
-                'wallet175' : new app.ui.inputOption({ legend : '175', value : '175', clicked : true }),
-                'wallet178' : new app.ui.inputOption({ legend : '178', value : '178' })
-            }
         }
 
         /* campos do recebedor */
         fields.receiver = new app.ui.inputText({
             legend : 'Sua razão social',
             name : 'receiver',
-            rules : [{rule : /.{3,}/, message : 'campo obrigatório'}]
+            rules : [{rule : /^.{3,}$/, message : 'campo obrigatório'}]
         });
         fields.cpfCnpj = new app.ui.inputText({
             legend : 'Seu cnpj',
             name : 'cpfCnpj',
-            rules : [{rule : /\d\d\.?\d\d\d\.?\d\d\d\/?\d\d\d\d\-?\d\d/, message : 'formato inválido (ex: 12.345.678/9999-00'}]
+            rules : [{rule : /^\d\d\.?\d\d\d\.?\d\d\d\/?\d\d\d\d\-?\d\d$/, message : 'ex: 12.345.678/9999-00'}]
         });
 
         fieldsets.receiver = new app.ui.fieldset({
@@ -128,34 +117,38 @@ console.log(request)
             type : 'single',
             name : 'bankId',
             legend : 'Banco',
-            options : [banksOptions.itau]
+            options : [banksOptions.itau, banksOptions.bb],
+            change : function (value) {
+                if (value === '001') {
+//                    fields.agreement.visibility('show');
+                } else {
+                    fields.agreement.visibility('show');
+                }
+            }
         });
         fields.agency = new app.ui.inputText({
             legend : 'Agência',
             name : 'agency',
             value : request.agency ? request.agency : '',
-            rules : [{rule : /\d{4}/, message : 'formato inválido (ex: 1234)'}]
+            rules : [{rule : /^\d{4}$/, message : 'formato inválido (ex: 1234)'}]
         });
         fields.account = new app.ui.inputText({
             legend : 'Conta corrente',
             name : 'account',
             value : request.account ? request.account : '',
-            rules : [{rule : /\d{5}\-\d{1}/, message : 'formato inválido (ex: 12345-6)'}]
+            rules : [{rule : /^\d{5}\-\d{1}$/, message : 'formato inválido (ex: 12345-6)'}]
         });
-        fields.wallet = new app.ui.inputSelector({
-            type : 'single',
+        fields.wallet = new app.ui.inputText({
             name : 'wallet',
             legend : 'Carteira',
-            options : [
-                walletsOptions.itau.wallet104,
-                walletsOptions.itau.wallet109,
-                walletsOptions.itau.wallet157,
-                walletsOptions.itau.wallet174,
-                walletsOptions.itau.wallet175,
-                walletsOptions.itau.wallet178
-            ],
-            filterable : true
+            rules : [{rule : /^\d{2,3}$/, message : 'formato inválido'}]
         });
+        fields.agreement = new app.ui.inputText({
+            name : 'agreement',
+            legend : 'Convênio (com 0`s)',
+            rules : [{rule : /(^$)|(^\d{6,8}$)/, message : 'formato inválido'}]
+        });
+//        fields.agreement.visibility('hide');
         fields.value = new app.ui.inputText({
             legend : 'Valor (R$)',
             name : 'value',
@@ -171,6 +164,7 @@ console.log(request)
             fields.agency,
             fields.account,
             fields.wallet,
+            fields.agreement,
             fields.value
         ]);
 
@@ -232,11 +226,14 @@ console.log(request)
             var data = {
                 /* recebedor */
                 receiver : fields.receiver.value(),
+                cpfCnpj : fields.cpfCnpj.value(),
+                /* banco */
                 bankId : fields.bankId.value()[0],
                 agency : fields.agency.value(),
                 account : fields.account.value().split('-')[0],
                 accountVD : fields.account.value().split('-')[1],
-                wallet : fields.wallet.value()[0],
+                wallet : fields.wallet.value(),
+                agreement : fields.agreement.value(),
                 value : fields.value.value(),
                 /* datas */
                 creationDate : fields.creationDate.date(),
