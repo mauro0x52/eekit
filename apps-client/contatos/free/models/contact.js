@@ -58,6 +58,20 @@ app.models.contact = function (params) {
         }, cb);
     };
 
+   /**
+    * Drag'n drop 
+    *
+    * @author Rafael Erthal
+    * @since  2013-02
+    */
+    this.changeCategory = function (category, priority) {
+        this.priority = priority;
+        this.category = category;
+        this.save();
+
+        app.events.trigger('drop contact ' + this._id, this);
+    };
+
     /**
      * Cria ou atualiza o contato
      *

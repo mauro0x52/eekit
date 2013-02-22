@@ -24,8 +24,6 @@ app.models.field = function (params) {
      *
      * @author Rafael Erthal
      * @since  2013-01
-     *
-     * @param  cb : callback a ser chamado após a exclusão
      */
     this.remove = function (cb) {
         app.ajax.post({

@@ -27,7 +27,7 @@ empreendemia.apps = {
             empreendemia.ajax.get({
                 url : 'http://' + empreendemia.config.services.apps.host + ':' + empreendemia.config.services.apps.port + '/app/' + params.app + '/source'
             }, function (response) {
-                if (response) {
+                if (response && !response.error) {
                     var tool = sdk.open(response);
 
                     tool.close = function (data) {
