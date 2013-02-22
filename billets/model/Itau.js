@@ -14,6 +14,8 @@ Billet.billet = function (billet) {
     var line, code,
         fValue, fOurNumber, fAgency, fAccount, dv;
 
+    billet.ourNumber = this.generateOurNumber();
+
     fValue = this.formatNumber(billet.value, 10, 0, 'value');
     fOurNumber = this.formatNumber(billet.ourNumber, 8, 0);
     fAgency = this.formatNumber(billet.agency, 4, 0);
@@ -30,6 +32,11 @@ Billet.billet = function (billet) {
     billet.digitCode = this.digitCode(line);
     billet.barCodeNumber = line;
     billet.barCode = this.barCode(line);
+}
+
+Billet.generateOurNumber = function () {
+    var date = new Date();
+    return (parseInt(date.getTime()/1000)%100000000).toString();
 }
 
 Billet.bankVerificationDigit = function (number) {
@@ -53,6 +60,8 @@ Billet.codeVerificationDigit = function (number) {
 }
 
 Billet.formatNumber = function (number, loop, insert, type) {
+    number = number.toString();
+
     if (!type) type = 'general';
     if (type === 'general') {
         number = number.replace(',', '');

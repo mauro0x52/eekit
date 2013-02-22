@@ -149,11 +149,6 @@ console.log(request)
             ],
             filterable : true
         });
-        fields.ourNumber = new app.ui.inputText({
-            legend : 'Nosso número',
-            name : 'ourNumber',
-            rules : [{rule : /\d{8}/, message : 'formato inválido (ex: 12345678)'}]
-        });
         fields.value = new app.ui.inputText({
             legend : 'Valor (R$)',
             name : 'value',
@@ -170,7 +165,6 @@ console.log(request)
             fields.agency,
             fields.account,
             fields.wallet,
-            fields.ourNumber,
             fields.value
         ]);
 
@@ -225,7 +219,6 @@ console.log(request)
                 account : fields.account.value().split('-')[0],
                 accountDV : fields.account.value().split('-')[1],
                 wallet : fields.wallet.value()[0],
-                ourNumber : fields.ourNumber.value(),
                 documentNumber : fields.documentNumber.value(),
                 value : fields.value.value(),
                 /* datas */

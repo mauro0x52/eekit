@@ -33,7 +33,7 @@ var Billet = function (params) {
     this.clientCity = params.clientCity;
     this.clientState = params.clientState;
     this.clientZipCode = params.clientZipCode;
-    
+
     this.digitCode = '';
     this.barCodeNumber = '';
     this.barCode = '';
