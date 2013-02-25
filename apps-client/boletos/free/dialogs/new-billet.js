@@ -7,7 +7,6 @@
 app.routes.dialog('/adicionar-boleto', function (params, data) {
     var request = data ? data : {};
     app.tracker.event('clicar: adicionar boleto');
-console.log(request)
     /**
      * Pega o id de uma categoria a partir do nome
      *

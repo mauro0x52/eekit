@@ -42,10 +42,6 @@ Billet.validate = function (billet, cb) {
         valid = false;
         errors.account = constructError('account', '\\d{5}');
     }
-    if (!billet.accountVD || /\d/.test(billet.accountVD) === false) {
-        valid = false;
-        errors.accountVD = constructError('accountVD', '\\d');
-    }
     if (!billet.dueDate) {
         valid = false;
         errors.dueDate = constructError('dueDate', 'required');
@@ -114,7 +110,7 @@ Billet.print = function (billet, cb) {
 
             print.bankIdVD = that.bankVerificationDigit(billet.bankId);
             print.ourNumber = print.wallet+'/'+print.ourNumber+'-'+that.modulus10(fAgency + fAccount + billet.wallet + fOurNumber);
-            print.account = print.account+'-'+print.accountVD;
+            print.account = print.account+'-'+that.modulus11(print.account);
             print.bank = that.bank;
             print.digitCode = that.digitCode(line);
             print.barCodeNumber = line;
@@ -218,7 +214,7 @@ Billet.formatNumber = function (number, loop, insert, type) {
 Billet.barCode = function (value) {
     var bars = ['00110', '10001', '01001', '11000', '00101', '10100', '01100', '00011', '10010', '01010'],
         f1, f2, f, text, i, barCode;
-        
+
     for (f1 = 9; f1 >= 0; f1--) {
         for (f2 = 9; f2 >=0; f2--) {
             f = (f1 * 10) + f2;
