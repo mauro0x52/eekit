@@ -6,6 +6,7 @@
  */
 app.routes.dialog('/adicionar-boleto', function (params, data) {
     var request = data ? data : {};
+
     app.tracker.event('clicar: adicionar boleto');
     /**
      * Pega o id de uma categoria a partir do nome
@@ -48,7 +49,7 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
         /**
          * Lista de ui.option de carteiras
          */
-        walletsOptions,
+        walletsOptions, walletsArray = [],
 
         /**
          * Fieldset
@@ -75,6 +76,38 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
          */
         sumWeekend = 0;
 
+        /**
+         * Coisas para se fazer quando seleciona um banco
+         *
+         * @author Mauro Ribeiro
+         * @since  2013-02
+         *
+         * @param bank : id do banco
+         */
+        selectBank = function(bank) {
+            var banks = {
+                '001' : 'bb',
+                '237' : 'bradesco',
+                '341' : 'itau'
+            }
+            if (bank === '001') {
+                fields.agreement.visibility('show');
+            } else {
+                fields.agreement.visibility('hide');
+            }
+
+            for (var i in walletsOptions) {
+                console.log(banks[bank]+'-'+i)
+                if (i.indexOf(banks[bank]) === -1) {
+                    console.log(i+'hide')
+                    walletsOptions[i].visibility('hide');
+                } else {
+                    console.log(i+'show')
+                    walletsOptions[i].visibility('show');
+                }
+            }
+        }
+
         creationDate = new Date();
 
         if (request.dueDate) {
@@ -88,8 +121,22 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
         /* input com os bancos */
         banksOptions = {
             bb : new app.ui.inputOption({ legend : 'Banco do Brasil', value : '001' }),
-            itau     : new app.ui.inputOption({ legend : 'Itaú', value : '341' }),
-            bradesco : new app.ui.inputOption({ legend : 'Bradesco', value : '237' })
+            bradesco : new app.ui.inputOption({ legend : 'Bradesco', value : '237' }),
+            itau     : new app.ui.inputOption({ legend : 'Itaú', value : '341' })
+        }
+
+        /* input com os bancos */
+        walletsOptions = {
+            bb18        : new app.ui.inputOption({ legend : '18', value : '18' }),
+            bradesco03  : new app.ui.inputOption({ legend : '03', value : '03' }),
+            bradesco06  : new app.ui.inputOption({ legend : '06', value : '06' }),
+            bradesco09  : new app.ui.inputOption({ legend : '09', value : '09' }),
+            itau104     : new app.ui.inputOption({ legend : '104', value : '104' }),
+            itau109     : new app.ui.inputOption({ legend : '109', value : '109' }),
+            itau157     : new app.ui.inputOption({ legend : '157', value : '157' }),
+            itau175     : new app.ui.inputOption({ legend : '175', value : '175' }),
+            itau174     : new app.ui.inputOption({ legend : '174', value : '174' }),
+            itau178     : new app.ui.inputOption({ legend : '178', value : '178' })
         }
 
         /* campos do recebedor */
@@ -119,11 +166,7 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
             legend : 'Banco',
             options : [banksOptions.itau, banksOptions.bradesco, banksOptions.bb],
             change : function (value) {
-                if (fields.bankId.value()[0] === '001') {
-                    fields.agreement.visibility('show');
-                } else {
-                    fields.agreement.visibility('hide');
-                }
+                selectBank(fields.bankId.value()[0]);
             }
         });
         fields.agency = new app.ui.inputText({
@@ -138,10 +181,16 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
             value : request.account ? request.account : '',
             rules : [{rule : /^\d{5}(\-\d{1})?$/, message : 'formato inválido (ex: 12345-6)'}]
         });
-        fields.wallet = new app.ui.inputText({
+        for (var i in walletsOptions) {
+            walletsOptions[i].visibility('hide');
+            walletsArray.push(walletsOptions[i]);
+        }
+        fields.wallet = new app.ui.inputSelector({
+            type : 'single',
             name : 'wallet',
             legend : 'Carteira',
-            rules : [{rule : /^\d{2,3}$/, message : 'formato inválido'}]
+            filterable : true,
+            options : walletsArray
         });
         fields.agreement = new app.ui.inputText({
             name : 'agreement',
@@ -232,7 +281,7 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
                 agency : fields.agency.value(),
                 account : fields.account.value().split('-')[0],
                 accountVD : fields.account.value().split('-')[1],
-                wallet : fields.wallet.value(),
+                wallet : fields.wallet.value()[0],
                 agreement : fields.agreement.value(),
                 value : fields.value.value(),
                 /* datas */
@@ -248,6 +297,8 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
             }
             if (!data.bankId) {
                 app.ui.error('Escolha um banco');
+            } else if (!wallet) {
+                app.ui.error('Escolha uma carteira');
             } else {
                 app.routes.redirect('http://' + app.config.services.billets.host + ':' + app.config.services.billets.port + '/billet', data);
             }
