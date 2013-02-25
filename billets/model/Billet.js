@@ -7,6 +7,7 @@
  */
 
 var Itau = require('./Itau.js').Itau,
+    Bradesco = require('./Bradesco.js').Bradesco,
     Bb = require('./Bb.js').Bb;
 
 var Billet = function (params) {
@@ -51,6 +52,10 @@ var Billet = function (params) {
             });
         } else if (this.bankId === '341') {
             Itau.print(this, function (error, print) {
+                cb (error, print);
+            });
+        } else if (this.bankId === '237') {
+            Bradesco.print(this, function (error, print) {
                 cb (error, print);
             });
         }

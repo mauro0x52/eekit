@@ -89,7 +89,8 @@ console.log(request)
         /* input com os bancos */
         banksOptions = {
             bb : new app.ui.inputOption({ legend : 'Banco do Brasil', value : '001' }),
-            itau : new app.ui.inputOption({ legend : 'Itaú', value : '341' })
+            itau     : new app.ui.inputOption({ legend : 'Itaú', value : '341' }),
+            bradesco : new app.ui.inputOption({ legend : 'Bradesco', value : '237' })
         }
 
         /* campos do recebedor */
@@ -117,7 +118,7 @@ console.log(request)
             type : 'single',
             name : 'bankId',
             legend : 'Banco',
-            options : [banksOptions.itau, banksOptions.bb],
+            options : [banksOptions.itau, banksOptions.bradesco, banksOptions.bb],
             change : function (value) {
                 if (value === '001') {
 //                    fields.agreement.visibility('show');
