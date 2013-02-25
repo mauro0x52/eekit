@@ -7,103 +7,144 @@
  * @param  params.id : id do contato
  */
 app.routes.embeddedEntity('/contato-relacionado/:id', function (params, data) {
+
     var
     /**
-     * Campos dos dados do usuário
+     * Lista de categorias
      */
-    fields = {},
-    /**
-     * Nome dos dias da semana
-     */
-    daysNames = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'],
-    /**
-     * Nome dos meses
-     */
-    monthsNames = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
-    /**
-     * Lista de fases de negociação do usuário
-     */
-    categories;
+    categories,
 
     /**
-     * Retorna o nome da fase de negociação
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  category_id : id da fase de negociação
+     * Lista de campos personalizados
      */
-    function categoryName (category_id) {
-        var i;
-        for (var i in categories) {
-            if (category_id.toString() === categories[i]._id.toString()) {
-                return categories[i].name;
-            }
+    userFields,
+
+    /*
+     * Classe que representa os campos do usuário
+     */
+    Entity;
+
+    Entity = function (data) {
+        var that = this,
+            contact = new app.models.contact(data),
+            actions,
+            fields,
+            fieldsets;
+
+        /* Conjuntos de campos */
+        fieldsets = {
+            details : new app.ui.dataset({legend : 'Detalhes'})
+        };
+        app.ui.datasets.add([fieldsets.details]);
+
+
+        /* Campos de dados */
+        fields = {
+            category : new app.ui.data({legend : 'categoria'}),
+            email    : new app.ui.data({legend : 'email'}),
+            phone    : new app.ui.data({legend : 'telefone'})
+        };
+
+        /* Exibe o nome do contato */
+        this.name = function (value) {
+            app.ui.title('Contato: ' + value);
+            app.ui.subtitle(value);
         }
-        return 'Não-cliente'
-    }
+
+        /* Exibe as notas do contato */
+        this.notes = function (value) {
+            app.ui.description(value);
+        }
+
+        /* Exibe o email do contato */
+        this.email = function (value) {
+            fields.email.values.remove();
+            if (value) {
+                fields.email.values.add(new app.ui.value({value : value}));
+                fieldsets.details.fields.add(fields.email);
+            } else {
+                fieldsets.details.fields.remove(fields.email);
+            }
+        };
+
+        /* Exibe o telefone do contato */
+        this.phone = function (value) {
+            fields.phone.values.remove();
+            if (value) {
+                fields.phone.values.add(new app.ui.value({value : value}));
+                fieldsets.details.fields.add(fields.phone);
+            } else {
+                fieldsets.details.fields.remove(fields.phone);
+            }
+        };
+
+        /* Exibe a categoria do contato */
+        this.category = function (value) {
+            var i;
+
+            fields.category.values.remove();
+            if (value) {
+                for (i in categories) {
+                    if (value.toString() === categories[i]._id.toString()) {
+                        fields.category.values.add(new app.ui.value({value : categories[i].name}));
+                        fieldsets.details.fields.add(fields.category);
+                    }
+                }
+            } else {
+                fieldsets.details.fields.remove(fields.category);
+            }
+        };
+
+        /* Pegando a edição do contato */
+        app.events.bind('update contact ' + contact._id, function (data) {
+            contact = new app.models.contact(data);
+
+            if (contact) {
+                that.name(contact.name);
+                that.notes(contact.notes);
+                that.category(contact.category);
+                that.email(contact.email);
+                that.phone(contact.phone);
+            }
+        });
+
+        /* Pegando o drop do contato */
+        app.events.bind('drop contact ' + contact._id, function (data) {
+            contact = new app.models.contact(data);
+
+            if (contact) {
+                that.category(contact.category);
+            }
+        });
+
+        /* Pegando a exclusão do contato */
+        app.events.bind('remove contact ' + contact._id, app.close);
+
+        if (contact) {
+            this.name(contact.name);
+            this.notes(contact.notes);
+            this.category(contact.category);
+            this.email(contact.email);
+            this.phone(contact.phone);
+        }
+    };
 
     /**
-     * Formata a data de forma legível para o usuário
+     * Monta a view
      *
      * @author Mauro Ribeiro
      * @since  2012-12
-     *
-     * @param  string : data a ser formatada
      */
-    function dateFormat (string) {
-        var date = new Date(string);
-        return daysNames[date.getDay()]  + ', ' + date.getDate() + ' de ' + monthsNames[date.getMonth()] + ' de ' + date.getFullYear()
-    }
-
-    /**
-     * Monta ferramenta
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     */
-
-    app.ui.title('Contato relacionado');
-
     app.models.category.list(function (data) {
         categories = data;
-        app.models.contact.find(params.id, function (contact) {
-
-            app.ui.subtitle(contact.name)
-
-            app.ui.click(function () {
-                app.apps.open({
-                    app : 'contatos',
-                    route : '/contato/'+contact._id
-                })
+        app.models.field.list(function (data) {
+            userFields = data;
+            app.models.contact.find(params.id, function (contact) {
+                app.ui.click(function () {
+                    app.apps.open({app : app.slug, route : '/contato/' + contact._id})
+                });
+                new Entity(contact);
             });
-
-            fields.category = new app.ui.data({
-                legend : 'categoria',
-                values : [new app.ui.value({value : categoryName(contact.category)})]
-            });
-
-            fields.email = new app.ui.data({
-                legend : 'email',
-                values : [new app.ui.value({value : contact.email || '-' })]
-            });
-
-            fields.phone = new app.ui.data({
-                legend : 'telefone',
-                values : [new app.ui.value({value : contact.phone || '-'})]
-            });
-
-            fields.dateCreated = new app.ui.data({
-                legend : 'criação',
-                values : [new app.ui.value({value : dateFormat(contact.dateCreated)})]
-            });
-
-            app.ui.datasets.add(
-                new app.ui.dataset({
-                    legend : 'Detalhes',
-                    fields : [fields.category, fields.email, fields.phone]
-                })
-            );
         });
     });
 });
