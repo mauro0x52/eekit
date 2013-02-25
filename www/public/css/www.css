@@ -1218,14 +1218,17 @@ form {
 .field.select > .data > .input  {
     position: absolute;
     width: 220px;
-    top: -4px;
     z-index: 1000;
+}
+
+.field.select > .data > .input:focus  {
+    z-index: 20000;
 }
 
 
 .field.select > .data   > .arrow {
     position: absolute;
-    top: 4px;
+    top: 8px;
     left: 202px;
     border-right: 6px solid transparent;
     border-left: 6px solid transparent;
@@ -1265,14 +1268,17 @@ form {
 }
 
 .field.select .data > .selected-list {
-    font-size: 10px;
+    font-size: 13px;
     margin: 5px 0 5px 5px;
-    color: #877;
+    color: #000;
     padding-top: 21px;
+    position: absolute;
+    top: -23px;
+    z-index: 10000;
 }
 
 .field.select .data > .selected-list > .legend {
-    display: inline;
+    display: none;
     font-style: italic;
 }
 
@@ -1282,7 +1288,7 @@ form {
 
 .field.select .data > .selected-list > .list  >.item{
     display: inline-block;
-    text-decoration: underline;
+    font-family: Arial, Helvetica, sans-serif;
     margin-right: 4px;
 }
 
