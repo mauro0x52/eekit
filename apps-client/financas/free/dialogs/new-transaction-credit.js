@@ -263,7 +263,6 @@ app.routes.dialog('/adicionar-receita', function (params, data) {
                     if (aName < bName) return -1;
                     return 0;
                 });
-
                 form(categories, accounts);
             } else {
                 message();
