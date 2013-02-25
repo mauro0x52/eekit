@@ -297,7 +297,7 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
             }
             if (!data.bankId) {
                 app.ui.error('Escolha um banco');
-            } else if (!wallet) {
+            } else if (!data.wallet) {
                 app.ui.error('Escolha uma carteira');
             } else {
                 app.routes.redirect('http://' + app.config.services.billets.host + ':' + app.config.services.billets.port + '/billet', data);
