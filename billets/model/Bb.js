@@ -8,6 +8,7 @@
  */
 
 //http://192.168.0.98:8009/billet?receiver=Empreendemia&cpfCnpj=12.345.678/9999-00&bankId=001&agency=9999&account=99999&accountVD=7&ourNumber=77777770000087654&wallet=18&agreement=777777&value=2952,95&creationDate=Fri%20Feb%2022%202013%2000:00:00%20GMT-0300%20%28Hora%20oficial%20do%20Brasil%29&dueDate=Wed%27Feb%2027%202013%2000:00:00%20GMT-0300%20%28Hora%20oficial%20do%20Brasil%29&clientName=&demonstrative=&instructions=N%C3%A3o%20aceitar%20ap%C3%B3s%20o%20vencimento.
+//00192562200002952957777777777777000008765421
 //00190.00009 07777.777009 00087.654182 8 56220000295295
 
 var Billet = {
@@ -67,7 +68,6 @@ Billet.validate = function (billet, cb) {
         errors.agreement = constructError('agreement', '\\d{6,8}');
     }
 
-console.log(billet)
     if (billet.agreement.length === 6) {
         if (!billet.ourNumber) {
             billet.ourNumber = this.generateOurNumber(17);

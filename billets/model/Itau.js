@@ -113,7 +113,8 @@ Billet.print = function (billet, cb) {
             }
 
             print.bankIdVD = that.bankVerificationDigit(billet.bankId);
-            print.ourNumberVD = that.modulus10(fAgency + fAccount + billet.wallet + fOurNumber);
+            print.ourNumber = print.wallet+'/'+print.ourNumber+'-'+that.modulus10(fAgency + fAccount + billet.wallet + fOurNumber);
+            print.account = print.account+'-'+print.accountVD;
             print.bank = that.bank;
             print.digitCode = that.digitCode(line);
             print.barCodeNumber = line;
