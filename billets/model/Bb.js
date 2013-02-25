@@ -7,9 +7,11 @@
  * @description : Representação da entidade de boleto do Banco do Brasil
  */
 
-//http://192.168.0.98:8009/billet?receiver=Empreendemia&cpfCnpj=12.345.678/9999-00&bankId=001&agency=9999&account=99999&accountVD=7&ourNumber=77777770000087654&wallet=18&agreement=777777&value=2952,95&creationDate=Fri%20Feb%2022%202013%2000:00:00%20GMT-0300%20%28Hora%20oficial%20do%20Brasil%29&dueDate=Wed%27Feb%2027%202013%2000:00:00%20GMT-0300%20%28Hora%20oficial%20do%20Brasil%29&clientName=&demonstrative=&instructions=N%C3%A3o%20aceitar%20ap%C3%B3s%20o%20vencimento.
-//00192562200002952957777777777777000008765421
-//00190.00009 07777.777009 00087.654182 8 56220000295295
+//http://192.168.0.98:8009/billet?receiver=Empreendemia&cpfCnpj=12.345.678/9999-00&bankId=001&agency=9999&account=99999&accountVD=7&ourNumber=87654&wallet=18&agreement=7777777&value=2952,95&creationDate=Fri%20Feb%2022%202013%2000:00:00%20GMT-0300%20%28Hora%20oficial%20do%20Brasil%29&dueDate=Sat%27Mar%2002%202013%2000:00:00%20GMT-0300%20%28Hora%20oficial%20do%20Brasil%29&clientName=&demonstrative=&instructions=N%C3%A3o%20aceitar%20ap%C3%B3s%20o%20vencimento.
+//00190.00009 00777.777707 00008.765414 5 56250000295295
+//001955625000029529500000007777777000008765418
+//BBBRDFFFFVVVVVVVVVV0000000CCCCCCCNNNNNNNNNSS
+
 
 var Billet = {
     bank : 'Banco do Brasil',
@@ -71,23 +73,23 @@ Billet.validate = function (billet, cb) {
     if (billet.agreement.length === 6) {
         if (!billet.ourNumber) {
             billet.ourNumber = this.generateOurNumber(17);
-        } else if ((/^\d{17}$/.test(billet.ourNumber) === false)) {
+        } else if ((/^\d{1,17}$/.test(billet.ourNumber) === false)) {
             valid = false;
-            errors.ourNumber = constructError('ourNumber', '\\d{17}');
+            errors.ourNumber = constructError('ourNumber', '\\d{1,17}');
         }
     } else if (billet.agreement.length === 7) {
         if (!billet.ourNumber) {
             billet.ourNumber = this.generateOurNumber(10);
-        } else if ((/^\d{10}$/.test(billet.ourNumber) === false)) {
+        } else if ((/^\d{1,10}$/.test(billet.ourNumber) === false)) {
             valid = false;
-            errors.ourNumber = constructError('ourNumber', '\\d{10}');
+            errors.ourNumber = constructError('ourNumber', '\\d{1,10}');
         }
     } else if (billet.agreement.length === 8) {
         if (!billet.ourNumber) {
             billet.ourNumber = this.generateOurNumber(9);
-        } else if ((/^\d{9}$/.test(billet.ourNumber) === false)) {
+        } else if ((/^\d{1,9}$/.test(billet.ourNumber) === false)) {
             valid = false;
-            errors.ourNumber = constructError('ourNumber', '\\d{9}');
+            errors.ourNumber = constructError('ourNumber', '\\d{1,9}');
         }
     }
 
@@ -135,21 +137,22 @@ Billet.print = function (billet, cb) {
                     print[i] = billet[i];
                 }
             }
-
-            if (billet.agreement.length === 6) {
-                vd = that.modulus11(billet.bankId + '' + billet.currency + '' + dueFactor + '' + fValue + '' + '' + billet.agreement + '' + billet.ourNumber + '21', 9, 0, false);
-                line = billet.bankId + '' + billet.currency + '' + vd + '' + dueFactor + '' + fValue + '' + '' + billet.agreement + '' + billet.ourNumber + '21';
-            } else if (billet.agreement.length === 7) {
-                vd = that.modulus11(billet.bankId + '' + billet.currency + '' + dueFactor + '' + fValue + '0000000' + '' + billet.agreement + '' + billet.ourNumber + '' + billet.wallet, 9, 0, false);
-                line = billet.bankId + '' + billet.currency + '' + vd + '' + dueFactor + '' + fValue + '0000000' + '' + billet.agreement + '' + billet.ourNumber + '' + billet.wallet;
-            } else if (billet.agreement.length === 8) {
-                vd = that.modulus11(billet.bankId + '' + billet.currency + '' + dueFactor + '' + fValue + '0000000' + '' + billet.agreement + '' + billet.ourNumber + '' + billet.wallet, 9, 0, false);
-                line = billet.bankId + '' + billet.currency + '' + vd + '' + dueFactor + '' + fValue + '0000000' + '' + billet.agreement + '' + billet.ourNumber + '' + billet.wallet;
+            if (print.agreement.length === 6) {
+                print.ourNumber = that.formatNumber(print.ourNumber, 17, 0);
+                vd = that.modulus11(print.bankId + '' + print.currency + '' + dueFactor + '' + fValue + '' + '' + print.agreement + '' + print.ourNumber + '21', 9, 0, false);
+                line = print.bankId + '' + print.currency + '' + vd + '' + dueFactor + '' + fValue + '' + '' + print.agreement + '' + print.ourNumber + '21';
+            } else if (print.agreement.length === 7) {
+                print.ourNumber = that.formatNumber(print.ourNumber, 10, 0);
+                vd = that.modulus11(print.bankId + '' + print.currency + '' + dueFactor + '' + fValue + '000000' + '' + print.agreement + '' + print.ourNumber + '' + print.wallet, 9, 0, false);
+                line = print.bankId + '' + print.currency + '' + vd + '' + dueFactor + '' + fValue + '000000' + '' + print.agreement + '' + print.ourNumber + '' + print.wallet;
+            } else if (print.agreement.length === 8) {
+                print.ourNumber = that.formatNumber(print.ourNumber, 9, 0);
+                vd = that.modulus11(print.bankId + '' + print.currency + '' + dueFactor + '' + fValue + '000000' + '' + print.agreement + '' + print.ourNumber + '' + print.wallet, 9, 0, false);
+                line = print.bankId + '' + print.currency + '' + vd + '' + dueFactor + '' + fValue + '000000' + '' + print.agreement + '' + print.ourNumber + '' + print.wallet;
             }
 
             print.agencyVD = fAgencyVD;
             print.accountVD = fAccountVD;
-
             print.bankIdVD = that.bankVerificationDigit(billet.bankId);
             print.ourNumberVD = that.modulus10(fAgency + fAccount + billet.wallet + billet.ourNumber);
             print.bank = that.bank;
@@ -173,7 +176,7 @@ Billet.generateOurNumber = function (size) {
 
     if (!size) size = 10;
 
-    time = (parseInt(date.getTime()/1000)).toString();
+    time = (parseInt(date.getTime()/1000,10)).toString();
     return time.substring(time.length - size, time.length);
 }
 
@@ -260,6 +263,7 @@ Billet.formatNumber = function (number, loop, insert, type) {
 Billet.barCode = function (value) {
     var bars = ['00110', '10001', '01001', '11000', '00101', '10100', '01100', '00011', '10010', '01010'],
         f1, f2, f, text, i, barCode;
+
     for (f1 = 9; f1 >= 0; f1--) {
         for (f2 = 9; f2 >=0; f2--) {
             f = (f1 * 10) + f2;
@@ -279,7 +283,7 @@ Billet.barCode = function (value) {
     }
 
     while (text.length > 0) {
-        i = Math.round(parseInt(text.substring(0,2)));
+        i = Math.round(parseInt(text.substring(0,2),10));
         text = text.substring(2, text.length);
         f = bars[i];
         for (i = 1; i < 11; i += 2) {
@@ -383,11 +387,11 @@ Billet.modulus10 = function (number) {
     // separação dos números
     for (var i = number.length - 1; i >= 0; i--) {
         // efetua multiplicação do número pelo fator
-        temp = (parseInt(number[i]) * factor).toString();
+        temp = (parseInt(number[i],10) * factor).toString();
         temp0 = 0;
         // soma todos os dígitos do número * fator
         for (var j in temp) {
-            temp0 += parseInt(temp[j]);
+            temp0 += parseInt(temp[j],10);
         }
         total += temp0;
         // intercala fator de multiplicação
@@ -429,7 +433,7 @@ Billet.modulus11 = function (number, base, r, digitx) {
     // separação dos números
     for (var i = number.length - 1; i >= 0; i--) {
         // soma dos dígitos da multiplicação do número isolado pelo fator
-        sum += parseInt(number[i]) * factor;
+        sum += parseInt(number[i],10) * factor;
         if (factor === base) {
             // restaura fator de multiplicação para 1
             factor = 1;

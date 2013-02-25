@@ -132,7 +132,7 @@ Billet.print = function (billet, cb) {
  */
 Billet.generateOurNumber = function () {
     var date = new Date();
-    return (parseInt(date.getTime()/1000)%100000000).toString();
+    return (parseInt(date.getTime()/1000,10)%100000000).toString();
 }
 
 /**
@@ -237,7 +237,7 @@ Billet.barCode = function (value) {
     }
 
     while (text.length > 0) {
-        i = Math.round(parseInt(text.substring(0,2)));
+        i = Math.round(parseInt(text.substring(0,2),10));
         text = text.substring(2, text.length);
         f = bars[i];
         for (i = 1; i < 11; i += 2) {
@@ -347,11 +347,11 @@ Billet.modulus10 = function (number) {
     // separação dos números
     for (var i = number.length - 1; i >= 0; i--) {
         // efetua multiplicação do número pelo fator
-        temp = (parseInt(number[i]) * factor).toString();
+        temp = (parseInt(number[i]) * factor,10).toString();
         temp0 = 0;
         // soma todos os dígitos do número * fator
         for (var j in temp) {
-            temp0 += parseInt(temp[j]);
+            temp0 += parseInt(temp[j],10);
         }
         total += temp0;
         // intercala fator de multiplicação
@@ -392,7 +392,7 @@ Billet.modulus11 = function (number, base, r) {
     // separação dos números
     for (var i = number.length - 1; i >= 0; i--) {
         // soma dos dígitos da multiplicação do número isolado pelo fator
-        sum += parseInt(number[i]) * factor;
+        sum += parseInt(number[i],10) * factor;
         if (factor === base) {
             // restaura fator de multiplicação para 1
             factor = 1;
