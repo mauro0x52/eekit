@@ -6,7 +6,8 @@
  * @description : Representação da entidade de boleto
  */
 
-var Itau = require('./Itau.js').Itau;
+var Itau = require('./Itau.js').Itau,
+    Bradesco = require('./Bradesco.js').Bradesco;
 
 var Billet = function (params) {
         /* banco */
@@ -42,6 +43,10 @@ var Billet = function (params) {
     this.print = function (cb) {
         if (this.bankId === '341') {
             Itau.print(this, function (error, print) {
+                cb (error, print);
+            });
+        } else if (this.bankId === '237') {
+            Bradesco.print(this, function (error, print) {
                 cb (error, print);
             });
         }

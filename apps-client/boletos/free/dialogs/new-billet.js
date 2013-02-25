@@ -88,7 +88,8 @@ console.log(request)
 
         /* input com os bancos */
         banksOptions = {
-            itau : new app.ui.inputOption({ legend : 'Itaú', value : '341' })
+            itau     : new app.ui.inputOption({ legend : 'Itaú', value : '341' }),
+            bradesco : new app.ui.inputOption({ legend : 'Bradesco', value : '237' })
         }
 
         /* input com as carteiras */
@@ -100,6 +101,10 @@ console.log(request)
                 'wallet174' : new app.ui.inputOption({ legend : '174', value : '174' }),
                 'wallet175' : new app.ui.inputOption({ legend : '175', value : '175', clicked : true }),
                 'wallet178' : new app.ui.inputOption({ legend : '178', value : '178' })
+            },
+            bradesco : {
+                'wallet06' : new app.ui.inputOption({ legend : '06', value : '06' }),
+                'wallet03' : new app.ui.inputOption({ legend : '03', value : '03' })
             }
         }
 
@@ -128,7 +133,7 @@ console.log(request)
             type : 'single',
             name : 'bankId',
             legend : 'Banco',
-            options : [banksOptions.itau]
+            options : [banksOptions.itau, banksOptions.bradesco]
         });
         fields.agency = new app.ui.inputText({
             legend : 'Agência',
@@ -152,7 +157,10 @@ console.log(request)
                 walletsOptions.itau.wallet157,
                 walletsOptions.itau.wallet174,
                 walletsOptions.itau.wallet175,
-                walletsOptions.itau.wallet178
+                walletsOptions.itau.wallet178,
+
+                walletsOptions.bradesco.wallet06,
+                walletsOptions.bradesco.wallet03
             ],
             filterable : true
         });
