@@ -120,10 +120,10 @@ console.log(request)
             legend : 'Banco',
             options : [banksOptions.itau, banksOptions.bradesco, banksOptions.bb],
             change : function (value) {
-                if (value === '001') {
-//                    fields.agreement.visibility('show');
-                } else {
+                if (fields.bankId.value()[0] === '001') {
                     fields.agreement.visibility('show');
+                } else {
+                    fields.agreement.visibility('hide');
                 }
             }
         });
@@ -137,7 +137,7 @@ console.log(request)
             legend : 'Conta corrente',
             name : 'account',
             value : request.account ? request.account : '',
-            rules : [{rule : /^\d{5}\-\d{1}$/, message : 'formato inválido (ex: 12345-6)'}]
+            rules : [{rule : /^\d{5}(\-\d{1})?$/, message : 'formato inválido (ex: 12345-6)'}]
         });
         fields.wallet = new app.ui.inputText({
             name : 'wallet',
@@ -149,7 +149,7 @@ console.log(request)
             legend : 'Convênio (com 0`s)',
             rules : [{rule : /(^$)|(^\d{6,8}$)/, message : 'formato inválido'}]
         });
-//        fields.agreement.visibility('hide');
+        fields.agreement.visibility('hide');
         fields.value = new app.ui.inputText({
             legend : 'Valor (R$)',
             name : 'value',

@@ -119,6 +119,23 @@ sdk.modules.ui.inputText = function (app) {
         }
         this.errors = new Collection(error_ul, [app.ui.inputError])
         this.helper = new empreendemia.ui.helper(element);
+        this.visibility = function (value) {
+            if (value) {
+                switch (value) {
+                    case 'hide' :
+                        element.setAttribute('class', 'field text hide');
+                        break;
+                    case 'show' :
+                        element.setAttribute('class', 'field text');
+                        break;
+                    case 'fade' :
+                        element.setAttribute('class', 'field text fade');
+                        break;
+                }
+            } else {
+                return element.getAttribute('class').replace('field text', '');
+            }
+        };
         /* Setando valores iniciais */
         if (params) {
             this.legend(params.legend);
@@ -126,6 +143,7 @@ sdk.modules.ui.inputText = function (app) {
             this.name(params.name);
             this.value(params.value);
             this.change(params.change);
+            this.change(params.visibility);
             if (params.helper) {
                 this.helper.description(params.helper.description);
                 this.helper.example(params.helper.example);

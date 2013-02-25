@@ -96,24 +96,24 @@ Billet.print = function (billet, cb) {
         } else {
             var nnum = that.formatNumber(billet.wallet, 2) + that.formatNumber(billet.ourNumber, 11),
                 verificationDigit = that.codeVerificationDigit(
-                    '237' + 
-                    '9' + 
-                    that.dueFactor(billet.dueDate) + 
-                    that.formatNumber(billet.value, 10) + 
-                    that.formatNumber(billet.agency, 4).split('-')[0] + 
-                    nnum + 
+                    '237' +
+                    '9' +
+                    that.dueFactor(billet.dueDate) +
+                    that.formatNumber(billet.value, 10) +
+                    that.formatNumber(billet.agency, 4).split('-')[0] +
+                    nnum +
                     that.formatNumber(billet.account, 7).split('-')[0] +
                     '0'
                 ),
-                line = 
+                line =
                     '237' +
-                    '9' + 
-                    verificationDigit + 
-                    that.dueFactor(billet.dueDate) + 
-                    that.formatNumber(billet.value, 10) + 
-                    that.formatNumber(billet.agency, 4).split('-')[0] + 
-                    nnum + 
-                    that.formatNumber(billet.account, 7).split('-')[0] + 
+                    '9' +
+                    verificationDigit +
+                    that.dueFactor(billet.dueDate) +
+                    that.formatNumber(billet.value, 10) +
+                    that.formatNumber(billet.agency, 4).split('-')[0] +
+                    nnum +
+                    that.formatNumber(billet.account, 7).split('-')[0] +
                     '0';
 
             for (var i in billet) {
@@ -142,7 +142,7 @@ Billet.print = function (billet, cb) {
  */
 Billet.generateOurNumber = function () {
     var date = new Date();
-    return (parseInt(date.getTime()/1000)%100000000).toString();
+    return (parseInt(date.getTime()/1000,10)%100000000).toString();
 }
 
 /**
@@ -230,6 +230,7 @@ Billet.formatNumber = function (number, loop) {
 Billet.barCode = function (value) {
     var bars = ['00110', '10001', '01001', '11000', '00101', '10100', '01100', '00011', '10010', '01010'],
         f1, f2, f, text, i, barCode;
+
     for (f1 = 9; f1 >= 0; f1--) {
         for (f2 = 9; f2 >=0; f2--) {
             f = (f1 * 10) + f2;
@@ -249,7 +250,7 @@ Billet.barCode = function (value) {
     }
 
     while (text.length > 0) {
-        i = Math.round(parseInt(text.substring(0,2)));
+        i = Math.round(parseInt(text.substring(0,2), 10));
         text = text.substring(2, text.length);
         f = bars[i];
         for (i = 1; i < 11; i += 2) {
@@ -339,11 +340,11 @@ Billet.modulus10 = function (number) {
     // separação dos números
     for (var i = number.length - 1; i >= 0; i--) {
         // efetua multiplicação do número pelo fator
-        temp = (parseInt(number[i]) * factor).toString();
+        temp = (parseInt(number[i]) * factor,10).toString();
         temp0 = 0;
         // soma todos os dígitos do número * fator
         for (var j in temp) {
-            temp0 += parseInt(temp[j]);
+            temp0 += parseInt(temp[j],10);
         }
         total += temp0;
         // intercala fator de multiplicação
@@ -384,7 +385,7 @@ Billet.modulus11 = function (number, base, r) {
     // separação dos números
     for (var i = number.length - 1; i >= 0; i--) {
         // soma dos dígitos da multiplicação do número isolado pelo fator
-        sum += parseInt(number[i]) * factor;
+        sum += parseInt(number[i],10) * factor;
         if (factor === base) {
             // restaura fator de multiplicação para 1
             factor = 1;

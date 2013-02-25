@@ -7,12 +7,6 @@
  * @description : Representação da entidade de boleto do Banco do Brasil
  */
 
-//http://192.168.0.98:8009/billet?receiver=Empreendemia&cpfCnpj=12.345.678/9999-00&bankId=001&agency=9999&account=99999&accountVD=7&ourNumber=87654&wallet=18&agreement=7777777&value=2952,95&creationDate=Fri%20Feb%2022%202013%2000:00:00%20GMT-0300%20%28Hora%20oficial%20do%20Brasil%29&dueDate=Sat%27Mar%2002%202013%2000:00:00%20GMT-0300%20%28Hora%20oficial%20do%20Brasil%29&clientName=&demonstrative=&instructions=N%C3%A3o%20aceitar%20ap%C3%B3s%20o%20vencimento.
-//00190.00009 00777.777707 00008.765414 5 56250000295295
-//001955625000029529500000007777777000008765418
-//BBBRDFFFFVVVVVVVVVV0000000CCCCCCCNNNNNNNNNSS
-
-
 var Billet = {
     bank : 'Banco do Brasil',
     bankId : '001',
@@ -141,18 +135,21 @@ Billet.print = function (billet, cb) {
                 print.ourNumber = that.formatNumber(print.ourNumber, 17, 0);
                 vd = that.modulus11(print.bankId + '' + print.currency + '' + dueFactor + '' + fValue + '' + '' + print.agreement + '' + print.ourNumber + '21', 9, 0, false);
                 line = print.bankId + '' + print.currency + '' + vd + '' + dueFactor + '' + fValue + '' + '' + print.agreement + '' + print.ourNumber + '21';
+                print.ourNumber = print.agreement + print.ourNumber +'-'+ that.modulus11(print.agreement + print.ourNumber);
             } else if (print.agreement.length === 7) {
                 print.ourNumber = that.formatNumber(print.ourNumber, 10, 0);
                 vd = that.modulus11(print.bankId + '' + print.currency + '' + dueFactor + '' + fValue + '000000' + '' + print.agreement + '' + print.ourNumber + '' + print.wallet, 9, 0, false);
                 line = print.bankId + '' + print.currency + '' + vd + '' + dueFactor + '' + fValue + '000000' + '' + print.agreement + '' + print.ourNumber + '' + print.wallet;
+                print.ourNumber = print.agreement + print.ourNumber;
             } else if (print.agreement.length === 8) {
                 print.ourNumber = that.formatNumber(print.ourNumber, 9, 0);
                 vd = that.modulus11(print.bankId + '' + print.currency + '' + dueFactor + '' + fValue + '000000' + '' + print.agreement + '' + print.ourNumber + '' + print.wallet, 9, 0, false);
                 line = print.bankId + '' + print.currency + '' + vd + '' + dueFactor + '' + fValue + '000000' + '' + print.agreement + '' + print.ourNumber + '' + print.wallet;
+                print.ourNumber = print.agreement + print.ourNumber +'-'+ that.modulus11(print.agreement + print.ourNumber);
             }
 
-            print.agencyVD = fAgencyVD;
-            print.accountVD = fAccountVD;
+            print.agency = print.agency+'-'+fAgencyVD;
+            print.account = print.account+'-'+fAccountVD;
             print.bankIdVD = that.bankVerificationDigit(billet.bankId);
             print.ourNumberVD = that.modulus10(fAgency + fAccount + billet.wallet + billet.ourNumber);
             print.bank = that.bank;

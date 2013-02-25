@@ -218,6 +218,7 @@ Billet.formatNumber = function (number, loop, insert, type) {
 Billet.barCode = function (value) {
     var bars = ['00110', '10001', '01001', '11000', '00101', '10100', '01100', '00011', '10010', '01010'],
         f1, f2, f, text, i, barCode;
+        
     for (f1 = 9; f1 >= 0; f1--) {
         for (f2 = 9; f2 >=0; f2--) {
             f = (f1 * 10) + f2;
