@@ -315,25 +315,8 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
 
         app.ui.title('Tarefas relacionadas');
 
-        /* Botão global de adicionar tarefa */
-        app.ui.actions.add(new app.ui.action({
-            legend : 'adicionar tarefa',
-            image : 'add',
-            click : function () {
-                app.apps.open({
-                    app : app.slug,
-                    route : '/adicionar-tarefa',
-                    data  : {
-                        embeddeds : response.embed,
-                        title     : response.insert.title,
-                        category  : response.insert.category
-                    }
-                })
-            }
-        }));
-
         /* montando a listagem */
-        app.models.task.list({ filterByEmbeddeds : embed }, function (tasks) {
+        app.models.task.list({ filterByEmbeddeds : response.embed }, function (tasks) {
 
             /* ordenando as tarefas */
             tasks.sort(function (a,b) {

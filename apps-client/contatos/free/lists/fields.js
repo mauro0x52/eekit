@@ -48,7 +48,7 @@
             drop : function (group, position) {
                 field.changePosition(position);
             },
-            droppableGroups : [group],
+            droppableGroups : [groups.group],
         });
 
         /* Botões do item */

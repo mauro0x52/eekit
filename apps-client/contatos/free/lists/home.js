@@ -300,15 +300,15 @@ app.routes.list('/', function (params, data) {
             }
         };
 
-        /* Pegando a edição do campo */
+        /* Pegando a edição do contato */
         app.events.bind('update contact ' + contact._id, function (data) {
-            var oldGroup = fitGroupset(contact);
+            var oldGroup = fitGroup(contact);
 
             contact = new app.models.contact(data);
 
-            if (oldGroup !== fitGroupset(contact)) {
+            if (oldGroup !== fitGroup(contact)) {
                 that.item.detach();
-                fitGroupset(contact).items.add(that.item);
+                fitGroup(contact).items.add(that.item);
             }
 
             if (contact) {
@@ -329,7 +329,7 @@ app.routes.list('/', function (params, data) {
             }
         });
 
-        /* Pegando a exclusão do campo */
+        /* Pegando a exclusão do contato */
         app.events.bind('remove contact ' + contact._id, this.item.detach);
 
         /* Pegando quando o filtro é acionado */
@@ -349,6 +349,12 @@ app.routes.list('/', function (params, data) {
                 that.item.visibility('hide');
             } else {
                 that.item.visibility('show');
+                app.ui.actions.get()[0].href(
+                    app.ui.actions.get()[0].href() +
+                    contact.name  + ' %2C' +
+                    contact.phone + ' %2C' +
+                    contact.email + '%0A'
+                );
             }
         });
 
@@ -363,110 +369,118 @@ app.routes.list('/', function (params, data) {
 
     /* autenticando usuário e pegando categorias */
     app.models.category.list(function (data) {
-        var fields = {}
-
-        /* variável global com categorias */
-        categories = data;
-
-        app.ui.title('Contatos');
-
-        /* Botão global de baixar dados */
-        app.ui.actions.add(new app.ui.action({
-            legend : 'baixar dados',
-            image : 'download'
-        })); 
-        /* Botão global de adicionar campo */
-        app.ui.actions.add(new app.ui.action({
-            legend : 'adicionar contato',
-            image  : 'add',
-            click  : function () {
-                app.apps.open({
-                    app : app.slug,
-                    route : '/adicionar-contato'
-                });
-            }
-        })); 
-
-        /* Monta o filtro */
-        app.ui.filter.action('filtrar');
-        /* filtro por texto */
-        fields.query = new app.ui.inputText({
-            legend : 'Buscar',
-            type : 'text',
-            name : 'query',
-            change : app.ui.filter.submit
-        });
-        function categoryOption(type) {
-            var options = [],
-                i;
-
-            for (i in categories) {
-                if (categories[i].type === type) {
-                    options.push(new app.ui.inputOption({
-                        legend  : categories[i].name,
-                        value   : categories[i]._id,
-                        clicked : true,
-                        label   : categories[i].color
-                    }));
-                }
-            }
-            return options;
-        }
-        /* filtro por categoria */
-        fields.categories = {
-            clients : new app.ui.inputSelector({
-                type    : 'multiple',
-                name    : 'category',
-                legend  : 'Clientes',
-                options : categoryOption('clients'),
-                change  : function () {
-                    app.ui.filter.submit()
-                },
-                actions : true
-            }),
-            suppliers : new app.ui.inputSelector({
-                type    : 'multiple',
-                name    : 'category',
-                legend  : 'Fornecedores',
-                options : categoryOption('suppliers'),
-                change  : function () {
-                    app.ui.filter.submit()
-                },
-                actions : true
-            }),
-            partners : new app.ui.inputSelector({
-                type    : 'multiple',
-                name    : 'category',
-                legend  : 'Parceiros',
-                options : categoryOption('partners'),
-                change  : function () {
-                    app.ui.filter.submit()
-                },
-                actions : true
-            }),
-            personals : new app.ui.inputSelector({
-                type    : 'multiple',
-                name    : 'category',
-                legend  : 'Pessoais',
-                options : categoryOption('personals'),
-                change  : function () {
-                    app.ui.filter.submit()
-                },
-                actions : true
-            })
-        };
-        /* fieldset principal */
-        app.ui.filter.fieldsets.add(new app.ui.fieldset({
-            legend : 'Filtrar contatos',
-            fields : [fields.query, fields.categories.clients, fields.categories.suppliers, fields.categories.partners, fields.categories.personals]
-        }));
-        /* dispara o evento de filtro */
-        app.ui.filter.submit(function () {
-            app.events.trigger('filter contact', fields);
-        });
-
         /* monta a listagem */
         app.models.contact.list({}, function (contacts) {
+            var fields = {},
+                firstFilter = true;
+
+            /* variável global com categorias */
+            categories = data;
+
+            app.ui.title('Contatos');
+
+            /* Botão global de baixar dados */
+            app.ui.actions.add(new app.ui.action({
+                legend : 'baixar dados',
+                image : 'download'
+            })); 
+            /* Botão global de adicionar campo */
+            app.ui.actions.add(new app.ui.action({
+                legend : 'adicionar contato',
+                image  : 'add',
+                click  : function () {
+                    app.apps.open({
+                        app : app.slug,
+                        route : '/adicionar-contato'
+                    });
+                }
+            })); 
+
+            /* Monta o filtro */
+            app.ui.filter.action('filtrar');
+            /* filtro por texto */
+            fields.query = new app.ui.inputText({
+                legend : 'Buscar',
+                type : 'text',
+                name : 'query',
+                change : app.ui.filter.submit
+            });
+            function categoryOption(type) {
+                var options = [],
+                    i;
+
+                for (i in categories) {
+                    if (categories[i].type === type) {
+                        options.push(new app.ui.inputOption({
+                            legend  : categories[i].name,
+                            value   : categories[i]._id,
+                            clicked : true,
+                            label   : categories[i].color
+                        }));
+                    }
+                }
+                return options;
+            }
+            /* filtro por categoria */
+            fields.categories = {
+                clients : new app.ui.inputSelector({
+                    type    : 'multiple',
+                    name    : 'category',
+                    legend  : 'Clientes',
+                    options : categoryOption('clients'),
+                    change  : function () {
+                        app.ui.filter.submit()
+                    },
+                    actions : true
+                }),
+                suppliers : new app.ui.inputSelector({
+                    type    : 'multiple',
+                    name    : 'category',
+                    legend  : 'Fornecedores',
+                    options : categoryOption('suppliers'),
+                    change  : function () {
+                        app.ui.filter.submit()
+                    },
+                    actions : true
+                }),
+                partners : new app.ui.inputSelector({
+                    type    : 'multiple',
+                    name    : 'category',
+                    legend  : 'Parceiros',
+                    options : categoryOption('partners'),
+                    change  : function () {
+                        app.ui.filter.submit()
+                    },
+                    actions : true
+                }),
+                personals : new app.ui.inputSelector({
+                    type    : 'multiple',
+                    name    : 'category',
+                    legend  : 'Pessoais',
+                    options : categoryOption('personals'),
+                    change  : function () {
+                        app.ui.filter.submit()
+                    },
+                    actions : true
+                })
+            };
+            /* fieldset principal */
+            app.ui.filter.fieldsets.add(new app.ui.fieldset({
+                legend : 'Filtrar contatos',
+                fields : [fields.query, fields.categories.clients, fields.categories.suppliers, fields.categories.partners, fields.categories.personals]
+            }));
+            /* dispara o evento de filtro */
+            app.ui.filter.submit(function () {
+                app.ui.actions.get()[0].href('data:application/octet-stream,');
+
+                if (firstFilter) {
+                    firstFilter = false;
+                } else {
+                    app.models.helpers.fiveContactsAndFiltered(contacts);
+                }
+
+                app.events.trigger('filter contact', fields);
+            });
 
             /* ordenando os contatos */
             contacts.sort(function (a,b) {
@@ -498,33 +512,15 @@ app.routes.list('/', function (params, data) {
                 fitGroup(contact).items.add((new Item(contact)).item);
             });
 
-            /* exibe o orientador
+            /* exibe o orientador */
             if (contacts.length === 0) {
                 app.ui.actions.get()[1].helper.description('Comece cadastrando seus principais clientes, parceiros e fornecedores e guarde suas informações principais');
                 app.ui.actions.get()[1].helper.example('Dê preferência para aqueles com quem você precisará conversar em breve, seja para fazer uma venda ou pedir a nota fiscal.');
             }
             app.models.helpers.firstContact(contacts);
             app.models.helpers.noFields(contacts);
-            app.models.helpers.fiveContacts(contacts); */
+            app.models.helpers.fiveContacts(contacts);
+            app.ui.filter.submit();
         });
     });
-
-
-
-
-
-        filterCategories = function () {
-            var csv = 'data:application/octet-stream,';
-
-            for (var i in contactsItems) {
-                csv += contactsItems[i].contact.name + ' %2C' + contactsItems[i].contact.phone + ' %2C' + contactsItems[i].contact.email + '%0A'
-            }
-            app.ui.actions.get()[0].href(csv);
-
-            if (firstFilter) {
-                firstFilter = false;
-            } else {
-                app.models.helpers.fiveContactsAndFiltered(contactsItems);
-            }
-        }
 });
