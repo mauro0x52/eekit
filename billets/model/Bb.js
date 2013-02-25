@@ -1,20 +1,24 @@
 /**
- * Itau
+ * Banco do Brasil
  *
  * @author : Mauro Ribeiro
  * @since : 2013-03
  *
- * @description : Representação da entidade de boleto do itau
+ * @description : Representação da entidade de boleto do Banco do Brasil
  */
 
+//http://192.168.0.98:8009/billet?receiver=Empreendemia&cpfCnpj=12.345.678/9999-00&bankId=001&agency=9999&account=99999&accountVD=7&ourNumber=77777770000087654&wallet=18&agreement=777777&value=2952,95&creationDate=Fri%20Feb%2022%202013%2000:00:00%20GMT-0300%20%28Hora%20oficial%20do%20Brasil%29&dueDate=Wed%27Feb%2027%202013%2000:00:00%20GMT-0300%20%28Hora%20oficial%20do%20Brasil%29&clientName=&demonstrative=&instructions=N%C3%A3o%20aceitar%20ap%C3%B3s%20o%20vencimento.
+//00192562200002952957777777777777000008765421
+//00190.00009 07777.777009 00087.654182 8 56220000295295
+
 var Billet = {
-    bank : 'Banco Itaú',
-    bankId : '341',
-    wallets : ['175', '174', '178', '104', '109', '157']
+    bank : 'Banco do Brasil',
+    bankId : '001',
+    wallets : ['18']
 }
 
 /**
- * Valida os dados do boleto para o Banco Itaú
+ * Valida os dados do boleto para o Banco do Brasil
  *
  * @author Mauro Ribeiro
  * @since  2013-02
@@ -26,6 +30,7 @@ Billet.validate = function (billet, cb) {
     var valid = true, error = null, errors = {};
 
     constructError = function (path, type) {
+        valid = false;
         return { message : 'Validator "'+type+'" failed for path '+path, name : 'ValidatorError', path : path, type : type };
     }
 
@@ -34,15 +39,15 @@ Billet.validate = function (billet, cb) {
         valid = false;
         errors.wallet = constructError('wallet', 'enum');
     }
-    if (!billet.agency || /\d{4}/.test(billet.agency) === false) {
+    if (!billet.agency || /^\d{4}$/.test(billet.agency) === false) {
         valid = false;
         errors.agency = constructError('agency', '\\d{4}');
     }
-    if (!billet.account || /\d{5}/.test(billet.account) === false) {
+    if (!billet.account || /^\d{5}$/.test(billet.account) === false) {
         valid = false;
         errors.account = constructError('account', '\\d{5}');
     }
-    if (!billet.accountVD || /\d/.test(billet.accountVD) === false) {
+    if (!billet.accountVD || /^\d$/.test(billet.accountVD) === false) {
         valid = false;
         errors.accountVD = constructError('accountVD', '\\d');
     }
@@ -58,14 +63,35 @@ Billet.validate = function (billet, cb) {
         valid = false;
         errors.value = constructError('value', 'required');
     }
+    if (!billet.agreement || /^\d{6,8}$/.test(billet.agreement) === false) {
+        valid = false;
+        errors.agreement = constructError('agreement', '\\d{6,8}');
+    }
+
+    if (billet.agreement.length === 6) {
+        if (!billet.ourNumber) {
+            billet.ourNumber = this.generateOurNumber(17);
+        } else if ((/^\d{17}$/.test(billet.ourNumber) === false)) {
+            valid = false;
+            errors.ourNumber = constructError('ourNumber', '\\d{17}');
+        }
+    } else if (billet.agreement.length === 7) {
+        if (!billet.ourNumber) {
+            billet.ourNumber = this.generateOurNumber(10);
+        } else if ((/^\d{10}$/.test(billet.ourNumber) === false)) {
+            valid = false;
+            errors.ourNumber = constructError('ourNumber', '\\d{10}');
+        }
+    } else if (billet.agreement.length === 8) {
+        if (!billet.ourNumber) {
+            billet.ourNumber = this.generateOurNumber(9);
+        } else if ((/^\d{9}$/.test(billet.ourNumber) === false)) {
+            valid = false;
+            errors.ourNumber = constructError('ourNumber', '\\d{9}');
+        }
+    }
 
     if (valid) {
-        /* opcional */
-        if (!billet.ourNumber) {
-            billet.ourNumber = this.generateOurNumber();
-        } else if (/\d{8}/.test(billet.ourNumber) === false) {
-            valid = false;
-        }
     } else {
         error = {
             message : 'Validation failed',
@@ -87,8 +113,9 @@ Billet.validate = function (billet, cb) {
  * @param cb callback
  */
 Billet.print = function (billet, cb) {
-    var line, code,
-        fValue, fOurNumber, fAgency, fAccount, dv,
+    var line,
+        fValue, fAgency, fAccount, vd,
+        fAgencyVD, fAccountVD, dueFactor,
         print = {},
         that = this;
 
@@ -97,14 +124,11 @@ Billet.print = function (billet, cb) {
             cb(error);
         } else {
             fValue = that.formatNumber(billet.value, 10, 0, 'value');
-            fOurNumber = that.formatNumber(billet.ourNumber, 8, 0);
             fAgency = that.formatNumber(billet.agency, 4, 0);
-            fAccount = that.formatNumber(billet.account, 5, 0);
-
-            code = billet.bankId +''+ billet.currency +''+ that.dueFactor(billet.dueDate) +''+ fValue +''+ billet.wallet +''+ fOurNumber +''+ that.modulus10(fAgency+fAccount+billet.wallet+fOurNumber) +''+ fAgency +''+ fAccount +''+ that.modulus10(fAgency+fAccount) + '000';
-
-            dv = that.codeVerificationDigit(code);
-            line = code.substring(0,4) + dv + code.substring(4,code.length);
+            fAccount = that.formatNumber(billet.account, 8, 0);
+            fAgencyVD = that.modulus11(fAgency);
+            fAccountVD = that.modulus11(fAccount);
+            dueFactor = that.dueFactor(billet.dueDate);
 
             for (var i in billet) {
                 if (typeof billet[i] !== 'function' && billet.hasOwnProperty(i)) {
@@ -112,15 +136,28 @@ Billet.print = function (billet, cb) {
                 }
             }
 
+            if (billet.agreement.length === 6) {
+                vd = that.modulus11(billet.bankId + '' + billet.currency + '' + dueFactor + '' + fValue + '' + '' + billet.agreement + '' + billet.ourNumber + '21', 9, 0, false);
+                line = billet.bankId + '' + billet.currency + '' + vd + '' + dueFactor + '' + fValue + '' + '' + billet.agreement + '' + billet.ourNumber + '21';
+            } else if (billet.agreement.length === 7) {
+                vd = that.modulus11(billet.bankId + '' + billet.currency + '' + dueFactor + '' + fValue + '0000000' + '' + billet.agreement + '' + billet.ourNumber + '' + billet.wallet, 9, 0, false);
+                line = billet.bankId + '' + billet.currency + '' + vd + '' + dueFactor + '' + fValue + '0000000' + '' + billet.agreement + '' + billet.ourNumber + '' + billet.wallet;
+            } else if (billet.agreement.length === 8) {
+                vd = that.modulus11(billet.bankId + '' + billet.currency + '' + dueFactor + '' + fValue + '0000000' + '' + billet.agreement + '' + billet.ourNumber + '' + billet.wallet, 9, 0, false);
+                line = billet.bankId + '' + billet.currency + '' + vd + '' + dueFactor + '' + fValue + '0000000' + '' + billet.agreement + '' + billet.ourNumber + '' + billet.wallet;
+            }
+
+            print.agencyVD = fAgencyVD;
+            print.accountVD = fAccountVD;
+
             print.bankIdVD = that.bankVerificationDigit(billet.bankId);
-            print.ourNumber = print.wallet+'/'+print.ourNumber+'-'+that.modulus10(fAgency + fAccount + billet.wallet + fOurNumber);
-            print.account = print.account+'-'+print.accountVD;
+            print.ourNumberVD = that.modulus10(fAgency + fAccount + billet.wallet + billet.ourNumber);
             print.bank = that.bank;
             print.digitCode = that.digitCode(line);
             print.barCodeNumber = line;
             print.barCode = that.barCode(line);
             cb(null, print);
-        }
+        };
     });
 }
 
@@ -130,9 +167,14 @@ Billet.print = function (billet, cb) {
  * @author Mauro Ribeiro
  * @since  2013-02
  */
-Billet.generateOurNumber = function () {
-    var date = new Date();
-    return (parseInt(date.getTime()/1000)%100000000).toString();
+Billet.generateOurNumber = function (size) {
+    var date = new Date(),
+        time;
+
+    if (!size) size = 10;
+
+    time = (parseInt(date.getTime()/1000)).toString();
+    return time.substring(time.length - size, time.length);
 }
 
 /**
@@ -269,35 +311,29 @@ Billet.barCode = function (value) {
  * @param code número do código de barras
  */
 Billet.digitCode = function (code) {
-    var bank, moeda, ccc, ddnnum, dv1,
-        resnum, dac1, dddag, dv2,
-        resag, contadac, zeros, dv3,
-        dv4,
+    var free1, free2, free3,
+        bank, moeda, dv1, dv2, dv3, dv4,
         factor, value,
         set1, set2, set3,
         field1, field2, field3, field4, field5;
 
     bank = code.substring(0, 3);
     moeda = code.substring(3, 4);
-    dv4 = code.substring(4, 5);
+    free1 = code.substring(19, 24);
+    free2 = code.substring(24,34);
+    free3 = code.substring(34, 44);
     factor = code.substring(5, 9);
     value = code.substring(9, 19);
-    ccc = code.substring(19, 22);
-    ddnnum = code.substring(22, 24);
-    resnum = code.substring(24, 30);
-    dac1 = code.substring(30, 31);
-    dddag = code.substring(31, 34);
-    resag = code.substring(34, 35);
-    contadac = code.substring(35, 41);
-    zeros = code.substring(41, 44);
 
-    set1 = bank + '' + moeda + '' + ccc + '' + ddnnum;
+    dv4 = code.substring(4, 5);
+
+    set1 = bank + '' + moeda + '' + free1;
     dv1 = this.modulus10(set1);
 
-    set2 = resnum + '' + dac1 + '' + dddag;
+    set2 = free2;
     dv2 = this.modulus10(set2);
 
-    set3 = resag + '' + contadac + '' + zeros;
+    set3 = free3;
     dv3 = this.modulus10(set3);
 
     field1 = set1.substring(0,5) + '.' + set1.substring(5,9)+dv1;
@@ -381,11 +417,12 @@ Billet.modulus10 = function (number) {
  *
  * @param number string de caracteres numéricos
  */
-Billet.modulus11 = function (number, base, r) {
+Billet.modulus11 = function (number, base, r, digitx) {
     var sum = 0, factor = 2,
         digit;
-    if (!r) r = 0;
     if (!base) base = 9;
+    if (!r) r = 0;
+    if (!digitx) digitx = true;
 
     number = number.toString();
 
@@ -405,7 +442,10 @@ Billet.modulus11 = function (number, base, r) {
         sum *= 10;
         digit = sum % 11;
         if (digit === 10) {
-            digit = 0;
+            digit = 'X';
+        }
+        if (digitx === false && (digit === 0 || digit === 'X' || digit > 9)) {
+            digit = 1;
         }
         return digit;
     } else {
@@ -414,4 +454,4 @@ Billet.modulus11 = function (number, base, r) {
 }
 
 /*  Exportando o pacote  */
-exports.Itau = Billet;
+exports.Bb = Billet;

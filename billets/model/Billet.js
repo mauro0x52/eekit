@@ -7,7 +7,8 @@
  */
 
 var Itau = require('./Itau.js').Itau,
-    Bradesco = require('./Bradesco.js').Bradesco;
+    Bradesco = require('./Bradesco.js').Bradesco,
+    Bb = require('./Bb.js').Bb;
 
 var Billet = function (params) {
         /* banco */
@@ -37,11 +38,19 @@ var Billet = function (params) {
         this.clientState = params.clientState;
         this.clientZipCode = params.clientZipCode;
         this.demonstrative = params.demonstrative;
+        /* banco do brasil */
+        this.agreement = params.agreement;
+        this.contract = params.contract;
+        this.walletVariation = params.walletVariation;
 
 
 
     this.print = function (cb) {
-        if (this.bankId === '341') {
+        if (this.bankId === '001') {
+            Bb.print(this, function (error, print) {
+                cb (error, print);
+            });
+        } else if (this.bankId === '341') {
             Itau.print(this, function (error, print) {
                 cb (error, print);
             });
