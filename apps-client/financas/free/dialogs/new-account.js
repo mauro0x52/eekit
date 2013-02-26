@@ -80,6 +80,7 @@ app.routes.dialog('/adicionar-conta', function (params, data) {
             };
             var account = new app.models.account(data);
             account.save(function () {
+                app.events.trigger('create account', account);
                 app.close(account);
             });
         });
@@ -93,6 +94,7 @@ app.routes.dialog('/adicionar-conta', function (params, data) {
      * @since  2012-12
      */
     app.ui.title("Adicionar conta");
+    app.ui.form.action("Adicionar!");
 
     form();
 });

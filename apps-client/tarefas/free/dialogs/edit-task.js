@@ -175,6 +175,7 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
             if (request.embedded) task.embeddeds = [request.embedded];
             editTask._id = task._id;
             editTask.save(function (task) {
+                app.events.trigger('update task ' + params.id, editTask);
                 app.close(task);
             });
         });
@@ -188,6 +189,7 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
      * @since  2012-12
      */
     app.ui.title("Editar tarefa");
+    app.ui.form.action("Editar!");
 
     app.models.task.find(params.id, function(task) {
         app.models.category.list(function(categories) {

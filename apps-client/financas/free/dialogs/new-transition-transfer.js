@@ -163,6 +163,8 @@ app.routes.dialog('/adicionar-transferencia', function (params, data) {
             saveTransactions = function (i, repetitions) {
                 sources[i].save(function () {
                     destinies[i].save(function () {
+                        app.events.trigger('create transaction', sources[i]);
+                        app.events.trigger('create transaction', destinies[i]);
                         app.close({ source : sources[i], destiny : destinies[i]});
                     });
                 });
@@ -230,6 +232,7 @@ app.routes.dialog('/adicionar-transferencia', function (params, data) {
      * @since  2012-12
      */
     app.ui.title("Adicionar transferência");
+    app.ui.form.action("Adicionar!");
 
     app.models.account.list(function(accounts) {
         if (accounts.length) {

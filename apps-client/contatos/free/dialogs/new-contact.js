@@ -99,6 +99,7 @@ app.routes.dialog('/adicionar-contato', function (params, data) {
             console.log(data);
             var contact = new app.models.contact(data);
             contact.save(function () {
+                app.events.trigger('create contact', contact);
                 app.close(contact);
             });
         });
@@ -112,6 +113,7 @@ app.routes.dialog('/adicionar-contato', function (params, data) {
      * @since  2012-12
      */
     app.ui.title("Adicionar contato");
+    app.ui.form.action("Adicionar!");
 
     app.models.category.list(function(categories) {
         app.models.field.list(function (fields) {

@@ -74,7 +74,7 @@ app.routes.embeddedEntity('/transacao-relacionada/:id', function (params, data) 
                 app.ui.subtitle(transaction.name);
 
                 app.ui.click(function () {
-                    app.apps.entity({
+                    app.apps.open({
                         app : app.slug,
                         route : '/transacao/' + transaction._id
                     })

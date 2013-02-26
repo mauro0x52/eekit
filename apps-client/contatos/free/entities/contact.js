@@ -7,203 +7,191 @@
  * @param  params.id : id do contato
  */
 app.routes.entity('/contato/:id', function (params, data) {
+
     var
     /**
-     * Campos dos dados do usuário
-     */
-    fields = {},
-    /**
-     * Callback chamado quando executada a remoção
-     */
-    remove = (data && data.remove) ? data.remove : function () {},
-    /**
-     * Callback chamado quando executada a edição
-     */
-    edit = (data && data.edit) ? data.edit : function () {},
-    /**
-     * Nome dos dias da semana
-     */
-    daysNames = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'],
-    /**
-     * Nome dos meses
-     */
-    monthsNames = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
-    /**
-     * Lista de fases de negociação do usuário
+     * Lista de categorias
      */
     categories,
-    /**
-     * Lista de campos configuráveis
-     */
-    userfields;
 
     /**
-     * Formata a data de forma legível para o usuário
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  string : data a ser formatada
+     * Lista de campos personalizados
      */
-    function dateFormat (string) {
-        var date = new Date(string);
-        return daysNames[date.getDay()]  + ', ' + date.getDate() + ' de ' + monthsNames[date.getMonth()] + ' de ' + date.getFullYear()
-    }
+    userFields,
 
-    /**
-     * Retorna o nome da fase de negociação
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  category_id : id da fase de negociação
+    /*
+     * Classe que representa os campos do usuário
      */
-    function categoryName (category_id) {
-        var i;
-        for (i in categories) {
-            if (category_id.toString() === categories[i]._id.toString()) {
-                return categories[i].name;
-            }
+    Entity;
+
+    Entity = function (data) {
+        var that = this,
+            contact = new app.models.contact(data),
+            actions,
+            fields,
+            fieldsets;
+
+        /* Conjuntos de campos */
+        fieldsets = {
+            details : new app.ui.dataset({legend : 'Detalhes'}),
+            fields  : new app.ui.dataset({legend : 'Mais informações'})
+        };
+        app.ui.datasets.add([fieldsets.details, fieldsets.fields]);
+
+
+        /* Campos de dados */
+        fields = {
+            category : new app.ui.data({legend : 'categoria'}),
+            email    : new app.ui.data({legend : 'email'}),
+            phone    : new app.ui.data({legend : 'telefone'})
+        };
+
+        /* Botões do item */
+        actions = {
+            edit         : new app.ui.action({
+                legend : 'editar contato',
+                image  : 'pencil',
+                click  : function() {
+                    app.apps.open({app : app.slug, route : '/editar-contato/' + contact._id});
+                }
+            }),
+            remove       : new app.ui.action({
+                legend : 'remover contato',
+                image  : 'trash',
+                click  : function() {
+                    app.apps.open({app : app.slug, route : '/remover-contato/' + contact._id});
+                }
+            })
+        };
+        app.ui.actions.add([actions.remove, actions.edit]);
+
+        /* Exibe o nome do contato */
+        this.name = function (value) {
+            app.ui.title('Contato: ' + value);
+            app.ui.subtitle(value);
         }
-        return 'Não-cliente'
-    }
 
-    /**
-     * Retorna o nome do campo configurável
-     *
-     * @author Rafael Erthal
-     * @since  2013-01
-     *
-     * @param  field_id : id do campo
-     */
-    function fieldName (field_id) {
-        var i;
-        for (i in userfields) {
-            if (field_id.toString() === userfields[i]._id.toString()) {
-                return userfields[i].name;
-            }
+        /* Exibe as notas do contato */
+        this.notes = function (value) {
+            app.ui.description(value);
         }
-        return ''
-    }
 
-    /**
-     * Monta ferramenta
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     */
+        /* Exibe o email do contato */
+        this.email = function (value) {
+            fields.email.values.remove();
+            if (value) {
+                fields.email.values.add(new app.ui.value({value : value}));
+                fieldsets.details.fields.add(fields.email);
+            } else {
+                fieldsets.details.fields.remove(fields.email);
+            }
+        };
 
-    /* autenticando usuário e pegando categorias */
-    app.models.category.list(function (data) {
-        categories = data;
-        app.models.field.list(function (data) {
-            userfields = data;
-            app.models.contact.find(params.id, function (contact) {
-                var i;
+        /* Exibe o telefone do contato */
+        this.phone = function (value) {
+            fields.phone.values.remove();
+            if (value) {
+                fields.phone.values.add(new app.ui.value({value : value}));
+                fieldsets.details.fields.add(fields.phone);
+            } else {
+                fieldsets.details.fields.remove(fields.phone);
+            }
+        };
 
-                app.ui.actions.add(
-                    new app.ui.action({
-                        label : 'editar contato',
-                        image : 'pencil',
-                        click : function() {
-                            app.apps.dialog({
-                                app : 'contatos',
-                                route : '/editar-contato/'+contact._id,
-                                close : function (data) {
-                                    if (data) {
-                                        app.ui.title('Contato: ' + data.name);
-                                        app.ui.subtitle(data.name);
-                                        app.ui.description(data.notes);
-                                        fields.phone.values.get()[0].value(data.phone || '-');
-                                        fields.email.values.get()[0].value(data.email || '-');
-                                        fields.category.values.get()[0].value(categoryName(data.category));
-                                        edit(data);
-                                    }
-                                }
-                            })
-                        }
-                    })
-                );
-                app.ui.actions.add(
-                    new app.ui.action({
-                        label : 'remover contato',
-                        image : 'trash',
-                        click : function() {
-                            app.apps.dialog({
-                                app : 'contatos',
-                                route : '/remover-contato/'+contact._id,
-                                close : function (data) {
-                                    if (data) {
-                                        remove();
-                                        app.close();
-                                    }
-                                }
-                            })
-                        }
-                    })
-                );
+        /* Exibe a categoria do contato */
+        this.category = function (value) {
+            var i;
 
-                app.ui.title('Contato: ' + contact.name);
+            fields.category.values.remove();
+            if (value) {
+                for (i in categories) {
+                    if (value.toString() === categories[i]._id.toString()) {
+                        fields.category.values.add(new app.ui.value({value : categories[i].name}));
+                        fieldsets.details.fields.add(fields.category);
+                    }
+                }
+            } else {
+                fieldsets.details.fields.remove(fields.category);
+            }
+        };
 
-                app.ui.subtitle(contact.name);
+        /* Exibe campos personalizados do contato */
+        this.fields = function (value) {
+            var i, j;
 
-                app.ui.description(contact.notes);
-
-
-                fields.category = new app.ui.data({
-                    legend : 'categoria',
-                    values : [new app.ui.value({value : categoryName(contact.category)})]
-                });
-
-                fields.email = new app.ui.data({
-                    legend : 'email',
-                    values : [new app.ui.value({value : contact.email || '-' })]
-                });
-
-                fields.phone = new app.ui.data({
-                    legend : 'telefone',
-                    values : [new app.ui.value({value : contact.phone || '-'})]
-                });
-
-                fields.userfields = []
-
-                for (i in contact.fieldValues) {
-                    if(fieldName(contact.fieldValues[i].field)) {
-                        fields.userfields.push(new app.ui.data({
-                            legend : fieldName(contact.fieldValues[i].field),
-                            values : [new app.ui.value({value : contact.fieldValues[i].value || '-'})]
+            fieldsets.fields.fields.remove();
+            for (i in value) {
+                for (j in userFields) {
+                    if (value[i].field.toString() === userFields[j]._id.toString()) {
+                        fieldsets.fields.fields.add(new app.ui.data({
+                            legend : userFields[j].name,
+                            values : [new app.ui.value({value : value[i].value})]
                         }));
                     }
                 }
+            }
+        }
 
-                app.ui.datasets.add(
-                    new app.ui.dataset({
-                        legend : 'Detalhes',
-                        fields : [fields.category, fields.email, fields.phone]
-                    })
-                );
+        /* Pegando a edição do contato */
+        app.events.bind('update contact ' + contact._id, function (data) {
+            contact = new app.models.contact(data);
 
-                app.ui.datasets.add(
-                    new app.ui.dataset({
-                        legend : 'Mais informações',
-                        fields : fields.userfields
-                    })
-                );
+            if (contact) {
+                that.name(contact.name);
+                that.notes(contact.notes);
+                that.category(contact.category);
+                that.email(contact.email);
+                that.phone(contact.phone);
+                that.fields(contact.fieldValues);
+            }
+        });
 
-                app.apps.embeddedList({
+        /* Pegando o drop do contato */
+        app.events.bind('drop contact ' + contact._id, function (data) {
+            contact = new app.models.contact(data);
+
+            if (contact) {
+                that.category(contact.category);
+            }
+        });
+
+        /* Pegando a exclusão do contato */
+        app.events.bind('remove contact ' + contact._id, app.close);
+
+        if (contact) {
+            this.name(contact.name);
+            this.notes(contact.notes);
+            this.category(contact.category);
+            this.email(contact.email);
+            this.phone(contact.phone);
+            this.fields(contact.fieldValues);
+        }
+    };
+
+    /**
+     * Monta a view
+     *
+     * @author Mauro Ribeiro
+     * @since  2012-12
+     */
+    app.models.category.list(function (data) {
+        categories = data;
+        app.models.field.list(function (data) {
+            userFields = data;
+            app.models.contact.find(params.id, function (contact) {
+                new Entity(contact);
+
+                app.apps.open({
                     app : 'tarefas',
                     route : '/relacionadas',
                     data : {
-                        add : {
-                            embeddeds : ['/contatos/contato-relacionado/' + contact._id],
-                            category : 'Vendas',
+                        embed  : ['/contatos/contato-relacionado/' + contact._id],
+                        insert : {
                             title : contact.name
-                        },
-                        list : {
-                            embeddeds : ['/contatos/contato-relacionado/' + contact._id]
                         }
                     },
                     open : function (tool) {
+                            /* Exibe o orientador */
                             setTimeout(function() {
                                 if (tool.groups.get()[0].items.get().length + tool.groups.get()[1].items.get().length === 0) {
                                     tool.groups.get()[0].header.actions.get()[0].helper.description('Adicione tarefas para o seu contato e mantenha seu relacionamento em dia');
@@ -213,6 +201,8 @@ app.routes.entity('/contato/:id', function (params, data) {
                         app.ui.embbeds.add(tool);
                     }
                 })
+
+
             });
         });
     });

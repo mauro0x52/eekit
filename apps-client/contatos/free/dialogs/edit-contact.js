@@ -145,6 +145,7 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
                 })
             }
             contact.save(function () {
+                app.events.trigger('update contact ' + params.id, contact);
                 app.close(contact);
             });
         });
@@ -158,6 +159,7 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
      * @since  2012-12
      */
     app.ui.title("Editar contato");
+    app.ui.form.action("Editar!");
 
     app.models.category.list(function(categories) {
         app.models.field.list(function (fields) {
