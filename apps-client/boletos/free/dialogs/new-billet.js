@@ -173,13 +173,13 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
             legend : 'Agência',
             name : 'agency',
             value : request.agency ? request.agency : '',
-            rules : [{rule : /^\d{4}$/, message : 'formato inválido (ex: 1234)'}]
+            rules : [{rule : /^\d{4}(\-[0-9x]{1})?$/, message : 'agência inválida'}]
         });
         fields.account = new app.ui.inputText({
             legend : 'Conta corrente',
             name : 'account',
             value : request.account ? request.account : '',
-            rules : [{rule : /^\d{5,8}(\-[0-9x]{1})?$/, message : 'formato inválido (ex: 12345-6)'}]
+            rules : [{rule : /^\d{5,8}(\-[0-9x]{1})?$/, message : 'conta inválida'}]
         });
         for (var i in walletsOptions) {
             walletsOptions[i].visibility('hide');
@@ -278,7 +278,7 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
                 cpfCnpj : fields.cpfCnpj.value(),
                 /* banco */
                 bankId : fields.bankId.value()[0],
-                agency : fields.agency.value(),
+                agency : fields.agency.value().split('-')[0],
                 account : fields.account.value().split('-')[0],
                 accountVD : fields.account.value().split('-')[1],
                 wallet : fields.wallet.value()[0],
