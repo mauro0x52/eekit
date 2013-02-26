@@ -62,7 +62,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
                     image : 'add',
                     click : function () {
                         app.apps.open({
-                            app   : 'tarefas',
+                            app   : app.slug,
                             route : '/adicionar-tarefa',
                             data  : {
                                 embeddeds : response.embed,

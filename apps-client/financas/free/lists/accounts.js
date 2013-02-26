@@ -6,197 +6,200 @@
  */
 app.routes.list('/contas', function (params, data) {
 
-    app.tracker.event('visualizar contas');
-
     var
     /**
-     * Lista de duplas accountItem :
-     * {account : app.models.account, item : app.ui.item}
+     * Classe que representa um item
      */
-    accountsItems = {},
-    /**
-     * Grupo principal que contém os itens
-     */
-    group;
+    Item,
 
     /**
-     * Constrói os botões de ação de um item
+     * Objeto com os grupos
+     */
+    groups;
+
+    /* montando os grupos */
+    groups = {
+        group : new app.ui.group()
+    };
+    
+    app.ui.groups.add([groups.group]);
+
+    /**
+     * Grupo que uma categoria se encaixa
      *
      * @author Mauro Ribeiro
      * @since  2012-12
      *
-     * @param  accountItem
-     * @return [app.ui.action]
+     * @param  category : category
+     * @return ui.group
      */
-    function itemActions (accountItem) {
-        var actions = [];
+    function fitGroup (category) {
+        return groups.group;
+    }
 
-        actions.push(new app.ui.action({
-            image : 'pencil',
-            legend : 'editar',
+    /* montando os items */
+    Item = function (data) {
+        var that = this,
+            account = new app.models.account(data),
+            icons,
+            actions;
+
+        this.item = new app.ui.item();
+        
+        /* Icones do item */
+        icons = {
+            bank           : new app.ui.icon({image : 'wallet', legend : '-'}),
+            agency         : new app.ui.icon({image : 'wallet', legend : '-'}),
+            account        : new app.ui.icon({image : 'wallet', legend : '-'}),
+            initialBalance : new app.ui.icon({image : 'wallet', legend : '-'})
+        };
+
+        /* Botões do item */
+        actions = {
+            edit         : new app.ui.action({
+                legend : 'editar conta',
+                image  : 'pencil',
+                click  : function() {
+                    app.apps.open({app : app.slug, route : '/editar-conta/' + account._id});
+                }
+            })
+        };
+        this.item.actions.add([actions.edit]);
+
+        /* Exibe o nome da conta */
+        this.name = function (value) {
+            this.item.title(value);
+            this.item.label.legend(value);
+        };
+
+        /* Exibe a cor da conta */
+        this.color = function (value) {
+            //Ja vou deixar esse método aqui caso no futuro usuário possa escolher cor
+            this.item.label.color('blue');
+        };
+
+        /* Exibe o banco da conta */
+        this.bank = function (value) {
+            if (value) {
+                this.item.icons.add(icons.bank);
+                icons.bank.legend('Banco: ' + value);
+            } else {
+                this.item.icons.remove(icons.bank);
+                icons.bank.legend('-');
+            }
+        };
+
+        /* Exibe a agencia da conta */
+        this.agency = function (value) {
+            if (value) {
+                this.item.icons.add(icons.agency);
+                icons.agency.legend('Agência: ' + value);
+            } else {
+                this.item.icons.remove(icons.agency);
+                icons.agency.legend('-');
+            }
+        };
+
+        /* Exibe a conta da conta */
+        this.account = function (value) {
+            if (value) {
+                this.item.icons.add(icons.account);
+                icons.account.legend('Conta: ' + value);
+            } else {
+                this.item.icons.remove(icons.account);
+                icons.account.legend('-');
+            }
+        };
+
+        /* Exibe o balanço inicial da conta */
+        this.initialBalance = function (value) {
+            if (value) {
+                this.item.icons.add(icons.initialBalance);
+                icons.initialBalance.legend('Saldo inicial: ' + (value*1).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.'));
+            } else {
+                this.item.icons.remove(icons.initialBalance);
+                icons.initialBalance.legend('-');
+            }
+        };
+
+        /* Pegando a edição da categoria */
+        app.events.bind('update account ' + account._id, function (data) {
+            account = new app.models.account(data);
+
+            if (account) {
+                that.name(account.name);
+                that.color(account.color);
+                that.bank(account.bank);
+                that.agency(account.agency);
+                that.account(account.account);
+                that.initialBalance(account.initialBalance);
+            }
+        });
+
+        /* Pegando a exclusão da categoria */
+        app.events.bind('remove account ' + account._id, this.item.detach);
+
+        /* Pegando quando o filtro é acionado */
+        app.events.bind('filter account', function (fields) {
+            var queryField = fields.query.value();
+            if (
+                queryField.length > 1 && account.name.toLowerCase().indexOf(queryField.toLowerCase()) === -1
+            ) {
+                that.item.visibility('hide');
+            } else {
+                that.item.visibility('show');
+            }
+        });
+
+        if (account) {
+            this.name(account.name);
+            this.color(account.color);
+            this.bank(account.bank);
+            this.agency(account.agency);
+            this.account(account.account);
+            this.initialBalance(account.initialBalance);
+        }
+    }
+
+    /* autenticando usuário e pegando contas */
+    app.models.account.list(function (accounts) {
+        var fields = {}
+        
+        app.ui.title('Contas');
+        app.tracker.event('visualizar contas');
+
+        /* Botão global de adicionar categoria */
+        app.ui.actions.add(new app.ui.action({
+            image : 'add',
+            legend : 'adicionar conta',
             click : function () {
                 app.apps.open({
-                    app : 'financas',
-                    route : '/editar-conta/' + accountItem.account._id,
-                    close : function (data) {
-                        if (data) {
-                            accountsItems[data._id].account = data;
-                            accountsItems[data._id].item.title(data.name);
-                            accountsItems[data._id].item.label.legend(data.name);
-                            accountsItems[data._id].item.icons.remove();
-                            accountsItems[data._id].item.icons.add(itemIcons(accountsItems[data._id]));
-                        }
-                    }
+                    app : app.slug,
+                    route : '/adicionar-conta'
                 })
             }
         }));
 
-        return actions;
-    }
-
-    /**
-     * Constrói os ícones de ação de um item
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  accountItem
-     * @return [app.ui.icon]
-     */
-    function itemIcons (accountItem) {
-        var icons = [];
-
-        if (accountItem.account.bank) {
-            icons.push(new app.ui.icon({
-                image : 'wallet',
-                legend : 'Banco: ' + accountItem.account.bank
-            }));
-        }
-        if (accountItem.account.agency) {
-            icons.push(new app.ui.icon({
-                image : 'wallet',
-                legend : 'Agência: ' + accountItem.account.agency
-            }));
-        }
-        if (accountItem.account.account) {
-            icons.push(new app.ui.icon({
-                image : 'wallet',
-                legend : 'Conta: ' + accountItem.account.account
-            }));
-        }
-        if (accountItem.account.initialBalance && (accountItem.account.initialBalance*1).toFixed) {
-            icons.push(new app.ui.icon({
-                image : 'wallet',
-                legend : 'Saldo inicial: ' + (accountItem.account.initialBalance*1).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.')
-            }));
-        }
-
-        return icons;
-    }
-
-    /**
-     * Constrói uma dupla account-item
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  app.model.account
-     * @return accountItem
-     */
-    function accountItem (account) {
-        accountsItems[account._id] = {
-            item : new app.ui.item({
-                title : account.name,
-                label : {
-                    legend : account.name,
-                    color : 'blue'
-                }
-            }),
-            account : account
-        }
-
-        accountsItems[account._id].item.actions.add(itemActions(accountsItems[account._id]));
-        accountsItems[account._id].item.icons.add(itemIcons(accountsItems[account._id]));
-        return accountsItems[account._id];
-    }
-
-
-    /**
-     * Constrói o painel do filtro
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     */
-    function filter () {
-        var
-        /**
-         * Lista de campos do formulário de filtro
-         */
-        fields = {},
-        /**
-         * Fieldset principal do formulário
-         */
-        fieldset,
-        /**
-         * Função para filtrar resultados
-         */
-        filterAccounts;
-
-        /**
-         * Filtra os resultados
-         *
-         * @author Mauro Ribeiro
-         * @since  2012-12
-         */
-        filterAccounts = function () {
-            var queryField = fields.query.value();
-            for (var i in accountsItems) {
-                if (queryField.length > 1 && accountsItems[i].account.name.toLowerCase().indexOf(queryField.toLowerCase()) === -1) {
-                    accountsItems[i].item.visibility('hide');
-                } else {
-                    accountsItems[i].item.visibility('show');
-                }
-            }
-        }
-
+        /* Monta o filtro */
+        app.ui.filter.action('filtrar');
+        /* filtro por texto */
         fields.query = new app.ui.inputText({
             legend : 'Buscar',
             type : 'text',
             name : 'query',
-            change : filterAccounts
+            change : app.ui.filter.submit
         });
-
-        fieldset = new app.ui.fieldset({
-            legend : 'Filtrar categorias',
+        /* fieldset principal */
+        app.ui.filter.fieldsets.add(new app.ui.fieldset({
+            legend : 'Filtrar contas',
             fields : [fields.query]
+        }));
+        /* dispara o evento de filtro */
+        app.ui.filter.submit(function () {
+            app.events.trigger('filter account', fields);
         });
 
-        app.ui.filter.action('filtrar');
-
-        app.ui.filter.fieldsets.add(fieldset);
-
-        app.ui.filter.submit(filterAccounts);
-    }
-
-
-    app.ui.title('Contas');
-
-    app.ui.actions.add(new app.ui.action({
-        image : 'add',
-        legend : 'adicionar conta',
-        click : function () {
-            app.apps.open({
-                app : 'financas',
-                route : '/adicionar-conta',
-                close : function (account) {
-                    console.log(account)
-                    group.items.add(accountItem(account).item);
-                }
-            })
-        }
-    }))
-
-    app.models.account.list(function (accounts) {
+        /* ordenando as contas */
         accounts.sort(function (a,b) {
             var priority_a = a.name || 0,
                 priority_b = b.name || 0;
@@ -205,13 +208,18 @@ app.routes.list('/contas', function (params, data) {
             if (priority_a < priority_b) return -1;
             return 0
         });
-        group = new app.ui.group();
+
+        /* listando as contas */
         for (var i in accounts) {
-            group.items.add(accountItem(accounts[i]).item);
+            fitGroup(accounts[i]).items.add((new Item(accounts[i])).item);
         }
-        app.ui.groups.add(group);
-        filter();
+
+        /* Pegando contas que são cadastradas ao longo do uso do app */
+        app.events.bind('create account', function (account) {
+            fitGroup(account).items.add((new Item(account)).item);
+        });
+
+        /* Exibe o orientador */
         app.models.helpers.defaultAccounts(accounts);
     });
-
 });

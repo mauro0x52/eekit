@@ -101,7 +101,7 @@ app.routes.dialog('/editar-categoria/:id', function (params, data) {
      * @author Mauro Ribeiro
      * @since  2013-02
      */
-    app.ui.title("Adicionar categoria");
+    app.ui.title("Editar categoria");
     app.ui.form.action("Editar!");
 
     app.models.category.find(params.id, function(category) {

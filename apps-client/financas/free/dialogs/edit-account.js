@@ -89,6 +89,7 @@ app.routes.dialog('/editar-conta/:id', function (params, data) {
             account.account = fields.account.value();
             account.initialBalance = fields.initialBalance.value().replace(',', '.');
             account.save(function () {
+                app.events.trigger('update account ' + params.id, account);
                 app.close(account);
             });
         });
@@ -102,6 +103,7 @@ app.routes.dialog('/editar-conta/:id', function (params, data) {
      * @since  2012-12
      */
     app.ui.title("Editar conta");
+    app.ui.form.action("Editar!");
 
     app.models.account.find(params.id, function (account) {
         form(account);

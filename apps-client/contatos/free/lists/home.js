@@ -21,11 +21,6 @@ app.routes.list('/', function (params, data) {
      * Objeto com os grupos de grupos
      */
     groupsets,
-
-    /*
-     * Objeto com os grupos
-     */
-    groups,
     
     /*
      * Vetor com as categorias do usuário
@@ -78,7 +73,7 @@ app.routes.list('/', function (params, data) {
         this.group = new app.ui.group();
         this.group.category = category._id;
 
-        /* Botões do item */
+        /* Botões do grupo */
         actions = {
             add : new app.ui.action({
                 legend : 'adicionar contato',

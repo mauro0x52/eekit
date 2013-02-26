@@ -36,7 +36,7 @@
                     legend : 'adicionar categoria',
                     click : function () {
                         app.apps.open({
-                            app : 'contatos',
+                            app : app.slug,
                             route : '/adicionar-categoria',
                             data : {type : type}
                         })
@@ -172,7 +172,7 @@
             legend : 'adicionar categoria',
             click : function () {
                 app.apps.open({
-                    app : 'contatos',
+                    app : app.slug,
                     route : '/adicionar-categoria',
                 })
             }
