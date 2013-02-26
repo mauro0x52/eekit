@@ -344,7 +344,7 @@ Billet.modulus10 = function (number) {
     // separação dos números
     for (var i = number.length - 1; i >= 0; i--) {
         // efetua multiplicação do número pelo fator
-        temp = (parseInt(number[i]) * factor,10).toString();
+        temp = (parseInt(number[i],10) * factor).toString();
         temp0 = 0;
         // soma todos os dígitos do número * fator
         for (var j in temp) {
