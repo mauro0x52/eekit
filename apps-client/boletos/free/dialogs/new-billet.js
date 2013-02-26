@@ -179,7 +179,7 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
             legend : 'Conta corrente',
             name : 'account',
             value : request.account ? request.account : '',
-            rules : [{rule : /^\d{5}(\-\d{1})?$/, message : 'formato inválido (ex: 12345-6)'}]
+            rules : [{rule : /^\d{5,8}(\-[0-9x]{1})?$/, message : 'formato inválido (ex: 12345-6)'}]
         });
         for (var i in walletsOptions) {
             walletsOptions[i].visibility('hide');
