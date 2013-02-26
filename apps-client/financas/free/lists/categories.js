@@ -6,272 +6,199 @@
  */
 app.routes.list('/categorias', function (params, data) {
 
-    app.tracker.event('visualizar categorias');
-
     var
     /**
-     * Lista das duplas category-item
+     * Classe que representa um item
      */
-    categoriesItems = {},
+    Item,
 
     /**
-     * Grupo de credito
+     * Objeto com os grupos
      */
-    creditGroup,
+    groups;
 
     /**
-     * Grupo de debito
-     */
-    debtGroup;
-
-    /**
-     * Lista das ações de um item
+     * Monta grupo
      *
      * @author Mauro Ribeiro
      * @since  2012-12
      *
-     * @param  categoryItem
-     * @return lista de ações [ui.action]
+     * @param  title : titulo do grupo
+     * @param  type : tipo do grupo
+     * @return ui.group
      */
-    function itemActions (categoryItem) {
-        var actions = [];
-
-        actions.push(new app.ui.action({
-            image : 'pencil',
-            legend : 'editar',
-            click : function () {
-                app.apps.dialog({
-                    app : 'financas',
-                    route : '/editar-categoria/' + categoryItem.category._id,
-                    close : function (data) {
-                        categoriesItems[data._id].category.name = data.name;
-                        categoriesItems[data._id].item.title(data.name);
-                        categoriesItems[data._id].item.label.legend(data.name);
-                        categoriesItems[data._id].item.label.color('blue');
+    function group (title, type) {
+        return new app.ui.group({
+            header : {
+                title   : title,
+                actions : new app.ui.action({
+                    image : 'add',
+                    legend : 'adicionar categoria',
+                    click : function () {
+                        app.apps.open({
+                            app : app.slug,
+                            route : '/adicionar-categoria',
+                            data : {type : type}
+                        })
                     }
+                })
+            }
+        });
+    }
+
+    /* montando os grupos */
+    groups = {
+        debt   : group('Categorias de despesas', 'debt'),
+        credit : group('Categorias de receitas', 'credit')
+    };
+    
+    app.ui.groups.add([groups.debt, groups.credit]);
+
+    /**
+     * Grupo que uma categoria se encaixa
+     *
+     * @author Mauro Ribeiro
+     * @since  2012-12
+     *
+     * @param  category : category
+     * @return ui.group
+     */
+    function fitGroup (category) {
+        switch (category.type) {
+            case 'debt' : 
+                return groups.debt;
+                break;
+            case 'credit' : 
+                return groups.credit;
+                break;
+            default : 
+                return groups.credit;
+        }
+    }
+
+    /* montando os items */
+    Item = function (data) {
+        var that = this,
+            category = new app.models.category(data),
+            actions;
+
+        this.item = new app.ui.item();
+
+        /* Botões do item */
+        actions = {
+            edit         : new app.ui.action({
+                legend : 'editar categoria',
+                image  : 'pencil',
+                click  : function() {
+                    app.apps.open({app : app.slug, route : '/editar-categoria/' + category._id});
+                }
+            }),
+            remove       : new app.ui.action({
+                legend : 'remover categoria',
+                image  : 'trash',
+                click  : function() {
+                    app.apps.open({app : app.slug, route : '/remover-categoria/' + category._id});
+                }
+            })
+        };
+        this.item.actions.add([actions.edit, actions.remove]);
+
+        /* Exibe o titulo da categoria */
+        this.name = function (value) {
+            this.item.title(value);
+            this.item.label.legend(value);
+        };
+
+        /* Exibe a cor da categoria */
+        this.color = function (value) {
+            //Ja vou deixar esse método aqui caso no futuro usuário possa escolher cor
+            this.item.label.color('blue');
+        };
+
+        /* Pegando a edição da categoria */
+        app.events.bind('update category ' + category._id, function (data) {
+            var oldGroup = fitGroup(category);
+
+            category = new app.models.category(data);
+
+            if (oldGroup !== fitGroup(category)) {
+                that.item.detach();
+                fitGroup(category).items.add(that.item);
+            }
+
+            if (category) {
+                that.name(category.name);
+                that.color(category.color);
+            }
+        });
+
+        /* Pegando a exclusão da categoria */
+        app.events.bind('remove category ' + category._id, this.item.detach);
+
+        /* Pegando quando o filtro é acionado */
+        app.events.bind('filter category', function (fields) {
+            var queryField = fields.query.value();
+            if (
+                queryField.length > 1 && category.name.toLowerCase().indexOf(queryField.toLowerCase()) === -1
+            ) {
+                that.item.visibility('hide');
+            } else {
+                that.item.visibility('show');
+            }
+        });
+
+        if (category) {
+            this.name(category.name);
+            this.color(category.color);
+        }
+    }
+
+    /* autenticando usuário e pegando categorias */
+    app.models.category.list(function (categories) {
+        var fields = {}
+        
+        app.ui.title('Categorias');
+        app.tracker.event('visualizar categorias');
+
+        /* Botão global de adicionar categoria */
+        app.ui.actions.add(new app.ui.action({
+            image : 'add',
+            legend : 'adicionar categoria',
+            click : function () {
+                app.apps.open({
+                    app : app.slug,
+                    route : '/adicionar-categoria',
                 })
             }
         }));
 
-        actions.push(new app.ui.action({
-            legend : 'remover',
-            image : 'trash',
-            click : function () {
-                app.apps.dialog({
-                    app : 'financas',
-                    route : '/remover-categoria/' + categoryItem.category._id,
-                    close : function (data) {
-                        if (data) {
-                            categoryItem.item.detach();
-                        }
-                    }
-                });
-            }
-        }));
-
-        return actions;
-    }
-
-    /**
-     * Cria uma dupla category-item
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  category models.category
-     * @return dupla category-item
-     */
-    function categoryItem (category) {
-        categoriesItems[category._id] = {
-            item : new app.ui.item({
-                title : category.name,
-                label : {
-                    legend : category.name,
-                    color : 'blue'
-                }
-            }),
-            category : category
-        }
-
-        categoriesItems[category._id].item.actions.add(itemActions(categoriesItems[category._id]));
-        return categoriesItems[category._id];
-    }
-
-    /**
-     * Constrói o filtro
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     */
-    function filter () {
-        var fields = {}, fieldset, filterCategories;
-
+        /* Monta o filtro */
         app.ui.filter.action('filtrar');
-
-
-        /**
-         * Filtra as categorias
-         *
-         * @author Mauro Ribeiro
-         * @since  2012-12
-         */
-        filterCategories = function () {
-            var queryField = fields.query.value();
-            console.log(fields.type.value())
-
-            if (fields.type.value().indexOf('credit') !== -1) {
-                creditGroup.visibility('show');
-            } else {
-                creditGroup.visibility('hide');
-            }
-
-            if (fields.type.value().indexOf('debt') !== -1) {
-                debtGroup.visibility('show');
-            } else {
-                debtGroup.visibility('hide');
-            }
-
-            for (var i in categoriesItems) {
-                if (queryField.length > 1 && categoriesItems[i].category.name.toLowerCase().indexOf(queryField.toLowerCase()) === -1) {
-                    categoriesItems[i].item.visibility('hide');
-                } else {
-                    categoriesItems[i].item.visibility('show');
-                }
-            }
-        }
-
+        /* filtro por texto */
         fields.query = new app.ui.inputText({
             legend : 'Buscar',
             type : 'text',
             name : 'query',
-            change : filterCategories
+            change : app.ui.filter.submit
         });
-
-        fields.type = new app.ui.inputSelector({
-            legend : 'Tipo',
-            type : 'multiple',
-            name : 'type',
-            options : [
-                new app.ui.inputOption({legend : 'receita', value : 'credit', clicked : true}),
-                new app.ui.inputOption({legend : 'despesa', value : 'debt', clicked : true})
-            ],
-            change : filterCategories
-        });
-
-
-        fieldset = new app.ui.fieldset({
+        /* fieldset principal */
+        app.ui.filter.fieldsets.add(new app.ui.fieldset({
             legend : 'Filtrar categorias',
-            fields : [fields.query, fields.type]
+            fields : [fields.query]
+        }));
+        /* dispara o evento de filtro */
+        app.ui.filter.submit(function () {
+            app.events.trigger('filter category', fields);
         });
 
-        app.ui.filter.fieldsets.add(fieldset);
-
-        app.ui.filter.submit(filterCategories);
-    }
-
-
-    app.ui.title('Categorias');
-
-    app.ui.actions.add(new app.ui.action({
-        image : 'add',
-        legend : 'adicionar categoria',
-        click : function () {
-            app.apps.dialog({
-                app : 'financas',
-                route : '/adicionar-categoria',
-                close : function (category) {
-                    if (category) {
-                        if (category.type === 'credit') {
-                            creditGroup.items.add(categoryItem(category).item);
-                        } else {
-                            debtGroup.items.add(categoryItem(category).item);
-                        }
-                    }
-                }
-            })
-        }
-    }));
-
-    app.models.category.list(function (categories) {
-        categories.sort(function (a,b) {
-            var priority_a = a.name || 0,
-                priority_b = b.name || 0;
-
-            if (priority_a > priority_b) return  1;
-            if (priority_a < priority_b) return -1;
-            return 0
-        });
-
-        creditGroup = new app.ui.group({
-            header : {
-                title : 'Categorias de receitas',
-                actions : [
-                    new app.ui.action({
-                        image : 'add',
-                        legend : 'adicionar categoria',
-                        click : function () {
-                            app.apps.dialog({
-                                app : 'financas',
-                                route : '/adicionar-categoria',
-                                data : {
-                                    type : 'credit'
-                                },
-                                close : function (category) {
-                                    if (category) {
-                                        if (category.type === 'credit') {
-                                            creditGroup.items.add(categoryItem(category).item);
-                                        } else {
-                                            debtGroup.items.add(categoryItem(category).item);
-                                        }
-                                    }
-                                }
-                            })
-                        }
-                    })
-                ]
-            }
-        });
-
-        debtGroup = new app.ui.group({
-            header : {
-                title : 'Categorias de despesas',
-                actions : [
-                    new app.ui.action({
-                        image : 'add',
-                        legend : 'adicionar categoria',
-                        click : function () {
-                            app.apps.dialog({
-                                app : 'financas',
-                                route : '/adicionar-categoria',
-                                data : {
-                                    type : 'debt'
-                                },
-                                close : function (category) {
-                                    if (category) {
-                                        if (category.type === 'credit') {
-                                            creditGroup.items.add(categoryItem(category).item);
-                                        } else {
-                                            debtGroup.items.add(categoryItem(category).item);
-                                        }
-                                    }
-                                }
-                            })
-                        }
-                    })
-                ]
-            }
-        });
-
+        /* listando os campos */
         for (var i in categories) {
-            if (categories[i].type === 'credit') {
-                creditGroup.items.add(categoryItem(categories[i]).item);
-            } else {
-                debtGroup.items.add(categoryItem(categories[i]).item);
-            }
+            fitGroup(categories[i]).items.add((new Item(categories[i])).item);
         }
-        app.ui.groups.add([creditGroup, debtGroup]);
-        filter();
-        app.models.helpers.defaultCategoriesB(categories);
-    });
 
+        /* Pegando categorias que são cadastradas ao longo do uso do app */
+        app.events.bind('create category', function (category) {
+            fitGroup(category).items.add((new Item(category)).item);
+        });
+    });
 });

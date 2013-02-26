@@ -41,6 +41,7 @@ app.routes.dialog('/editar-campo-personalizado/:id', function (params, data) {
         app.ui.form.submit(function() {
             field.name = fields.name.value();
             field.save(function () {
+                app.events.trigger('update field ' + params.id, field);
                 app.close(field);
             });
         });
@@ -54,6 +55,7 @@ app.routes.dialog('/editar-campo-personalizado/:id', function (params, data) {
      * @since  2012-12
      */
     app.ui.title("Editar campo personalizado");
+    app.ui.form.action("Editar!");
 
     app.models.field.find(params.id, function(field) {
         form(field);

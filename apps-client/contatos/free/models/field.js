@@ -24,13 +24,26 @@ app.models.field = function (params) {
      *
      * @author Rafael Erthal
      * @since  2013-01
-     *
-     * @param  cb : callback a ser chamado após a exclusão
      */
     this.remove = function (cb) {
         app.ajax.post({
             url  : 'http://' + app.config.services.contacts.host + ':' + app.config.services.contacts.port + '/field/' + this._id + '/delete'
         }, cb);
+    };
+
+   /**
+    * Drag'n drop 
+    *
+    * @author Rafael Erthal
+    * @since  2013-02
+    *
+    * @param  cb : callback a ser chamado após a edição
+    */
+    this.changePosition = function (position) {
+        this.position = position;
+        this.save();
+
+        app.events.trigger('drop field ' + this._id, this);
     };
 
     /**

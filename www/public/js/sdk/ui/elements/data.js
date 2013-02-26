@@ -33,7 +33,9 @@ sdk.modules.ui.data = function (app) {
             if (HTMLobject && collection && HTMLobject.removeChild) {
                 HTMLobject.removeChild(element);
             } else {
-                parent.remove(this);
+                if (parent) {
+                    parent.remove(this);
+                }
             }
         };
         /* Métodos públicos */

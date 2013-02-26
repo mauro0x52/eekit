@@ -40,6 +40,7 @@ app.routes.dialog('/adicionar-campo-personalizado', function (params, data) {
             };
             var field = new app.models.field(data);
             field.save(function () {
+                app.events.trigger('create field', field);
                 app.close(field);
             });
         });
@@ -53,6 +54,7 @@ app.routes.dialog('/adicionar-campo-personalizado', function (params, data) {
      * @since  2013-01
      */
     app.ui.title("Adicionar campo personalizado");
+    app.ui.form.action("Adicionar!");
 
     form();
 });

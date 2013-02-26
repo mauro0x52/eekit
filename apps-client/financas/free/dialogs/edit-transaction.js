@@ -157,6 +157,7 @@ app.routes.dialog('/editar-transacao/:id', function (params, data) {
             }
 
             transaction.save(function () {
+                app.events.trigger('update transaction ' + params.id, transaction);
                 app.close(transaction);
             });
         });
@@ -170,6 +171,7 @@ app.routes.dialog('/editar-transacao/:id', function (params, data) {
      * @since  2012-12
      */
     app.ui.title("Editar transação");
+    app.ui.form.action("Editar!");
 
     app.models.category.list(function (categories) {
         app.models.account.list(function (accounts) {

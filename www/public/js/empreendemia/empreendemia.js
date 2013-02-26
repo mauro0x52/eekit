@@ -65,7 +65,7 @@ var empreendemia = {
                 route : route,
                 open  : function (tool) {
                     tool.open();
-                    empreendemia.apps.render(tool, true);
+                    empreendemia.apps.render(tool);
                 }
             });
         });

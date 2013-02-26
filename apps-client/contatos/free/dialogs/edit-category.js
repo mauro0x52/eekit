@@ -88,6 +88,7 @@ app.routes.dialog('/editar-categoria/:id', function (params, data) {
             category.type = fields.types.value()[0];
             category.color = fields.colors.value()[0];
             category.save(function () {
+                app.events.trigger('update category ' + params.id, category);
                 app.close(category);
             });
         });
@@ -100,7 +101,8 @@ app.routes.dialog('/editar-categoria/:id', function (params, data) {
      * @author Mauro Ribeiro
      * @since  2013-02
      */
-    app.ui.title("Adicionar categoria");
+    app.ui.title("Editar categoria");
+    app.ui.form.action("Editar!");
 
     app.models.category.find(params.id, function(category) {
         form(category);

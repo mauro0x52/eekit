@@ -199,6 +199,7 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
             var task = new app.models.task(data);
             if (request.embeddeds) task.embeddeds = request.embeddeds;
             task.save(function (task) {
+                app.events.trigger('create task', task);
                 app.close(task);
             });
         });
@@ -212,6 +213,7 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
      * @since  2012-12
      */
     app.ui.title("Adicionar tarefa");
+    app.ui.form.action("Adicionar!");
 
     app.models.category.list(function(categories) {
         form(categories);

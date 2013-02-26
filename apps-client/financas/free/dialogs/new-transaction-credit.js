@@ -193,6 +193,7 @@ app.routes.dialog('/adicionar-receita', function (params, data) {
              */
             saveTransaction = function (i, repetitions) {
                 transactions[i].save(function () {
+                    app.events.trigger('create transaction', transactions[i]);
                     if (i === repetitions - 1) {
                         app.close(transactions);
                     }
@@ -251,6 +252,7 @@ app.routes.dialog('/adicionar-receita', function (params, data) {
      * @since  2012-12
      */
     app.ui.title("Adicionar receita");
+    app.ui.form.action("Adicionar!");
 
     app.models.category.list(function(categories) {
         app.models.account.list(function(accounts) {

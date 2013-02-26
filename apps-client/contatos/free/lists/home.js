@@ -8,538 +8,476 @@ app.routes.list('/', function (params, data) {
 
     var
     /**
-     * Lista de ui.group de fases de negociação
+     * Classe que representa um item
      */
-    categoriesGroups = {},
-    /**
-     * Lista de { contact : models.contact, item : ui.item }
-     */
-    contactsItems = {},
-    /**
-     * Lista dos grupos de tipo
-     */
-    typeGroups = {},
-    /**
-     * Variável de controle para uma primeira filtragem
-     */
-    firstFilter = true;
+    Item,
 
     /**
-     * Atualiza as informações de uma dupla contact-item após edição
+     * Classe que representa um grupo
+     */
+    Group,
+
+    /*
+     * Objeto com os grupos de grupos
+     */
+    groupsets,
+    
+    /*
+     * Vetor com as categorias do usuário
+     */
+    categories;
+
+    /* montando os gruposets */
+    groupsets = {
+        clients   : new app.ui.groupset({header : {title : 'Clientes'}}),
+        suppliers : new app.ui.groupset({header : {title : 'Fornecedores'}}),
+        partners  : new app.ui.groupset({header : {title : 'Parceiros'}}),
+        personals : new app.ui.groupset({header : {title : 'Pessoais'}})
+    };
+    app.ui.groups.add([groupsets.clients, groupsets.suppliers, groupsets.partners, groupsets.personals])
+
+    /**
+     * Grupo que uma categoria se encaixa
      *
      * @author Mauro Ribeiro
      * @since  2012-12
      *
-     * @param  contactItem : dupla contact-item
-     * @param  data : models.contact recém atualizada
+     * @param  category : category
+     * @return ui.groupset
      */
-    function edit (contactItem, data) {
-        var newLabel;
-        contactItem.item.title(data.name);
-        contactItem.item.description(data.notes);
-        contactItem.contact.name = data.name;
-        contactItem.contact.phone = data.phone;
-        contactItem.contact.email = data.email;
-        contactItem.contact.notes = data.notes;
-        if (contactItem.item.category !== data.category) {
-            categoriesGroups[contactItem.contact.category].group.items.remove(contactItem.item);
-            contactItem.contact.category = data.category;
-            categoriesGroups[contactItem.contact.category].group.items.add(contactItem.item);
-
-            contactItem.item.icons.remove();
-            contactItem.item.icons.add(itemIcons(contactItem));
-
-            newLabel = label(data.category);
-            contactItem.item.label.color(newLabel.color);
-            contactItem.item.label.legend(newLabel.legend);
+    function fitGroupset (group) {
+        switch (group.type) {
+            case 'clients' : 
+                return groupsets.clients;
+                break;
+            case 'suppliers' : 
+                return groupsets.suppliers;
+                break;
+            case 'partners' : 
+                return groupsets.partners;
+                break;
+            case 'personals' : 
+                return groupsets.personals;
+                break;
+            default : 
+                return groupsets.personals;
         }
     }
 
-    /**
-     * Atualiza as informações de uma dupla contact-item após exclusão
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  contactItem : dupla contact-item
-     */
-    function remove (contactItem) {
-        contactItem.item.detach();
-        delete contactsItems[contactItem.contact._id];
-    }
+    /* montando os grupos */
+    Group = function (data) {
+        var that = this,
+            category = new app.models.category(data),
+            actions;
 
-    /**
-     * Ações de um item
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  contactItem : dupla contact-item
-     * @return [ui.action]
-     */
-    function itemActions (contactItem) {
-        var actions = [];
+        this.group = new app.ui.group();
+        this.group.category = category._id;
 
-        actions.push(new app.ui.action({
-            legend : 'editar',
-            image : 'pencil',
-            click : function () {
-                app.apps.dialog({
-                    app : 'contatos',
-                    route : '/editar-contato/'+contactItem.contact._id,
-                    close : function (data) {
-                        edit(contactItem, data);
-                    }
-                })
-            }
-        }));
-
-        actions.push(new app.ui.action({
-            legend : 'mover',
-            image : 'move',
-            click : function () {
-                contactItem.item.drag();
-            }
-        }));
-
-        actions.push(new app.ui.action({
-            legend : 'excluir',
-            image : 'trash',
-            click : function () {
-                app.apps.dialog({
-                    app : 'contatos',
-                    route : '/remover-contato/'+contactItem.contact._id,
-                    close : function (data) {
-                        if (data === true) {
-                            remove(contactItem);
-                        }
-                    }
-                })
-            }
-        }));
-
-        return actions;
-    }
-
-    /**
-     * Ícones de um item
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  contactItem : dupla contact-item
-     * @return [ui.icon]
-     */
-    function itemIcons (contactItem) {
-        var icons = [];
-
-        if (contactItem.contact.email) {
-            icons.push(new app.ui.icon({
-                image : 'envelope',
-                legend : contactItem.contact.email
-            }))
-        }
-
-        if (contactItem.contact.phone) {
-            icons.push(new app.ui.icon({
-                image : 'phone',
-                legend : contactItem.contact.phone
-            }))
-        }
-
-        return icons;
-    }
-
-    /**
-     * Cria uma dupla contact-item
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  contact : contato models.contact
-     * @return {contact, item}
-     */
-    function contactItem (contact) {
-        contactsItems[contact._id] = {
-            item : new app.ui.item({
-                title : contact.name,
-                label : label(contact.category),
-                description : contact.notes,
-                drop : function (group, position) {
-                    var newLabel = label(group.category);
-                    contactsItems[contact._id].contact.priority = position;
-                    contactsItems[contact._id].contact.category = group.category;
-                    contactsItems[contact._id].item.label.color(newLabel.color);
-                    contactsItems[contact._id].item.label.legend(newLabel.legend);
-                    contactsItems[contact._id].contact.save();
-                },
-                droppableGroups : (function () {
-                    var response = [];
-                    for (var i in categoriesGroups) {
-                        response.push(categoriesGroups[i].group);
-                    }
-                    return response;
-                })(),
-                click : function () {
-                    app.apps.entity({
-                        app : 'contatos',
-                        route : '/contato/' + contact._id,
-                        data : {
-                            remove : function (data) {
-                                remove(contactsItems[contact._id]);
-                            },
-                            edit : function (data) {
-                                edit(contactsItems[contact._id], data);
-                            }
-                        }
-                    })
-                }
-            }),
-            contact : contact
-        }
-        contactsItems[contact._id].item.actions.add(itemActions(contactsItems[contact._id]));
-        contactsItems[contact._id].item.icons.add(itemIcons(contactsItems[contact._id]));
-
-        return contactsItems[contact._id];
-    }
-
-    /**
-     * Ações de um grupo
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  categoryGroup : dupla category-group
-     * @return [ui.action]
-     */
-    function groupActions (categoryGroup) {
-        var actions = [];
-
-        actions.push(new app.ui.action({
-            legend : 'adicionar contato',
-            image : 'add',
-            click : function () {
-                app.apps.dialog({
-                    app : 'contatos',
-                    route : '/adicionar-contato',
-                    data : {
-                        category : categoryGroup.category._id
-                    },
-                    close : function (data) {
-                        categoriesGroups[data.category].group.items.add(contactItem(data).item);
-                        app.models.helpers.firstContact(contactsItems);
-                        app.models.helpers.noFields(contactsItems);
-                        app.models.helpers.fiveContacts(contactsItems);
-                    }
-                })
-            }
-        }));
-
-        return actions;
-    }
-
-    /**
-     * Cria label de uma fase de negociação
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  category_id : id da fase de negociação
-     * @return {lagend, color}
-     */
-    function label (category_id) {
-        var category;
-
-        if (category_id) {
-            category = categoriesGroups[category_id].category;
-        } else {
-            category = { name : 'sem categoria', color : 'black'}
-        }
-        return {legend : category.name, color : category.color}
-    }
-
-    /**
-     * Constrói o formulário de filtragem
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     */
-    function filter () {
-        var
-        /**
-         * Campos do formulário
-         */
-        fields = {},
-        /**
-         * Fases de negociação
-         */
-        categoriesOptions = {
-            clients : [],
-            suppliers : [],
-            partners : [],
-            personals : []
-        },
-        /**
-         * Fieldset
-         */
-        fieldset,
-        /**
-         * Função de filtrar
-         */
-        filterCategories;
-
-
-        /**
-         * Filtra os contatos
-         *
-         * @author Mauro Ribeiro
-         * @since  2012-12
-         */
-        filterCategories = function () {
-            var categoriesList,
-                queryField = fields.query.value(),
-                query,
-                csv = 'data:application/octet-stream,';
-
-            categoriesList = fields.categories.clients.value().concat(fields.categories.suppliers.value(),fields.categories.partners.value(),fields.categories.personals.value());
-            for (var i in categoriesGroups) {
-                if (categoriesList.indexOf(categoriesGroups[i].category._id) === -1) {
-                    categoriesGroups[i].group.visibility('hide');
-                } else {
-                    categoriesGroups[i].group.visibility('show');
-                }
-            }
-
-            if (fields.categories.clients.value().length) {
-                typeGroups.clients.visibility('show');
-            } else {
-                typeGroups.clients.visibility('hide');
-            }
-
-            if (fields.categories.suppliers.value().length) {
-                typeGroups.suppliers.visibility('show');
-            } else {
-                typeGroups.suppliers.visibility('hide');
-            }
-
-            if (fields.categories.partners.value().length) {
-                typeGroups.partners.visibility('show');
-            } else {
-                typeGroups.partners.visibility('hide');
-            }
-
-            if (fields.categories.personals.value().length) {
-                typeGroups.personals.visibility('show');
-            } else {
-                typeGroups.personals.visibility('hide');
-            }
-
-            for (var i in contactsItems) {
-                query  = contactsItems[i].contact.name;
-                query += ' ' + contactsItems[i].contact.email;
-                query += ' ' + contactsItems[i].contact.phone;
-                query += ' ' + contactsItems[i].contact.notes;
-
-                for (var j in contactsItems[i].contact.fieldValues) {
-                    query += ' ' + contactsItems[i].contact.fieldValues[j].value;
-                }
-
-                if (
-                    (queryField.length > 1) &&
-                    query.toLowerCase().indexOf(queryField.toLowerCase()) === -1
-                ) {
-                    contactsItems[i].item.visibility('hide');
-                } else {
-                    csv += contactsItems[i].contact.name + ' %2C' + contactsItems[i].contact.phone + ' %2C' + contactsItems[i].contact.email + '%0A'
-                    contactsItems[i].item.visibility('show');
-                }
-            }
-            app.ui.actions.get()[0].href(csv);
-            if (firstFilter) {
-                firstFilter = false;
-            } else {
-                app.models.helpers.fiveContactsAndFiltered(contactsItems);
-            }
-        }
-
-        /* Input com as categorias */
-        for (var i in categoriesGroups) {
-            if (categoriesGroups.hasOwnProperty(i)) {
-                categoriesOptions[categoriesGroups[i].category.type].push(new app.ui.inputOption({
-                    legend : categoriesGroups[i].category.name,
-                    value : categoriesGroups[i].category._id,
-                    clicked : true,
-                    label : label(categoriesGroups[i].category._id).color
-                }));
-            }
-        }
-
-        app.ui.filter.action('filtrar');
-
-        /* busca */
-        fields.query = new app.ui.inputText({
-            legend : 'Buscar',
-            type : 'text',
-            name : 'query',
-            change : function () {
-                app.ui.filter.submit()
-            }
-        });
-
-        /* fases de negociação */
-        fields.categories = {};
-
-        fields.categories.clients = new app.ui.inputSelector({
-            type : 'multiple',
-            name : 'category',
-            legend : 'Clientes',
-            options : categoriesOptions.clients,
-            change : function () {
-                app.ui.filter.submit()
-            },
-            actions : true
-        });
-        fields.categories.suppliers = new app.ui.inputSelector({
-            type : 'multiple',
-            name : 'category',
-            legend : 'Fornecedores',
-            options : categoriesOptions.suppliers,
-            change : function () {
-                app.ui.filter.submit()
-            },
-            actions : true
-        });
-        fields.categories.partners = new app.ui.inputSelector({
-            type : 'multiple',
-            name : 'category',
-            legend : 'Parceiros',
-            options : categoriesOptions.partners,
-            change : function () {
-                app.ui.filter.submit()
-            },
-            actions : true
-        });
-        fields.categories.personals = new app.ui.inputSelector({
-            type : 'multiple',
-            name : 'category',
-            legend : 'Pessoais',
-            options : categoriesOptions.personals,
-            change : function () {
-                app.ui.filter.submit()
-            },
-            actions : true
-        });
-
-        /* fieldset */
-        fieldset = new app.ui.fieldset({
-            legend : 'Filtrar contatos',
-            fields : [fields.query, fields.categories.clients, fields.categories.suppliers, fields.categories.partners, fields.categories.personals]
-        });
-
-        app.ui.filter.fieldsets.add(fieldset);
-
-        app.ui.filter.submit(filterCategories);
-        filterCategories();
-    }
-
-    /**
-     * Ações globais
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     */
-    function globalActions () {
-        app.ui.actions.add([
-            new app.ui.action({
-                legend : 'baixar dados',
-                image : 'download'
-            }),
-            new app.ui.action({
+        /* Botões do grupo */
+        actions = {
+            add : new app.ui.action({
                 legend : 'adicionar contato',
                 image : 'add',
                 click : function () {
-                    app.apps.dialog({
-                        app : 'contatos',
+                    app.apps.open({
+                        app   : app.slug,
                         route : '/adicionar-contato',
-                        close : function (data) {
-                            categoriesGroups[data.category].group.items.add(contactItem(data).item);
-                            app.models.helpers.firstContact(contactsItems);
-                            app.models.helpers.noFields(contactsItems);
-                            app.models.helpers.fiveContacts(contactsItems);
-                        }
-                    })
+                        data  : {category : category._id}
+                    });
                 }
             })
-        ]);
+        };
+        this.group.header.actions.add([actions.add]);
+
+        /* Exibe o nome da categoria */
+        this.name = function (value) {
+            this.group.header.title(value);
+        };
+
+        /* Pegando a edição da categoria */
+        app.events.bind('update category ' + category._id, function (data) {
+            var oldGroup = fitGroup(category);
+
+            category = new app.models.category(data);
+
+            if (oldGroup !== fitGroup(category)) {
+                that.item.detach();
+                fitGroup(category).groups.add(that.group);
+            }
+
+            if (category) {
+                that.name(category.name);
+            }
+        });
+
+        /* Pegando a exclusão da categoria */
+        app.events.bind('remove category ' + category._id, this.group.detach);
+
+        /* Pegando quando o filtro é acionado */
+        app.events.bind('filter contact', function (fields) {
+            var query = fields.categories.clients.value().concat(
+                fields.categories.suppliers.value(),
+                fields.categories.partners.value(),
+                fields.categories.personals.value()
+            );
+            
+            if (
+                query.indexOf(category._id) === -1
+            ) {
+                that.group.visibility('hide');
+            } else {
+                that.group.visibility('show');
+            }
+        });
+
+        if (category) {
+            this.name(category.name);
+        }
     }
 
     /**
-     * Monta a view
+     * Grupo que um contato se encaixa
      *
      * @author Mauro Ribeiro
      * @since  2012-12
+     *
+     * @param  contact : contact
+     * @return ui.group
      */
-    app.ui.title('Contatos');
+    function fitGroup (contact) {
+        var i,
+            groups;
 
-    globalActions();
-
-    typeGroups.clients = new app.ui.groupset({
-        header : {
-            title : 'Clientes'
-        }
-    });
-    typeGroups.suppliers = new app.ui.groupset({
-        header : {
-            title : 'Fornecedores'
-        }
-    });
-    typeGroups.partners = new app.ui.groupset({
-        header : {
-            title : 'Parceiros'
-        }
-    });
-    typeGroups.personals = new app.ui.groupset({
-        header : {
-            title : 'Pessoais'
-        }
-    });
-    typeGroups.noCategory = new app.ui.group({
-        header : {
-            title : 'Sem categoria'
-        }
-    });
-
-    app.ui.groups.add(typeGroups.clients);
-    app.ui.groups.add(typeGroups.suppliers);
-    app.ui.groups.add(typeGroups.partners);
-    app.ui.groups.add(typeGroups.personals);
-    app.ui.groups.add(typeGroups.noCategory);
-
-    app.models.category.list(function (categories) {
-
-        for (var i in categories) {
-            categoriesGroups[categories[i]._id] = {
-                group : new app.ui.group({
-                    header : {
-                        title : categories[i].name
-                    }
-                }),
-                category : categories[i]
+        groups = groupsets.clients.groups.get();
+        for (i in groups) {
+            if (groups[i].category === contact.category) {
+                return groups[i];
             }
-            categoriesGroups[categories[i]._id].group.header.actions.add(groupActions(categoriesGroups[categories[i]._id]));
-            categoriesGroups[categories[i]._id].group.category = categories[i]._id;
-            if (typeGroups.hasOwnProperty(categories[i].type)) {
-                typeGroups[categories[i].type].groups.add(categoriesGroups[categories[i]._id].group);
+        }
+
+        groups = groupsets.suppliers.groups.get();
+        for (i in groups) {
+            if (groups[i].category === contact.category) {
+                return groups[i];
+            }
+        }
+
+        groups = groupsets.partners.groups.get();
+        for (i in groups) {
+            if (groups[i].category === contact.category) {
+                return groups[i];
+            }
+        }
+
+        groups = groupsets.personals.groups.get();
+        for (i in groups) {
+            if (groups[i].category === contact.category) {
+                return groups[i];
+            }
+        }
+    }
+
+    /* montando os items */
+    Item = function (data) {
+        var that = this,
+            contact = new app.models.contact(data),
+            icons,
+            actions;
+
+        /* Monta a lista de grupos para drop */
+        function droppableGroups() {
+            var i,
+                groups
+                res = [];
+
+            groups = groupsets.clients.groups.get();
+            for (i in groups) {
+                res.push(groups[i]);
+            }
+
+            groups = groupsets.suppliers.groups.get();
+            for (i in groups) {
+                res.push(groups[i]);
+            }
+
+            groups = groupsets.partners.groups.get();
+            for (i in groups) {
+                res.push(groups[i]);
+            }
+
+            groups = groupsets.personals.groups.get();
+            for (i in groups) {
+                res.push(groups[i]);
+            }
+            return res;
+        }
+
+        this.item = new app.ui.item({
+            drop : function (group, position) {
+                contact.changeCategory(group.category, position);
+            },
+            click : function () {
+                app.apps.open({app : app.slug, route : '/contato/' + contact._id})
+            },
+            droppableGroups : droppableGroups(),
+        });
+
+        /* Icones do item */
+        icons = {
+            email : new app.ui.icon({image : 'envelope'}),
+            phone : new app.ui.icon({image : 'phone'})
+        };
+
+        /* Botões do item */
+        actions = {
+            edit         : new app.ui.action({
+                legend : 'editar contato',
+                image  : 'pencil',
+                click  : function() {
+                    app.apps.open({app : app.slug, route : '/editar-contato/' + contact._id});
+                }
+            }),
+            drag         : new app.ui.action({
+                legend : 'mover contato',
+                image  : 'move',
+                click  : that.item.drag
+            }),
+            remove       : new app.ui.action({
+                legend : 'remover contato',
+                image  : 'trash',
+                click  : function() {
+                    app.apps.open({app : app.slug, route : '/remover-contato/' + contact._id});
+                }
+            })
+        };
+        this.item.actions.add([actions.drag, actions.edit, actions.remove]);
+
+        /* Exibe o nome do contato */
+        this.name = function (value) {
+            this.item.title(value);
+        };
+
+        /* Exibe as notas do contato */
+        this.notes = function (value) {
+            this.item.description(value);
+        };
+
+        this.category = function (value) {
+            var i;
+
+            for (i in categories) {
+                if (categories[i]._id === value) {
+                    this.item.label.legend(categories[i].name);
+                    this.item.label.color(categories[i].color);
+                }
+            }
+        }
+
+        /* Exibe o email do contato */
+        this.email = function (value) {
+            if (value) {
+                this.item.icons.add(icons.email);
+                icons.email.legend(value);
             } else {
-
+                this.item.icons.remove(icons.email);
+                icons.email.legend('-');
             }
+        };
+
+        /* Exibe o telefone do contato */
+        this.phone = function (value) {
+            if (value) {
+                this.item.icons.add(icons.phone);
+                icons.phone.legend(value);
+            } else {
+                this.item.icons.remove(icons.phone);
+                icons.phone.legend('-');
+            }
+        };
+
+        /* Pegando a edição do contato */
+        app.events.bind('update contact ' + contact._id, function (data) {
+            var oldGroup = fitGroup(contact);
+
+            contact = new app.models.contact(data);
+
+            if (oldGroup !== fitGroup(contact)) {
+                that.item.detach();
+                fitGroup(contact).items.add(that.item);
+            }
+
+            if (contact) {
+                that.name(contact.name);
+                that.notes(contact.notes);
+                that.category(contact.category);
+                that.email(contact.email);
+                that.phone(contact.phone);
+            }
+        });
+
+        /* Pegando o drop do contato */
+        app.events.bind('drop contact ' + contact._id, function (data) {
+            contact = new app.models.contact(data);
+
+            if (contact) {
+                that.category(contact.category);
+            }
+        });
+
+        /* Pegando a exclusão do contato */
+        app.events.bind('remove contact ' + contact._id, this.item.detach);
+
+        /* Pegando quando o filtro é acionado */
+        app.events.bind('filter contact', function (fields) {
+            var query,
+                queryField = fields.query.value();
+
+            query  = contact.name;
+            query += ' ' + contact.email;
+            query += ' ' + contact.phone;
+            query += ' ' + contact.notes;
+
+            if (
+                (queryField.length > 1) &&
+                query.toLowerCase().indexOf(queryField.toLowerCase()) === -1
+            ) {
+                that.item.visibility('hide');
+            } else {
+                that.item.visibility('show');
+                app.ui.actions.get()[0].href(
+                    app.ui.actions.get()[0].href() +
+                    contact.name  + ' %2C' +
+                    contact.phone + ' %2C' +
+                    contact.email + '%0A'
+                );
+            }
+        });
+
+        if (contact) {
+            this.name(contact.name);
+            this.notes(contact.notes);
+            this.category(contact.category);
+            this.email(contact.email);
+            this.phone(contact.phone);
         }
+    }
 
+    /* autenticando usuário e pegando categorias */
+    app.models.category.list(function (data) {
+        /* monta a listagem */
         app.models.contact.list({}, function (contacts) {
-            if (contacts.length === 0) {
-                app.ui.actions.get()[1].helper.description('Comece cadastrando seus principais clientes, parceiros e fornecedores e guarde suas informações principais');
-                app.ui.actions.get()[1].helper.example('Dê preferência para aqueles com quem você precisará conversar em breve, seja para fazer uma venda ou pedir a nota fiscal.');
+            var fields = {},
+                firstFilter = true;
+
+            /* variável global com categorias */
+            categories = data;
+
+            app.ui.title('Contatos');
+
+            /* Botão global de baixar dados */
+            app.ui.actions.add(new app.ui.action({
+                legend : 'baixar dados',
+                image : 'download'
+            })); 
+            /* Botão global de adicionar campo */
+            app.ui.actions.add(new app.ui.action({
+                legend : 'adicionar contato',
+                image  : 'add',
+                click  : function () {
+                    app.apps.open({
+                        app : app.slug,
+                        route : '/adicionar-contato'
+                    });
+                }
+            })); 
+
+            /* Monta o filtro */
+            app.ui.filter.action('filtrar');
+            /* filtro por texto */
+            fields.query = new app.ui.inputText({
+                legend : 'Buscar',
+                type : 'text',
+                name : 'query',
+                change : app.ui.filter.submit
+            });
+            function categoryOption(type) {
+                var options = [],
+                    i;
+
+                for (i in categories) {
+                    if (categories[i].type === type) {
+                        options.push(new app.ui.inputOption({
+                            legend  : categories[i].name,
+                            value   : categories[i]._id,
+                            clicked : true,
+                            label   : categories[i].color
+                        }));
+                    }
+                }
+                return options;
             }
+            /* filtro por categoria */
+            fields.categories = {
+                clients : new app.ui.inputSelector({
+                    type    : 'multiple',
+                    name    : 'category',
+                    legend  : 'Clientes',
+                    options : categoryOption('clients'),
+                    change  : function () {
+                        app.ui.filter.submit()
+                    },
+                    actions : true
+                }),
+                suppliers : new app.ui.inputSelector({
+                    type    : 'multiple',
+                    name    : 'category',
+                    legend  : 'Fornecedores',
+                    options : categoryOption('suppliers'),
+                    change  : function () {
+                        app.ui.filter.submit()
+                    },
+                    actions : true
+                }),
+                partners : new app.ui.inputSelector({
+                    type    : 'multiple',
+                    name    : 'category',
+                    legend  : 'Parceiros',
+                    options : categoryOption('partners'),
+                    change  : function () {
+                        app.ui.filter.submit()
+                    },
+                    actions : true
+                }),
+                personals : new app.ui.inputSelector({
+                    type    : 'multiple',
+                    name    : 'category',
+                    legend  : 'Pessoais',
+                    options : categoryOption('personals'),
+                    change  : function () {
+                        app.ui.filter.submit()
+                    },
+                    actions : true
+                })
+            };
+            /* fieldset principal */
+            app.ui.filter.fieldsets.add(new app.ui.fieldset({
+                legend : 'Filtrar contatos',
+                fields : [fields.query, fields.categories.clients, fields.categories.suppliers, fields.categories.partners, fields.categories.personals]
+            }));
+            /* dispara o evento de filtro */
+            app.ui.filter.submit(function () {
+                app.ui.actions.get()[0].href('data:application/octet-stream,');
+
+                if (firstFilter) {
+                    firstFilter = false;
+                } else {
+                    app.models.helpers.fiveContactsAndFiltered(contacts);
+                }
+
+                app.events.trigger('filter contact', fields);
+            });
+
+            /* ordenando os contatos */
             contacts.sort(function (a,b) {
                 var priority_a = a.priority || 0,
                     priority_b = b.priority || 0;
@@ -548,22 +486,36 @@ app.routes.list('/', function (params, data) {
                 if (priority_a < priority_b) return -1;
                 return 0
             });
+
+            /* listando as categorias */
+            for (var i in categories) {
+                fitGroupset(categories[i]).groups.add((new Group(categories[i])).group);
+            }
+
+            /* listando os contatos */
             for (var i in contacts) {
-                if (contacts[i].category) {
-                    categoriesGroups[contacts[i].category].group.items.add(contactItem(contacts[i]).item);
-                } else {
-                    typeGroups.noCategory.items.add(contactItem(contacts[i]).item);
-                }
+                fitGroup(contacts[i]).items.add((new Item(contacts[i])).item);
             }
-            if (typeGroups.noCategory.items.get().length === 0) {
-                typeGroups.noCategory.visibility('hide');
+
+            /* Pegando categorias cadastradas ao longo do uso do app */
+            app.events.bind('create category', function (category) {
+                fitGroupset(category).groups.add((new Group(category)).group);
+            });
+
+            /* Pegando campos que são cadastradas ao longo do uso do app */
+            app.events.bind('create contact', function (contact) {
+                fitGroup(contact).items.add((new Item(contact)).item);
+            });
+
+            /* exibe o orientador */
+            if (contacts.length === 0) {
+                app.ui.actions.get()[1].helper.description('Comece cadastrando seus principais clientes, parceiros e fornecedores e guarde suas informações principais');
+                app.ui.actions.get()[1].helper.example('Dê preferência para aqueles com quem você precisará conversar em breve, seja para fazer uma venda ou pedir a nota fiscal.');
             }
-            filter();
-            app.models.helpers.firstContact(contactsItems);
-            app.models.helpers.noFields(contactsItems);
-            app.models.helpers.fiveContacts(contactsItems);
+            app.models.helpers.firstContact(contacts);
+            app.models.helpers.noFields(contacts);
+            app.models.helpers.fiveContacts(contacts);
+            app.ui.filter.submit();
         });
-
     });
-
 });

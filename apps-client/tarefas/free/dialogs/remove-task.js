@@ -18,6 +18,7 @@ app.routes.dialog('/remover-tarefa/:id', function (params, data) {
 
         app.ui.form.submit(function() {
             task.remove(function () {});
+            app.events.trigger('remove task ' + params.id);
             app.close(true);
         });
     });

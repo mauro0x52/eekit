@@ -8,14 +8,14 @@
 sdk.modules.apps = function (app) {
     "use strict";
 
-    /** dialog
+    /** open
      *
      * @autor : Rafael Erthal
-     * @since : 2012-11
+     * @since : 2013-01
      *
-     * @description : abre um dialogo
+     * @description : abre um app
      */
-    this.dialog = function (params) {
+    this.open = function (params) {
         empreendemia.apps.open({
             app : params.app,
             route : params.route,
@@ -23,92 +23,22 @@ sdk.modules.apps = function (app) {
             caller : app,
             open : function (tool) {
                 tool.open(params.data);
-                empreendemia.apps.dialog(tool);
-            }
-        });
-    };
-
-    /** list
-     *
-     * @autor : Rafael Erthal
-     * @since : 2012-11
-     *
-     * @description : abre uma lista
-     */
-     this.list = function (params) {
-        empreendemia.apps.open({
-            app : params.app,
-            route : params.route,
-            close : params.close,
-            caller : app,
-            open : function (tool) {
-                tool.open(params.data);
-                empreendemia.apps.render(tool, false, app);
-            }
-        });
-     };
-
-    /** entity
-     *
-     * @autor : Rafael Erthal
-     * @since : 2012-11
-     *
-     * @description : abre uma entidade
-     */
-    this.entity = function (params) {
-        empreendemia.apps.open({
-            app : params.app,
-            route : params.route,
-            close : params.close,
-            caller : app,
-            open : function (tool) {
-                tool.open(params.data);
-                empreendemia.apps.render(tool, false, app);
-            }
-        });
-    };
-
-    /** list
-     *
-     * @autor : Rafael Erthal
-     * @since : 2012-11
-     *
-     * @description : embeda uma lista
-     */
-     this.embeddedList = function (params) {
-        empreendemia.apps.open({
-            app : params.app,
-            route : params.route,
-            close : params.close,
-            caller : app,
-            open : function (tool) {
-                tool.open(params.data);
-                if (params.open) {
-                    params.open.apply(app, [tool.ui]);
+                if (
+                    tool.ui.type() === 'dialog'       ||
+                    tool.ui.type() === 'entity'       ||
+                    tool.ui.type() === 'frame'        ||
+                    tool.ui.type() === 'list'
+                ) {
+                    empreendemia.apps.render(tool);
+                } else if (
+                    tool.ui.type() === 'embbed entity' ||
+                    tool.ui.type() === 'embbed list'
+                ) {
+                    if (params.open) {
+                        params.open.apply(app, [tool.ui]);
+                    }
                 }
             }
         });
-     };
-
-    /** entity
-     *
-     * @autor : Rafael Erthal
-     * @since : 2012-11
-     *
-     * @description : embeda uma entidade
-     */
-     this.embeddedEntity = function (params) {
-        empreendemia.apps.open({
-            app : params.app,
-            route : params.route,
-            close : params.close,
-            caller : app,
-            open : function (tool) {
-                tool.open(params.data);
-                if (params.open) {
-                    params.open.apply(app, [tool.ui]);
-                }
-            }
-        });
-     };
+    };
 };
