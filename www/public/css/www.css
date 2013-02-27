@@ -1217,7 +1217,11 @@ form {
 
 .field.select > .data > .input  {
     position: absolute;
-    width: 220px;
+    width: 200px;
+    padding: 2px 20px 2px 2px;
+    background-color: transparent;
+    border-radius: 2px;
+    border: 1px solid #ddd;
     z-index: 1000;
 }
 
@@ -1225,17 +1229,15 @@ form {
     z-index: 20000;
 }
 
-
 .field.select > .data   > .arrow {
     position: absolute;
     top: 8px;
-    left: 202px;
+    left: 182px;
     border-right: 6px solid transparent;
     border-left: 6px solid transparent;
     border-top: 6px solid #b9ac9f;
-    z-index: 10000;
+    z-index: 100;
 }
-
 
 .field.select .data > .options > .option {
     color: #332f2f;
@@ -1299,7 +1301,7 @@ form {
 }
 
 .field.select .data > .options.filterable {
-    width: 210px;
+    width: 190px;
     max-height: 140px;
     overflow: auto;
     position: absolute;
@@ -2137,8 +2139,35 @@ form {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Formul�rio                                                                 */
+/* Formulario                                                                 */
 /* -------------------------------------------------------------------------- */
+
+.field.text > .data > .input,
+.field.password > .data > .input,
+.field.date > .data > .input {
+    width: 200px;
+    padding: 2px;
+    border: 1px solid #ddd;
+    background-color: transparent;
+    border-radius: 2px;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.field.select> .data > .input:hover,
+.field.password > .data > .input:hover,
+.field.date > .data > .input:hover,
+.field.text > .data > .input:hover {
+    border: 1px solid #ccc;
+}
+
+.field.password > .data > .input:focus,
+.field.date > .data > .input:focus,
+.field.text > .data > .input:focus {
+    box-shadow: 1px 2px 5px rgba(0,0,0,0.2);
+}
 
 .modal > .form {
     display: block;
@@ -2219,12 +2248,6 @@ form {
 
 .modal > .form > .field-sets > .field-set > .fields > .field > .data > .errors > .error:last-child {
     margin-bottom: 5px;
-}
-
-.modal > .form .field.text > .data > .input,
-.modal > .form .field.password > .data > .input,
-.modal > .form .field.date > .data > .input {
-    width: 200px;
 }
 
 .modal > .form > .submit {
