@@ -18,8 +18,8 @@ app.models.helpers = {};
 /**
  * @where : fluxo de caixa / botão receita
  */
-app.models.helpers.noTransactions = function (countTransactions) {
-    if (countTransactions === 0) {
+app.models.helpers.noTransactions = function (transactions) {
+    if (transactions.length === 0) {
         app.ui.actions.get()[1].helper.description('Comece registrando o que você receberá ou pagará ainda esta semana');
         app.ui.actions.get()[1].helper.example('Ex.: \"Serviço para a empresa Xavier - R$ xx,xx\" ou \"Conta de telefone e internet - R$ xx,xx\"');
     }
@@ -28,9 +28,9 @@ app.models.helpers.noTransactions = function (countTransactions) {
 /**
  * @where : menu / contas
  */
-app.models.helpers.firstTransaction = function (countTransactions, accounts) {
+app.models.helpers.firstTransaction = function (transactions, accounts) {
     var accountsArray = toArray(accounts);
-    if (countTransactions === 1 && accountsArray[0].name === 'Banco' && accountsArray[1].name === 'Caixa' && accountsArray.length === 2) {
+    if (transactions.length === 1 && accountsArray[0].name === 'Banco' && accountsArray[1].name === 'Caixa' && accountsArray.length === 2) {
         app.ui.menu.get()[2].helper.description('Organize as contas bancárias e caixas da sua empresa');
         app.ui.menu.get()[2].helper.example('Além de organizar suas contas, aqui você pode cadastrar as informações da sua conta para conseguir acessá-las a qualquer momento.');
     }
@@ -104,8 +104,8 @@ app.models.helpers.defaultCategoriesB = function (categories, accounts) {
 /**
  * @where : fluxo de caixa / botão exportar dados
  */
-app.models.helpers.thirdTransaction = function (countTransactions) {
-    if (countTransactions === 3) {
+app.models.helpers.thirdTransaction = function (transactions) {
+    if (transactions.length === 3) {
         app.ui.actions.get()[0].helper.description('Ao usar os filtros, você consegue selecionar um período com transações e baixar os dados');
         app.ui.actions.get()[0].helper.example('Como toda a empresa precisa de uma contabilidade bem feita, aqui você pode baixar os dados do último mês, por exemplo, para então enviá-los ao seu Contador. Assim você economiza o seu tempo de controle financeiro e facilita a vida do seu Contador.');
     }
@@ -114,8 +114,8 @@ app.models.helpers.thirdTransaction = function (countTransactions) {
 /**
  * @where : fluxo de caixa / saldo do dia
  */
-app.models.helpers.sixthTransaction = function (countTransactions) {
-    if (countTransactions === 6) {
+app.models.helpers.sixthTransaction = function (transactions) {
+    if (transactions.length === 6) {
         app.ui.groups.get()[0].groups.get()[0].footer.helper.description('Você já percebeu que pode ver o seu saldo a cada dia?');
         app.ui.groups.get()[0].groups.get()[0].footer.helper.example('Ao final de cada dia você consegue visualizar o saldo das contas selecionadas e assim verificar quando seu caixa estará num nível crítico no futuro.');
     }

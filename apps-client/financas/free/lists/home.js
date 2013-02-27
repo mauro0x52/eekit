@@ -40,7 +40,12 @@ app.routes.list('/', function (params, data) {
     /**
      * Data de hoje sem horário
      */
-    today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    today = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+
+    /**
+     * Variável global com saldos
+     */
+    balance;
 
     /* montando os groupsets */
     groupsets = {
@@ -69,6 +74,7 @@ app.routes.list('/', function (params, data) {
 
         this.group = new app.ui.group();
         this.group.date = date;
+        this.group.balance = 0;
 
         /* Botões do grupo */
         actions = {
@@ -119,6 +125,22 @@ app.routes.list('/', function (params, data) {
                 this.group.header.title(date.getDate() + '/' + monthsNames[date.getMonth()] + '/' + date.getFullYear() + ' - ' + daysNames[date.getDay()]);
             }
         };
+
+        /* Pegando quando elementos do grupo são filtrados é acionado */
+        app.events.bind('filter group', function () {
+            var items = that.group.items.get(),
+                i,
+                show = true;
+
+            for (i in items) {
+                show = show && (items[i].visibility() != ' hide');
+            }
+            if (show) {
+                that.group.visibility('show');
+            } else {
+                that.group.visibility('hide');
+            }
+        });
 
         if (date) {
             this.date(date);
@@ -190,14 +212,14 @@ app.routes.list('/', function (params, data) {
         /* Botões do item */
         actions = {
             edit         : new app.ui.action({
-                legend : 'editar transacao',
+                legend : 'editar transação',
                 image  : 'pencil',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/editar-transacao/' + transaction._id});
                 }
             }),
             remove       : new app.ui.action({
-                legend : 'remover transacao',
+                legend : 'remover transação',
                 image  : 'trash',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-transacao/' + transaction._id});
@@ -299,18 +321,62 @@ app.routes.list('/', function (params, data) {
 
         /* Pegando quando o filtro é acionado */
         app.events.bind('filter transaction', function (fields) {
+            var categories = {
+                    debt   : fields.categories.debt.value(),
+                    credit : fields.categories.credit.value()
+                },
+                accounts = fields.accounts.value(),
+                types = fields.type.value(),
+                query = fields.query.value(),
+                dateStart = fields.dateStart.date() || new Date()
+                dateEnd = fields.dateEnd.date() || new Date();
+
             if (
-                false
+                //Filtra por data
+                (
+                    transaction.date <= dateEnd &&
+                    transaction.date >= dateStart
+                ) &&
+                //Filtra por tipo
+                (
+                    types.indexOf(transaction.type) > -1
+                ) &&
+                //Filtra por categoria
+                (
+                    categories.debt.indexOf(transaction.category) > -1 ||
+                    categories.credit.indexOf(transaction.category) > -1
+                ) &&
+                //Filtra por conta
+                (
+                    accounts.indexOf(transaction.account) > -1
+                ) &&
+                //Filtra por query
+                (
+                    query.length = 0 ||
+                    (
+                        transaction.name + ' ' + 
+                        transaction.value + ' ' + 
+                        transaction.noteNumber
+                    ).toLowerCase().indexOf(query.toLowerCase()) > -1
+                )
             ) {
-                that.item.visibility('hide');
-            } else {
                 that.item.visibility('show');
-                /*app.ui.actions.get()[0].href(
+                app.ui.actions.get()[0].href(
                     app.ui.actions.get()[0].href() +
-                    contact.name  + ' %2C' +
-                    contact.phone + ' %2C' +
-                    contact.email + '%0A'
-                );*/
+                    transaction.name + ' %2C' + 
+                    (transaction.date.getDate() + '/' + (transaction.date.getMonth() + 1) + '/' + transaction.date.getFullYear()) + ' %2C' + 
+                    (transaction.type === 'credit' ? '+' : '-') + '$' + transaction.value + ' %2C' +
+                    that.item.label.legend()  + ' %2C' +
+                    icons.account.legend() + ' %2C' +
+                    transaction.noteNumber + '%0A'
+                );
+                balance.period += (transaction.type === 'credit' ? 1 : -1) * parseFloat(transaction.value);
+                fitGroup(transaction).balance += (transaction.type === 'credit' ? 1 : -1) * parseFloat(transaction.value);
+            } else {
+                if (transaction.date < dateStart) {
+                    balance.previous += (transaction.type === 'credit' ? 1 : -1) * parseFloat(transaction.value);
+                }
+                that.item.visibility('hide');
             }
         });
 
@@ -341,7 +407,18 @@ app.routes.list('/', function (params, data) {
             accounts = data;
             /* monta a listagem */
             app.models.transaction.list({}, function (transactions) {
-                var fields = {};
+                var fields = {},
+                    monthStart = new Date(now.getFullYear(), now.getMonth()),
+                    monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0),
+                    icons;
+
+                /* Icones globais */
+                icons = {
+                    period : new app.ui.icon(),
+                    previous : new app.ui.icon(),
+                    current : new app.ui.icon()
+                };
+                groupsets.groupset.header.icons.add([icons.period, icons.previous, icons.current]);
 
                 app.ui.title('Fluxo de Caixa');
 
@@ -377,10 +454,165 @@ app.routes.list('/', function (params, data) {
 
                 /* Monta o filtro */
                 app.ui.filter.action('filtrar');
+                /* filtro por texto */
+                fields.query = new app.ui.inputText({
+                    legend : 'Buscar',
+                    type : 'text',
+                    name : 'query',
+                    change : app.ui.filter.submit
+                });
+                /* filtro por data de inicio */
+                fields.dateStart = new app.ui.inputDate({
+                    legend : 'Data inicial',
+                    type : 'text',
+                    name : 'dateStart',
+                    value : parseInt(monthStart.getDate()) + '/' + parseInt(monthStart.getMonth() + 1) + '/' + monthStart.getFullYear(),
+                    change : app.ui.filter.submit
+                });
+                /* filtro por data de fim */
+                fields.dateEnd = new app.ui.inputDate({
+                    legend : 'Data final',
+                    type : 'text',
+                    name : 'dateEnd',
+                    value : parseInt(monthEnd.getDate()) + '/' + parseInt(monthEnd.getMonth() + 1) + '/' + monthEnd.getFullYear(),
+                    change : app.ui.filter.submit
+                });
+                /* filtro por contas */
+                fields.accounts = new app.ui.inputSelector({
+                    type : 'multiple',
+                    name : 'account',
+                    legend : 'Contas',
+                    options : (function () {
+                        var options = [],
+                            i;
+                        for (i in accounts) {
+                            options.push(new app.ui.inputOption({
+                                legend : accounts[i].name,
+                                value : accounts[i]._id,
+                                clicked : true
+                            }));
+                        }
+                        return options;
+                    } ()),
+                    change : app.ui.filter.submit,
+                    actions : true
+                }); 
+                /* filtro por tipo */
+                fields.type = new app.ui.inputSelector({
+                    type : 'multiple',
+                    name : 'type',
+                    legend : 'Tipo',
+                    options : [
+                        new app.ui.inputOption({legend : 'Transferencia', value : 'transfer', clicked : true}),
+                        new app.ui.inputOption({legend : 'Receita', value : 'credit', clicked : true}),
+                        new app.ui.inputOption({legend : 'Despesa', value : 'debt', clicked : true})
+                    ],
+                    change : app.ui.filter.submit,
+                    actions : true
+                });
+                /* filtro por categoria */
+                fields.categories = {
+                    debt : new app.ui.inputSelector({
+                        type : 'multiple',
+                        name : 'category',
+                        legend : 'Categorias de despesas',
+                        options : (function () {
+                            var options = [],
+                                i;
+                            for (i in categories) {
+                                if (categories[i].type === 'debt') {
+                                    options.push(new app.ui.inputOption({
+                                        legend : categories[i].name,
+                                        value : categories[i]._id,
+                                        clicked : true
+                                    }));
+                                }
+                            }
+                            return options;
+                        } ()),
+                        change : app.ui.filter.submit,
+                        actions : true
+                    }),
+                    credit : new app.ui.inputSelector({
+                        type : 'multiple',
+                        name : 'category',
+                        legend : 'Categorias de receitas',
+                        options : (function () {
+                            var options = [],
+                                i;
+                            for (i in categories) {
+                                if (categories[i].type === 'credit') {
+                                    options.push(new app.ui.inputOption({
+                                        legend : categories[i].name,
+                                        value : categories[i]._id,
+                                        clicked : true
+                                    }));
+                                }
+                            }
+                            return options;
+                        } ()),
+                        change : app.ui.filter.submit,
+                        actions : true
+                    })
+                }
+                /* fieldset principal */
+                app.ui.filter.fieldsets.add(new app.ui.fieldset({
+                    legend : 'Filtrar transações',
+                    fields : [fields.query, fields.dateStart, fields.dateEnd, fields.accounts, fields.type, fields.categories.debt, fields.categories.credit]
+                }));
                 /* dispara o evento de filtro */
                 app.ui.filter.submit(function () {
+                    var i,
+                        groups = groupsets.groupset.groups.get(),
+                        current;
+
+                    /* iniciando balanços */
+                    balance = {
+                        period   : 0,
+                        previous : 0
+                    };
+                    for (i in accounts) {
+                        balance.previous += accounts[i].initialBalance;
+                    }
+
+                    /* zera o saldo dos grupos */
+                    for (i in groups) {
+                        groups[i].balance = 0;
+                    }
+
+                    /* dispara o evento */
                     app.ui.actions.get()[0].href('data:application/octet-stream,');
                     app.events.trigger('filter transaction', fields);
+                    app.events.trigger('filter group');
+
+                    current = balance.previous;
+
+                    /* icone do saldo anterior */
+                    icons.previous.image(balance.previous >= 0 ? 'add' : 'sub');
+                    icons.previous.legend('$ ' + balance.previous.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (anterior)');
+
+                    /* icone do saldo do período */
+                    icons.period.image(balance.period >= 0 ? 'add' : 'sub');
+                    icons.period.legend('$ ' + balance.period.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (período)');
+
+                    /* icone do saldo corrente */
+                    icons.current.image((balance.period + balance.previous) >= 0 ? 'add' : 'sub');
+                    icons.current.legend('$ ' + (balance.period + balance.previous).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (acumulado)');
+
+                    /* icone do saldo corrente em cada grupo */
+                    groups.sort(function (a, b) {
+                        var aDate = a.date || new Date(),
+                            bDate = b.date || new Date();
+
+                        if (aDate > bDate) return  1;
+                        if (aDate < bDate) return -1;
+                        return 0;
+                    });
+
+                    for (i in groups) {
+                        current += groups[i].balance;
+                        groups[i].footer.title('Saldo: $ ' + current.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') );
+                    }
                 });
 
                 /* listando as transações */
@@ -392,351 +624,16 @@ app.routes.list('/', function (params, data) {
                 app.events.bind('create transaction', function (transaction) {
                     fitGroup(transaction).items.add((new Item(transaction)).item);
                 });
+
+                /* exibe o orientador */
+                app.models.helpers.noTransactions(transactions);
+                app.models.helpers.firstTransaction(transactions, accounts);
+                app.models.helpers.defaultCategories(categories, accounts);
+                app.models.helpers.thirdTransaction(transactions);
+                app.models.helpers.sixthTransaction(transactions);
+
+                app.ui.filter.submit();
             })
         });
     });
-
-
-
-
-
-
-
-
-
-
-    var
-    /**
-     * Tupla data grupo
-     */
-    dateGroup = function (date) {
-        /**
-         * Verifica se o objeto deve ser exibido
-         *
-         * @author Rafael Erthal
-         * @since  2013-01
-         *
-         * @return {period, accumulates, previous}
-         */
-        this.filter = function () {
-            var i,
-                dateStart = fields.dateStart.date() ? fields.dateStart.date() : null,
-                dateEnd = fields.dateEnd.date() ? fields.dateEnd.date() : null,
-                show = false,
-                date;
-
-            for (i in transactionItems) {
-                if (transactionItems[i]) {
-                    if (transactionItems[i].filter()) {
-                        /* estão dentro da filtragem */
-                        date = new Date(transactionItems[i].transaction().date);
-                        if ((dateStart && date >= dateStart) && (dateEnd && date <= dateEnd)) {
-                            /* dentro da janela de tempo */
-                            show = true;
-                            transactionItems[i].item().visibility('show');
-                        } else {
-                            /* balanço anterior */
-                            transactionItems[i].item().visibility('hide');
-                        }
-                    } else {
-                        transactionItems[i].item().visibility('hide');
-                    }
-                }
-            }
-
-            group.visibility(show ? 'show' : 'hide');
-        }
-
-        /**
-         * Calcula o balanço inicial
-         *
-         * @author Rafael Erthal
-         * @since  2013-01
-         *
-         * @return {period, accumulates, previous}
-         */
-        this.balance = function () {
-            var i,
-                dateStart = fields.dateStart.date() ? fields.dateStart.date() : null,
-                dateEnd = fields.dateEnd.date() ? fields.dateEnd.date() : null,
-                balance = {period : 0, previous : 0},
-                date;
-
-            for (i in transactionItems) {
-                if (transactionItems[i]) {
-                    if (transactionItems[i].filter()) {
-                        /* estão dentro da filtragem */
-                        date = new Date(transactionItems[i].transaction().date);
-                        if ((dateStart && date >= dateStart) && (dateEnd && date <= dateEnd)) {
-                            /* dentro da janela de tempo */
-                            balance.period += transactionItems[i].transaction().type === 'credit' ? parseFloat(transactionItems[i].transaction().value) : -parseFloat(transactionItems[i].transaction().value);
-                        } else {
-                            /* balanço anterior */
-                            if ((dateStart && date < dateStart)) {
-                                balance.previous += transactionItems[i].transaction().type === 'credit' ? parseFloat(transactionItems[i].transaction().value) : -parseFloat(transactionItems[i].transaction().value);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return balance;
-        }
-    },
-
-    /**
-     * Tupla transação item
-     */
-    transactionItem = function (transaction) {
-
-        /**
-         * Verifica se o objeto deve ser exibido
-         *
-         * @author Rafael Erthal
-         * @since  2013-01
-         *
-         * @return Boolean
-         */
-        this.filter = function () {
-            var debtCategoriesFilter = fields.debtCategories.value(),
-                creditCategoriesFilter = fields.creditCategories.value(),
-                accountsFilter = fields.accounts.value(),
-                typeFilter = fields.type.value(),
-                dateStart = fields.dateStart.date() ? fields.dateStart.date() : null,
-                dateEnd = fields.dateEnd.date() ? fields.dateEnd.date() : null,
-                queryField = fields.query.value(),
-                date;
-
-            return ((
-                debtCategoriesFilter.indexOf(transaction.category) >= 0 ||
-                creditCategoriesFilter.indexOf(transaction.category) >= 0 ||
-                transaction.isTransfer
-            ) && (
-                accountsFilter.indexOf(transaction.account) >= 0
-            ) && (
-                queryField.length = 0 ||
-                (transaction.name + ' ' + transaction.value + ' ' + transaction.noteNumber + ' ' + accounts[transaction.account].name + ' ' + (categories[transaction.category] ? categories[transaction.category].name : '')).toLowerCase().indexOf(queryField.toLowerCase()) >= 0
-            ) && (
-                typeFilter.indexOf(transaction.type) >= 0
-            ));
-        };
-    };
-
-
-    /**
-     * Exibe os grupos, filtra os items e recalcula o balanço
-     *
-     * @author Mauro Ribeiro & Rafael Erthal
-     * @since  2013-01
-     */
-    function showGroups () {
-        var groups = [],
-            i,
-            groupBalance,
-            balance = {period : 0, previous : 0},
-            csv = 'data:application/octet-stream,',
-            accountsFilter = fields.accounts.value(),
-            count = 0;
-
-        for (i in dateGroups) {
-            groups.push(dateGroups[i]);
-            dateGroups[i].filter();
-        }
-        for (i in accountsFilter) {
-            balance.previous += accounts[accountsFilter[i]].initialBalance;
-        }
-
-        groups.sort(function (a,b) {
-            var dateA = a.date() || new Date(),
-                dateB = b.date() || new Date();
-
-            if (dateA > dateB) return  1;
-            if (dateA < dateB) return -1;
-            return 0;
-        });
-
-        groupSet.groups.remove();
-        for (i in groups) {
-            groupBalance = groups[i].balance();
-            balance.period += groupBalance.period;
-            balance.previous += groupBalance.previous;
-
-            groups[i].group().footer.title('Saldo: $ ' + (balance.period + balance.previous).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') );
-            groupSet.groups.add(groups[i].group());
-        }
-
-        groupSet.header.icons.remove();
-        groupSet.header.icons.add([
-            new app.ui.icon({
-                image : balance.period >= 0 ? 'add' : 'sub',
-                legend : '$ '+balance.period.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (período)'
-            }),
-            new app.ui.icon({
-                image : balance.previous >= 0 ? 'add' : 'sub',
-                legend : '$ '+balance.previous.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (anterior)'
-            }),
-            new app.ui.icon({
-                image : balance.accumulated >= 0 ? 'add' : 'sub',
-                legend : '$ '+(balance.period + balance.previous).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (acumulado)'
-            })
-        ]);
-
-        for (var i in groups) {
-            var transactionItems = groups[i].transactionItems();
-            for (var j in transactionItems) {
-                count++;
-                if (transactionItems[j] && !transactionItems[j].item().visibility()) {
-                    var transaction = transactionItems[j].transaction();
-                    if (transaction) {
-                        if (categories[transaction.category]) {
-                            csv += transaction.name + ' %2C' + (transaction.date.getDate() + '/' + (transaction.date.getMonth() + 1) + '/' + transaction.date.getFullYear()) + ' %2C' + (transaction.type === 'credit' ? '+' : '-') + '$' + transaction.value + ' %2C' + categories[transaction.category].name  + ' %2C' + accounts[transaction.account].name + ' %2C' + transaction.noteNumber + '%0A'
-                        } else {
-                            csv += transaction.name + ' %2C' + (transaction.date.getDate() + '/' + (transaction.date.getMonth() + 1) + '/' + transaction.date.getFullYear()) + ' %2C' + (transaction.type === 'credit' ? '+' : '-') + '$' + transaction.value + ' %2Ctransferencia%2C' + accounts[transaction.account].name + ' %2C' + transaction.noteNumber + '%0A'
-                        }
-                    }
-                }
-            }
-        }
-        app.ui.actions.get()[0].href(csv);
-
-        app.models.helpers.noTransactions(count);
-        app.models.helpers.firstTransaction(count, accounts);
-        app.models.helpers.defaultCategories(categories, accounts);
-        app.models.helpers.thirdTransaction(count);
-        app.models.helpers.sixthTransaction(count);
-    }
-
-
-    /**
-     * Constrói o filtro
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     */
-    function filter () {
-        var creditCategoriesOptions = [], debtCategoriesOptions = [], accountsOptions = [], fieldset,
-            now = new Date(), monthStart, monthEnd;
-
-        monthStart = new Date(now.getFullYear(), now.getMonth());
-        monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-
-        /* Input com as categorias */
-        for (var i in categories) {
-            if (categories.hasOwnProperty(i)) {
-                if (categories[i].type === 'credit') {
-                    creditCategoriesOptions.push(new app.ui.inputOption({
-                        legend : categories[i].name,
-                        value : categories[i]._id,
-                        clicked : true
-                    }));
-                } else {
-                    debtCategoriesOptions.push(new app.ui.inputOption({
-                        legend : categories[i].name,
-                        value : categories[i]._id,
-                        clicked : true
-                    }));
-                }
-            }
-        }
-
-        /* Input com as contas */
-        for (var i in accounts) {
-            if (accounts.hasOwnProperty(i)) {
-                accountsOptions.push(new app.ui.inputOption({
-                    legend : accounts[i].name,
-                    value : accounts[i]._id,
-                    clicked : true
-                }));
-            }
-        }
-
-        app.ui.filter.action('filtrar');
-
-        fields.query = new app.ui.inputText({
-            legend : 'Buscar',
-            type : 'text',
-            name : 'query',
-            change : function () {
-                app.ui.filter.submit()
-            }
-        });
-
-        fields.dateStart = new app.ui.inputDate({
-            legend : 'Data inicial',
-            type : 'text',
-            name : 'dateStart',
-            value : parseInt(monthStart.getDate()) + '/' + parseInt(monthStart.getMonth() + 1) + '/' + monthStart.getFullYear(),
-            change : function () {
-                app.ui.filter.submit()
-            }
-        });
-
-        fields.dateEnd = new app.ui.inputDate({
-            legend : 'Data final',
-            type : 'text',
-            name : 'dateEnd',
-            value : parseInt(monthEnd.getDate()) + '/' + parseInt(monthEnd.getMonth() + 1) + '/' + monthEnd.getFullYear(),
-            change : function () {
-                app.ui.filter.submit()
-            }
-        });
-
-        fields.creditCategories = new app.ui.inputSelector({
-            type : 'multiple',
-            name : 'category',
-            legend : 'Categorias de receitas',
-            options : creditCategoriesOptions,
-            change : function () {
-                app.ui.filter.submit()
-            },
-            actions : true
-        });
-
-        fields.debtCategories = new app.ui.inputSelector({
-            type : 'multiple',
-            name : 'category',
-            legend : 'Categorias de despesas',
-            options : debtCategoriesOptions,
-            change : function () {
-                app.ui.filter.submit()
-            },
-            actions : true
-        });
-
-        fields.accounts = new app.ui.inputSelector({
-            type : 'multiple',
-            name : 'account',
-            legend : 'Contas',
-            options : accountsOptions,
-            change : function () {
-                app.ui.filter.submit()
-            },
-            actions : true
-        });
-
-        fields.type = new app.ui.inputSelector({
-            type : 'multiple',
-            name : 'type',
-            legend : 'Tipo',
-            options : [
-                new app.ui.inputOption({legend : 'Receita', value : 'credit', clicked : true}),
-                new app.ui.inputOption({legend : 'Despesa', value : 'debt', clicked : true})
-            ],
-            change : function () {
-                app.ui.filter.submit()
-            },
-            actions : true
-        })
-
-        fieldset = new app.ui.fieldset({
-            legend : 'Filtrar transações',
-            fields : [fields.query, fields.dateStart, fields.dateEnd, fields.accounts, fields.type, fields.creditCategories, fields.debtCategories]
-        });
-
-        app.ui.filter.fieldsets.add(fieldset);
-
-        app.ui.filter.submit(showGroups);
-    }
-
-
 });
