@@ -34,17 +34,13 @@ Billet.validate = function (billet, cb) {
         valid = false;
         errors.wallet = constructError('wallet', 'enum');
     }
-    if (!billet.agency || /\d{4}/.test(billet.agency) === false) {
+    if (!billet.agency || /^\d{4}$/.test(billet.agency) === false) {
         valid = false;
         errors.agency = constructError('agency', '\\d{4}');
     }
-    if (!billet.account || /\d{5}/.test(billet.account) === false) {
+    if (!billet.account || /^\d{5}$/.test(billet.account) === false) {
         valid = false;
         errors.account = constructError('account', '\\d{5}');
-    }
-    if (!billet.accountVD || /\d/.test(billet.accountVD) === false) {
-        valid = false;
-        errors.accountVD = constructError('accountVD', '\\d');
     }
     if (!billet.dueDate) {
         valid = false;
@@ -63,7 +59,7 @@ Billet.validate = function (billet, cb) {
         /* opcional */
         if (!billet.ourNumber) {
             billet.ourNumber = this.generateOurNumber();
-        } else if (/\d{8}/.test(billet.ourNumber) === false) {
+        } else if (/^\d{8}$/.test(billet.ourNumber) === false) {
             valid = false;
         }
     } else {
@@ -114,7 +110,7 @@ Billet.print = function (billet, cb) {
 
             print.bankIdVD = that.bankVerificationDigit(billet.bankId);
             print.ourNumber = print.wallet+'/'+print.ourNumber+'-'+that.modulus10(fAgency + fAccount + billet.wallet + fOurNumber);
-            print.account = print.account+'-'+print.accountVD;
+            print.account = print.account+'-'+that.modulus10(print.agency+print.account);
             print.bank = that.bank;
             print.digitCode = that.digitCode(line);
             print.barCodeNumber = line;
@@ -218,7 +214,7 @@ Billet.formatNumber = function (number, loop, insert, type) {
 Billet.barCode = function (value) {
     var bars = ['00110', '10001', '01001', '11000', '00101', '10100', '01100', '00011', '10010', '01010'],
         f1, f2, f, text, i, barCode;
-        
+
     for (f1 = 9; f1 >= 0; f1--) {
         for (f2 = 9; f2 >=0; f2--) {
             f = (f1 * 10) + f2;
@@ -348,7 +344,7 @@ Billet.modulus10 = function (number) {
     // separação dos números
     for (var i = number.length - 1; i >= 0; i--) {
         // efetua multiplicação do número pelo fator
-        temp = (parseInt(number[i]) * factor,10).toString();
+        temp = (parseInt(number[i],10) * factor).toString();
         temp0 = 0;
         // soma todos os dígitos do número * fator
         for (var j in temp) {

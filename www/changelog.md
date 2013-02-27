@@ -6,6 +6,12 @@ Changelog
 Features
 - Chamar links externos em uma nova janela
 
+Correções
+- Selecbox tirava classe hide de todas opções após a seleção de uma opção
+
+Melhorias
+- CSS do selectbox
+
 ## 0.4 (2013-02-20)
 
 Features
