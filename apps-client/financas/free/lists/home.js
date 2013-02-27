@@ -312,7 +312,7 @@ app.routes.list('/', function (params, data) {
         app.events.bind('remove transaction ' + transaction._id, function () {
             var oldGroup = fitGroup(transaction);
 
-            this.item.detach();
+            that.item.detach();
             if (oldGroup.items.get().length === 0) {
                 oldGroup.detach();
                 delete oldGroup;
@@ -339,12 +339,19 @@ app.routes.list('/', function (params, data) {
                 ) &&
                 //Filtra por tipo
                 (
-                    types.indexOf(transaction.type) > -1
+                    (
+                        types.indexOf(transaction.type) > -1 &&
+                        !transaction.isTransfer
+                    ) || (
+                        types.indexOf('transfer') > -1 &&
+                        transaction.isTransfer
+                    )
                 ) &&
                 //Filtra por categoria
                 (
                     categories.debt.indexOf(transaction.category) > -1 ||
-                    categories.credit.indexOf(transaction.category) > -1
+                    categories.credit.indexOf(transaction.category) > -1 ||
+                    transaction.isTransfer
                 ) &&
                 //Filtra por conta
                 (

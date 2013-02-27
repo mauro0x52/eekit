@@ -90,7 +90,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
 
         /* Exibe o nome da transação */
         this.name = function (value) {
-            app.ui.title('Contato: ' + value);
+            app.ui.title('Transação: ' + value);
             app.ui.subtitle(value);
         }
 

@@ -143,7 +143,7 @@ sdk.modules.ui.inputText = function (app) {
             this.name(params.name);
             this.value(params.value);
             this.change(params.change);
-            this.change(params.visibility);
+            this.visibility(params.visibility);
             if (params.helper) {
                 this.helper.description(params.helper.description);
                 this.helper.example(params.helper.example);
