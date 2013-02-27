@@ -7,11 +7,11 @@ Changelog
 - Categorias e contas padrão
 - Integração com contatos
 
-## 0.2
+## 0.2 (?)
 
 - Lembretes em transações
 
-## 0.1.1
+## 0.1.1 (?)
 
 - Corrigindo o install
 

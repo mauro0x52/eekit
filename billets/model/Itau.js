@@ -34,11 +34,11 @@ Billet.validate = function (billet, cb) {
         valid = false;
         errors.wallet = constructError('wallet', 'enum');
     }
-    if (!billet.agency || /\d{4}/.test(billet.agency) === false) {
+    if (!billet.agency || /^\d{4}$/.test(billet.agency) === false) {
         valid = false;
         errors.agency = constructError('agency', '\\d{4}');
     }
-    if (!billet.account || /\d{5}/.test(billet.account) === false) {
+    if (!billet.account || /^\d{5}$/.test(billet.account) === false) {
         valid = false;
         errors.account = constructError('account', '\\d{5}');
     }
@@ -59,7 +59,7 @@ Billet.validate = function (billet, cb) {
         /* opcional */
         if (!billet.ourNumber) {
             billet.ourNumber = this.generateOurNumber();
-        } else if (/\d{8}/.test(billet.ourNumber) === false) {
+        } else if (/^\d{8}$/.test(billet.ourNumber) === false) {
             valid = false;
         }
     } else {
@@ -110,7 +110,7 @@ Billet.print = function (billet, cb) {
 
             print.bankIdVD = that.bankVerificationDigit(billet.bankId);
             print.ourNumber = print.wallet+'/'+print.ourNumber+'-'+that.modulus10(fAgency + fAccount + billet.wallet + fOurNumber);
-            print.account = print.account+'-'+that.modulus11(print.account);
+            print.account = print.account+'-'+that.modulus10(print.agency+print.account);
             print.bank = that.bank;
             print.digitCode = that.digitCode(line);
             print.barCodeNumber = line;

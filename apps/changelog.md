@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 0.1.3
+## 0.1.3 (2013-02-27)
 
 Melhorias
 - Deixando menu opcional
