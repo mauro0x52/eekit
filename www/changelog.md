@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 0.5
+## 0.5 (2013-02-27)
 
 Features
 - Chamar links externos em uma nova janela

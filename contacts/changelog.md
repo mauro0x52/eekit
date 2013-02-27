@@ -13,7 +13,7 @@ Features
 Melhorias
 - Alterando o nome "customer" para "contact"
 
-## 0.1.1
+## 0.1.1 (?)
 
 Correções
 - Corrigindo o install
