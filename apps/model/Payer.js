@@ -13,7 +13,7 @@ var Source   = require('./Source.js').Source,
     payerSchema;
 
 payerSchema = new Schema({
-    user        : {type : objectId required : true},
+    user        : {type : objectId, required : true},
     app         : {type : objectId, unique : true},
     expiration  : {type : Date, required : true}
 });
