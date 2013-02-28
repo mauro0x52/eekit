@@ -17,8 +17,7 @@ appSchema = new Schema({
     name        : {type : String, trim : true, required : true},
     slug        : {type : String, trim : true, unique : true},
     creator     : {type : String, trim : true, required : true},
-    compulsory  : {type: Boolean},
-    type        : {type : String, required : true, enum : ['free', 'paid', 'freemium']}
+    compulsory  : {type: Boolean}
 });
 
 /** pre('save')
