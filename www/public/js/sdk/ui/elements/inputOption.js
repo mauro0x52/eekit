@@ -94,13 +94,13 @@ sdk.modules.ui.inputOption = function (app) {
             if (value === true || value === false) {
                 status = value;
                 if (status) {
-                    if (element.getAttribute('class').indexOf('hide') !== -1) {
-                        element.setAttribute('class', 'option selected');
-                    } else {
+                    if (element.getAttribute('class').indexOf('hide') > 0) {
                         element.setAttribute('class', 'option selected hide');
+                    } else {
+                        element.setAttribute('class', 'option selected');
                     }
                 } else {
-                    if (element.getAttribute('class').indexOf('hide') !== -1) {
+                    if (element.getAttribute('class').indexOf('hide') > 0) {
                         element.setAttribute('class', 'option hide');
                     } else {
                         element.setAttribute('class', 'option');

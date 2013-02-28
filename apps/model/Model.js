@@ -12,4 +12,5 @@ mongoose.connect('mongodb://' + config.mongodb.username + ':' + config.mongodb.p
 
 /*  Exportar name-space  */
 exports.App     = require('./App.js').App;
-exports.Source  = require('./Source.js').Source;
+exports.Source  = require('./Source.js').Source;;
+exports.Payer   = require('./Payer.js').Source;

@@ -29,7 +29,6 @@ app.configure(function () {
 
 /*  Chamando controllers */
 require('./controller/App.js')(app);
-require('./controller/Source.js')(app);
 
 /*  Métodos para dev e teste */
 app.get('/ping', function (request, response) {
