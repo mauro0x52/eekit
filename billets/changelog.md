@@ -1,5 +1,9 @@
 Changelog
 =========
 
+## 0.1 (2013-02-27)
 
-## 0.1
+Features
+- Boletos do Bradesco
+- Boletos do Banco do Brasil
+- Boletos do Itaú

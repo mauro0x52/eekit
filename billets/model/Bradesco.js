@@ -34,17 +34,13 @@ Billet.validate = function (billet, cb) {
         valid = false;
         errors.wallet = constructError('wallet', 'enum');
     }
-    if (!billet.agency || /\d{4}/.test(billet.agency) === false) {
+    if (!billet.agency || /^\d{4}$/.test(billet.agency) === false) {
         valid = false;
         errors.agency = constructError('agency', '\\d{4}');
     }
-    if (!billet.account || /\d{5}/.test(billet.account) === false) {
+    if (!billet.account || /^\d{5,7}$/.test(billet.account) === false) {
         valid = false;
-        errors.account = constructError('account', '\\d{5}');
-    }
-    if (!billet.accountVD || /\d/.test(billet.accountVD) === false) {
-        valid = false;
-        errors.accountVD = constructError('accountVD', '\\d');
+        errors.account = constructError('account', '\\d{5,7}');
     }
     if (!billet.dueDate) {
         valid = false;
@@ -63,7 +59,7 @@ Billet.validate = function (billet, cb) {
         /* opcional */
         if (!billet.ourNumber) {
             billet.ourNumber = this.generateOurNumber();
-        } else if (/\d{8}/.test(billet.ourNumber) === false) {
+        } else if (/^\d{8}$/.test(billet.ourNumber) === false) {
             valid = false;
         }
     } else {
@@ -122,13 +118,14 @@ Billet.print = function (billet, cb) {
                 }
             }
 
-            print.ourNumberVD = nnum.substring(0,2) + '/' + nnum.substring(2,nnum.length) + '-' + that.codeVerificationDigit(nnum);
+            print.ourNumber = nnum.substring(0,2) + '/' + nnum.substring(2,nnum.length) + '-' + that.codeVerificationDigit(nnum);
             print.bankIdVD = that.bankVerificationDigit(billet.bankId);
             print.bank = that.bank;
             print.barCodeNumber = line;
             print.digitCode = that.digitCode(print.barCodeNumber);
             print.barCode = that.barCode(print.barCodeNumber);
-
+            print.agency = print.agency +'-'+ that.modulus11(print.agency);
+            print.account = print.account +'-'+ that.modulus11(print.account);
             cb(null, print);
         }
     });
@@ -175,7 +172,7 @@ Billet.bankVerificationDigit = function (bankId) {
     var part1, part2;
     part1 = bankId.substring(0, 3);
     part2 = this.modulus11(part1);
-    return part1 + '-' + part2;
+    return part2;
 }
 
 /**
@@ -340,7 +337,7 @@ Billet.modulus10 = function (number) {
     // separação dos números
     for (var i = number.length - 1; i >= 0; i--) {
         // efetua multiplicação do número pelo fator
-        temp = (parseInt(number[i]) * factor,10).toString();
+        temp = (parseInt(number[i],10) * factor).toString();
         temp0 = 0;
         // soma todos os dígitos do número * fator
         for (var j in temp) {

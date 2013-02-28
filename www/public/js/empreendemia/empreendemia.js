@@ -73,7 +73,10 @@ var empreendemia = {
         empreendemia.user.apps(function (apps) {
             empreendemia.ui.header.menu.apps.remove();
             for (var i in apps) {
-                if (apps[i].name.toLowerCase() !== 'ee') {
+                if (
+                    apps[i].name.toLowerCase() !== 'ee' &&
+                    apps[i].name.toLowerCase() !== 'boletos'
+                ) {
                     empreendemia.ui.header.menu.apps.add(new empreendemia.ui.appIcon({
                         legend : apps[i].name,
                         image  : apps[i].slug,

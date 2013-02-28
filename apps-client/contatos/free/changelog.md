@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 0.2
+## 0.2 (2013-02-27)
 
 Funcionalidades
 - Campos de cadastro de contato personalizáveis
@@ -18,4 +18,4 @@ Melhorias
 - Usar o termo "Categorias" no modal
 - Ao apagar um campo de cadastro, aparecer mensagem
 
-## 0.1
+## 0.1 (2013-01-15)

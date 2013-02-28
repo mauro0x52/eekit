@@ -43,10 +43,6 @@ Billet.validate = function (billet, cb) {
         valid = false;
         errors.account = constructError('account', '\\d{5}');
     }
-    if (!billet.accountVD || /^\d$/.test(billet.accountVD) === false) {
-        valid = false;
-        errors.accountVD = constructError('accountVD', '\\d');
-    }
     if (!billet.dueDate) {
         valid = false;
         errors.dueDate = constructError('dueDate', 'required');

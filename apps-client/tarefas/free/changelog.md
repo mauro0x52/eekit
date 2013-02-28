@@ -10,7 +10,7 @@ Features
 Correções
 - Proteger título de outra tarefa durante drag n' drop
 
-## 0.1.1
+## 0.1.1 (?)
 
 Correções
 - Eventos de visualizar tarefas pendentes e tarefas feitas

@@ -1,15 +1,20 @@
 Changelog
 =========
 
-##0.3
+## 0.4 (2013-02-27)
 
 Features
-- Nº de parcelas ao inserir uma transação como default aparecer '1' 
+- Integração com boletos
+
+## 0.3 (?)
+
+Features
+- Nº de parcelas ao inserir uma transação como default aparecer '1'
 - Excluir categorias
 - Tipagem de categorias
 - Integração com contatos
 
-##0.2
+## 0.2 (?)
 
 Features
 - Lembretes nas movimentações
@@ -23,4 +28,4 @@ Correções
 - Edição de data de movimentação
 - Edição de saldo inicial
 
-## 0.1
+## 0.1 (2013-01-15)
