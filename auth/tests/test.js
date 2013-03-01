@@ -9,11 +9,3 @@
 describe('User', function() {
     require('./User.js');
 });
-
-describe('AuthorizedApp', function() {
-    require('./App.js');
-});
-
-describe('ThirdPartyLogin', function() {
-    require('./ThirdPartyLogin.js');
-});

@@ -30,8 +30,6 @@ app.configure(function () {
 
 /*  Chamando controllers */
 require('./controller/User.js')(app);
-require('./controller/ThirdPartyLogin.js')(app);
-require('./controller/App.js')(app);
 
 /*  Métodos para dev e teste */
 app.options('/*', function (request, response) {

@@ -18,9 +18,7 @@ userSchema = new Schema({
     password         : {type : String, required : true},
     tokens           : [require('./Token.js').Token],
     dateCreated      : {type : Date},
-    status           : {type : String, required : true, enum : ['active', 'inactive']},
-    thirdPartyLogins : [require('./ThirdPartyLogin.js').ThirdPartyLogin],
-    authorizedApps   : [require('./AuthorizedApp.js').AuthorizedApp]
+    status           : {type : String, required : true, enum : ['active', 'inactive']}
 });
 
 /** pre('save')
@@ -34,25 +32,6 @@ userSchema.pre('save', function (next) {
 
     if (this.isNew) {
         this.password = User.encryptPassword(this.password);
-    }
-
-    for (i = 0; i < this.thirdPartyLogins.length; i = i + 1) {
-        if (this.thirdPartyLogins[i].isNew) {
-            for (j = 0; j < this.thirdPartyLogins.length; j = j + 1) {
-                if (this.thirdPartyLogins[i].server === this.thirdPartyLogins[j].server && this.thirdPartyLogins[i]._id !== this.thirdPartyLogins[j]._id) {
-                    next(new Error('server already in use'));
-                }
-            }
-        }
-    }
-    for (i = 0; i < this.authorizedApps.length; i = i + 1) {
-        if (this.authorizedApps[i].isNew) {
-            for (j = 0; j < this.authorizedApps.length; j = j + 1) {
-                if (this.authorizedApps[i].appId === this.authorizedApps[j].appId && this.authorizedApps[i]._id !== this.authorizedApps[j]._id) {
-                    next(new Error('app already in authorized'));
-                }
-            }
-        }
     }
     next();
 });
@@ -265,58 +244,6 @@ userSchema.methods.changePassword = function (password, cb) {
 
     this.password = password;
     this.save(cb);
-};
-
-/** FindAuthorizedApp
- * @author : Rafael Erthal
- * @since : 2012-08
- *
- * @description : busca uma autorização de app do usuário
- * @param id : id do app
- * @param cb : callback a ser chamado após localizado o app
- */
-userSchema.methods.findAuthorizedApp = function (id, cb) {
-    "use strict";
-
-    var i,
-        authorizedApp;
-
-    for (i = 0; i < this.authorizedApps.length; i = i + 1) {
-        if (this.authorizedApps[i].appId.toString() === id.toString()) {
-            authorizedApp = this.authorizedApps[i];
-        }
-    }
-    if (authorizedApp) {
-        cb(undefined, authorizedApp);
-    } else {
-        cb({ message : 'denied token', name : 'DeniedTokenError'}, null);
-    }
-};
-
-/** FindThirdPartyLogin
- * @author : Rafael Erthal
- * @since : 2012-08
- *
- * @description : busca um login externo do usuário
- * @param id : id do login externo
- * @param cb : callback a ser chamado após localizado o login externo
- */
-userSchema.methods.findThirdPartyLogin = function (id, cb) {
-    "use strict";
-
-    var i,
-        thirdPartyLogin;
-
-    for (i = 0; i < this.thirdPartyLogins.length; i = i + 1) {
-        if (this.thirdPartyLogins[i]._id.toString() === id.toString()) {
-            thirdPartyLogin = this.thirdPartyLogins[i];
-        }
-    }
-    if (thirdPartyLogin) {
-        cb(undefined, thirdPartyLogin);
-    } else {
-        cb({ message : 'third-party-login not found', name : 'NotFoundError', id : id, path : 'third-party-login'}, null);
-    }
 };
 
 /*  Exportando o pacote  */
