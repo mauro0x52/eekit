@@ -57,23 +57,26 @@
         <script type="text/javascript" src="/js/sdk/ui/elements/inputDate.js"></script>
         <script type="text/javascript" src="/js/sdk/ui/elements/inputOption.js"></script>
         <script type="text/javascript" src="/js/sdk/ui/elements/tag.js"></script>
-        
-        <script type="text/javascript">
-            (function () {
-                "use strict";
-                document.addEventListener('click', function (e) {
-                    document.lastclick = e;
-                    return true;
-                }, true);
-                empreendemia.ajax.get({url : '/config'}, function (config) {
-                    empreendemia.config = config;
-                    sdk.config = config;
-                    empreendemia.start();
-                });
-            }) ();
-        </script>
     </head>
     <body>
 
+        <script type="text/javascript">
+            (function () {
+                if (navigator.userAgent.indexOf('MSIE') === -1) {
+                    "use strict";
+                    document.addEventListener('click', function (e) {
+                        document.lastclick = e;
+                        return true;
+                    }, true);
+                    empreendemia.ajax.get({url : '/config'}, function (config) {
+                        empreendemia.config = config;
+                        sdk.config = config;
+                        empreendemia.start();
+                    });
+                } else {
+                    document.body.innerHTML='<div style="margin:160px auto 0 auto;width:600px;"><h1 style="margin:40px 0;">Navegador incompatível =(</h1><p style="line-height:1.6em;">Infelizmente o Internet Explorer é incompatível com nosso sistema.</p><p style="line-height:1.6em;">Sugerimos que você utilize um navegador compatível,<br />além de mais seguro e estável para seu uso pessoal,<br />como o <a href="http://www.mozilla.org/pt-BR/firefox/fx/">Firefox</a>.</p></div>';
+                }
+            }) ();
+        </script>
     </body>
 </html>

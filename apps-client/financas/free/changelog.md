@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 0.4.1
+
+Melhorias
+- Reescrevendo usando barramento de eventos
+
 ## 0.4 (2013-02-27)
 
 Features
