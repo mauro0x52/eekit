@@ -1,12 +1,7 @@
 Changelog
 =========
 
-<<<<<<< HEAD
-## 0.7 (2013-03-04)
-=======
-
-## 1.1
->>>>>>> release
+## 0.6 (2013-03-04)
 
 Features
 - Barreamento de Eventos
@@ -16,18 +11,6 @@ Features
 Melhorias
 - Tela de incompatibilidade com IE
 
-<<<<<<< HEAD
-=======
-## 1.0 (2013-03-04)
-Barramento de Eventos
-
-## 0.6
-
-Features
-- Barramento de eventos
->>>>>>> master
-
->>>>>>> release
 ## 0.5 (2013-02-27)
 
 Features
