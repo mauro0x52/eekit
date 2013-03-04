@@ -130,15 +130,17 @@ app.routes.list('/', function (params, data) {
         app.events.bind('filter group', function () {
             var items = that.group.items.get(),
                 i,
-                show = true;
+                visible = 0;
 
             for (i in items) {
-                show = show && (items[i].visibility() != ' hide');
+                if (items[i].visibility() != ' hide') {
+                    visible++;
+                }
             }
-            if (show) {
-                that.group.visibility('show');
-            } else {
+            if (visible === 0) {
                 that.group.visibility('hide');
+            } else {
+                that.group.visibility('show');
             }
         });
 
