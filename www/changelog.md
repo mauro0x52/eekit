@@ -1,13 +1,15 @@
 Changelog
 =========
 
+## 0.6.1
+
+Melhorias
+- Tela de incompatibilidade com IE
+
 ## 0.6
 
 Features
 - Barramento de eventos
-
-Melhorias
-- Tela de incompatibilidade com IE
 
 ## 0.5 (2013-02-27)
 
