@@ -42,6 +42,10 @@ app.get('/ping', function (request, response) {
 
 app.get('/config', function (request, response) {
     "use strict";
+
+    response.contentType('json');
+    response.header('Access-Control-Allow-Origin', '*');
+
     var result = {services : {}};
     for (var i in config.services) {
         result.services[i] = {

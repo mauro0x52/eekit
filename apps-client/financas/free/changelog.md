@@ -2,7 +2,9 @@ Changelog
 =========
 
 ## 1.0 (2013-03-04)
-Barreamento de Eventos
+
+Features
+- Barramento de Eventos
 
 ## 0.4 (2013-02-27)
 

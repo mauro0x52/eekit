@@ -2707,6 +2707,7 @@ body > .draggable.item > .arrow {
 /* -------------------------------------------------------------------------- */
 
 .body > .feedback {
+    display: none;
     position: fixed;
     bottom: 0;
     right: 5px;
