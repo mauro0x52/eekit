@@ -154,51 +154,53 @@ app.routes.list('/categorias', function (params, data) {
     }
 
     /* autenticando usuário e pegando categorias */
-    app.models.category.list(function (categories) {
-        var fields = {}
-        
-        app.ui.title('Categorias');
-        app.tracker.event('visualizar categorias');
+    app.models.user.auth(function () {
+        app.models.category.list(function (categories) {
+            var fields = {}
+            
+            app.ui.title('Categorias');
+            app.tracker.event('visualizar categorias');
 
-        /* Botão global de adicionar categoria */
-        app.ui.actions.add(new app.ui.action({
-            image : 'add',
-            legend : 'adicionar categoria',
-            click : function () {
-                app.apps.open({
-                    app : app.slug,
-                    route : '/adicionar-categoria',
-                })
+            /* Botão global de adicionar categoria */
+            app.ui.actions.add(new app.ui.action({
+                image : 'add',
+                legend : 'adicionar categoria',
+                click : function () {
+                    app.apps.open({
+                        app : app.slug,
+                        route : '/adicionar-categoria',
+                    })
+                }
+            }));
+
+            /* Monta o filtro */
+            app.ui.filter.action('filtrar');
+            /* filtro por texto */
+            fields.query = new app.ui.inputText({
+                legend : 'Buscar',
+                type : 'text',
+                name : 'query',
+                change : app.ui.filter.submit
+            });
+            /* fieldset principal */
+            app.ui.filter.fieldsets.add(new app.ui.fieldset({
+                legend : 'Filtrar categorias',
+                fields : [fields.query]
+            }));
+            /* dispara o evento de filtro */
+            app.ui.filter.submit(function () {
+                app.events.trigger('filter category', fields);
+            });
+
+            /* listando os campos */
+            for (var i in categories) {
+                fitGroup(categories[i]).items.add((new Item(categories[i])).item);
             }
-        }));
 
-        /* Monta o filtro */
-        app.ui.filter.action('filtrar');
-        /* filtro por texto */
-        fields.query = new app.ui.inputText({
-            legend : 'Buscar',
-            type : 'text',
-            name : 'query',
-            change : app.ui.filter.submit
-        });
-        /* fieldset principal */
-        app.ui.filter.fieldsets.add(new app.ui.fieldset({
-            legend : 'Filtrar categorias',
-            fields : [fields.query]
-        }));
-        /* dispara o evento de filtro */
-        app.ui.filter.submit(function () {
-            app.events.trigger('filter category', fields);
-        });
-
-        /* listando os campos */
-        for (var i in categories) {
-            fitGroup(categories[i]).items.add((new Item(categories[i])).item);
-        }
-
-        /* Pegando categorias que são cadastradas ao longo do uso do app */
-        app.events.bind('create category', function (category) {
-            fitGroup(category).items.add((new Item(category)).item);
+            /* Pegando categorias que são cadastradas ao longo do uso do app */
+            app.events.bind('create category', function (category) {
+                fitGroup(category).items.add((new Item(category)).item);
+            });
         });
     });
 });
