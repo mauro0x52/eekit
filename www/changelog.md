@@ -1,19 +1,15 @@
 Changelog
 =========
 
-## 0.7
+## 0.6 (2013-03-04)
 
 Features
+- Barreamento de Eventos
 - Embedando Google Analytics
 - Embedando Olark
 
 Melhorias
 - Tela de incompatibilidade com IE
-
-## 0.6
-
-Features
-- Barramento de eventos
 
 ## 0.5 (2013-02-27)
 

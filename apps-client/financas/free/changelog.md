@@ -1,10 +1,10 @@
 Changelog
 =========
 
-## 0.4.1
+## 1.0 (2013-03-04)
 
-Melhorias
-- Reescrevendo usando barramento de eventos
+Features
+- Barramento de Eventos
 
 ## 0.4 (2013-02-27)
 
