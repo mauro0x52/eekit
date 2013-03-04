@@ -338,14 +338,14 @@ app.routes.list('/', function (params, data) {
 
         /* Exibe o lembrete da tarefa */
         this.reminder = function (value) {
-            if (value) {
-                if (value == 0) {
+            if (value === 0 || value) {
+                if (value.toString() == 0) {
                     icons.reminder.legend('lembrar no dia');
-                } else if (value == 1) {
+                } else if (value.toString() == 1) {
                     icons.reminder.legend('lembrar 1 dia antes');
-                } else if (value == 2) {
+                } else if (value.toString() == 2) {
                     icons.reminder.legend('lembrar 2 dias antes');
-                } else if (value == 7) {
+                } else if (value.toString() == 7) {
                     icons.reminder.legend('lembrar 1 semana antes');
                 }
                 this.item.icons.add(icons.reminder);
