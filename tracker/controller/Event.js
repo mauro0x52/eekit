@@ -184,11 +184,32 @@ module.exports = function (app) {
                 date : new Date(),
                 app : request.param('app', null),
                 source : request.param('source', null),
-                label : request.param('label', null)
-            });
+                label : request.param('label', null),
+            }),
+            utm = {};
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
+
+        if (request.param('utm_source', null)) {
+            utm.source = request.param('utm_source', null);
+        }
+
+        if (request.param('utm_medium', null)) {
+            utm.medium = request.param('utm_medium', null);
+        }
+
+        if (request.param('utm_content', null)) {
+            utm.content = request.param('utm_content', null);
+        }
+
+        if (request.param('utm_campaign', null)) {
+            utm.campaign = request.param('utm_campaign', null);
+        }
+
+        if (utm) {
+            newevent.utm = utm;
+        }
 
         auth(request.param('token', null), function (error, user) {
             if (!error) {

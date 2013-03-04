@@ -28,8 +28,6 @@ userSchema = new Schema({
  * @description : verifica se o username ainda não foi cadastrado
  */
 userSchema.pre('save', function (next) {
-    var i, j, password;
-
     if (this.isNew) {
         this.password = User.encryptPassword(this.password);
     }
