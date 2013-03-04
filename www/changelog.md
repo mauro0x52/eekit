@@ -1,7 +1,11 @@
 Changelog
 =========
 
-## 0.6.1
+## 0.7
+
+Features
+- Embedando Google Analytics
+- Embedando Olark
 
 Melhorias
 - Tela de incompatibilidade com IE
