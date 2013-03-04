@@ -633,6 +633,7 @@ app.routes.list('/', function (params, data) {
                     /* Pegando transações que são cadastradas ao longo do uso do app */
                     app.events.bind('create transaction', function (transaction) {
                         fitGroup(transaction).items.add((new Item(transaction)).item);
+                        app.ui.filter.submit();
                     });
 
                     /* exibe o orientador */
