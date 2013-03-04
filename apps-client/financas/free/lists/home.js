@@ -308,6 +308,7 @@ app.routes.list('/', function (params, data) {
                 that.account(transaction.account);
                 that.value(transaction.value);
             }
+            app.ui.filter.submit();
         });
 
         /* Pegando a exclusão da transação */
@@ -319,6 +320,8 @@ app.routes.list('/', function (params, data) {
                 oldGroup.detach();
                 delete oldGroup;
             }
+            that.deleted = true;
+            app.ui.filter.submit();
         });
 
         /* Pegando quando o filtro é acionado */
@@ -334,6 +337,7 @@ app.routes.list('/', function (params, data) {
                 dateEnd = fields.dateEnd.date() || new Date();
 
             if (
+                !that.deleted &&
                 //Filtra por data
                 (
                     transaction.date <= dateEnd &&
@@ -597,18 +601,6 @@ app.routes.list('/', function (params, data) {
 
                         current = balance.previous;
 
-                        /* icone do saldo anterior */
-                        icons.previous.image(balance.previous >= 0 ? 'add' : 'sub');
-                        icons.previous.legend('$ ' + balance.previous.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (anterior)');
-
-                        /* icone do saldo do período */
-                        icons.period.image(balance.period >= 0 ? 'add' : 'sub');
-                        icons.period.legend('$ ' + balance.period.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (período)');
-
-                        /* icone do saldo corrente */
-                        icons.current.image((balance.period + balance.previous) >= 0 ? 'add' : 'sub');
-                        icons.current.legend('$ ' + (balance.period + balance.previous).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (acumulado)');
-
                         /* icone do saldo corrente em cada grupo */
                         groups.sort(function (a, b) {
                             var aDate = a.date || new Date(),
@@ -623,6 +615,18 @@ app.routes.list('/', function (params, data) {
                             current += groups[i].balance;
                             groups[i].footer.title('Saldo: $ ' + current.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') );
                         }
+
+                        /* icone do saldo anterior */
+                        icons.previous.image(balance.previous >= 0 ? 'add' : 'sub');
+                        icons.previous.legend('$ ' + balance.previous.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (anterior)');
+
+                        /* icone do saldo do período */
+                        icons.period.image(balance.period >= 0 ? 'add' : 'sub');
+                        icons.period.legend('$ ' + balance.period.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (período)');
+
+                        /* icone do saldo corrente */
+                        icons.current.image((balance.period + balance.previous) >= 0 ? 'add' : 'sub');
+                        icons.current.legend('$ ' + (balance.period + balance.previous).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (acumulado)');
                     });
 
                     /* listando as transações */
@@ -633,6 +637,7 @@ app.routes.list('/', function (params, data) {
                     /* Pegando transações que são cadastradas ao longo do uso do app */
                     app.events.bind('create transaction', function (transaction) {
                         fitGroup(transaction).items.add((new Item(transaction)).item);
+                        app.ui.filter.submit();
                     });
 
                     /* exibe o orientador */
