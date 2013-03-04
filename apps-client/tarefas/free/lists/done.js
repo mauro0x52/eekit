@@ -138,8 +138,8 @@ app.routes.list('/feitas', function (params, data) {
      */
     function fitGroup (task) {
         var taskDate;
-        if (task.dateDeadline) {
-            taskDate = new Date(task.dateDeadline);
+        if (task.dateUpdated) {
+            taskDate = new Date(task.dateUpdated);
             if (taskDate >= dates.today) {
                 return groups.today;
             } else if (taskDate >= dates.thisWeek.saturday) {
