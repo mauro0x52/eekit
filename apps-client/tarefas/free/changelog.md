@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.0 (2013-03-04)
+Barreamento de Eventos
+
 ## 0.2 (2013-02-18)
 
 Features
