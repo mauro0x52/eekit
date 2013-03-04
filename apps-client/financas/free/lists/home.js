@@ -308,6 +308,7 @@ app.routes.list('/', function (params, data) {
                 that.account(transaction.account);
                 that.value(transaction.value);
             }
+            app.ui.filter.submit();
         });
 
         /* Pegando a exclusão da transação */
@@ -319,6 +320,7 @@ app.routes.list('/', function (params, data) {
                 oldGroup.detach();
                 delete oldGroup;
             }
+            app.ui.filter.submit();
         });
 
         /* Pegando quando o filtro é acionado */
