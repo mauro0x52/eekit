@@ -13,6 +13,12 @@ var mongoose = require('mongoose'),
 
 eventSchema = new schema({
     user        : {type : objectId},
+    utm         : {
+    	source   : {type : String},
+    	medium   : {type : String},
+    	content  : {type : String},
+    	campaign : {type : String}
+    },
     ip          : {type : String},
     date        : {type : Date},
     app         : {type : String},
@@ -42,6 +48,9 @@ eventSchema.statics.cohort = function (app, frequency, cb) {
 	                        events : [events[i]] 
 	                    };
 	                }
+	                if (events[i].utm) {
+	                	users[events[i].user.toString()].utm = events[i].utm;
+	                }
 	            }
 	        }
 
@@ -49,26 +58,44 @@ eventSchema.statics.cohort = function (app, frequency, cb) {
 	            var cohort = {
 	                date   : new Date(date),
 	                users  : [],
-	                filter : function (labels, minimum, date) {
+	                filter : function (labels, minimum, utm, date) {
 	                    var dateFrom = new Date(date || this.date),
-	                    dateTo   = new Date(date || this.date),
-	                    count    = 0;
-	                    dateTo.setDate(dateTo.getDate() + frequency);
+		                    dateTo   = new Date(date || this.date),
+		                    count    = 0;
+		                    dateTo.setDate(dateTo.getDate() + frequency),
+		                    hasUtm = false;
+
+		                for (var i in utm) {
+		                	hasUtm = true;
+		                }
 
 	                    for (var i in this.users) {
 	                        var ocurrences = 0;
-	                        for (var j in this.users[i].events) {
-	                            if (
-	                                this.users[i].events[j].date <= dateTo   &&
-	                                this.users[i].events[j].date >= dateFrom &&
-	                                labels.indexOf(this.users[i].events[j].label) >= 0
-	                            ) {
-	                                ocurrences += 1;
-	                            }
-	                        }
-	                        if (ocurrences >= minimum) {
-	                            count += 1;
-	                        }
+	                        if (
+	                        	(!hasUtm) ||
+                        		(
+                                	this.users[i].utm.source === utm.source &&
+                                	this.users[i].utm.medium === utm.medium &&
+                                	this.users[i].utm.content === utm.content &&
+                                	this.users[i].utm.campaign === utm.campaign
+                            	)
+                        	) {
+								for (var j in this.users[i].events) {
+		                            if (
+		                                this.users[i].events[j].date <= dateTo   &&
+		                                this.users[i].events[j].date >= dateFrom &&
+		                                (
+		                                	labels.indexOf(this.users[i].events[j].label) >= 0 ||
+		                                	labels.length === 0
+	                                	)
+		                            ) {
+		                                ocurrences += 1;
+		                            }
+		                        }
+		                        if (ocurrences >= minimum) {
+		                            count += 1;
+		                        }
+                        	}
 	                    }
 	                    return count;
 	                }

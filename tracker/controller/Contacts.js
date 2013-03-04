@@ -24,6 +24,24 @@ module.exports = function (app) {
      * @response : {events}
      */
     app.get('/events/contacts', function (request,response) {
+        var utm = {};
+
+        if (request.param('utm_source', null)) {
+            utm.source = request.param('utm_source', null);
+        }
+
+        if (request.param('utm_medium', null)) {
+            utm.medium = request.param('utm_medium', null);
+        }
+
+        if (request.param('utm_content', null)) {
+            utm.content = request.param('utm_content', null);
+        }
+
+        if (request.param('utm_campaign', null)) {
+            utm.campaign = request.param('utm_campaign', null);
+        }
+
         response.header('Access-Control-Allow-Origin', '*');
 
         Event.cohort('contatos', 7, function (error, cohort) {
@@ -46,9 +64,9 @@ module.exports = function (app) {
                 response.write('<td>Engajamento Total</td>');
                 response.write('</tr>');
                 for (var i in cohort) {
-                    var users = cohort[i].users.length,
-		                activated = cohort[i].filter(['adicionar transação', 'adicionar tarefa'],1),
-			            engaged = cohort[i].filter(['marcar tarefa como feita', 'adicionar transação'],2);
+                    var users = cohort[i].filter([],0,utm),
+		                activated = cohort[i].filter(['adicionar transação', 'adicionar tarefa'],1, utm),
+			            engaged = cohort[i].filter(['marcar tarefa como feita', 'adicionar transação'],2, utm);
 
                     response.write('<tr>');
                     response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
@@ -78,7 +96,7 @@ module.exports = function (app) {
                     response.write('<tr>');
                     response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
                     while (date < new Date) {
-                        response.write('<td>' + cohort[i].filter(['marcar tarefa como feita', 'adicionar transação'],2, date) + '</td>')
+                        response.write('<td>' + cohort[i].filter(['marcar tarefa como feita', 'adicionar transação'],2, utm, date) + '</td>')
                         date.setDate(date.getDate() + 7);
                     }
                     response.write('</tr>');
@@ -100,7 +118,7 @@ module.exports = function (app) {
                     var engaged = 0;
                     count += cohort[i].users.length;
                     for (var j = 0; j <= i; j += 1) {
-                        engaged += cohort[j].filter(['marcar tarefa como feita', 'adicionar transação'],2, cohort[i].date);
+                        engaged += cohort[j].filter(['marcar tarefa como feita', 'adicionar transação'],2, utm, cohort[i].date);
                     }
                     response.write('<tr>');
                     response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');

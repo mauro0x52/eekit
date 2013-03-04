@@ -24,6 +24,24 @@ module.exports = function (app) {
      * @response : {events}
      */
     app.get('/events/tasks', function (request,response) {
+        var utm = {};
+
+        if (request.param('utm_source', null)) {
+            utm.source = request.param('utm_source', null);
+        }
+
+        if (request.param('utm_medium', null)) {
+            utm.medium = request.param('utm_medium', null);
+        }
+
+        if (request.param('utm_content', null)) {
+            utm.content = request.param('utm_content', null);
+        }
+
+        if (request.param('utm_campaign', null)) {
+            utm.campaign = request.param('utm_campaign', null);
+        }
+
         response.header('Access-Control-Allow-Origin', '*');
 
         Event.cohort('tarefas', 7, function (error, cohort) {
@@ -48,11 +66,11 @@ module.exports = function (app) {
                 response.write('<td>Engajamento Total</td>');
                 response.write('</tr>');
                 for (var i in cohort) {
-                    var users = cohort[i].users.length,
-		                taskAdder = cohort[i].filter(['adicionar tarefa'],1),
-			            taskMarker1 = cohort[i].filter(['marcar tarefa como feita'],1),
-			            taskMarker3 = cohort[i].filter(['marcar tarefa como feita'],3),
-                        taskMarker5 = cohort[i].filter(['marcar tarefa como feita'],5) 
+                    var users = cohort[i].filter([],0,utm),
+		                taskAdder = cohort[i].filter(['adicionar tarefa'],1,utm),
+			            taskMarker1 = cohort[i].filter(['marcar tarefa como feita'],1,utm),
+			            taskMarker3 = cohort[i].filter(['marcar tarefa como feita'],3,utm),
+                        taskMarker5 = cohort[i].filter(['marcar tarefa como feita'],5,utm) 
 
                     response.write('<tr>');
                     response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
@@ -86,7 +104,7 @@ module.exports = function (app) {
                     response.write('<tr>');
                     response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
                     while (date < new Date) {
-                        response.write('<td>' + cohort[i].filter(['marcar como feita'], 5, date) + '</td>')
+                        response.write('<td>' + cohort[i].filter(['marcar como feita'], 5, utm, date) + '</td>')
                         date.setDate(date.getDate() + 7);
                     }
                     response.write('</tr>');
@@ -108,7 +126,7 @@ module.exports = function (app) {
                     var engaged = 0;
                     count += cohort[i].users.length;
                     for (var j = 0; j <= i; j += 1) {
-                        engaged += cohort[j].filter(['marcar como feita'], 5, cohort[i].date);
+                        engaged += cohort[j].filter(['marcar como feita'], 5, utm, cohort[i].date);
                     }
                     response.write('<tr>');
                     response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');

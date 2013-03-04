@@ -162,64 +162,66 @@ app.routes.list('/contas', function (params, data) {
     }
 
     /* autenticando usuário e pegando contas */
-    app.models.account.list(function (accounts) {
-        var fields = {}
-        
-        app.ui.title('Contas');
-        app.tracker.event('visualizar contas');
+    app.models.user.auth(function () {
+        app.models.account.list(function (accounts) {
+            var fields = {}
+            
+            app.ui.title('Contas');
+            app.tracker.event('visualizar contas');
 
-        /* Botão global de adicionar categoria */
-        app.ui.actions.add(new app.ui.action({
-            image : 'add',
-            legend : 'adicionar conta',
-            click : function () {
-                app.apps.open({
-                    app : app.slug,
-                    route : '/adicionar-conta'
-                })
+            /* Botão global de adicionar categoria */
+            app.ui.actions.add(new app.ui.action({
+                image : 'add',
+                legend : 'adicionar conta',
+                click : function () {
+                    app.apps.open({
+                        app : app.slug,
+                        route : '/adicionar-conta'
+                    })
+                }
+            }));
+
+            /* Monta o filtro */
+            app.ui.filter.action('filtrar');
+            /* filtro por texto */
+            fields.query = new app.ui.inputText({
+                legend : 'Buscar',
+                type : 'text',
+                name : 'query',
+                change : app.ui.filter.submit
+            });
+            /* fieldset principal */
+            app.ui.filter.fieldsets.add(new app.ui.fieldset({
+                legend : 'Filtrar contas',
+                fields : [fields.query]
+            }));
+            /* dispara o evento de filtro */
+            app.ui.filter.submit(function () {
+                app.events.trigger('filter account', fields);
+            });
+
+            /* ordenando as contas */
+            accounts.sort(function (a,b) {
+                var priority_a = a.name || 0,
+                    priority_b = b.name || 0;
+
+                if (priority_a > priority_b) return  1;
+                if (priority_a < priority_b) return -1;
+                return 0
+            });
+
+            /* listando as contas */
+            for (var i in accounts) {
+                fitGroup(accounts[i]).items.add((new Item(accounts[i])).item);
             }
-        }));
 
-        /* Monta o filtro */
-        app.ui.filter.action('filtrar');
-        /* filtro por texto */
-        fields.query = new app.ui.inputText({
-            legend : 'Buscar',
-            type : 'text',
-            name : 'query',
-            change : app.ui.filter.submit
+            /* Pegando contas que são cadastradas ao longo do uso do app */
+            app.events.bind('create account', function (account) {
+                fitGroup(account).items.add((new Item(account)).item);
+            });
+
+            /* Exibe o orientador */
+            app.models.helpers.defaultAccounts(accounts);
         });
-        /* fieldset principal */
-        app.ui.filter.fieldsets.add(new app.ui.fieldset({
-            legend : 'Filtrar contas',
-            fields : [fields.query]
-        }));
-        /* dispara o evento de filtro */
-        app.ui.filter.submit(function () {
-            app.events.trigger('filter account', fields);
-        });
-
-        /* ordenando as contas */
-        accounts.sort(function (a,b) {
-            var priority_a = a.name || 0,
-                priority_b = b.name || 0;
-
-            if (priority_a > priority_b) return  1;
-            if (priority_a < priority_b) return -1;
-            return 0
-        });
-
-        /* listando as contas */
-        for (var i in accounts) {
-            fitGroup(accounts[i]).items.add((new Item(accounts[i])).item);
-        }
-
-        /* Pegando contas que são cadastradas ao longo do uso do app */
-        app.events.bind('create account', function (account) {
-            fitGroup(account).items.add((new Item(account)).item);
-        });
-
-        /* Exibe o orientador */
-        app.models.helpers.defaultAccounts(accounts);
     });
 });
