@@ -4,7 +4,7 @@ Changelog
 ## 0.2.1
 
 Melhorias
-- Reescrevendo usando arramento de eventos
+- Reescrevendo usando barramento de eventos
 
 ## 0.2 (2013-02-18)
 
