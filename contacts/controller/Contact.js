@@ -290,7 +290,7 @@ module.exports = function (app) {
                                             } else {
                                                 var requester = require('request');
                                                 requester({
-                                                    url : 'http://' + config.services.tasks.url + ':' + config.services.tasks.port + '/tasks?token=' + request.param('token', null) + '&filterByEmbeddeds=/contatos/contato-relacionado/' + id,
+                                                    url : 'http://' + config.services.tasks.url + ':' + config.services.tasks.port + '/tasks?token=' + request.param('token', null) + '&filterByEmbeddeds[0]=/contatos/contato-relacionado/' + id,
                                                     method : 'GET',
                                                 }, function (error, result, data) {
                                                     data = JSON.parse(data);
