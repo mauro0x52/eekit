@@ -25,10 +25,10 @@ module.exports = function (app) {
      */
     app.post('/user', function (request,response) {
         var newuser;
-        
+
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
-        
+
         auth(request.param('token', null), function (error, user) {
             if (error) {
                 response.send({error : error});

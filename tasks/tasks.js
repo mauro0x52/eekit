@@ -40,20 +40,20 @@ app.get('/ping', function (request,response) {
 /*  Migração do master para a2 */
 app.get('/migrate', function (request,response) {
     Model = require('./model/Model.js')
-    
+
     Model.UserCategory.find(function (error, users) {
         Model.Task.find(function (error, tasks) {
             for (var i in tasks) {
                 tasks[i].embeddeds = ['/contatos/contato-relacionado/' + tasks[i].embeddeds]
             }
-            
+
             response.send({
                 UserCategory : users,
                 Task : tasks
             });
         });
     });
-    
+
 });
 
 /*  Ativando o server */
