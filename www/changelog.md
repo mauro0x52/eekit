@@ -16,7 +16,7 @@ Melhorias
 ## 0.6 (2013-03-04)
 
 Features
-- Barreamento de Eventos
+- Barramento de Eventos
 - Embedando Google Analytics
 - Embedando Olark
 
