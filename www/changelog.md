@@ -1,6 +1,18 @@
 Changelog
 =========
 
+## 0.7
+
+Features
+- Tipboxes nas ações e nos menus
+
+Correções
+- Problema ao selecionar data
+- Não estava dando para selecionar campos em cima de seletores
+
+Melhorias
+- CSS do seletor
+
 ## 0.6 (2013-03-04)
 
 Features

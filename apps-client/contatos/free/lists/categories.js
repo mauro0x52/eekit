@@ -33,7 +33,7 @@
                 title   : title,
                 actions : new app.ui.action({
                     image : 'add',
-                    legend : 'adicionar categoria',
+                    tip : 'adicionar categoria neste grupo',
                     click : function () {
                         app.apps.open({
                             app : app.slug,
@@ -53,7 +53,7 @@
         partners  : group('Parceiros', 'partners'),
         personals : group('Pessoais', 'personals')
     };
-    
+
     app.ui.groups.add([groups.clients, groups.suppliers, groups.partners, groups.personals]);
 
     /**
@@ -67,19 +67,19 @@
      */
     function fitGroup (category) {
         switch (category.type) {
-            case 'clients' : 
+            case 'clients' :
                 return groups.clients;
                 break;
-            case 'suppliers' : 
+            case 'suppliers' :
                 return groups.suppliers;
                 break;
-            case 'partners' : 
+            case 'partners' :
                 return groups.partners;
                 break;
-            case 'personals' : 
+            case 'personals' :
                 return groups.personals;
                 break;
-            default : 
+            default :
                 return groups.personals;
         }
     }
@@ -95,14 +95,14 @@
         /* Botões do item */
         actions = {
             edit         : new app.ui.action({
-                legend : 'editar categoria',
+                tip : 'editar esta categoria',
                 image  : 'pencil',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/editar-categoria/' + category._id});
                 }
             }),
             remove       : new app.ui.action({
-                legend : 'remover categoria',
+                tip : 'remover esta categoria',
                 image  : 'trash',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-categoria/' + category._id});
@@ -163,13 +163,14 @@
     /* autenticando usuário e pegando categorias */
     app.models.category.list(function (categories) {
         var fields = {}
-        
+
         app.ui.title('Categorias');
 
         /* Botão global de adicionar categoria */
         app.ui.actions.add(new app.ui.action({
             image : 'add',
             legend : 'adicionar categoria',
+            tip : 'adicionar nova categoria de contatos',
             click : function () {
                 app.apps.open({
                     app : app.slug,
