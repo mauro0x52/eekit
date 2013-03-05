@@ -497,8 +497,9 @@ form {
 }
 
 .sheets  > .sheet > .header {
-    padding: 10px 20px;
+    height: 35px;
     background-color: #b9ac9f;
+    position: relative;
 }
 
 .sheets > .sheet > .loading {
@@ -541,8 +542,11 @@ form {
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 16px;
-    margin: 0;
+    position: absolute;
     padding: 0;
+    margin: 0;
+    top: 10px;
+    left: 20px;
 }
 
 .sheets  > .sheet > .body {
