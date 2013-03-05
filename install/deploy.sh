@@ -34,9 +34,12 @@ deploy() {
     if [ $GIT_UPDATES_TOTAL != 0 ]
     then
 
+        declare -A SERVICES_UPDATES
+        declare -A SERVICES_PACKAGES_UPDATES
+
         echo ""
         echo "------------------------------------------------------------"
-        echo "Reiniciando serviços"
+        echo "Verificando atualizacoes"
         echo "------------------------------------------------------------"
         echo ""
 
@@ -45,11 +48,46 @@ deploy() {
         for SERVICE in ${CONFIG_SERVICES[@]}
         do
             cd $SERVICE
-            echo "- Atualizando $SERVICE"
+            echo "- Verificando atualizacoes de $SERVICE"
 
             GIT_UPDATES_SERVICE=$(git diff $CONFIG_GIT_REPOSITORY/$CONFIG_GIT_BRANCH | grep -c '\+\+\+ b\/'$SERVICE)
+
+            echo "-- $GIT_UPDATES_SERVICE atualizacoes encontradas"
+
+            SERVICES_UPDATES[$SERVICE]=$GIT_UPDATES_SERVICE
             if [ $GIT_UPDATES_SERVICE != 0 ]
             then
+
+                GIT_UPDATES_PACKAGE=$(git diff $CONFIG_GIT_REPOSITORY/$CONFIG_GIT_BRANCH | grep -c '\+\+\+ b\/'$SERVICE'\/package\.json')
+                SERVICES_PACKAGES_UPDATES[$SERVICE]=$GIT_UPDATES_PACKAGE
+            fi
+
+            echo
+            cd ..
+        done
+
+        echo ""
+        echo "------------------------------------------------------------"
+        echo "Atualizando codigo"
+        echo "------------------------------------------------------------"
+        echo ""
+        git pull $CONFIG_GIT_REPOSITORY $CONFIG_GIT_BRANCH
+
+
+        echo ""
+        echo "------------------------------------------------------------"
+        echo "Reiniciando os serviços"
+        echo "------------------------------------------------------------"
+        echo ""
+
+        for SERVICE in ${CONFIG_SERVICES[@]}
+        do
+            cd $SERVICE
+
+            if [ ${SERVICES_UPDATES[$SERVICE]} != 0 ]
+            then
+
+                echo "- Reiniciando $SERVICE"
 
                 # config.js
                 if [ ! -f config.js ];
@@ -65,38 +103,22 @@ deploy() {
                     fi
                 fi
 
-                GIT_UPDATES_PACKAGE=$(git diff $CONFIG_GIT_REPOSITORY/$CONFIG_GIT_BRANCH | grep -c '\+\+\+ b\/'$SERVICE'\/package\.json')
-                if [ $GIT_UPDATES_PACKAGE != 0 ]
+                if [ ${SERVICES_PACKAGES_UPDATES[$SERVICE]} != 0 ]
                 then
-                    echo "-- Atualizando codigo"
-                    git checkout HEAD $CONFIG_PROJECT_FOLDER/$SERVICE
-
                     # atualiza pacotes
                     echo "-- Instalando e atualizando pacotes"
-                    npm install &>/dev/null &
-                    npm update &>/dev/null &
-                else
-                    echo "-- Atualizando codigo"
-                    git checkout HEAD $CONFIG_PROJECT_FOLDER/$SERVICE
+                    npm install &>/dev/null
+                    npm update &>/dev/null
                 fi
 
                 echo "-- Reiniciando serviço..."
                 forever stop $SERVICE.js
                 forever start $SERVICE.js
-            else
-                echo "-- Nenhuma atualização para $SERVICE"
             fi
 
             echo
             cd ..
         done
-
-        echo ""
-        echo "------------------------------------------------------------"
-        echo "Atualizando codigo restante"
-        echo "------------------------------------------------------------"
-        echo ""
-        git pull $CONFIG_GIT_REPOSITORY $CONFIG_GIT_BRANCH
     else
         echo
         echo "- Nenhuma alteração encontrada"
