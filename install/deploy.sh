@@ -28,7 +28,7 @@ deploy() {
 
     echo ""
     echo "- Verificando alteracoes..."
-    GIT_UPDATES_TOTAL=$(git diff $CONFIG_GIT_REPOSITORY/$CONFIG_GIT_BRANCH | grep -c a/)
+    GIT_UPDATES_TOTAL=$(git diff $CONFIG_GIT_REPOSITORY/$CONFIG_GIT_BRANCH | grep -c '\+\+\+ b\/')
     echo "-- $GIT_UPDATES_TOTAL atualizacoes encontradas."
 
     if [ $GIT_UPDATES_TOTAL != 0 ]
@@ -47,7 +47,7 @@ deploy() {
             cd $SERVICE
             echo "- Atualizando $SERVICE"
 
-            GIT_UPDATES_SERVICE=$(git diff $CONFIG_GIT_REPOSITORY/$CONFIG_GIT_BRANCH | grep -c a/$SERVICE)
+            GIT_UPDATES_SERVICE=$(git diff $CONFIG_GIT_REPOSITORY/$CONFIG_GIT_BRANCH | grep -c '\+\+\+ b\/'$SERVICE)
             if [ $GIT_UPDATES_SERVICE != 0 ]
             then
 
@@ -65,7 +65,7 @@ deploy() {
                     fi
                 fi
 
-                GIT_UPDATES_PACKAGE=$(git diff $CONFIG_GIT_REPOSITORY/$CONFIG_GIT_BRANCH | grep -c a/$SERVICE/package.json)
+                GIT_UPDATES_PACKAGE=$(git diff $CONFIG_GIT_REPOSITORY/$CONFIG_GIT_BRANCH | grep -c '\+\+\+ b\/'$SERVICE'\/package\.json')
                 if [ $GIT_UPDATES_PACKAGE != 0 ]
                 then
                     echo "-- Atualizando codigo"
