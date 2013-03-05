@@ -1,6 +1,28 @@
 Changelog
 =========
 
+## 0.7
+
+Features
+- Tipboxes nas ações e nos menus
+
+Correções
+- Problema ao selecionar data
+- Não estava dando para selecionar campos em cima de seletores
+
+Melhorias
+- CSS do seletor
+
+## 0.6 (2013-03-04)
+
+Features
+- Barramento de Eventos
+- Embedando Google Analytics
+- Embedando Olark
+
+Melhorias
+- Tela de incompatibilidade com IE
+
 ## 0.5 (2013-02-27)
 
 Features

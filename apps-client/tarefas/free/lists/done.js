@@ -138,8 +138,8 @@ app.routes.list('/feitas', function (params, data) {
      */
     function fitGroup (task) {
         var taskDate;
-        if (task.dateDeadline) {
-            taskDate = new Date(task.dateDeadline);
+        if (task.dateUpdated) {
+            taskDate = new Date(task.dateUpdated);
             if (taskDate >= dates.today) {
                 return groups.today;
             } else if (taskDate >= dates.thisWeek.saturday) {
@@ -179,7 +179,7 @@ app.routes.list('/feitas', function (params, data) {
                 app.apps.open({app : app.slug, route : '/tarefa/' + task._id});
             }
         });
-        
+
         /* Icones do item */
         icons = {
             important    : new app.ui.icon({image : 'alert', legend : 'importante'}),
@@ -191,7 +191,7 @@ app.routes.list('/feitas', function (params, data) {
         /* Botões do item */
         actions = {
             remove       : new app.ui.action({
-                legend : 'remover tarefa',
+                tip : 'remover esta tarefa',
                 image  : 'trash',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-tarefa/' + task._id});

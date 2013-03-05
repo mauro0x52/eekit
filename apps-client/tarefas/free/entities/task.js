@@ -45,21 +45,24 @@ app.routes.entity('/tarefa/:id', function (params, data) {
         /* Botões do item */
         actions = {
             done         : new app.ui.action({
-                legend : 'marcar tarefa como feita',
+                legend : 'marcar como feita',
+                tip : 'marcar esta tarefa como feita',
                 image  : 'check',
                 click  : function () {
                     task.markAsDone();
                 }
             }),
             edit         : new app.ui.action({
-                legend : 'editar tarefa',
+                legend : 'editar',
+                tip : 'editar dados desta tarefa',
                 image  : 'pencil',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/editar-tarefa/' + task._id});
                 }
             }),
             remove       : new app.ui.action({
-                legend : 'remover tarefa',
+                legend : 'remover',
+                tip : 'apagar esta tarefa',
                 image  : 'trash',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-tarefa/' + task._id});
@@ -104,22 +107,22 @@ app.routes.entity('/tarefa/:id', function (params, data) {
             fields.recurrence.values.remove();
             if (value) {
                 switch (value*1) {
-                    case 0  : 
+                    case 0  :
                         fields.recurrence.values.add(new app.ui.value({value : 'sem recorrência'}));
                         break;
-                    case 1  : 
+                    case 1  :
                         fields.recurrence.values.add(new app.ui.value({value : 'diariamente'}));
                         break;
-                    case 7  : 
+                    case 7  :
                         fields.recurrence.values.add(new app.ui.value({value : 'semanalmente'}));
                         break;
-                    case 14 : 
+                    case 14 :
                         fields.recurrence.values.add(new app.ui.value({value : 'quinzenalmente'}));
                         break;
-                    case 30 : 
+                    case 30 :
                         fields.recurrence.values.add(new app.ui.value({value : 'mensalmente'}));
                         break;
-                    default : 
+                    default :
                         fields.recurrence.values.add(new app.ui.value({value : 'a cada ' + value + ' dias'}))
                 }
                 fieldsets.dates.fields.add(fields.recurrence);
@@ -161,19 +164,19 @@ app.routes.entity('/tarefa/:id', function (params, data) {
             fields.reminder.values.remove();
             if (value) {
                 switch (value*1) {
-                    case 0  : 
+                    case 0  :
                         fields.reminder.values.add(new app.ui.value({value : 'no dia'}));
                         break;
-                    case 1  : 
+                    case 1  :
                         fields.reminder.values.add(new app.ui.value({value : '1 dia antes'}));
                         break;
-                    case 2  : 
+                    case 2  :
                         fields.reminder.values.add(new app.ui.value({value : '2 dias antes'}));
                         break;
-                    case 7  : 
+                    case 7  :
                         fields.reminder.values.add(new app.ui.value({value : '1 semana antes'}));
                         break;
-                    default : 
+                    default :
                         fields.reminder.values.add(new app.ui.value({value : value + ' dias antes'}));
                         break;
                 }
@@ -234,7 +237,7 @@ app.routes.entity('/tarefa/:id', function (params, data) {
         categories = data;
         app.models.task.find(params.id, function (task) {
             new Entity(task);
-            
+
             if (task.embeddeds) {
                 var appa = task.embeddeds[0].split('/')[1],
                     route = task.embeddeds[0].replace('/' + appa, '');

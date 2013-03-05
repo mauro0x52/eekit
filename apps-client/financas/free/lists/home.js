@@ -21,12 +21,12 @@ app.routes.list('/', function (params, data) {
      * Objeto com os grupos de grupos
      */
     groupsets,
-    
+
     /*
      * Vetor com as categorias do usuário
      */
     categories,
-    
+
     /*
      * Vetor com as contas do usuário
      */
@@ -79,7 +79,7 @@ app.routes.list('/', function (params, data) {
         /* Botões do grupo */
         actions = {
             credit : new app.ui.action({
-                legend : 'receita',
+                tip : 'adicionar receita neste dia',
                 image : 'add',
                 click : function () {
                     app.apps.open({
@@ -90,7 +90,7 @@ app.routes.list('/', function (params, data) {
                 }
             }),
             debt : new app.ui.action({
-                legend : 'despesa',
+                tip : 'adicionar despesa neste dia',
                 image : 'sub',
                 click : function () {
                     app.apps.open({
@@ -101,7 +101,7 @@ app.routes.list('/', function (params, data) {
                 }
             }),
             transfer : new app.ui.action({
-                legend : 'transferencia',
+                tip : 'adicionar transferência neste dia',
                 image : 'transfer',
                 click : function () {
                     app.apps.open({
@@ -214,14 +214,14 @@ app.routes.list('/', function (params, data) {
         /* Botões do item */
         actions = {
             edit         : new app.ui.action({
-                legend : 'editar transação',
+                tip : 'editar esta transação',
                 image  : 'pencil',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/editar-transacao/' + transaction._id});
                 }
             }),
             remove       : new app.ui.action({
-                legend : 'remover transação',
+                tip : 'remover esta transação',
                 image  : 'trash',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-transacao/' + transaction._id});
@@ -308,6 +308,7 @@ app.routes.list('/', function (params, data) {
                 that.account(transaction.account);
                 that.value(transaction.value);
             }
+            app.ui.filter.submit();
         });
 
         /* Pegando a exclusão da transação */
@@ -319,6 +320,8 @@ app.routes.list('/', function (params, data) {
                 oldGroup.detach();
                 delete oldGroup;
             }
+            that.deleted = true;
+            app.ui.filter.submit();
         });
 
         /* Pegando quando o filtro é acionado */
@@ -334,6 +337,7 @@ app.routes.list('/', function (params, data) {
                 dateEnd = fields.dateEnd.date() || new Date();
 
             if (
+                !that.deleted &&
                 //Filtra por data
                 (
                     transaction.date <= dateEnd &&
@@ -363,8 +367,8 @@ app.routes.list('/', function (params, data) {
                 (
                     query.length = 0 ||
                     (
-                        transaction.name + ' ' + 
-                        transaction.value + ' ' + 
+                        transaction.name + ' ' +
+                        transaction.value + ' ' +
                         transaction.noteNumber
                     ).toLowerCase().indexOf(query.toLowerCase()) > -1
                 )
@@ -372,8 +376,8 @@ app.routes.list('/', function (params, data) {
                 that.item.visibility('show');
                 app.ui.actions.get()[0].href(
                     app.ui.actions.get()[0].href() +
-                    transaction.name + ' %2C' + 
-                    (transaction.date.getDate() + '/' + (transaction.date.getMonth() + 1) + '/' + transaction.date.getFullYear()) + ' %2C' + 
+                    transaction.name + ' %2C' +
+                    (transaction.date.getDate() + '/' + (transaction.date.getMonth() + 1) + '/' + transaction.date.getFullYear()) + ' %2C' +
                     (transaction.type === 'credit' ? '+' : '-') + '$' + transaction.value + ' %2C' +
                     that.item.label.legend()  + ' %2C' +
                     icons.account.legend() + ' %2C' +
@@ -435,32 +439,36 @@ app.routes.list('/', function (params, data) {
                     /* Botão global de baixar dados */
                     app.ui.actions.add(new app.ui.action({
                         legend : 'baixar dados',
+                        tip : 'importar seus dados em um arquivo CSV',
                         image : 'download'
-                    })); 
+                    }));
                     /* Botão global de adicionar receita */
                     app.ui.actions.add(new app.ui.action({
                         legend : 'receita',
+                        tip : 'adicionar receita',
                         image : 'add',
                         click : function () {
                             app.apps.open({app : app.slug, route : '/adicionar-receita'});
                         }
-                    })); 
+                    }));
                     /* Botão global de adicionar despesa */
                     app.ui.actions.add(new app.ui.action({
                         legend : 'despesa',
+                        tip : 'adicionar despesa',
                         image : 'sub',
                         click : function () {
                             app.apps.open({app : app.slug, route : '/adicionar-despesa'});
                         }
-                    })); 
+                    }));
                     /* Botão global de adicionar transferencia */
                     app.ui.actions.add(new app.ui.action({
-                        legend : 'transferencia',
+                        legend : 'transferência',
+                        tip : 'adicionar transferência',
                         image : 'transfer',
                         click : function () {
                             app.apps.open({app : app.slug, route : '/adicionar-transferencia'});
                         }
-                    })); 
+                    }));
 
                     /* Monta o filtro */
                     app.ui.filter.action('filtrar');
@@ -506,7 +514,7 @@ app.routes.list('/', function (params, data) {
                         } ()),
                         change : app.ui.filter.submit,
                         actions : true
-                    }); 
+                    });
                     /* filtro por tipo */
                     fields.type = new app.ui.inputSelector({
                         type : 'multiple',
@@ -597,18 +605,6 @@ app.routes.list('/', function (params, data) {
 
                         current = balance.previous;
 
-                        /* icone do saldo anterior */
-                        icons.previous.image(balance.previous >= 0 ? 'add' : 'sub');
-                        icons.previous.legend('$ ' + balance.previous.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (anterior)');
-
-                        /* icone do saldo do período */
-                        icons.period.image(balance.period >= 0 ? 'add' : 'sub');
-                        icons.period.legend('$ ' + balance.period.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (período)');
-
-                        /* icone do saldo corrente */
-                        icons.current.image((balance.period + balance.previous) >= 0 ? 'add' : 'sub');
-                        icons.current.legend('$ ' + (balance.period + balance.previous).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (acumulado)');
-
                         /* icone do saldo corrente em cada grupo */
                         groups.sort(function (a, b) {
                             var aDate = a.date || new Date(),
@@ -623,6 +619,18 @@ app.routes.list('/', function (params, data) {
                             current += groups[i].balance;
                             groups[i].footer.title('Saldo: $ ' + current.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') );
                         }
+
+                        /* icone do saldo anterior */
+                        icons.previous.image(balance.previous >= 0 ? 'add' : 'sub');
+                        icons.previous.legend('$ ' + balance.previous.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (anterior)');
+
+                        /* icone do saldo do período */
+                        icons.period.image(balance.period >= 0 ? 'add' : 'sub');
+                        icons.period.legend('$ ' + balance.period.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (período)');
+
+                        /* icone do saldo corrente */
+                        icons.current.image((balance.period + balance.previous) >= 0 ? 'add' : 'sub');
+                        icons.current.legend('$ ' + (balance.period + balance.previous).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (acumulado)');
                     });
 
                     /* listando as transações */
@@ -633,6 +641,7 @@ app.routes.list('/', function (params, data) {
                     /* Pegando transações que são cadastradas ao longo do uso do app */
                     app.events.bind('create transaction', function (transaction) {
                         fitGroup(transaction).items.add((new Item(transaction)).item);
+                        app.ui.filter.submit();
                     });
 
                     /* exibe o orientador */

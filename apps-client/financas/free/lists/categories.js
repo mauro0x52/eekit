@@ -33,7 +33,7 @@ app.routes.list('/categorias', function (params, data) {
                 title   : title,
                 actions : new app.ui.action({
                     image : 'add',
-                    legend : 'adicionar categoria',
+                    tip : 'adicionar categoria',
                     click : function () {
                         app.apps.open({
                             app : app.slug,
@@ -51,7 +51,7 @@ app.routes.list('/categorias', function (params, data) {
         debt   : group('Categorias de despesas', 'debt'),
         credit : group('Categorias de receitas', 'credit')
     };
-    
+
     app.ui.groups.add([groups.debt, groups.credit]);
 
     /**
@@ -65,13 +65,13 @@ app.routes.list('/categorias', function (params, data) {
      */
     function fitGroup (category) {
         switch (category.type) {
-            case 'debt' : 
+            case 'debt' :
                 return groups.debt;
                 break;
-            case 'credit' : 
+            case 'credit' :
                 return groups.credit;
                 break;
-            default : 
+            default :
                 return groups.credit;
         }
     }
@@ -87,14 +87,14 @@ app.routes.list('/categorias', function (params, data) {
         /* Botões do item */
         actions = {
             edit         : new app.ui.action({
-                legend : 'editar categoria',
+                tip : 'editar esta categoria',
                 image  : 'pencil',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/editar-categoria/' + category._id});
                 }
             }),
             remove       : new app.ui.action({
-                legend : 'remover categoria',
+                tip : 'remover esta categoria',
                 image  : 'trash',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-categoria/' + category._id});
@@ -157,7 +157,7 @@ app.routes.list('/categorias', function (params, data) {
     app.models.user.auth(function () {
         app.models.category.list(function (categories) {
             var fields = {}
-            
+
             app.ui.title('Categorias');
             app.tracker.event('visualizar categorias');
 
@@ -165,6 +165,7 @@ app.routes.list('/categorias', function (params, data) {
             app.ui.actions.add(new app.ui.action({
                 image : 'add',
                 legend : 'adicionar categoria',
+                tip : 'adicionar nova categoria de transações',
                 click : function () {
                     app.apps.open({
                         app : app.slug,

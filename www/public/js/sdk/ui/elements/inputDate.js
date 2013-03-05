@@ -162,11 +162,13 @@ sdk.modules.ui.inputDate = function (app) {
             }
         };
         this.show = function () {
+            datepicker_div.setAttribute('style', 'opacity:1');
             datepicker_div.setAttribute('class', 'date-picker');
             date_div.innerHTML = that.dateName();
             that.monthdays();
         };
         this.hide = function () {
+            datepicker_div.setAttribute('style', 'opacity:0');
             setTimeout(function () {
                 if (!changing_month) {
                     datepicker_div.setAttribute('class', 'date-picker hide');
@@ -174,7 +176,7 @@ sdk.modules.ui.inputDate = function (app) {
                     input_text.focus();
                 }
                 changing_month = false;
-            }, 200);
+            }, 500);
         };
         this.previousMonth = function () {
             changing_month = true;

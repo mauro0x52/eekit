@@ -21,7 +21,7 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
     function fieldValue (field_id, values) {
         var i;
         for (i in values) {
-            if (values[i].field.toString() === field_id.toString()) {
+            if (values[i].field && values[i].field.toString() === field_id.toString()) {
                 return values[i].value;
             }
         }
@@ -40,7 +40,7 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
     function fieldId (field_id, values) {
         var i;
         for (i in values) {
-            if (values[i].field.toString() === field_id.toString()) {
+            if (values[i].field && values[i].field.toString() === field_id.toString()) {
                 return values[i]._id;
             }
         }

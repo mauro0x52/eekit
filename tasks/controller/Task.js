@@ -319,7 +319,7 @@ module.exports = function (app) {
                                                             } else {
                                                                 task.dateDeadline = new Date();
                                                                 if (task.recurrence === 30) {
-                                                                    newDate = new Date(task.dateDeadline.getFullYear(), task.dateDeadline.getMonth() + 2, 0);
+                                                                    newDate = new Date(task.dateDeadline.getFullYear(), task.dateDeadline.getMonth() + 1, task.dateDeadline.getDate());
                                                                 } else {
                                                                     newDate = new Date(task.dateDeadline.getFullYear(), task.dateDeadline.getMonth(), task.dateDeadline.getDate() + task.recurrence);
                                                                 }

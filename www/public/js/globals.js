@@ -128,6 +128,9 @@ function queryToJson (value) {
 function ajaxRequest (url, method, data, cb, local) {
     var invocation;
 
+    data = data || {};
+    data.rand = (new Date).getTime();
+
     try {
         /* Testa chamada para o IE */
         if (local) {

@@ -59,6 +59,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
                 title   : 'Tarefas pendentes',
                 actions : new app.ui.action({
                     legend : 'adicionar tarefa',
+                    legend : 'adicionar nova tarefa',
                     image : 'add',
                     click : function () {
                         app.apps.open({
@@ -108,7 +109,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
                 app.apps.open({app : app.slug, route : '/tarefa/' + task._id});
             }
         });
-        
+
         /* Icones do item */
         icons = {
             important    : new app.ui.icon({image : 'alert', legend : 'importante'}),
@@ -120,21 +121,21 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
         /* Botões do item */
         actions = {
             done         : new app.ui.action({
-                legend : 'marcar tarefa como feita',
+                tip : 'marcar esta tarefa como feita',
                 image  : 'check',
                 click  : function () {
                     task.markAsDone();
                 }
             }),
             edit         : new app.ui.action({
-                legend : 'editar tarefa',
+                tip : 'editar esta tarefa',
                 image  : 'pencil',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/editar-tarefa/' + task._id});
                 }
             }),
             remove       : new app.ui.action({
-                legend : 'remover tarefa',
+                tip : 'remover esta tarefa',
                 image  : 'trash',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-tarefa/' + task._id});

@@ -16,7 +16,7 @@ app.routes.list('/', function (params, data) {
      * Objeto com os grupos
      */
     groups,
-    
+
     /*
      * Vetor com as categorias do usuário
      */
@@ -104,7 +104,7 @@ app.routes.list('/', function (params, data) {
             header : {
                 title   : title,
                 actions : new app.ui.action({
-                    legend : 'adicionar tarefa',
+                    tip : 'adicionar tarefa neste dia',
                     image : 'add',
                     click : function () {
                         app.apps.open({
@@ -159,13 +159,13 @@ app.routes.list('/', function (params, data) {
     if (now < dates.thisWeek.saturday)  groups.thisWeek.thisWeek.groups.add(groups.thisWeek.saturday);
     /* Semana que vem */
     groups.nextWeek.nextWeek.groups.add([
-        groups.nextWeek.sunday, 
-        groups.nextWeek.monday, 
-        groups.nextWeek.tuesday, 
-        groups.nextWeek.wednesday, 
-        groups.nextWeek.thursday, 
-        groups.nextWeek.friday, 
-        groups.nextWeek.saturday, 
+        groups.nextWeek.sunday,
+        groups.nextWeek.monday,
+        groups.nextWeek.tuesday,
+        groups.nextWeek.wednesday,
+        groups.nextWeek.thursday,
+        groups.nextWeek.friday,
+        groups.nextWeek.saturday,
     ]);
 
     /**
@@ -230,22 +230,22 @@ app.routes.list('/', function (params, data) {
 
         this.item = new app.ui.item({
             droppableGroups : [
-                groups.pending, 
-                groups.today, 
-                groups.thisWeek.sunday, 
-                groups.thisWeek.monday, 
-                groups.thisWeek.tuesday, 
-                groups.thisWeek.wednesday, 
-                groups.thisWeek.thursday, 
-                groups.thisWeek.friday, 
-                groups.thisWeek.saturday, 
-                groups.nextWeek.sunday, 
-                groups.nextWeek.monday, 
-                groups.nextWeek.tuesday, 
-                groups.nextWeek.wednesday, 
-                groups.nextWeek.thursday, 
-                groups.nextWeek.friday, 
-                groups.nextWeek.saturday, 
+                groups.pending,
+                groups.today,
+                groups.thisWeek.sunday,
+                groups.thisWeek.monday,
+                groups.thisWeek.tuesday,
+                groups.thisWeek.wednesday,
+                groups.thisWeek.thursday,
+                groups.thisWeek.friday,
+                groups.thisWeek.saturday,
+                groups.nextWeek.sunday,
+                groups.nextWeek.monday,
+                groups.nextWeek.tuesday,
+                groups.nextWeek.wednesday,
+                groups.nextWeek.thursday,
+                groups.nextWeek.friday,
+                groups.nextWeek.saturday,
                 groups.noDeadline
             ],
             drop : function (group, order) {
@@ -256,7 +256,7 @@ app.routes.list('/', function (params, data) {
                 app.apps.open({app : app.slug, route : '/tarefa/' + task._id});
             }
         });
-        
+
         /* Icones do item */
         icons = {
             important    : new app.ui.icon({image : 'alert', legend : 'importante'}),
@@ -268,26 +268,26 @@ app.routes.list('/', function (params, data) {
         /* Botões do item */
         actions = {
             done         : new app.ui.action({
-                legend : 'marcar tarefa como feita',
+                tip : 'marcar esta tarefa como feita',
                 image  : 'check',
                 click  : function () {
                     task.markAsDone();
                 }
             }),
             edit         : new app.ui.action({
-                legend : 'editar tarefa',
+                tip : 'editar esta tarefa',
                 image  : 'pencil',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/editar-tarefa/' + task._id});
                 }
             }),
             drag         : new app.ui.action({
-                legend : 'mover tarefa',
+                tip : 'mover esta tarefa',
                 image  : 'move',
                 click  : that.item.drag
             }),
             remove       : new app.ui.action({
-                legend : 'remover tarefa',
+                tip : 'remover esta tarefa',
                 image  : 'trash',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-tarefa/' + task._id});
@@ -338,14 +338,14 @@ app.routes.list('/', function (params, data) {
 
         /* Exibe o lembrete da tarefa */
         this.reminder = function (value) {
-            if (value) {
-                if (value == 0) {
+            if (value === 0 || value) {
+                if (value.toString() == 0) {
                     icons.reminder.legend('lembrar no dia');
-                } else if (value == 1) {
+                } else if (value.toString() == 1) {
                     icons.reminder.legend('lembrar 1 dia antes');
-                } else if (value == 2) {
+                } else if (value.toString() == 2) {
                     icons.reminder.legend('lembrar 2 dias antes');
-                } else if (value == 7) {
+                } else if (value.toString() == 7) {
                     icons.reminder.legend('lembrar 1 semana antes');
                 }
                 this.item.icons.add(icons.reminder);
@@ -467,6 +467,7 @@ app.routes.list('/', function (params, data) {
         /* Botão global de adicionar tarefa */
         app.ui.actions.add(new app.ui.action({
             legend : 'adicionar tarefa',
+            tip : 'adicionar nova tarefa',
             image : 'add',
             click : function () {
                 app.apps.open({
