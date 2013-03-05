@@ -81,6 +81,15 @@ empreendemia.ui.appMenu = function (params) {
             return legend_h3.innerHTML;
         }
     };
+    this.tip = function (value) {
+        if (value === null || value === '') {
+            anchor_a.removeAttribute('title');
+        } else if (value) {
+            anchor_a.setAttribute('title', value);
+        } else {
+            return anchor_a.getAttribute('title');
+        }
+    };
     this.href = function (value) {
         if (value) {
             href = value;
@@ -104,6 +113,7 @@ empreendemia.ui.appMenu = function (params) {
     /* Setando valores iniciais */
     if (params) {
         this.legend(params.legend);
+        this.tip(params.tip);
         this.image(params.image);
         this.href(params.href);
         this.selected(params.selected);

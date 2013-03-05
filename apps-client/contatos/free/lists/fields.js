@@ -126,13 +126,14 @@
     /* autenticando usuário e pegando campos */
     app.models.field.list(function (userFields) {
         var fields = {}
-        
+
         app.ui.title('Campos Personalizados');
 
         /* Botão global de adicionar campo */
         app.ui.actions.add(new app.ui.action({
             image : 'add',
             legend : 'adicionar campo personalizado',
+            tip : 'adicionar campo personalizado',
             click : function () {
                 app.apps.open({
                     app : app.slug,

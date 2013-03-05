@@ -49,6 +49,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
         actions = {
             billet : new app.ui.action({
                 legend : 'boleto',
+                tip : 'gerar boleto para esta cobrança',
                 image : 'download',
                 click : function() {
                     var i,
@@ -73,6 +74,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
             }),
             edit         : new app.ui.action({
                 legend : 'editar transação',
+                tip    : 'editar dados desta transação',
                 image  : 'pencil',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/editar-transacao/' + transaction._id});
@@ -80,6 +82,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
             }),
             remove       : new app.ui.action({
                 legend : 'remover transação',
+                tip    : 'apagar esta transação',
                 image  : 'trash',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-transacao/' + transaction._id});

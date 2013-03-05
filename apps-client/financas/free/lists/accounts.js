@@ -21,7 +21,7 @@ app.routes.list('/contas', function (params, data) {
     groups = {
         group : new app.ui.group()
     };
-    
+
     app.ui.groups.add([groups.group]);
 
     /**
@@ -45,7 +45,7 @@ app.routes.list('/contas', function (params, data) {
             actions;
 
         this.item = new app.ui.item();
-        
+
         /* Icones do item */
         icons = {
             bank           : new app.ui.icon({image : 'wallet', legend : '-'}),
@@ -57,7 +57,7 @@ app.routes.list('/contas', function (params, data) {
         /* Botões do item */
         actions = {
             edit         : new app.ui.action({
-                legend : 'editar conta',
+                tip : 'editar dados desta conta',
                 image  : 'pencil',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/editar-conta/' + account._id});
@@ -165,7 +165,7 @@ app.routes.list('/contas', function (params, data) {
     app.models.user.auth(function () {
         app.models.account.list(function (accounts) {
             var fields = {}
-            
+
             app.ui.title('Contas');
             app.tracker.event('visualizar contas');
 
@@ -173,6 +173,7 @@ app.routes.list('/contas', function (params, data) {
             app.ui.actions.add(new app.ui.action({
                 image : 'add',
                 legend : 'adicionar conta',
+                tip : 'adicionar nova conta',
                 click : function () {
                     app.apps.open({
                         app : app.slug,
