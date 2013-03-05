@@ -21,7 +21,7 @@ app.routes.list('/', function (params, data) {
      * Objeto com os grupos de grupos
      */
     groupsets,
-    
+
     /*
      * Vetor com as categorias do usuário
      */
@@ -47,19 +47,19 @@ app.routes.list('/', function (params, data) {
      */
     function fitGroupset (group) {
         switch (group.type) {
-            case 'clients' : 
+            case 'clients' :
                 return groupsets.clients;
                 break;
-            case 'suppliers' : 
+            case 'suppliers' :
                 return groupsets.suppliers;
                 break;
-            case 'partners' : 
+            case 'partners' :
                 return groupsets.partners;
                 break;
-            case 'personals' : 
+            case 'personals' :
                 return groupsets.personals;
                 break;
-            default : 
+            default :
                 return groupsets.personals;
         }
     }
@@ -120,7 +120,7 @@ app.routes.list('/', function (params, data) {
                 fields.categories.partners.value(),
                 fields.categories.personals.value()
             );
-            
+
             if (
                 query.indexOf(category._id) === -1
             ) {
@@ -377,11 +377,13 @@ app.routes.list('/', function (params, data) {
             /* Botão global de baixar dados */
             app.ui.actions.add(new app.ui.action({
                 legend : 'baixar dados',
+                tip : 'importar seus dados em um arquivo CSV',
                 image : 'download'
-            })); 
+            }));
             /* Botão global de adicionar campo */
             app.ui.actions.add(new app.ui.action({
-                legend : 'adicionar contato',
+                legend : 'contato',
+                tip : 'adicionar contato',
                 image  : 'add',
                 click  : function () {
                     app.apps.open({
@@ -389,7 +391,7 @@ app.routes.list('/', function (params, data) {
                         route : '/adicionar-contato'
                     });
                 }
-            })); 
+            }));
 
             /* Monta o filtro */
             app.ui.filter.action('filtrar');

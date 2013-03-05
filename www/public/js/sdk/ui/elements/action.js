@@ -66,6 +66,15 @@ sdk.modules.ui.action = function (app) {
                 return legend.innerHTML
             }
         };
+        this.tip = function (value) {
+            if (value === null || value === '') {
+                anchor.removeAttribute('title');
+            } else if (value) {
+                anchor.setAttribute('title', value);
+            } else {
+                return anchor.getAttribute('title');
+            }
+        };
         this.image = function (value) {
             if (value === '') {
                 image.setAttribute('class', 'hide');
@@ -98,6 +107,7 @@ sdk.modules.ui.action = function (app) {
         /* Setando valores iniciais */
         if (params) {
             this.legend(params.legend);
+            this.tip(params.tip);
             this.image(params.image);
             this.href(params.href);
             this.click(params.click);

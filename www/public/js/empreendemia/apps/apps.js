@@ -110,6 +110,7 @@ empreendemia.apps = {
                 for (var i in tool.menu) {
                     empreendemia.ui.content.roll.menu.add(new empreendemia.ui.appMenu({
                         legend   : tool.menu[i].legend,
+                        tip      : tool.menu[i].tip,
                         image    : tool.menu[i].image,
                         href     : tool.slug + tool.menu[i].href,
                         selected : tool.menu[i].href === tool.routes.route()

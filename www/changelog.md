@@ -1,7 +1,10 @@
 Changelog
 =========
 
-## 0.6.1
+## 0.7
+
+Features
+- Tipboxes nas ações e nos menus
 
 Correções
 - Problema ao selecionar data

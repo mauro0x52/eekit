@@ -8,11 +8,13 @@
 [
     {
         legend : 'tarefas pendentes',
+        tip    : 'lista de tarefas que ainda não foram feitas',
         image  : 'clock',
         href   : '/'
     },
     {
         legend : 'tarefas feitas',
+        tip    : 'lista de tarefas marcadas como feitas',
         image  : 'check',
         href   : '/feitas'
     }
