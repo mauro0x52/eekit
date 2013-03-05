@@ -211,7 +211,7 @@ form {
 .body > .header > .menu > .search > .form > .field > .input:focus {
 	border: 0;
 	box-shadow: 0;
-	outline: 0;
+	margin: 0;
 }
 
 
@@ -1219,10 +1219,10 @@ form {
     position: absolute;
     width: 200px;
     padding: 2px 20px 2px 2px;
-    background-color: transparent;
     border-radius: 2px;
     border: 1px solid #ddd;
     z-index: 1000;
+    margin: 0;
 }
 
 .field.select > .data > .input:focus  {
@@ -1236,7 +1236,8 @@ form {
     border-right: 6px solid transparent;
     border-left: 6px solid transparent;
     border-top: 6px solid #b9ac9f;
-    z-index: 100;
+    z-index: 10000;
+    cursor: pointer;
 }
 
 .field.select .data > .options > .option {
@@ -1273,9 +1274,8 @@ form {
     font-size: 13px;
     margin: 5px 0 5px 5px;
     color: #000;
-    padding-top: 21px;
     position: absolute;
-    top: -23px;
+    top: -2px;
     z-index: 10000;
 }
 
@@ -1303,12 +1303,13 @@ form {
 .field.select .data > .options.filterable {
     width: 190px;
     max-height: 140px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     position: absolute;
     top: 0;
     left: -1px;
     border: 1px solid #b9ac9f;
-    z-index: 100;
+    z-index: 10000;
     box-shadow: 2px 2px 10px rgba(0,0,0,0.6);
     padding: 25px 5px 5px 5px;
 }
@@ -1340,6 +1341,7 @@ form {
     border: 0;
     box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     font-size: 12px;
+    margin: 0;
 }
 
 .field.select .options.filterable .close  {
@@ -1483,6 +1485,7 @@ form {
     border: 0;
     box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     font-size: 12px;
+    outline: 0;
 }
 
 .field.select .select-box .close  {
@@ -2148,12 +2151,12 @@ form {
     width: 200px;
     padding: 2px;
     border: 1px solid #ddd;
-    background-color: transparent;
     border-radius: 2px;
     transition: all 0.2s linear;
     -webkit-transition: all 0.2s linear;
     -moz-transition: all 0.2s linear;
     -o-transition: all 0.2s linear;
+    margin: 0;
 }
 
 .field.select> .data > .input:hover,

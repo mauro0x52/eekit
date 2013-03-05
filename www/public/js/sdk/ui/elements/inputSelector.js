@@ -117,6 +117,13 @@ sdk.modules.ui.inputSelector = function (app) {
             }
         });
 
+        div_arrow.addEventListener('click', function () {
+            if (that.filterable()) {
+                input_text.focus();
+                options_ul.setAttribute('class', 'options filterable');
+            }
+        });
+
         input_text.addEventListener('focus', function () {
             if (that.filterable()) {
                 options_ul.setAttribute('class', 'options filterable');
