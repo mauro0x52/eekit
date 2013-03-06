@@ -12,13 +12,13 @@ var mongoose = require('mongoose'),
 
 serviceSchema = new Schema({
     slug        : {type : String, trim : true, unique : true},
-	secret      : {type : String, trim : true, required : true},
-	url         : {type : String, trim : true, required : true},
-	permissions : {
-		users     : {type : Boolean, required : true, default : false},
-		username  : {type : Boolean, required : true, default : false},
-		tokens    : {type : Boolean, required : true, default : false}
-	}
+    secret      : {type : String, trim : true, required : true},
+    url         : {type : String, trim : true, required : true},
+    permissions : {
+        users     : {type : Boolean, required : true, default : false},
+        username  : {type : Boolean, required : true, default : false},
+        tokens    : {type : Boolean, required : true, default : false}
+    }
 });
 
 /*  Exportando o pacote  */
