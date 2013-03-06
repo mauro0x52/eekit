@@ -25,6 +25,7 @@ describe('POST /service/:service_slug/auth', function () {
             secret : services.www.secret
         }, function(error, data) {
             token = data.token;
+            done();
         });
     });
 
@@ -36,13 +37,14 @@ describe('POST /service/:service_slug/auth', function () {
             },
             function(error, data, response) {
                 response.should.have.status(200);
+                done();
             }
         );
     });
     it('token em branco', function (done) {
         api.post(
             'auth', '/service/contacts/auth', {
-                secret : 'contacts'
+                secret : 'www'
             },
             function(error, data, response) {
                 if (error) {
@@ -57,7 +59,7 @@ describe('POST /service/:service_slug/auth', function () {
     it('token inválido', function (done) {
         api.post(
             'auth', '/service/contacts/auth', {
-                secret : 'contacts',
+                secret : 'www',
                 token : 'kkkkk tokn invlido'
             },
             function(error, data, response) {
@@ -90,7 +92,7 @@ describe('POST /service/:service_slug/auth', function () {
         api.post(
             'auth', '/service/contacts/auth', {
                 token : token,
-                secret : 'www'
+                secret : 'tasks'
             },
             function(error, data, response) {
                 if (error) {
@@ -106,7 +108,7 @@ describe('POST /service/:service_slug/auth', function () {
         api.post(
             'auth', '/service/contacts/auth', {
                 token : token,
-                secret : 'contacts'
+                secret : 'www'
             },
             function(error, data, response) {
                 if (error) {
