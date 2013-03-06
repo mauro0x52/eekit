@@ -34,10 +34,10 @@ module.exports = function (app) {
                 response.send({error : error});
             } else {
                 if (service === null) {
-                    response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                    response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
                 } else {
                     if (!service.permissions.users) {
-                        response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                        response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
                     } else {
                         User.find(function (error, users) {
                             if (error) {
@@ -76,11 +76,11 @@ module.exports = function (app) {
                 response.send({error : error});
             } else {
                 if (service === null) {
-                    response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                    response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
                 } else {
                     // valida se o serviço que esta cadastrando o usuário é o WWW
                     if (service.slug !== 'www') {
-                        response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                        response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
                     } else {
                         // valida se a senha e a confirmação senha conferem
                         if (request.param('password', null) !== request.param('password_confirmation', null)) {
@@ -134,17 +134,17 @@ module.exports = function (app) {
      */
     app.post('/user/login', function (request, response) {
         response.contentType('json');
-        response.header('Access-Control-Allow-Origin', '*');        
+        response.header('Access-Control-Allow-Origin', '*');
 
         Service.findOne({secret : request.param('secret', null)}, function (error, service) {
             if (error) {
                 response.send({error : error});
             } else {
                 if (service === null) {
-                    response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                    response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
                 } else {
                     if (service.slug !== 'www') {
-                        response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                        response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
                     } else {
                         User.find({username : request.param('login', null)}, function (error, user) {
                             if (error) {
@@ -206,17 +206,17 @@ module.exports = function (app) {
      */
     app.post('/user/logout', function (request, response) {
         response.contentType('json');
-        response.header('Access-Control-Allow-Origin', '*');        
+        response.header('Access-Control-Allow-Origin', '*');
 
         Service.findOne({secret : request.param('secret', null)}, function (error, service) {
             if (error) {
                 response.send({error : error});
             } else {
                 if (service === null) {
-                    response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                    response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
                 } else {
                     if (service.slug !== 'www') {
-                        response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                        response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
                     } else {
                         User.findByToken(request.param('token', null), function (error, user) {
                             if (error) {

@@ -34,10 +34,10 @@ module.exports = function (app) {
                 response.send({error : error});
             } else {
                 if (service === null) {
-                    response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                    response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
                 } else {
                     if (service.slug !== 'www') {
-                        response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                        response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
                     } else {
                         User.findByToken(request.param('token', null), function (error, user) {
                             if (error) {
@@ -98,10 +98,10 @@ module.exports = function (app) {
                 response.send({error : error});
             } else {
                 if (service === null) {
-                    response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                    response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
                 } else {
                     if (service.slug !== 'www') {
-                        response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                        response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
                     } else {
                         User.findByToken(request.param('token', null), function (error, user) {
                             if (error) {
@@ -162,7 +162,7 @@ module.exports = function (app) {
                 response.send({error : error});
             } else {
                 if (service === null) {
-                    response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                    response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
                 } else {
                     User.findByToken(request.param('token', null), function (error, user) {
                         if (error) {
