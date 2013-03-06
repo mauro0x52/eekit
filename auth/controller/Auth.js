@@ -12,7 +12,7 @@ module.exports = function (app) {
         User  = Model.User,
         Service  = Model.Service;
 
-    /** POST /auth/service
+    /** POST /service/:id/auth
      *
      * @autor : Rafael Erthal
      * @since : 2012-07
@@ -62,6 +62,23 @@ module.exports = function (app) {
                 }
             }
         });
+    });
+
+    /** POST /service/:id/app/:id/auth
+     *
+     * @autor : Rafael Erthal
+     * @since : 2012-07
+     *
+     * @description : autentica o usuário no serviço
+     *
+     * @allowedApp : Apenas o www
+     * @allowedUser : Logado
+     *
+     * @request : {secret, token, service_id, app_id}
+     * @response : {token}
+     */
+    app.post('/service/:service_id/app/:app_id/auth', function (request, response) {
+
     });
 
     /** GET /validate

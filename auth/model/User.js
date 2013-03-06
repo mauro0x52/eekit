@@ -115,19 +115,14 @@ userSchema.statics.checkToken = function (tokenKey, serviceKey) {
 userSchema.methods.login = function (cb) {
     "use strict";
 
-    var Service = require('./Model').Service;
+    var Service = require('./Model').Service,
+        that = this;
 
     Service.findOne({slug : 'www'}, function (error, service) {
         if (error) {
             cb(error, null);
         } else {
-            var i;
-
-            for (i in this.auths) {
-                if (this.auths[i].service.toString() === service._id.toString()) {
-                    return this.auths[i].addToken(cb);
-                }
-            }
+            that.auth(service, cb);
         }
     });
 };
@@ -176,16 +171,22 @@ userSchema.methods.auth = function (service, cb) {
         if (error) {
             cb(error, null);
         } else {
-            var i;
+            var i,
+                auth;
 
             for (i in this.auths) {
                 if (this.auths[i].service.toString() === service._id.toString()) {
-                    return this.auths[i].addToken(cb);
+                    auth = this.auths[i];
                 }
             }
-            this.auths.push({
-                service : service._id
-            });
+            if (!auth) {
+                this.auths.push({
+                    service : service._id
+                });
+            }
+            this.save(function (cb) {
+                auth.addToken(cb);
+            })
         }
     });
 };
