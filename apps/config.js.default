@@ -8,7 +8,7 @@ module.exports = {
         path : '../apps-client/'
     },
     security : {
-        security : 'apps'
+        secret : 'apps'
     },
     mongodb : {
         port : 27017,
