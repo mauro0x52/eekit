@@ -14,7 +14,7 @@ var crypto = require('crypto'),
 
 authSchema = new Schema({
     service : {type : objectId, required : true},
-    apps    : [{type : objectId}]
+    apps    : [{type : objectId}],
     tokens  : [require('./Token.js').Token]
 });
 
