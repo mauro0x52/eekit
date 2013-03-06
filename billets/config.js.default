@@ -11,6 +11,9 @@ module.exports = {
         password : undefined,
         db : 'billet'
     },
+    security : {
+        security : 'billets'
+    },
     services : {
         auth : {
             port : 8001,
