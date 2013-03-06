@@ -18,6 +18,14 @@ module.exports = {
         auth : {
             port : 8001,
             url  : 'localhost'
+        },
+        billets : {
+            port : 8009,
+            url  : 'localhost'
+        },
+        kamisama : {
+            url  : 'localhost',
+            port : 8008
         }
     }
 };

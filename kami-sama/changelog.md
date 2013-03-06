@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.2
+- Autenticação de serviço
+- Comunicação com barramento de eventos
 
 ## 0.1
 

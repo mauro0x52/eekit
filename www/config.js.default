@@ -22,41 +22,17 @@ module.exports = {
         secret : 'www'
     },
     services : {
-        www : {
-            url  : 'localhost',
-            port : 8000
-        },
         auth : {
             url  : 'localhost',
             port : 8001
         },
-        apps : {
+        www : {
             url  : 'localhost',
-            port : 8002
+            port : 8000
         },
-        profiles : {
+        kamisama : {
             url  : 'localhost',
-            port : 8004
-        },
-        tasks : {
-            url  : 'localhost',
-            port : 8005
-        },
-        contacts : {
-            url   : 'localhost',
-            port : 8006
-        },
-        tracker : {
-            url   : 'localhost',
-            port : 8003
-        },
-        finances : {
-            url  : 'localhost',
-            port : 8007
-        },
-        billets : {
-            url  : 'localhost',
-            port : 8009
+            port : 8008
         }
     }
 };

@@ -18,6 +18,14 @@ module.exports = {
         auth : {
             url  : 'localhost',
             port : 8001
+        },
+        tracker : {
+            url  : 'localhost',
+            port : 8003
+        },
+        kamisama : {
+            url  : 'localhost',
+            port : 8008
         }
     }
 };

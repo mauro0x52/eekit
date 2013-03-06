@@ -1,10 +1,9 @@
 {
   "name": "App",
-  "description": "serviço de apps do empreendemia 3",
-  "version": "0.0.1",
-  "author": "Rafael Almeida Erthal Hermano",
+  "description": "",
+  "version": "0.1",
+  "author": "Empreendemia",
   "dependencies": {
-    "ejs": "0.8.x",
     "express": "3.0.0rc3",
     "mongoose": "3.0.1",
     "restler": "2.0.1",

@@ -1,7 +1,7 @@
 /** Utils
  *
  * @autor : Rafael Erthal
- * @since : 2012-07
+ * @since : 2013-03
  *
  * @description : Biblioteca de utilidades
  */
@@ -18,30 +18,63 @@ var config = require('./config.js');
  */
 exports.auth = function (token, cb) {
     "use strict";
+    
+    require('restler').get('http://'+config.services.auth.host+':'+config.services.auth.port+'/validate', {
+        multipart: true,
+        data: {
+            token  : token,
+            secret : config.security.secret
+        }
+    }).on('success', function(data) {
+        cb(null, data.user);
+    }).on('error', function(error) {
+        cb(error, null);
+    });
+};
 
-    var http = require('http'),
-        options = {
-            host: config.services.auth.host,
-            path: '/user/validate?token=' + token + '&secret=' + config.security.secret,
-            port: config.services.auth.port,
-            method: 'GET'
-        };
+/** Bind
+ * @author : Rafael Erthal
+ * @since : 2013-03
+ *
+ * @description : binda evento no kami-sama
+ * @param name : nome do evento
+ * @param method : método para chamar a url
+ * @param callback : url a ser chamada no disparo do evento
+ */
+exports.bind = function (token, name, method, callback) {
+    "use strict";
+    
+    require('restler').post('http://' + config.services.kamisama.host + ':' + config.services.kamisama.port + '/bind', {
+        multipart: true,
+        data: {
+            token : token,
+            secret : config.security.secret,
+            label : name,
+            method : method,
+            callback : callback
+        }
+    }).on('success', function() {}).on('error', function() {});
+};
 
-    http.request(options, function (answer) {
-        var str = '';
-        //pega os dados recebidos via streaming
-        answer.on('data', function (chunk) {
-            str += chunk;
-        });
-        //ao terminar o recebimentos dos dados, chamar o callback com a resposta se o usuário foi ou não autenticado
-        answer.on('end', function () {
-            var response = JSON.parse(str);
-            if (response.error) {
-                cb(response.error, undefined);
-            } else {
-                response.error = undefined;
-                cb(undefined, response.user);
-            }
-        });
-    }).end();
+/** Trigger
+ * @author : Rafael Erthal
+ * @since : 2013-03
+ *
+ * @description : dispara evento no kami-sama
+ * @param name : nome do evento
+ * @param method : método para chamar a url
+ * @param callback : url a ser chamada no disparo do evento
+ */
+exports.trigger = function (token, name, data) {
+    "use strict";
+    
+    require('restler').post('http://' + config.services.kamisama.host + ':' + config.services.kamisama.port + '/tigger', {
+        multipart: true,
+        data: {
+            token : token,
+            secret : config.security.secret,
+            label : name,
+            data : data
+        }
+    }).on('success', function() {}).on('error', function() {});
 };

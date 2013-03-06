@@ -19,17 +19,13 @@ module.exports = {
             url  : 'localhost',
             port : 8001
         },
-        tasks : {
-            url  : 'localhost',
-            port : 8005
-        },
-        contacts : {
-            url  : 'localhost',
-            port : 8006
-        },
         finances : {
             url  : 'localhost',
             port : 8007
+        },
+        kamisama : {
+            url  : 'localhost',
+            port : 8008
         }
     }
 };
