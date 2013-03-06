@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 0.2
+- Autenticação de serviço
+- Comunicação com barramento de eventos
+
 ## 0.1.1 (2013-02-18)
 
 - Corrigindo o install
