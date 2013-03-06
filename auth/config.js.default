@@ -14,7 +14,7 @@ module.exports = {
     services : {
         auth : {
             port : 8001,
-            url  : 'localhost',
+            url  : 'localhost'
         },
         www : {
             url  : 'localhost',
