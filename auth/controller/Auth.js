@@ -22,10 +22,10 @@ module.exports = function (app) {
      * @allowedApp : Apenas o www
      * @allowedUser : Logado
      *
-     * @request : {secret, token, service}
+     * @request : {secret, token, service_slug}
      * @response : {token}
      */
-    app.post('/service/:id/auth', function (request, response) {
+    app.post('/service/:service_slug/auth', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
@@ -47,10 +47,22 @@ module.exports = function (app) {
                                     response.send({error : {message :  'user not found', name : 'NotFoundError', id : request.params.login, path : 'user' }});
                                 } else {
                                     if (user.checkToken(request.param('token', null), service._id)) {
-                                        Service.findById(request.params.id, function (error, service) {
-                                            user.auth(service._id, function (token) {
-                                                response.send({token : token});
-                                            });
+                                        Service.findOne({slug : request.params.service_slug}, function (error, service) {
+                                            if (error) {
+                                                response.send({error : error});
+                                            } else {
+                                                if (service === null) {
+                                                    response.send({error : { message : 'service not found', name : 'NotFoundError', path : 'service'}});
+                                                } else {
+                                                    user.auth(service._id, function (error, token) {
+                                                        if (error) {
+                                                            response.send({error : error});
+                                                        } else {
+                                                            response.send({token : token});
+                                                        }
+                                                    });
+                                                }
+                                            }
                                         });
                                     } else {
                                         response.send({ error : { message : 'Invalid token', name : 'InvalidTokenError'}});
@@ -74,11 +86,58 @@ module.exports = function (app) {
      * @allowedApp : Apenas o www
      * @allowedUser : Logado
      *
-     * @request : {secret, token, service_id, app_id}
+     * @request : {secret, token, service_slug, app_slug}
      * @response : {token}
      */
-    app.post('/service/:service_id/app/:app_id/auth', function (request, response) {
+    app.post('/service/:service_slug/app/:app_slug/auth', function (request, response) {
+        response.contentType('json');
+        response.header('Access-Control-Allow-Origin', '*');
 
+        Service.findOne({secret : request.param('secret', null)}, function (error, service) {
+            if (error) {
+                response.send({error : error});
+            } else {
+                if (service === null) {
+                    response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                } else {
+                    if (service.slug !== 'www') {
+                        response.send({error : { message : 'service unauthorized', name : 'UnauthorizedServiceError', path : 'service'}});
+                    } else {
+                        User.findByToken(request.param('token', null), function (error, user) {
+                            if (error) {
+                                response.send({error : { message : 'user not found', name : 'NotFoundError', id : request.params.login, path : 'user'}});
+                            } else {
+                                if (user === null) {
+                                    response.send({error : {message :  'user not found', name : 'NotFoundError', id : request.params.login, path : 'user' }});
+                                } else {
+                                    if (user.checkToken(request.param('token', null), service._id)) {
+                                        Service.findById(request.params.service_slug, function (error, service) {
+                                            var i;
+                                            if (error) {
+                                                response.send({error : error});
+                                            } else {
+                                                if (service === null) {
+                                                    response.send({error : { message : 'service not found', name : 'NotFoundError', path : 'service'}});
+                                                } else {
+                                                    for (i in user.auths) {
+                                                        if (user.auths[i].service.toString() === service._id.toString()) {
+                                                            user.auths[i].apps.push(request.params.app_slug);
+                                                        }
+                                                    }
+                                                    response.send({auth : true});
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        response.send({ error : { message : 'Invalid token', name : 'InvalidTokenError'}});
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
     });
 
     /** GET /validate

@@ -11,6 +11,9 @@ module.exports = {
         password : undefined,
         db : 'finances'
     },
+    security : {
+        security : 'finances'
+    },
     services : {
         auth : {
             url  : 'localhost',

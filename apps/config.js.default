@@ -7,6 +7,9 @@ module.exports = {
     appsFiles : {
         path : '../apps-client/'
     },
+    security : {
+        security : 'apps'
+    },
     mongodb : {
         port : 27017,
         url : 'localhost',

@@ -11,6 +11,9 @@ module.exports = {
         password : undefined,
         db : 'tracker'
     },
+    security : {
+        security : 'tracker'
+    },
     services : {
         auth : {
             url  : 'localhost',

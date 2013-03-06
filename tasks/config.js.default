@@ -15,6 +15,9 @@ module.exports = {
         username : undefined,
         password : undefined,
     },
+    security : {
+        security : 'tasks'
+    },
     services : {
         www : {
             url  : 'localhost',

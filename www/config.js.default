@@ -18,6 +18,9 @@ module.exports = {
         username : '',
         password : '',
     },
+    security : {
+        security : 'www'
+    },
     services : {
         www : {
             url  : 'localhost',

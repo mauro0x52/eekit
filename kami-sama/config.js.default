@@ -11,6 +11,9 @@ module.exports = {
         password : undefined,
         db : 'kamisama'
     },
+    security : {
+        security : 'kami-sama'
+    },
     services : {
         auth : {
             port : 8001,
