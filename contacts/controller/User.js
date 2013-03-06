@@ -17,11 +17,8 @@ module.exports = function (app) {
      *
      * @description : Registra um usuário no serviço
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
-     * @response : {categories}
+     * @response : {categories[], fields[]}
      */
     app.post('/user', function (request,response) {
         var newuser;
@@ -35,31 +32,7 @@ module.exports = function (app) {
             } else {
                 User.findOne({user : user._id}, function (error, olduser) {
                     if (error) {
-                        newuser = new User({
-                            user : user._id,
-                            categories : [
-                                {name : 'Cliente', type : 'clients', color : 'red'},
-                                {name : 'Negociação', type : 'clients', color : 'red'},
-                                {name : 'Potencial', type : 'clients', color : 'red'},
-                                {name : 'Ex-cliente', type : 'clients', color : 'red'},
-                                {name : 'Não-cliente', type : 'clients', color : 'red'},
-                                {name : 'Fornecedor', type : 'suppliers', color : 'green'},
-                                {name : 'Ex-fornecedor', type : 'suppliers', color : 'green'},
-                                {name : 'Parceiro', type : 'partners', color : 'gold'},
-                                {name : 'Revendedor', type : 'partners', color : 'gold'},
-                                {name : 'Amigos', type : 'personals', color : 'blue'},
-                                {name : 'Família', type : 'personals', color : 'blue'},
-                                {name : 'Trabalho', type : 'personals', color : 'blue'}
-                            ]
-                        });
-
-                        newuser.save(function (error) {
-                            if (error) {
-                                response.send({error : error});
-                            } else {
-                                response.send({categories : newuser.categories, fields : newuser.fields});
-                            }
-                        });
+                        response.send({error : error});
                     } else {
                         if (olduser === null) {
                             newuser = new User({

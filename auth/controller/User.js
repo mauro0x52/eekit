@@ -20,11 +20,8 @@ module.exports = function (app) {
      *
      * @description : Lista usuários do banco
      *
-     * @allowedApp : Apenas o www
-     * @allowedUser : Millor
-     *
      * @request : {secret}
-     * @response : {users}
+     * @response : {users[]}
      */
     app.get('/users', function (request, response) {
         response.contentType('json');
@@ -62,9 +59,6 @@ module.exports = function (app) {
      * @since : 2012-07
      *
      * @description : Cadastra novo usuário
-     *
-     * @allowedApp : Apenas o www
-     * @allowedUser : Público
      *
      * @request : {username, password, password_confirmation, secret}
      * @response : {token}
@@ -132,9 +126,6 @@ module.exports = function (app) {
      *
      * @description : autentica o usuário
      *
-     * @allowedApp : Apenas o www
-     * @allowedUser : Público
-     *
      * @request : {login, password, secret}
      * @response : {token}
      */
@@ -184,9 +175,6 @@ module.exports = function (app) {
      * @since : 2012-07
      *
      * @description : desautentica o usuário
-     *
-     * @allowedApp : Apenas o www
-     * @allowedUser : Logado
      *
      * @request : {token, secret}
      * @response : null

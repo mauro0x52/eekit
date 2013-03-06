@@ -10,93 +10,10 @@
 module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         auth = require('../Utils.js').auth,
+        trigger = require('../Utils.js').trigger,
         Category = Model.Category,
         Contact = Model.Contact,
         User = Model.User;
-
-    /** GET /categories
-     *
-     * @author : Rafael Erthal
-     * @since  : 2012-09
-     *
-     * @description : Lista categorias
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {token}
-     * @response : {categories}
-     */
-    app.get('/categories', function (request,response) {
-        response.contentType('json');
-        response.header('Access-Control-Allow-Origin', '*');
-
-        auth(request.param('token', null), function (error, user) {
-            if (error) {
-                response.send({error : error});
-            } else {
-                User.findOne({user : user._id}, function (error, User) {
-                    if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                    } else {
-                        if (User === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            response.send({categories : User.categories});
-                        }
-                    }
-                });
-            }
-        });
-    });
-
-    /** GET /category/:id
-     *
-     * @author : Rafael Erthal
-     * @since  : 2012-09
-     *
-     * @description : Exibe fase de negociação de um usuário
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {token}
-     * @response : {category}
-     */
-    app.get('/category/:id', function (request,response) {
-        response.contentType('json');
-        response.header('Access-Control-Allow-Origin', '*');
-
-        auth(request.param('token', null), function (error, user) {
-            if (error) {
-                response.send({error : error});
-            } else {
-                User.findOne({user : user._id}, function (error, User) {
-                    if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                    } else {
-                        if (User === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            User.findCategory(request.params.id, function (error, category) {
-                                if (error) {
-                                    response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
-                                } else {
-                                    if (category === null) {
-                                        response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
-                                    } else {
-                                        response.send({category : category});
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    });
-
-
 
     /**
      * POST /category
@@ -106,13 +23,9 @@ module.exports = function (app) {
      *
      * @description : Cadastra nova categoria
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token, name, type, color}
      * @response : {category}
      */
-
     app.post('/category', function (request,response) {
         var category;
 
@@ -136,10 +49,88 @@ module.exports = function (app) {
                                 color : request.param('color', null)
                             });
                             user.save(function (error) {
+                                var category = user.categories.pop();
                                 if (error) {
                                     response.send({error : error});
                                 } else {
-                                    response.send({category : user.categories.pop()});
+                                    trigger(request.param('token', null), 'create category', category);
+                                    response.send({category : category});
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    /** GET /categories
+     *
+     * @author : Rafael Erthal
+     * @since  : 2012-09
+     *
+     * @description : Lista categorias
+     *
+     * @request : {token}
+     * @response : {categories[]}
+     */
+    app.get('/categories', function (request,response) {
+        response.contentType('json');
+        response.header('Access-Control-Allow-Origin', '*');
+
+        auth(request.param('token', null), function (error, user) {
+            if (error) {
+                response.send({error : error});
+            } else {
+                User.findOne({user : user._id}, function (error, user) {
+                    if (error) {
+                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                    } else {
+                        if (User === null) {
+                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        } else {
+                            response.send({categories : user.categories});
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    /** GET /category/:id
+     *
+     * @author : Rafael Erthal
+     * @since  : 2012-09
+     *
+     * @description : Exibe fase de negociação de um usuário
+     *
+     * @request : {token}
+     * @response : {category}
+     */
+    app.get('/category/:id', function (request,response) {
+        response.contentType('json');
+        response.header('Access-Control-Allow-Origin', '*');
+
+        auth(request.param('token', null), function (error, user) {
+            if (error) {
+                response.send({error : error});
+            } else {
+                User.findOne({user : user._id}, function (error, user) {
+                    if (error) {
+                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                    } else {
+                        if (user === null) {
+                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        } else {
+                            user.findCategory(request.params.id, function (error, category) {
+                                if (error) {
+                                    response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
+                                } else {
+                                    if (category === null) {
+                                        response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
+                                    } else {
+                                        response.send({category : category});
+                                    }
                                 }
                             });
                         }
@@ -157,13 +148,9 @@ module.exports = function (app) {
      *
      * @description : Atualiza a categoria
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token, name, type, color}
      * @response : {category}
      */
-
     app.post('/category/:id/update', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
@@ -193,6 +180,7 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
+                                                trigger(request.param('token', null), 'update category ' + category._id, category);
                                                 response.send({category : category});
                                             }
                                         });
@@ -214,13 +202,9 @@ module.exports = function (app) {
      *
      * @description : Remove a categoria
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
      * @response : {}
      */
-
     app.post('/category/:id/delete', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
@@ -250,6 +234,7 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
+                                                trigger(request.param('token', null), 'remove category ' + category_id);
                                                 response.send(null);
                                             }
                                         });
@@ -273,6 +258,4 @@ module.exports = function (app) {
             }
         });
     });
-
-
 }

@@ -17,10 +17,7 @@ module.exports = function (app) {
      *
      * @description : Cadastra uma conta
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {name, token}
+     * @request : {name, bank, account, agency, initialBalance, token}
      * @response : {account}
      */
     app.post('/account', function (request,response) {
@@ -43,8 +40,7 @@ module.exports = function (app) {
                                 bank : request.param('bank', null),
                                 account : request.param('account', null),
                                 agency : request.param('agency', null),
-                                initialBalance : request.param('initialBalance', null),
-                                initialDate    : request.param('initialDate', null)
+                                initialBalance : request.param('initialBalance', null)
                             });
                             user.save(function (error) {
                                 if (error) {
@@ -67,11 +63,8 @@ module.exports = function (app) {
      *
      * @description : Lista contas
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
-     * @response : {accounts}
+     * @response : {accounts[]}
      */
     app.get('/accounts', function (request,response) {
         response.contentType('json');
@@ -102,9 +95,6 @@ module.exports = function (app) {
      * @since : 2012-10
      *
      * @description : Exibe uma conta
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
      *
      * @request : {token}
      * @response : {account}
@@ -144,15 +134,68 @@ module.exports = function (app) {
         });
     });
 
+    /** POST /account/:id/update
+     *
+     * @autor : Rafael Erthal
+     * @since : 2012-10
+     *
+     * @description : Editar uma conta
+     *
+     * @request : {name, bank, account, agency, initialBalance, token}
+     * @response : {account}
+     */
+    app.post('/account/:id/update', function (request,response) {
+        var account;
+
+        response.contentType('json');
+        response.header('Access-Control-Allow-Origin', '*');
+
+        auth(request.param('token', null), function (error, user) {
+            if (error) {
+                response.send({error : error});
+            } else {
+                User.findOne({user : user._id}, function (error, user) {
+                    if (error) {
+                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                    } else {
+                        if (user === null) {
+                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        } else {
+                            user.findAccount(request.params.id, function (error, account) {
+                                if (error) {
+                                    response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
+                                } else {
+                                    if (account === null) {
+                                        response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
+                                    } else {
+                                        account.name = request.param('name', account.name);
+                                        account.bank = request.param('bank', account.bank);
+                                        account.account = request.param('account', account.account);
+                                        account.agency = request.param('agency', account.agency);
+                                        account.initialBalance = request.param('initialBalance', account.initialBalance);
+                                        user.save(function (error) {
+                                            if (error) {
+                                                response.send({error : error});
+                                            } else {
+                                                response.send({account : account});
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
+
     /** POST /account/:id/delete
      *
      * @autor : Rafael Erthal
      * @since : 2012-10
      *
      * @description : Excluir uma conta
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
      *
      * @request : {token}
      * @response : {}
@@ -198,65 +241,4 @@ module.exports = function (app) {
             }
         });
     });
-
-    /** POST /account/:id/update
-     *
-     * @autor : Rafael Erthal
-     * @since : 2012-10
-     *
-     * @description : Editar uma conta
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {name, token}
-     * @response : {account}
-     */
-    app.post('/account/:id/update', function (request,response) {
-        var account;
-
-        response.contentType('json');
-        response.header('Access-Control-Allow-Origin', '*');
-
-        auth(request.param('token', null), function (error, user) {
-            if (error) {
-                response.send({error : error});
-            } else {
-                User.findOne({user : user._id}, function (error, user) {
-                    if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                    } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            user.findAccount(request.params.id, function (error, account) {
-                                if (error) {
-                                    response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
-                                } else {
-                                    if (account === null) {
-                                        response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
-                                    } else {
-                                        account.name = request.param('name', account.name);
-                                        account.bank = request.param('bank', account.bank);
-                                        account.account = request.param('account', account.account);
-                                        account.agency = request.param('agency', account.agency);
-                                        account.initialBalance = request.param('initialBalance', account.initialBalance);
-                                        account.initialDate = request.param('initialDate', account.initialDate);
-                                        user.save(function (error) {
-                                            if (error) {
-                                                response.send({error : error});
-                                            } else {
-                                                response.send({account : account});
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    });
-
 }

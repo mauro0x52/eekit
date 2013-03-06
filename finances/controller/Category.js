@@ -8,8 +8,7 @@
 module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         auth = require('../Utils.js').auth,
-        User = Model.User,
-        Transaction = Model.Transaction;
+        User = Model.User;
 
     /** POST /category
      *
@@ -18,10 +17,7 @@ module.exports = function (app) {
      *
      * @description : Cadastra uma categoria
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {name, token}
+     * @request : {name, type, token}
      * @response : {category}
      */
     app.post('/category', function (request,response) {
@@ -64,11 +60,8 @@ module.exports = function (app) {
      *
      * @description : Lista categorias
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
-     * @response : {categories}
+     * @response : {categories[]}
      */
     app.get('/categories', function (request,response) {
         response.contentType('json');
@@ -99,9 +92,6 @@ module.exports = function (app) {
      * @since : 2012-10
      *
      * @description : Exibe uma categoria
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
      *
      * @request : {token}
      * @response : {category}
@@ -147,9 +137,6 @@ module.exports = function (app) {
      * @since : 2012-10
      *
      * @description : Excluir uma categoria
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
      *
      * @request : {token}
      * @response : {}
@@ -203,10 +190,7 @@ module.exports = function (app) {
      *
      * @description : Editar uma categoria
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {name, token}
+     * @request : {name, type, token}
      * @response : {category}
      */
     app.post('/category/:id/update', function (request,response) {
