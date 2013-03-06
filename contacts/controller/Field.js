@@ -18,14 +18,10 @@ module.exports = function (app) {
      *
      * @description : Cadastra um campo configurável
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {name}
+     * @request : {token, name, position}
      * @response : {field}
      */
     app.post('/field', function (request,response) {
-
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
@@ -65,11 +61,8 @@ module.exports = function (app) {
      *
      * @description : Lista campos configuráveis
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
-     * @response : {fields : [name]}
+     * @response : {fields[]}
      */
     app.get('/fields', function (request,response) {
         response.contentType('json');
@@ -102,11 +95,8 @@ module.exports = function (app) {
      *
      * @description : Exibe campo configurável
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
-     * @response : {name}
+     * @response : {field}
      */
     app.get('/field/:id', function (request,response) {
         response.contentType('json');
@@ -148,11 +138,8 @@ module.exports = function (app) {
      *
      * @description : Edita campo configurável
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {token, name}
-     * @response : {name}
+     * @request : {token, name, position}
+     * @response : {field}
      */
     app.post('/field/:id/update', function (request,response) {
         response.contentType('json');
@@ -202,9 +189,6 @@ module.exports = function (app) {
      *
      * @description : Exclui campo configurável
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
      * @response : {}
      */
@@ -247,5 +231,4 @@ module.exports = function (app) {
             }
         });
     });
-
 }

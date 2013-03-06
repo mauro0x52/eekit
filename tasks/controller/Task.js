@@ -9,7 +9,7 @@ module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         auth = require('../Utils.js').auth,
         Task = Model.Task,
-        UserCategory = Model.UserCategory;
+        User = Model.User;
 
     /** POST /task
      *
@@ -34,14 +34,14 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                UserCategory.findOne({user : user._id}, function (error, userCategory) {
+                User.findOne({user : user._id}, function (error, user) {
                     if (error) {
                         response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                     } else {
-                        if (userCategory === null) {
+                        if (user === null) {
                             response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                         } else {
-                            userCategory.findCategory(request.param('category', null), function (error, category) {
+                            user.findCategory(request.param('category', null), function (error, category) {
                                 if (error) {
                                     response.send({error : { message : 'category not found', name : 'NotFoundError', id : request.param('category'), path : 'category'}});
                                 } else {
@@ -101,15 +101,15 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                UserCategory.findOne({user : user._id}, function (error, userCategory) {
+                User.findOne({user : user._id}, function (error, user) {
                     var query = {};
                     if (error) {
                         response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                     } else {
-                        if (userCategory === null) {
+                        if (user === null) {
                             response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                         } else {
-                            query.user = userCategory.user;
+                            query.user = user.user;
                             if (request.param('filterByCategory')) {
                                 if (typeof request.param('filterByCategory') === 'string') {
                                     query.category = request.param('filterByCategory');
@@ -166,11 +166,11 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                UserCategory.findOne({user : user._id}, function (error, userCategory) {
+                User.findOne({user : user._id}, function (error, user) {
                     if (error) {
                         response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                     } else {
-                        if (userCategory === null) {
+                        if (user === null) {
                             response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                         } else {
                             Task.findById(request.params.id, function (error, task) {
@@ -180,7 +180,7 @@ module.exports = function (app) {
                                     if (task === null) {
                                         response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                                     } else {
-                                        userCategory.findCategory(task.category.toString(), function (error, category) {
+                                        user.findCategory(task.category.toString(), function (error, category) {
                                             if (error) {
                                                 response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
                                             } else {
@@ -222,11 +222,11 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                UserCategory.findOne({user : user._id}, function (error, userCategory) {
+                User.findOne({user : user._id}, function (error, user) {
                     if (error) {
                         response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                     } else {
-                        if (userCategory === null) {
+                        if (user === null) {
                             response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                         } else {
                             Task.findById(request.params.id, function (error, task) {
@@ -236,7 +236,7 @@ module.exports = function (app) {
                                     if (task === null) {
                                         response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                                     } else {
-                                        userCategory.findCategory(task.category.toString(), function (error, category) {
+                                        user.findCategory(task.category.toString(), function (error, category) {
                                             if (error) {
                                                 response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
                                             } else {
@@ -286,11 +286,11 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                UserCategory.findOne({user : user._id}, function (error, userCategory) {
+                User.findOne({user : user._id}, function (error, user) {
                     if (error) {
                         response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                     } else {
-                        if (userCategory === null) {
+                        if (user === null) {
                             response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                         } else {
                             Task.findById(request.params.id, function (error, task) {
@@ -300,7 +300,7 @@ module.exports = function (app) {
                                     if (task === null) {
                                         response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                                     } else {
-                                        userCategory.findCategory(task.category.toString(), function (error, category) {
+                                        user.findCategory(task.category.toString(), function (error, category) {
                                             if (error) {
                                                 response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
                                             } else {
@@ -381,11 +381,11 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                UserCategory.findOne({user : user._id}, function (error, userCategory) {
+                User.findOne({user : user._id}, function (error, user) {
                     if (error) {
                         response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                     } else {
-                        if (userCategory === null) {
+                        if (user === null) {
                             response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                         } else {
                             Task.findById(request.params.id, function (error, task) {
@@ -395,7 +395,7 @@ module.exports = function (app) {
                                     if (task === null) {
                                         response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                                     } else {
-                                        userCategory.findCategory(task.category.toString(), function (error, category) {
+                                        user.findCategory(task.category.toString(), function (error, category) {
                                             if (error) {
                                                 response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
                                             } else {
@@ -444,11 +444,11 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                UserCategory.findOne({user : user._id}, function (error, userCategory) {
+                User.findOne({user : user._id}, function (error, user) {
                     if (error) {
                         response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                     } else {
-                        if (userCategory === null) {
+                        if (user === null) {
                             response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                         } else {
                             Task.findById(request.params.id, function (error, task) {
@@ -458,7 +458,7 @@ module.exports = function (app) {
                                     if (task === null) {
                                         response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                                     } else {
-                                        userCategory.findCategory(task.category.toString(), function (error, category) {
+                                        user.findCategory(task.category.toString(), function (error, category) {
                                             if (error) {
                                                 response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
                                             } else {

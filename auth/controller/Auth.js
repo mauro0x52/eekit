@@ -19,10 +19,7 @@ module.exports = function (app) {
      *
      * @description : autentica o usuário no serviço
      *
-     * @allowedApp : Apenas o www
-     * @allowedUser : Logado
-     *
-     * @request : {secret, token, service_slug}
+     * @request : {secret, token}
      * @response : {token}
      */
     app.post('/service/:service_slug/auth', function (request, response) {
@@ -83,11 +80,8 @@ module.exports = function (app) {
      *
      * @description : autentica o usuário no serviço
      *
-     * @allowedApp : Apenas o www
-     * @allowedUser : Logado
-     *
-     * @request : {secret, token, service_slug, app_slug}
-     * @response : {token}
+     * @request : {secret, token}
+     * @response : {auth}
      */
     app.post('/service/:service_slug/app/:app_slug/auth', function (request, response) {
         response.contentType('json');
@@ -147,11 +141,8 @@ module.exports = function (app) {
      *
      * @description : valida token
      *
-     * @allowedApp : Qualquer serviço
-     * @allowedUser : Logado
-     *
      * @request : {token, secret}
-     * @response : {_id}
+     * @response : {user}
      */
     app.get('/validate', function (request, response) {
         response.contentType('json');

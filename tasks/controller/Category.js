@@ -8,7 +8,7 @@
 module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         auth = require('../Utils.js').auth,
-        UserCategory = Model.UserCategory;
+        User = Model.User;
 
     /** GET /categories
      *
@@ -31,14 +31,14 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                UserCategory.findOne({user : user._id}, function (error, userCategory) {
+                User.findOne({user : user._id}, function (error, user) {
                     if (error) {
                         response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                     } else {
-                        if (userCategory === null) {
+                        if (user === null) {
                             response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                         } else {
-                            response.send({categories : userCategory.categories});
+                            response.send({categories : user.categories});
                         }
                     }
                 });
@@ -67,14 +67,14 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                UserCategory.findOne({user : user._id}, function (error, userCategory) {
+                User.findOne({user : user._id}, function (error, user) {
                     if (error) {
                         response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                     } else {
-                        if (userCategory === null) {
+                        if (user === null) {
                             response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                         } else {
-                            userCategory.findCategory(request.params.id, function (error, category) {
+                            user.findCategory(request.params.id, function (error, category) {
                                 if (error) {
                                     response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
                                 } else {

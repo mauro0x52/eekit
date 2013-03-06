@@ -21,12 +21,9 @@ module.exports = function (app) {
      * @autor : Rafael Erthal
      * @since : 2012-09
      *
-     * @description : Cadastra uma contact
+     * @description : Cadastra uma contato
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {category,title,description,important,dateDeadline,token}
+     * @request : {token,category,name,email,phone,priority,notes,fieldValues[]}
      * @response : {contact}
      */
     app.post('/contact', function (request,response) {
@@ -86,13 +83,10 @@ module.exports = function (app) {
      * @autor : Rafael Erthal
      * @since : 2012-09
      *
-     * @description : Lista clientes
+     * @description : listar contatos
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {token, filterByCategory, filterByDone}
-     * @response : {contact}
+     * @request : {token, filterByCategory}
+     * @response : {contacts[]}
      */
     app.get('/contacts', function (request,response) {
         response.contentType('json');
@@ -137,10 +131,7 @@ module.exports = function (app) {
      * @autor : Rafael Erthal
      * @since : 2012-09
      *
-     * @description : Exibe cliente
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
+     * @description : Exibe contato
      *
      * @request : {token}
      * @response : {contact}
@@ -183,12 +174,9 @@ module.exports = function (app) {
      * @autor : Rafael Erthal
      * @since : 2012-09
      *
-     * @description : Edita cliente
+     * @description : Edita contato
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {token}
+     * @request : {token,category,name,email,phone,priority,notes,fieldValues[]}
      * @response : {contact}
      */
     app.post('/contact/:id/update', function (request,response) {
@@ -252,13 +240,10 @@ module.exports = function (app) {
      * @autor : Rafael Erthal
      * @since : 2012-10
      *
-     * @description : Exclui cliente
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
+     * @description : Exclui contato
      *
      * @request : {token}
-     * @response : {contact}
+     * @response : {}
      */
     app.post('/contact/:id/delete', function (request,response) {
         response.contentType('json');
@@ -288,21 +273,7 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
-                                                var requester = require('request');
-                                                requester({
-                                                    url : 'http://' + config.services.tasks.url + ':' + config.services.tasks.port + '/tasks?token=' + request.param('token', null) + '&filterByEmbeddeds[0]=/contatos/contato-relacionado/' + id,
-                                                    method : 'GET',
-                                                }, function (error, result, data) {
-                                                    data = JSON.parse(data);
-                                                    if (data.tasks) {
-                                                        for (var i in data.tasks) {
-                                                            requester({
-                                                                url : 'http://' + config.services.tasks.url + ':' + config.services.tasks.port + '/task/' + data.tasks[i]._id + '/delete?token=' + request.param('token', null),
-                                                                method : 'POST'
-                                                            })
-                                                        }
-                                                    }
-                                                });
+                                                /* @TODO: COLOCAR BARREAMENTO*/
                                                 response.send(null);
                                             }
                                         });

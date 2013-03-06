@@ -1,4 +1,4 @@
-/** UserCategory
+/** User
  * @author : Rafael Erthal
  * @since : 2012-09
  *
@@ -8,14 +8,14 @@
 var mongoose = require('mongoose'),
     schema   = mongoose.Schema,
     objectId = schema.ObjectId,
-    userCategorySchema;
+    userSchema;
 
-userCategorySchema = new schema({
+userSchema = new schema({
     user        : objectId,
     categories  : [require('./Category').Category]
 });
 
-userCategorySchema.methods.findCategory = function (category_id, cb) {
+userSchema.methods.findCategory = function (category_id, cb) {
     var category = null,
         i;
     
@@ -29,4 +29,4 @@ userCategorySchema.methods.findCategory = function (category_id, cb) {
 }
 
 /*  Exportando o pacote  */
-exports.UserCategory = mongoose.model('UserCategories', userCategorySchema);
+exports.User = mongoose.model('Users', userSchema);

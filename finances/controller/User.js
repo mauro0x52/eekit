@@ -17,11 +17,8 @@ module.exports = function (app) {
      *
      * @description : Registra um usuário no serviço
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
-     * @response : {categories}
+     * @response : {categories[], accounts[]}
      */
     app.post('/user', function (request,response) {
         var newuser;
@@ -33,40 +30,11 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, appuser) {
+                User.findOne({user : user._id}, function (error, user) {
                     if (error) {
-                        newuser = new User({
-                            user : user._id,
-                            categories : [
-                                {name : 'Produto 1', type : 'credit'},
-                                {name : 'Produto 2', type : 'credit'},
-                                {name : 'Receitas Gerais', type : 'credit', editable : false},
-                                {name : 'Receita não operacional', type : 'credit'},
-                                {name : 'Vendas', type : 'credit'},
-                                {name : 'Aluguel', type : 'debt'},
-                                {name : 'Banco', type : 'debt'},
-                                {name : 'Comissão', type : 'debt'},
-                                {name : 'Despesas gerais', type : 'debt', editable : false},
-                                {name : 'Divulgação', type : 'debt'},
-                                {name : 'Impostos', type : 'debt'},
-                                {name : 'Material de Escritório', type : 'debt'},
-                                {name : 'Salários', type : 'debt'},
-                                {name : 'Telefone e internet', type : 'debt'}
-                            ],
-                            accounts : [
-                                {name : 'Banco', initialBalance : 0},
-                                {name : 'Caixa', initialBalance : 0}
-                            ]
-                        });
-                        newuser.save(function (error) {
-                            if (error) {
-                                response.send({error : error});
-                            } else {
-                                response.send({user : newuser});
-                            }
-                        });
+                        response.send({error : error});
                     } else {
-                        if (appuser === null) {
+                        if (user === null) {
                             newuser = new User({
                                 user : user._id,
                                 categories : [
@@ -93,11 +61,11 @@ module.exports = function (app) {
                                 if (error) {
                                     response.send({error : error});
                                 } else {
-                                    response.send({user : newuser});
+                                    response.send({categories : newuser.categories, accounts : newuser.accounts});
                                 }
                             });
                         } else {
-                            response.send({user : appuser});
+                            response.send({categories : user.categories, accounts : user.accounts});
                         }
                     }
                 });
