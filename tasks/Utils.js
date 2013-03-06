@@ -47,7 +47,58 @@ exports.auth = function (token, cb) {
     }).end();
 };
 
+/** Bind
+ * @author : Rafael Erthal
+ * @since : 2013-03
+ *
+ * @description : binda evento no kami-sama
+ * @param name : nome do evento
+ * @param method : método para chamar a url
+ * @param callback : url a ser chamada no disparo do evento
+ */
+exports.bind = function (token, name, method, callback) {
+    "use strict";
 
+    require('request').post(
+        'http://' + config.services.kamisama.host + ':' + config.services.kamisama.port + '/bind',
+        {
+            form: {
+                token : token,
+                secret : config.security.secret,
+                label : name,
+                method : method,
+                callback : callback
+            }
+        },
+        function () {}
+    );
+};
+
+/** Trigger
+ * @author : Rafael Erthal
+ * @since : 2013-03
+ *
+ * @description : dispara evento no kami-sama
+ * @param name : nome do evento
+ * @param method : método para chamar a url
+ * @param callback : url a ser chamada no disparo do evento
+ */
+exports.trigger = function (token, name, data) {
+    "use strict";
+
+    require('request').post(
+        'http://' + config.services.kamisama.host + ':' + config.services.kamisama.port + '/tigger',
+        {
+            form: {
+                token : token,
+                secret : config.security.secret,
+                label : name,
+                data : data
+            }
+        },
+        function () {}
+    );
+};
 
 exports.files = {
     image: {

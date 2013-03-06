@@ -22,6 +22,10 @@ module.exports = {
         profiles : {
             url  : 'localhost',
             port : 8004
+        },
+        kamisama : {
+            url  : 'localhost',
+            port : 8008
         }
     }
 };

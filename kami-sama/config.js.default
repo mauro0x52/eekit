@@ -12,12 +12,16 @@ module.exports = {
         db : 'kamisama'
     },
     security : {
-        secret : 'kami-sama'
+        secret : 'kamisama'
     },
     services : {
         auth : {
             port : 8001,
             url  : 'localhost'
+        },
+        kamisama : {
+            url  : 'localhost',
+            port : 8008
         }
     }
 };

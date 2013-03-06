@@ -47,8 +47,6 @@ exports.auth = function (token, cb) {
     }).end();
 };
 
-
-
 exports.files = {
     image: {
         upload : function (file, path, cb) {

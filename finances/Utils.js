@@ -47,75 +47,57 @@ exports.auth = function (token, cb) {
     }).end();
 };
 
-/** Tasks
+/** Bind
  * @author : Rafael Erthal
- * @since : 2012-10
+ * @since : 2013-03
  *
- * @description : pega as tasks de um cliente
- * @param customer : cliente
- * @param token : token do usuário
- * @param cb : callback a ser chamado
+ * @description : binda evento no kami-sama
+ * @param name : nome do evento
+ * @param method : método para chamar a url
+ * @param callback : url a ser chamada no disparo do evento
  */
-exports.tasks = function (customer, token, cb) {
+exports.bind = function (token, name, method, callback) {
     "use strict";
 
-    var http = require('http'),
-        options = {
-            host: config.services.tasks.host,
-            path: '/tasks?filterByPlace=' + customer._id + '&token=' + token,
-            port: config.services.tasks.port,
-            method: 'GET'
-        };
-
-    http.request(options, function (answer) {
-        var str = '';
-        //pega os dados recebidos via streaming
-        answer.on('data', function (chunk) {
-            str += chunk;
-        });
-        //ao terminar o recebimentos dos dados, chamar o callback com a resposta se o usuário foi ou não autenticado
-        answer.on('end', function () {
-            var response = JSON.parse(str);
-            if (response.error) {
-                cb(response.error, undefined);
-            } else {
-                response.error = undefined;
-                cb(undefined, response.tasks);
+    require('request').post(
+        'http://' + config.services.kamisama.host + ':' + config.services.kamisama.port + '/bind',
+        {
+            form: {
+                token : token,
+                secret : config.security.secret,
+                label : name,
+                method : method,
+                callback : callback
             }
-        });
-    }).end();
+        },
+        function () {}
+    );
 };
 
-/** removeTask
+/** Trigger
  * @author : Rafael Erthal
- * @since : 2012-10
+ * @since : 2013-03
  *
- * @description : remove task
- * @param customer : cliente
- * @param token : token do usuário
- * @param cb : callback a ser chamado
+ * @description : dispara evento no kami-sama
+ * @param name : nome do evento
+ * @param method : método para chamar a url
+ * @param callback : url a ser chamada no disparo do evento
  */
-exports.removeTask = function (task, token) {
+exports.trigger = function (token, name, data) {
     "use strict";
 
-    var http = require('http'),
-        options = {
-            host: config.services.tasks.host,
-            path: '/task/' + task._id + '/delete?token=' + token,
-            port: config.services.tasks.port,
-            method: 'POST'
-        };
-
-    http.request(options, function (answer) {
-        var str = '';
-        //pega os dados recebidos via streaming
-        answer.on('data', function (chunk) {
-            str += chunk;
-        });
-        //ao terminar o recebimentos dos dados, chamar o callback com a resposta se o usuário foi ou não autenticado
-        answer.on('end', function () {
-        });
-    }).end();
+    require('request').post(
+        'http://' + config.services.kamisama.host + ':' + config.services.kamisama.port + '/tigger',
+        {
+            form: {
+                token : token,
+                secret : config.security.secret,
+                label : name,
+                data : data
+            }
+        },
+        function () {}
+    );
 };
 
 exports.files = {
