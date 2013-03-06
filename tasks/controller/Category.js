@@ -17,9 +17,6 @@ module.exports = function (app) {
      *
      * @description : Lista categorias de um usuário
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
      * @response : {categories}
      */
@@ -52,9 +49,6 @@ module.exports = function (app) {
      * @since : 2012-09
      *
      * @description : Exibe categoria de um usuário
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
      *
      * @request : {token}
      * @response : {category}

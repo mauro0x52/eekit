@@ -18,10 +18,7 @@ module.exports = function (app) {
      *
      * @description : Cadastra uma task
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {category,title,description,important, priority,dateDeadline,token}
+     * @request : {category,title,description,important,recurrence,priority,embeddes,reminder,dateDeadline,token}
      * @response : {task}
      */
     app.post('/task', function (request,response) {
@@ -87,11 +84,8 @@ module.exports = function (app) {
      *
      * @description : Lista tarefas de um usuário
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token, filterByCategory, filterByDone, filterByEmbeddeds}
-     * @response : {task}
+     * @response : {tasks[]}
      */
     app.get('/tasks', function (request,response) {
         response.contentType('json');
@@ -152,9 +146,6 @@ module.exports = function (app) {
      *
      * @description : Exibe tarefa de um usuário
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
      * @response : {task}
      */
@@ -207,9 +198,6 @@ module.exports = function (app) {
      * @since : 2012-09
      *
      * @description : Exclui tarefa de um usuário
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
      *
      * @request : {token}
      * @response : {}
@@ -269,9 +257,6 @@ module.exports = function (app) {
      * @since : 2012-09
      *
      * @description : Marca tarefa de um usuário como realizada
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
      *
      * @request : {token}
      * @response : {}
@@ -360,69 +345,6 @@ module.exports = function (app) {
         });
     });
 
-    /** POST /task/:id/undone
-     *
-     * @autor : Rafael Erthal
-     * @since : 2012-09
-     *
-     * @description : Marca tarefa de um usuário como não realizada
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {token}
-     * @response : {}
-     */
-    app.post('/task/:id/undone', function (request,response) {
-        response.contentType('json');
-        response.header('Access-Control-Allow-Origin', '*');
-
-        auth(request.param('token', null), function (error, user) {
-            if (error) {
-                response.send({error : error});
-            } else {
-                User.findOne({user : user._id}, function (error, user) {
-                    if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                    } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            Task.findById(request.params.id, function (error, task) {
-                                if (error) {
-                                    response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
-                                } else {
-                                    if (task === null) {
-                                        response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
-                                    } else {
-                                        user.findCategory(task.category.toString(), function (error, category) {
-                                            if (error) {
-                                                response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
-                                            } else {
-                                                if (category === null) {
-                                                    response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
-                                                } else {
-                                                    task.done = false;
-                                                    task.save(function (error) {
-                                                        if (error) {
-                                                            response.send({error : error});
-                                                        } else {
-                                                            response.send({task : task});
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    });
-
     /** POST /task/:id/update
      *
      * @autor : Rafael Erthal
@@ -430,11 +352,8 @@ module.exports = function (app) {
      *
      * @description : Edita tarefa
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {token}
-     * @response : {}
+     * @request : {category, title, description, important, recurrence, dateDealine, priority, embeddeds, reminder, token}
+     * @response : {task}
      */
     app.post('/task/:id/update', function (request,response) {
         response.contentType('json');

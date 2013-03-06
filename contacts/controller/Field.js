@@ -1,4 +1,6 @@
-/** Field
+/** 
+ * Field
+ *
  * @author : Rafael Erthal
  * @since : 2013-01
  *
@@ -8,6 +10,7 @@
 module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         auth = require('../Utils.js').auth,
+        trigger = require('../Utils.js').trigger,
         Field = Model.Field,
         User = Model.User;
 
@@ -41,10 +44,12 @@ module.exports = function (app) {
                                 position : request.param('position', null)
                             });
                             user.save(function (error) {
+                                var field = user.fields.pop();
                                 if (error) {
                                     response.send({error : error});
                                 } else {
-                                    response.send({field : user.fields.pop()});
+                                    trigger(request.param('token', null), 'create field', field);
+                                    response.send({field : field});
                                 }
                             });
                         }
@@ -169,6 +174,7 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error: error});
                                             } else {
+                                                trigger(request.param('token', null), 'update field ' + field._id, field);
                                                 response.send({field : field});
                                             }
                                         });
@@ -214,11 +220,13 @@ module.exports = function (app) {
                                     if (field === null) {
                                         response.send({error : { message : 'field not found', name : 'NotFoundError', token : request.params.id, path : 'field'}});
                                     } else {
+                                        var field_id = field._id;
                                         field.remove();
                                         user.save(function (error) {
                                             if (error) {
                                                 response.send({error: error});
                                             } else {
+                                                trigger(request.param('token', null), 'remove field ' + field_id);
                                                 response.send(null);
                                             }
                                         });

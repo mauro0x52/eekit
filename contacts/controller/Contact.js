@@ -9,10 +9,8 @@
 
 module.exports = function (app) {
     var Model = require('./../model/Model.js'),
-        config = require('./../config.js'),
         auth = require('../Utils.js').auth,
-        tasks = require('../Utils.js').tasks,
-        removeTask = require('../Utils.js').removeTask,
+        trigger = require('../Utils.js').trigger,
         Contact = Model.Contact,
         User = Model.User;
 
@@ -65,6 +63,7 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
+                                                trigger(request.param('token', null), 'create contact', contact);
                                                 response.send({contact : contact});
                                             }
                                         });
@@ -219,6 +218,7 @@ module.exports = function (app) {
                                                         if (error) {
                                                             response.send({error : error});
                                                         } else {
+                                                            trigger(request.param('token', null), 'update contact ' + contact._id, contact);
                                                             response.send({contact : contact});
                                                         }
                                                     });
@@ -268,12 +268,14 @@ module.exports = function (app) {
                                     if (contact === null) {
                                         response.send({error : { message : 'contact not found', name : 'NotFoundError', id : request.params.id, path : 'contact'}});
                                     } else {
-                                        id = contact._id
+                                        var contact_id = contact._id;
                                         contact.remove(function (error) {
+                                            var field_id = field._id;
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
-                                                /* @TODO: COLOCAR BARREAMENTO*/
+                                                /* @TODO: COLOCAR BARREAMENTO para remover tarefas*/
+                                                trigger(request.param('token', null), 'remove contact ' + contact_id);
                                                 response.send(null);
                                             }
                                         });

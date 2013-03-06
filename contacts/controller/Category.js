@@ -10,6 +10,7 @@
 module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         auth = require('../Utils.js').auth,
+        trigger = require('../Utils.js').trigger,
         Category = Model.Category,
         Contact = Model.Contact,
         User = Model.User;
@@ -48,10 +49,12 @@ module.exports = function (app) {
                                 color : request.param('color', null)
                             });
                             user.save(function (error) {
+                                var category = user.categories.pop();
                                 if (error) {
                                     response.send({error : error});
                                 } else {
-                                    response.send({category : user.categories.pop()});
+                                    trigger(request.param('token', null), 'create category', category);
+                                    response.send({category : category});
                                 }
                             });
                         }
@@ -177,6 +180,7 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
+                                                trigger(request.param('token', null), 'update category ' + category._id, category);
                                                 response.send({category : category});
                                             }
                                         });
@@ -230,6 +234,7 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
+                                                trigger(request.param('token', null), 'remove category ' + category_id);
                                                 response.send(null);
                                             }
                                         });

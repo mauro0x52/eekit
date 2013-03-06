@@ -17,11 +17,8 @@ module.exports = function (app) {
      *
      * @description : Registra um usuário no serviço
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
-     * @response : {categories}
+     * @response : {categories[]}
      */
     app.post('/user', function (request,response) {
         var newuser;
