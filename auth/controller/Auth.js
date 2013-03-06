@@ -25,7 +25,7 @@ module.exports = function (app) {
      * @request : {secret, token, service}
      * @response : {token}
      */
-    app.post('/auth/service/:id', function (request, response) {
+    app.post('/service/:id/auth', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
@@ -77,7 +77,7 @@ module.exports = function (app) {
      * @request : {token, secret}
      * @response : {_id}
      */
-    app.get('/auth/validate', function (request, response) {
+    app.get('/validate', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 

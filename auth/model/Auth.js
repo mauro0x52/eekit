@@ -39,7 +39,9 @@ authSchema.methods.addToken = function (cb) {
         dateUpdated : new Date()
     });
 
-    cb(null, token);
+    this.save(function (error) {
+        cb(error, token);
+    });
 };
 
 /** removeToken
@@ -60,7 +62,10 @@ authSchema.methods.removeToken = function (tokenKey, cb) {
             this.tokens[i] = undefined;
         }
     }
-    this.save(cb);
+
+    this.save(function (error) {
+        cb(error);
+    });
 };
 
 /** CheckToken
