@@ -15,6 +15,76 @@ module.exports = {
         auth : {
             port : 8001,
             url  : 'localhost'
+        },
+        www : {
+            url  : 'localhost',
+            port : 8000,
+            secret : 'www',
+            permissions : {
+                users     : false,
+                username  : false,
+                tokens    : true
+            }
+        },
+        profiles : {
+            url  : 'localhost',
+            port : 8004,
+            secret : 'profiles',
+            permissions : {
+                users     : false,
+                username  : false,
+                tokens    : false
+            }
+        },
+        tasks : {
+            url  : 'localhost',
+            port : 8005,
+            secret : 'tasks',
+            permissions : {
+                users     : false,
+                username  : true,
+                tokens    : false
+            }
+        },
+        contacts : {
+            url   : 'localhost',
+            port : 8006,
+            secret : 'contacts',
+            permissions : {
+                users     : false,
+                username  : false,
+                tokens    : false
+            }
+        },
+        tracker : {
+            url   : 'localhost',
+            port : 8003,
+            secret : 'tracker',
+            permissions : {
+                users     : true,
+                username  : true,
+                tokens    : true
+            }
+        },
+        finances : {
+            url  : 'localhost',
+            port : 8007,
+            secret : 'finances',
+            permissions : {
+                users     : false,
+                username  : false,
+                tokens    : false
+            }
+        },
+        billets : {
+            url  : 'localhost',
+            port : 8009,
+            secret : 'billets',
+            permissions : {
+                users     : false,
+                username  : false,
+                tokens    : false
+            }
         }
     },
     security : {
