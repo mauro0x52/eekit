@@ -22,7 +22,7 @@ exports.auth = function (token, cb) {
     var http = require('http'),
         options = {
             host: config.services.auth.host,
-            path: '/user/validate?token=' + token,
+            path: '/user/validate?token=' + token + '&secret=' + config.security.secret,
             port: config.services.auth.port,
             method: 'GET'
         };

@@ -12,7 +12,7 @@ module.exports = {
         db : 'tracker'
     },
     security : {
-        security : 'tracker'
+        secret : 'tracker'
     },
     services : {
         auth : {

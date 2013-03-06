@@ -19,7 +19,7 @@ module.exports = {
         password : '',
     },
     security : {
-        security : 'www'
+        secret : 'www'
     },
     services : {
         www : {

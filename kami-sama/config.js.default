@@ -12,7 +12,7 @@ module.exports = {
         db : 'kamisama'
     },
     security : {
-        security : 'kami-sama'
+        secret : 'kami-sama'
     },
     services : {
         auth : {
