@@ -69,7 +69,11 @@ userSchema.statics.encryptPassword = function (password) {
 userSchema.statics.findByToken = function (tokenKey, cb) {
     "use strict";
 
-    User.findOne({'auths.tokens.token' : tokenKey}, cb);
+    if (tokenKey) {
+        User.findOne({'auths.tokens.token' : tokenKey}, cb);
+    } else {
+        cb({ message : 'invalid token', name : 'InvalidTokenError'}, null);
+    }
 };
 
 /** checkToken
@@ -83,19 +87,20 @@ userSchema.statics.findByToken = function (tokenKey, cb) {
 userSchema.methods.checkToken = function (tokenKey, serviceKey) {
     "use strict";
 
-    var i,
-        j;
-
+    var i, j, token;
     for (i in this.auths) {
         if (this.auths[i].service === serviceKey) {
             for (j in this.auths[i].tokens) {
-                if (
-                    this.auths[i].tokens[j].token.toString() === tokenKey.toString() &&
-                    (new Date() - new Date(this.auths[i].tokens[j].dateUpdated))/(1000*60*60*24) < 30
-                ) {
-                    this.auths[i].tokens[j].dateUpdated = new Date();
-                    this.save()
-                    return true;
+                token = this.auths[i].tokens[j];
+                if (token.token) {
+                    if (
+                        this.auths[i].tokens[j].token.toString() === tokenKey.toString() &&
+                        (new Date() - new Date(this.auths[i].tokens[j].dateUpdated))/(1000*60*60*24) < 30
+                    ) {
+                        this.auths[i].tokens[j].dateUpdated = new Date();
+                        this.save()
+                        return true;
+                    }
                 }
             }
         }
