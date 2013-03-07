@@ -63,7 +63,6 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
-                                                trigger(request.param('token', null), 'create contact', contact);
                                                 response.send({contact : contact});
                                             }
                                         });
@@ -218,7 +217,6 @@ module.exports = function (app) {
                                                         if (error) {
                                                             response.send({error : error});
                                                         } else {
-                                                            trigger(request.param('token', null), 'update contact ' + contact._id, contact);
                                                             response.send({contact : contact});
                                                         }
                                                     });
@@ -275,7 +273,6 @@ module.exports = function (app) {
                                                 response.send({error : error});
                                             } else {
                                                 /* @TODO: COLOCAR BARREAMENTO para remover tarefas*/
-                                                trigger(request.param('token', null), 'remove contact ' + contact_id);
                                                 response.send(null);
                                             }
                                         });

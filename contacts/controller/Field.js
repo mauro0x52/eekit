@@ -48,7 +48,6 @@ module.exports = function (app) {
                                 if (error) {
                                     response.send({error : error});
                                 } else {
-                                    trigger(request.param('token', null), 'create field', field);
                                     response.send({field : field});
                                 }
                             });
@@ -174,7 +173,6 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error: error});
                                             } else {
-                                                trigger(request.param('token', null), 'update field ' + field._id, field);
                                                 response.send({field : field});
                                             }
                                         });
@@ -226,7 +224,6 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error: error});
                                             } else {
-                                                trigger(request.param('token', null), 'remove field ' + field_id);
                                                 response.send(null);
                                             }
                                         });
