@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.1 (2013-03-07)
+
+Correções
+- Usuários sem campo personalizado na entidade
+
 ## 1.0 (2013-03-04)
 
 Features
