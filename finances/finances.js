@@ -35,17 +35,30 @@ require('./controller/Transaction.js')(app);
 
 /*  Métodos para dev e teste */
 app.get('/ping', function (request,response) {
-    response.send(true);
+    "use strict";
+
+    response.contentType('json');
+    response.header('Access-Control-Allow-Origin', '*');
+
+    var fs = require('fs'), regexm;
+
+    fs.readFile('changelog.md', 'utf8', function(error, data) {
+        if (error) response.send({error : error});
+        else {
+            regexm = data.match(/\#{2} ([0-9]+\.[0-9]+\.?[0-9]?) \((.*)\)/);
+            response.send({ version : regexm[1], date : regexm[2] });
+        }
+    });
 });
 
 /*  Migração do master para a2 */
 app.get('/migrate', function (request,response) {
     Model = require('./model/Model.js')
-    
+
     Model.User.find(function (error, users) {
         Model.Transaction.find(function (error, transactions) {
             Model.Transfer.find(function (error, transfers) {
-                
+
                 for (var i in transactions) {
                     transactions[i] = {
                         _id : transactions[i]._id,
@@ -62,7 +75,7 @@ app.get('/migrate', function (request,response) {
                         isTransfer : false
                     }
                 }
-                
+
                 for (var i in transfers) {
                     transactions.push({
                         _id : transfers[i]._id,
@@ -93,7 +106,7 @@ app.get('/migrate', function (request,response) {
                         isTransfer : true
                     });
                 }
-                
+
                 response.send({
                     User : users,
                     Transaction : transactions
@@ -101,7 +114,7 @@ app.get('/migrate', function (request,response) {
             });
         });
     });
-    
+
 });
 
 /*  Ativando o server */
