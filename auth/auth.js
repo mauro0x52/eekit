@@ -28,6 +28,7 @@ app.configure(function () {
 
 /*  Chamando controllers */
 require('./controller/User.js')(app);
+require('./controller/Auth.js')(app);
 
 /*  Métodos para dev e teste */
 app.get('/ping', function (request, response) {

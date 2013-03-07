@@ -11,9 +11,9 @@ var mongoose = require('mongoose'),
     tokenSchema;
 
 tokenSchema = new Schema({
-    token       : {type : String, trim : true, required : true},
-    dateCreated : {type : Date, required : true},
-    dateUpdated : {type : Date, required : true}
+    token       : {type : String, trim : true},
+    dateCreated : {type : Date},
+    dateUpdated : {type : Date}
 });
 
 /*  Exportando o pacote  */

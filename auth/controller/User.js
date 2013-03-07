@@ -10,6 +10,7 @@ module.exports = function (app) {
 
     var Model = require('./../model/Model.js'),
         User  = Model.User,
+        config = require('../config.js'),
         Service  = Model.Service;
 
     /** GET /users
@@ -26,27 +27,30 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        Service.findOne({secret : request.param('secret', null)}, function (error, service) {
-            if (error) {
-                response.send({error : error});
-            } else {
-                if (service === null) {
-                    response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
-                } else {
-                    if (!service.permissions.users) {
-                        response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
-                    } else {
-                        User.find(function (error, users) {
-                            if (error) {
-                                response.send({error : error});
-                            } else {
-                                response.send({users : users});
-                            }
-                        });
-                    }
-                }
+        var service = null;
+
+        for (var i in config.services) {
+            if (config.services[i].secret === request.param('secret', '')) {
+                service = config.services[i]
+                service.slug = i;
             }
-        });
+        }
+
+        if (service === null) {
+            response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
+        } else {
+            if (!service.permissions.users) {
+                response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
+            } else {
+                User.find(function (error, users) {
+                    if (error) {
+                        response.send({error : error});
+                    } else {
+                        response.send({users : users});
+                    }
+                });
+            }
+        }
     });
 
     /** POST /user
@@ -60,57 +64,59 @@ module.exports = function (app) {
      * @response : {token}
      */
     app.post('/user', function (request, response) {
-        var user;
+        var user,
+            service = null;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        Service.findOne({secret : request.param('secret', null)}, function (error, service) {
-            if (error) {
-                response.send({error : error});
+        for (var i in config.services) {
+            if (config.services[i].secret === request.param('secret', '')) {
+                service = config.services[i]
+                service.slug = i;
+            }
+        }
+
+        if (service === null) {
+            response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
+        } else {
+            // valida se o serviço que esta cadastrando o usuário é o WWW
+            if (service.slug !== 'www') {
+                response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
             } else {
-                if (service === null) {
-                    response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
+                // valida se a senha e a confirmação senha conferem
+                if (request.param('password', null) !== request.param('password_confirmation', null)) {
+                    response.send({error : {message : 'invalid password confirmation', name : 'ValidationError', errors : {password_confirmation : {message : 'invalid password confirmation', name : 'ValidatorError', path : 'password_confirmation', type : 'confirmation' }}}});
                 } else {
-                    // valida se o serviço que esta cadastrando o usuário é o WWW
-                    if (service.slug !== 'www') {
-                        response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
-                    } else {
-                        // valida se a senha e a confirmação senha conferem
-                        if (request.param('password', null) !== request.param('password_confirmation', null)) {
-                            response.send({error : {message : 'invalid password confirmation', name : 'ValidationError', errors : {password_confirmation : {message : 'invalid password confirmation', name : 'ValidatorError', path : 'password_confirmation', type : 'confirmation' }}}});
+                    //pega os dados do post e coloca em um novo objeto
+                    user = new User({
+                        username : request.param('username', null),
+                        password : request.param('password', null),
+                        dateCreated : new Date()
+                    });
+                    //salva novo usuário
+                    user.save(function (error) {
+                        if (error) {
+                            if (error.code == 11000) {
+                                // usuário já existe
+                                response.send({error : {message : 'username already registered', name : 'ValidationError', errors : {username : {message : 'username already registered', name : 'ValidatorError', path : 'username', type : 'unique' }}}});
+                            } else {
+                                response.send({error : error});
+                            }
                         } else {
-                            //pega os dados do post e coloca em um novo objeto
-                            user = new User({
-                                username : request.param('username', null),
-                                password : request.param('password', null),
-                                dateCreated : new Date()
-                            });
-                            //salva novo usuário
-                            user.save(function (error) {
+                            //loga o usuário no sistema
+                            user.login(function (error, tokenKey) {
                                 if (error) {
-                                    if (error.code == 11000) {
-                                        // usuário já existe
-                                        response.send({error : {message : 'username already registered', name : 'ValidationError', errors : {username : {message : 'username already registered', name : 'ValidatorError', path : 'username', type : 'unique' }}}});
-                                    } else {
-                                        response.send({error : error});
-                                    }
+                                    response.send({error : error});
                                 } else {
-                                    //loga o usuário no sistema
-                                    user.login(function (error, tokenKey) {
-                                        if (error) {
-                                            response.send({error : error});
-                                        } else {
-                                            response.send({token : tokenKey});
-                                        }
-                                    });
+                                    response.send({token : tokenKey});
                                 }
                             });
                         }
-                    }
+                    });
                 }
             }
-        });
+        }
     });
 
     /** POST /user/login
@@ -124,62 +130,43 @@ module.exports = function (app) {
      * @response : {token}
      */
     app.post('/user/login', function (request, response) {
+        var service = null;
+
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        Service.findOne({secret : request.param('secret', null)}, function (error, service) {
-            if (error) {
-                response.send({error : error});
-            } else {
-                if (service === null) {
-                    response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
+        for (var i in config.services) {
+            if (config.services[i].secret === request.param('secret', '')) {
+                service = config.services[i]
+                service.slug = i;
+            }
+        }
+
+        if (service === null || service.slug !== 'www') {
+            response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
+        } else {
+            User.findOne({username : request.param('username', null)}, function (error, user) {
+                if (error) {
+                    response.send({error : { message : 'invalid username or password', name : 'InvalidLoginError'}});
                 } else {
-                    if (service.slug !== 'www') {
-                        response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
+                    if (user === null) {
+                        response.send({error : { message : 'invalid username or password', name : 'InvalidLoginError'}});
                     } else {
-                        User.find({username : request.param('login', null)}, function (error, user) {
-                            if (error) {
-                                response.send({error : { message : 'invalid username or password', name : 'InvalidLoginError'}});
-                            } else {
-                                if (user === null) {
-                                    response.send({error : { message : 'invalid username or password', name : 'InvalidLoginError'}});
+                        if (user.password !== User.encryptPassword(request.param('password', null))) {
+                            response.send({error : { message : 'invalid username or password', name : 'InvalidLoginError'}});
+                        } else {
+                            user.login(function (error, tokenKey) {
+                                if (error) {
+                                    response.send({error : error});
                                 } else {
-                                    if (user.password === 'unset') {
-                                        user.password = User.encryptPassword(request.param('password', null));
-                                        user.save(function (error) {
-                                            if (error) {
-                                                response.send({error : error});
-                                            } else {
-                                                //loga o usuário
-                                                user.login(function (error, tokenKey) {
-                                                    if (error) {
-                                                        response.send({error : error});
-                                                    } else {
-                                                        response.send({token : tokenKey});
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    } else {
-                                        if (user.password !== User.encryptPassword(request.param('password', null))) {
-                                            response.send({error : { message : 'invalid username or password', name : 'InvalidLoginError'}});
-                                        } else {
-                                            user.login(function (error, tokenKey) {
-                                                if (error) {
-                                                    response.send({error : error});
-                                                } else {
-                                                    response.send({token : tokenKey});
-                                                }
-                                            });
-                                        }
-                                    }
+                                    response.send({token : tokenKey});
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     });
 
     /** POST /user/logout
@@ -193,43 +180,43 @@ module.exports = function (app) {
      * @response : null
      */
     app.post('/user/logout', function (request, response) {
+        var service = null;
+
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        Service.findOne({secret : request.param('secret', null)}, function (error, service) {
-            if (error) {
-                response.send({error : error});
-            } else {
-                if (service === null) {
-                    response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
+        for (var i in config.services) {
+            if (config.services[i].secret === request.param('secret', '')) {
+                service = config.services[i]
+                service.slug = i;
+            }
+        }
+
+        if (service === null || service.slug !== 'www') {
+            response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
+        } else {
+            User.findByToken(request.param('token', null), function (error, user) {
+                if (error) {
+                    response.send({error : { message : 'user not found', name : 'InvalidTokenError', id : request.params.login, path : 'user'}});
                 } else {
-                    if (service.slug !== 'www') {
-                        response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
+                    if (user === null) {
+                        response.send({error : {message :  'user not found', name : 'InvalidTokenError', id : request.params.login, path : 'user' }});
                     } else {
-                        User.findByToken(request.param('token', null), function (error, user) {
-                            if (error) {
-                                response.send({error : { message : 'user not found', name : 'NotFoundError', id : request.params.login, path : 'user'}});
-                            } else {
-                                if (user === null) {
-                                    response.send({error : {message :  'user not found', name : 'NotFoundError', id : request.params.login, path : 'user' }});
+                        if (user.checkToken(request.param('token', null), service.slug)) {
+                            user.logout(request.param('token', null), function (error) {
+                                if (error) console.log(user)
+                                if (error) {
+                                    response.send({error : error});
                                 } else {
-                                    if (user.checkToken(request.param('token', null), service._id)) {
-                                        user.logout(request.param('token', null), function (error) {
-                                            if (error) {
-                                                response.send({error : error});
-                                            } else {
-                                                response.send(null);
-                                            }
-                                        });
-                                    } else {
-                                        response.send({ error : { message : 'Invalid token', name : 'InvalidTokenError'}});
-                                    }
+                                    response.send(null);
                                 }
-                            }
-                        });
+                            });
+                        } else {
+                            response.send({ error : { message : 'Invalid token', name : 'InvalidTokenError'}});
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     });
 };

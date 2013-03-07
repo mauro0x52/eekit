@@ -24,6 +24,18 @@ describe('POST /user', function () {
         });
     });
 
+    it('sem serviço', function (done) {
+        api.post('auth', '/user', {},
+        function (error, data, response) {
+            if (error) {
+                done(error);
+            } else {
+                data.should.have.property('error').have.property('name', 'InvalidServiceError');
+                done();
+            }
+        });
+    });
+
     it('serviço inválido', function (done) {
         api.post('auth', '/user', {
             secret : 'kkkkk est sekret esta errdo kkkkk'
@@ -57,7 +69,7 @@ describe('POST /user', function () {
         api.post('auth', '/user', {
             username : 'testes+' + rand() + '@empreendemia.com.br',
             status : 'active',
-            security : services.www.secret
+            secret : services.www.secret
         }, function(error, data, response) {
             if (error) {
                 done(error);
@@ -73,7 +85,7 @@ describe('POST /user', function () {
             password : 'testando',
             password_confirmation : 'asuidiudhsas',
             status : 'active',
-            security : services.www.secret
+            secret : services.www.secret
         }, function(error, data, response) {
             if (error) {
                 done(error);
@@ -90,16 +102,21 @@ describe('POST /user', function () {
             password : 'testando',
             password_confirmation : 'testando',
             status : 'active',
-            security : services.www.secret
+            secret : services.www.secret
         }, function(error, data, response) {
             api.post('auth', '/user', {
                 username : username,
                 password : 'testando',
                 password_confirmation : 'testando',
+                secret : services.www.secret,
                 status : 'active'
             }, function (error, data, response) {
-                data.should.have.property('error').have.property('name', 'MongoError');
-                done();
+                if (error) {
+                    done(error);
+                } else {
+                    data.should.have.property('error').have.property('name', 'ValidationError');
+                    done();
+                }
             });
         });
     });
@@ -109,12 +126,12 @@ describe('POST /user', function () {
             password : 'testando',
             password_confirmation : 'testando',
             status : 'active',
-            security : services.www.secret
+            secret : services.www.secret
         }, function(error, data, response) {
             if (error) done(error);
             else {
                 data.should.not.have.property('error');
-                data.should.have.property('user').have.property('tokens');
+                data.should.have.property('token');
                 done();
             }
         });
@@ -339,32 +356,29 @@ describe('POST /user', function () {
 //    });
 //});
 
-describe('POST /user/[login]/login', function() {
+describe('POST /user/login', function() {
     var token,
-        userId;
+        username;
 
     before(function (done) {
+        username = 'testes+' + rand() + '@empreendemia.com.br';
         // cria um usuario
         api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
+            username : username,
             password : 'testando',
             password_confirmation : 'testando',
             status : 'active',
             secret : services.www.secret
         }, function(error, data) {
-            for (var i in data.user.tokens) {
-                if (data.users.tokens[i].service === 'www') {
-                    token = data.users.tokens[i].token;
-                }
+            if (error) done(error);
+            else {
+                token = data.token;
+                done();
             }
-            userId = data.user._id;
-            done();
         });
     });
     it('página não encontrada', function (done) {
-        api.post('auth', '/user/'+userId+'/login', {
-            password : "testando"
-        },
+        api.post('auth', '/user/login', {},
         function(error, data, response) {
             response.should.have.status(200);
             done();
@@ -373,7 +387,9 @@ describe('POST /user/[login]/login', function() {
     });
 
     it('serviço inválido', function (done) {
-        api.post('auth', '/user/'+userId+'/login', {
+        api.post('auth', '/user/login', {
+            username : username,
+            password : "testando",
             secret : 'kkkkk est sekret esta errdo kkkkk'
         },
         function(error, data, response) {
@@ -385,57 +401,92 @@ describe('POST /user/[login]/login', function() {
             }
         });
     });
-
-    it('autenticado com sucesso', function (done) {
-        api.post('auth', '/user/'+userId+'/login', {
+    it('usuário não existe', function (done) {
+        api.post('auth', '/user/login', {
+            username : 'usuarioqnaumexiste@naoexiste.com',
             password : "testando",
             secret : services.www.secret
         },
         function(error, data, response) {
-            should.not.exist(data.error, "não era para retornar erro");
-            should.exist(data.tokens, "não retornou os tokens");
-            done();
+            if (error) {
+                done(error);
+            } else {
+                data.should.have.property('error').have.property('name', 'InvalidLoginError');
+                done();
+            }
         }
         );
     });
-    it('usuário não existe', function (done) {
-        api.post('auth', '/user/'+userId+'asd123asd123/login', {
+    it('usuário em branco', function (done) {
+        api.post('auth', '/user/login', {
+            username : '',
             password : "testando",
             secret : services.www.secret
         },
         function(error, data, response) {
-            data.should.have.property('error').have.property('name', 'NotFoundError');
-            done();
+            if (error) {
+                done(error);
+            } else {
+                data.should.have.property('error').have.property('name', 'InvalidLoginError');
+                done();
+            }
         }
         );
     });
     it('senha em branco', function (done) {
-        api.post('auth', '/user/'+userId+'/login', {
+        api.post('auth', '/user/login', {
+            username : username,
             password : "",
             secret : services.www.secret
         },
         function(error, data, response) {
-            data.should.have.property('error').have.property('name', 'InvalidLoginError');
-            done();
+            if (error) {
+                done(error);
+            } else {
+                data.should.have.property('error').have.property('name', 'InvalidLoginError');
+                done();
+            }
         }
         );
     });
     it('senha errada', function (done) {
-        api.post('auth', '/user/'+userId+'/login', {
+        api.post('auth', '/user/login', {
+            username : username,
             password : "1234567",
             secret : services.www.secret
         },
         function(error, data, response) {
-            data.should.have.property('error').have.property('name', 'InvalidLoginError');
-            done();
+            if (error) {
+                done(error);
+            } else {
+                data.should.have.property('error').have.property('name', 'InvalidLoginError');
+                done();
+            }
+        }
+        );
+    });
+
+    it('autenticado com sucesso', function (done) {
+        api.post('auth', '/user/login', {
+            username : username,
+            password : "testando",
+            secret : services.www.secret
+        },
+        function(error, data, response) {
+            if (error) {
+                done(error);
+            } else {
+                should.not.exist(data.error, "não era para retornar erro");
+                should.exist(data.token, "não retornou os token");
+                done();
+            }
         }
         );
     });
 });
 
-describe('POST /user/[login]/logout', function() {
-    var token,
-        userId;
+describe('POST /user/logout', function() {
+    var token;
 
     before(function (done) {
         // cria um usuario
@@ -446,19 +497,12 @@ describe('POST /user/[login]/logout', function() {
             status : 'active',
             secret : services.www.secret
         }, function(error, data) {
-            for (var i in data.user.tokens) {
-                if (data.users.tokens[i].service === 'www') {
-                    token = data.users.tokens[i].token;
-                }
-            }
-            userId = data.user._id;
+            token = data.token;
             done();
         });
     });
     it('página não encontrada', function (done) {
-        api.post('auth', '/user/'+userId+'/logout', {
-            token : token
-        },
+        api.post('auth', '/user/logout', {},
         function(error, data, response) {
             response.should.have.status(200);
             done();
@@ -466,7 +510,7 @@ describe('POST /user/[login]/logout', function() {
         );
     });
     it('serviço inválido', function (done) {
-        api.post('auth', '/user/'+userId+'/logout', {
+        api.post('auth', '/user/logout', {
             token : token,
             secret : 'kkkkk est sekret esta errdo kkkkk'
         },
@@ -475,161 +519,66 @@ describe('POST /user/[login]/logout', function() {
                 done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidServiceError');
+                done();
+            }
+        }
+        );
+    });
+    it('deslogar com serviço sem autorização', function (done) {
+        api.post('auth', '/user/logout', {
+            token : token,
+            secret : 'contacts'
+        },
+        function(error, data, response) {
+            if (error) {
+                done(error);
+            } else {
+                data.should.have.property('error').have.property('name', 'InvalidServiceError');
+                done();
+            }
+        }
+        );
+    });
+    it('token errado', function (done) {
+        api.post('auth', '/user/logout', {
+            token : token+"asd123",
+            secret : services.www.secret
+        },
+        function(error, data, response) {
+            if (error) {
+                done(error);
+            } else {
+                data.should.have.property('error').have.property('name', 'InvalidTokenError');
+                done();
+            }
+        }
+        );
+    });
+    it('token em branco', function (done) {
+        api.post('auth', '/user/logout', {
+            //token : token+"asd123",
+            secret : services.www.secret
+        },
+        function(error, data, response) {
+            if (error) {
+                done(error);
+            } else {
+                data.should.have.property('error').have.property('name', 'InvalidTokenError');
                 done();
             }
         }
         );
     });
     it('deslogado com sucesso', function (done) {
-        api.post('auth', '/user/'+userId+'/logout', {
+        api.post('auth', '/user/logout', {
             token : token,
             secret : services.www.secret
-        },
-        function(error, data, response) {
-            should.not.exist(data, "não era para retornar nehum dado");
-            done();
-        }
-        );
-    });
-    it('usuário não existe', function (done) {
-        api.post('auth', '/user/'+userId+'asd123asd123/logout', {
-            token : token,
-            secret : services.www.secret
-        },
-        function(error, data, response) {
-            data.should.have.property('error').property('name', 'NotFoundError');
-            done();
-        }
-        );
-    });
-    it('token errado', function (done) {
-        api.post('auth', '/user/'+userId+'/logout', {
-            token : token+"asd123",
-            secret : services.www.secret
-        },
-        function(error, data, response) {
-            data.should.have.property('error').have.property('name', 'InvalidTokenError');
-            done();
-        }
-        );
-    });
-    it('token em branco', function (done) {
-        api.post('auth', '/user/'+userId+'/logout', {
-            //token : token+"asd123",
-            secret : services.www.secret
-        },
-        function(error, data, response) {
-            data.should.have.property('error').have.property('name', 'InvalidTokenError');
-            done();
-        }
-        );
-    });
-});
-
-describe('POST /user/validate', function() {
-    var token, token2,
-        userId;
-
-    before(function (done) {
-        // cria um usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando',
-            status : 'active',
-            secret : services.www.secret
-        }, function(error, data) {
-            for (var i in data.user.tokens) {
-                if (data.users.tokens[i].service === 'www') {
-                    token = data.users.tokens[i].token;
-                }
-            }
-            userId = data.user._id;
-
-            api.post('auth', '/user/'+userId+'/login', {
-                password : "testando"
-            },
-            function(error, data, response) {
-                for (var i in data.user.tokens) {
-                    if (data.users.tokens[i].service === 'www') {
-                        token2 = data.users.tokens[i].token;
-                    }
-                }
-                done();
-            }
-            );
-        });
-    });
-    it('página não encontrada', function (done) {
-        api.get('auth', '/user/validate', {
-            token : token
-        },
-        function(error, data, response) {
-            response.should.have.status(200);
-            done();
-        }
-        );
-    });
-    it('serviço inválido', function (done) {
-        api.get('auth', '/user/validate', {
-            token : token,
-            secret : 'kkkkk est sekret esta errdo kkkkk'
         },
         function(error, data, response) {
             if (error) {
                 done(error);
             } else {
-                data.should.have.property('error').have.property('name', 'InvalidServiceError');
-                done();
-            }
-        }
-        );
-    });
-    it('token em branco', function (done) {
-        api.get('auth', '/user/validate', {
-            //token : token,
-            secret : services.www.secret
-        }, function (error, data, response) {
-            data.should.have.property('error').have.property('name', 'InvalidTokenError');
-            done();
-        });
-    });
-    it('token errado', function (done) {
-        api.get('auth', '/user/validate', {
-            token : token+"asdasdasdas",
-            secret : services.www.secret
-        }, function (error, data, response) {
-            data.should.have.property('error').have.property('name', 'InvalidTokenError');
-            done();
-        });
-    });
-    it('valida usuário com sucesso', function (done) {
-        api.get('auth', '/user/validate', {
-            token : token,
-            secret : services.www.secret
-        },
-        function(error, data, response) {
-            if (error) done(error);
-            else {
-                should.exist(data);
-                data.should.not.have.property('error');
-                data.should.have.property('user').have.property('_id');
-                done();
-            }
-        }
-        );
-    });
-    it('valida usuário com o outro token', function (done) {
-        api.get('auth', '/user/validate', {
-            token : token2,
-            secret : services.www.secret
-        },
-        function(error, data, response) {
-            if (error) done(error);
-            else {
-                should.exist(data);
-                data.should.not.have.property('error');
-                data.should.have.property('user').have.property('_id');
+                should.not.exist(data, "não era para retornar nehum dado");
                 done();
             }
         }
