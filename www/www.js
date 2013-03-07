@@ -45,7 +45,7 @@ app.get('/config', function (request, response) {
 
     response.contentType('json');
     response.header('Access-Control-Allow-Origin', '*');
-    
+
     var result = {services : {}};
     for (var i in config.services) {
         result.services[i] = {
