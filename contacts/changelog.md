@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 0.3 (2013-03-08)
+
+Features
+- Ping retorna versão
+
 ## 0.2 (2013-02-18)
 
 Features
