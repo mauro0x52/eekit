@@ -34,7 +34,20 @@ require('./controller/Task.js')(app);
 
 /*  Métodos para dev e teste */
 app.get('/ping', function (request,response) {
-    response.send(true);
+    "use strict";
+
+    response.contentType('json');
+    response.header('Access-Control-Allow-Origin', '*');
+
+    var fs = require('fs'), regexm;
+
+    fs.readFile('changelog.md', 'utf8', function(error, data) {
+        if (error) response.send({error : error});
+        else {
+            regexm = data.match(/\#{2} ([0-9]+\.[0-9]+\.?[0-9]?) \((.*)\)/);
+            response.send({ version : regexm[1], date : regexm[2] });
+        }
+    });
 });
 
 /*  Migração do master para a2 */

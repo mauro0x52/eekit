@@ -1,7 +1,12 @@
 Changelog
 =========
 
-## 0.7
+## 0.8 (2013-03-08)
+
+Features
+- Ping retorna versão
+
+## 0.7 (?)
 
 Features
 - Tipboxes nas ações e nos menus

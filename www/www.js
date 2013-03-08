@@ -37,7 +37,18 @@ require('./controller/Feedback.js')(app);
 app.get('/ping', function (request, response) {
     "use strict";
 
-    response.send(true);
+    response.contentType('json');
+    response.header('Access-Control-Allow-Origin', '*');
+
+    var fs = require('fs'), regexm;
+
+    fs.readFile('changelog.md', 'utf8', function(error, data) {
+        if (error) response.send({error : error});
+        else {
+            regexm = data.match(/\#{2} ([0-9]+\.[0-9]+\.?[0-9]?) \((.*)\)/);
+            response.send({ version : regexm[1], date : regexm[2] });
+        }
+    });
 });
 
 app.get('/config', function (request, response) {
