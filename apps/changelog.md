@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 0.2.1 (2013-03-12)
+
+Melhorias
+- Abrindo automaticamente primeiro contato cadastrado no contatos 
+
 ## 0.2 (2013-03-08)
 
 Features
