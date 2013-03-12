@@ -507,6 +507,10 @@ app.routes.list('/', function (params, data) {
             /* Pegando campos que são cadastradas ao longo do uso do app */
             app.events.bind('create contact', function (contact) {
                 fitGroup(contact).items.add((new Item(contact)).item);
+                if (!contacts.length) {
+                    app.apps.open({app : app.slug, route : '/contato/' + contact._id})
+                }
+                contacts.push(contact);
             });
 
             /* exibe o orientador */
