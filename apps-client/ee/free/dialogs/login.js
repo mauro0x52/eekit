@@ -23,8 +23,11 @@ app.routes.dialog('/login', function (params, data) {
 
     app.ui.form.submit(function () {
         app.ajax.post({
-            url : 'http://' + app.config.services.auth.host + ':' + app.config.services.auth.port + '/user/' + login.value() + '/login',
-            data : {password : password.value()}
+            url : 'http://' + app.config.services.auth.host + ':' + app.config.services.auth.port + '/user/login',
+            data : {
+                username : login.value(),
+                password : password.value()
+            }
         }, function (response) {
             if (response && !response.error) {
                 app.tracker.event('autenticar');

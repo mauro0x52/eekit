@@ -19,14 +19,19 @@ var config = require('./config.js');
 exports.auth = function (token, cb) {
     "use strict";
     
-    require('restler').get('http://'+config.services.auth.host+':'+config.services.auth.port+'/validate', {
-        multipart: true,
+    require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
         data: {
             token  : token,
             secret : config.security.secret
         }
     }).on('success', function(data) {
-        cb(null, data.user);
+        if (data.user) {
+            cb(null, data.user);
+        } else if (data.error) {
+            cb(data.error, null);
+        } else {
+            cb(null, null);
+        }
     }).on('error', function(error) {
         cb(error, null);
     });
@@ -44,8 +49,7 @@ exports.auth = function (token, cb) {
 exports.bind = function (token, name, method, callback) {
     "use strict";
     
-    require('restler').post('http://' + config.services.kamisama.host + ':' + config.services.kamisama.port + '/bind', {
-        multipart: true,
+    require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/bind', {
         data: {
             token : token,
             secret : config.security.secret,
@@ -68,8 +72,7 @@ exports.bind = function (token, name, method, callback) {
 exports.trigger = function (token, name, data) {
     "use strict";
     
-    require('restler').post('http://' + config.services.kamisama.host + ':' + config.services.kamisama.port + '/tigger', {
-        multipart: true,
+    require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/tigger', {
         data: {
             token : token,
             secret : config.security.secret,

@@ -19,6 +19,7 @@ sdk.modules.ajax = function (app) {
      */
     this.get = function (path, cb) {
         app.ui.loading(true);
+
         empreendemia.ajax.get(path, function (data) {
             app.ui.loading(false);
             if (data && data.error && data.error.name === 'InvalidTokenError') {
@@ -40,6 +41,7 @@ sdk.modules.ajax = function (app) {
      */
     this.post = function (path, cb) {
         app.ui.loading(true);
+
         empreendemia.ajax.post(path, function (data) {
             app.ui.loading(false);
             if (data && data.error && data.error.name === 'InvalidTokenError') {
@@ -61,6 +63,7 @@ sdk.modules.ajax = function (app) {
      */
     this.put = function (path, cb) {
         app.ui.loading(true);
+
         empreendemia.ajax.put(path, function (data) {
             app.ui.loading(false);
             if (data && data.error && data.error.name === 'InvalidTokenError') {
@@ -82,6 +85,7 @@ sdk.modules.ajax = function (app) {
      */
     this.del = function (path, cb) {
         app.ui.loading(true);
+
         empreendemia.ajax.del(path, function (data) {
             app.ui.loading(false);
             if (data && data.error && data.error.name === 'InvalidTokenError') {

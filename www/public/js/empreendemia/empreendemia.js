@@ -96,10 +96,10 @@ var empreendemia = {
      * @description : inicia a empreendemia
      */
     start : function () {
-        empreendemia.ui = new empreendemia.ui();
-
-        window.addEventListener('resize', empreendemia.ui.content.roll.sheets.fitHeight, true);
-
-        empreendemia.load();
+        empreendemia.user.auth(function () {
+            empreendemia.ui = new empreendemia.ui();
+            window.addEventListener('resize', empreendemia.ui.content.roll.sheets.fitHeight, true);
+            empreendemia.load()
+        });
     }
 };

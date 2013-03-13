@@ -12,17 +12,25 @@ var should = require("should"),
     rand = require("./utils.js").rand;
     
 describe('POST /user', function () {
-    var token;
+    var www_token,
+        token;
 
     before(function (done) {
         // cria usuario
         api.post('auth', '/user', {
             username : 'testes+' + rand() + '@empreendemia.com.br',
             password : 'testando',
-            password_confirmation : 'testando'
+            password_confirmation : 'testando',
+            secret : 'www'
         }, function (error, data) {
-            token = data.user.token;
-            done();
+            www_token = data.token;
+            api.post('auth', '/service/tasks/auth', {
+                secret : 'www',
+                token : www_token
+            }, function (error, data) { 
+                token = data.token;
+                done();
+            });
         });
     });
     

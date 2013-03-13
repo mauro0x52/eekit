@@ -106,9 +106,9 @@
                         document.lastclick = e;
                         return true;
                     }, true);
-                    empreendemia.ajax.get({url : '/config'}, function (config) {
-                        empreendemia.config = config;
-                        sdk.config = config;
+                    empreendemia.ajax.get({url : 'http://localhost:8001/services'}, function (data) {
+                        empreendemia.config = data;
+                        sdk.config = data;
                         empreendemia.start();
                     });
                 } else {

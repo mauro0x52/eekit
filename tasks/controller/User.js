@@ -21,7 +21,8 @@ module.exports = function (app) {
      * @response : {categories[]}
      */
     app.post('/user', function (request,response) {
-        var newuser;
+        var newuser,
+            id;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
@@ -30,13 +31,14 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
+                id = user._id;
                 User.findOne({user : user._id}, function (error, user) {
                     if (error) {
                         response.send({error : error});
                     } else {
                         if (user === null) {
                             newuser = new User({
-                                user : user._id,
+                                user : id,
                                 categories : [
                                     {name : 'Geral'},
                                     {name : 'Reuniões'},

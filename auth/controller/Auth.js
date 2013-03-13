@@ -165,7 +165,7 @@ module.exports = function (app) {
                                 result.username = user.username;
                             }
                             if (service.permissions.tokens) {
-                                result.username = user.auths;
+                                result.auths = user.auths;
                             }
                             response.send({user : result});
                         } else {

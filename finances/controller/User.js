@@ -30,11 +30,11 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                User.findOne({user : user._id}, function (error, olduser) {
                     if (error) {
                         response.send({error : error});
                     } else {
-                        if (user === null) {
+                        if (olduser === null) {
                             newuser = new User({
                                 user : user._id,
                                 categories : [
@@ -65,7 +65,7 @@ module.exports = function (app) {
                                 }
                             });
                         } else {
-                            response.send({categories : user.categories, accounts : user.accounts});
+                            response.send({categories : olduser.categories, accounts : olduser.accounts});
                         }
                     }
                 });

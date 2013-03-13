@@ -1,8 +1,5 @@
 {
   "name": "App",
-  "description": "",
-  "version": "0.1",
-  "author": "Empreendemia",
   "dependencies": {
     "express": "3.0.0rc3",
     "mongoose": "3.0.1",
@@ -11,6 +8,5 @@
     "uglify-js": "1.3.3",
     "mocha": "1.3.2",
     "should": "1.1.0"
-  },
-  "devDependencies": {}
+  }
 }

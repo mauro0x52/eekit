@@ -103,7 +103,7 @@ module.exports = function (app) {
                         if (user === null) {
                             response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                         } else {
-                            query.user = user.user;
+                            query.user = user._id;
                             if (request.param('filterByCategory')) {
                                 if (typeof request.param('filterByCategory') === 'string') {
                                     query.category = request.param('filterByCategory');
@@ -171,17 +171,7 @@ module.exports = function (app) {
                                     if (task === null) {
                                         response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                                     } else {
-                                        user.findCategory(task.category.toString(), function (error, category) {
-                                            if (error) {
-                                                response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
-                                            } else {
-                                                if (category === null) {
-                                                    response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
-                                                } else {
-                                                    response.send({task : task});
-                                                }
-                                            }
-                                        });
+                                        response.send({task : task});
                                     }
                                 }
                             });
@@ -224,21 +214,11 @@ module.exports = function (app) {
                                     if (task === null) {
                                         response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                                     } else {
-                                        user.findCategory(task.category.toString(), function (error, category) {
+                                        task.remove(function (error) {
                                             if (error) {
-                                                response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
+                                                response.send({error : error});
                                             } else {
-                                                if (category === null) {
-                                                    response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
-                                                } else {
-                                                    task.remove(function (error) {
-                                                        if (error) {
-                                                            response.send({error : error});
-                                                        } else {
-                                                            response.send(null);
-                                                        }
-                                                    });
-                                                }
+                                                response.send(null);
                                             }
                                         });
                                     }
@@ -285,51 +265,41 @@ module.exports = function (app) {
                                     if (task === null) {
                                         response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                                     } else {
-                                        user.findCategory(task.category.toString(), function (error, category) {
+                                        task.done = true;
+                                        task.dateUpdated = new Date();
+                                        task.save(function (error) {
+                                            var newTask;
                                             if (error) {
-                                                response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
+                                                response.send({error : error});
                                             } else {
-                                                if (category === null) {
-                                                    response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
+                                                if (task.recurrence === 0) {
+                                                    response.send({task : task});
                                                 } else {
-                                                    task.done = true;
-                                                    task.dateUpdated = new Date();
-                                                    task.save(function (error) {
-                                                        var newTask;
+                                                    task.dateDeadline = new Date();
+                                                    if (task.recurrence === 30) {
+                                                        newDate = new Date(task.dateDeadline.getFullYear(), task.dateDeadline.getMonth() + 1, task.dateDeadline.getDate());
+                                                    } else {
+                                                        newDate = new Date(task.dateDeadline.getFullYear(), task.dateDeadline.getMonth(), task.dateDeadline.getDate() + task.recurrence);
+                                                    }
+                                                    newTask = new Model.Task({
+                                                        user        : task.user,
+                                                        category    : task.category,
+                                                        title       : task.title,
+                                                        description : task.description,
+                                                        important   : task.important,
+                                                        done        : false,
+                                                        recurrence  : task.recurrence,
+                                                        embeddeds   : task.embeddeds,
+                                                        reminder    : task.reminder,
+                                                        dateCreated : new Date(),
+                                                        dateUpdated : new Date(),
+                                                        dateDeadline: newDate
+                                                    });
+                                                    newTask.save(function (error) {
                                                         if (error) {
                                                             response.send({error : error});
                                                         } else {
-                                                            if (task.recurrence === 0) {
-                                                                response.send({task : task});
-                                                            } else {
-                                                                task.dateDeadline = new Date();
-                                                                if (task.recurrence === 30) {
-                                                                    newDate = new Date(task.dateDeadline.getFullYear(), task.dateDeadline.getMonth() + 1, task.dateDeadline.getDate());
-                                                                } else {
-                                                                    newDate = new Date(task.dateDeadline.getFullYear(), task.dateDeadline.getMonth(), task.dateDeadline.getDate() + task.recurrence);
-                                                                }
-                                                                newTask = new Model.Task({
-                                                                    user        : task.user,
-                                                                    category    : task.category,
-                                                                    title       : task.title,
-                                                                    description : task.description,
-                                                                    important   : task.important,
-                                                                    done        : false,
-                                                                    recurrence  : task.recurrence,
-                                                                    embeddeds   : task.embeddeds,
-                                                                    reminder    : task.reminder,
-                                                                    dateCreated : new Date(),
-                                                                    dateUpdated : new Date(),
-                                                                    dateDeadline: newDate
-                                                                });
-                                                                newTask.save(function (error) {
-                                                                    if (error) {
-                                                                        response.send({error : error});
-                                                                    } else {
-                                                                        response.send({task : task});
-                                                                    }
-                                                                });
-                                                            }
+                                                            response.send({task : task});
                                                         }
                                                     });
                                                 }
@@ -377,30 +347,20 @@ module.exports = function (app) {
                                     if (task === null) {
                                         response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                                     } else {
-                                        user.findCategory(task.category.toString(), function (error, category) {
+                                        task.category    = request.param('category', task.category);
+                                        task.title       = request.param('title', task.title);
+                                        task.description = request.param('description', task.description);
+                                        task.important   = request.param('important', task.important) === 'true' || request.param('important', task.important) === true;
+                                        task.recurrence  = request.param('recurrence', task.recurrence);
+                                        task.dateDeadline = request.param('dateDeadline', task.dateDeadline);
+                                        task.priority    = request.param('priority', task.priority);
+                                        task.embeddeds    = request.param('embeddeds', task.embeddeds);
+                                        task.reminder    = request.param('reminder', task.reminder);
+                                        task.save(function (error) {
                                             if (error) {
-                                                response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
+                                                response.send({error : error});
                                             } else {
-                                                if (category === null) {
-                                                    response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
-                                                } else {
-                                                    task.category    = request.param('category', task.category);
-                                                    task.title       = request.param('title', task.title);
-                                                    task.description = request.param('description', task.description);
-                                                    task.important   = request.param('important', task.important) === 'true' || request.param('important', task.important) === true;
-                                                    task.recurrence  = request.param('recurrence', task.recurrence);
-                                                    task.dateDeadline = request.param('dateDeadline', task.dateDeadline);
-                                                    task.priority    = request.param('priority', task.priority);
-                                                    task.embeddeds    = request.param('embeddeds', task.embeddeds);
-                                                    task.reminder    = request.param('reminder', task.reminder);
-                                                    task.save(function (error) {
-                                                        if (error) {
-                                                            response.send({error : error});
-                                                        } else {
-                                                            response.send({task : task});
-                                                        }
-                                                    });
-                                                }
+                                                response.send({task : task});
                                             }
                                         });
                                     }

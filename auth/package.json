@@ -1,14 +1,10 @@
 {
   "name": "Auth",
-  "description": "",
-  "version": "1.0.0",
-  "author": "Empreendemia",
   "dependencies": {
     "express": "3.1.0",
     "mongoose": "3.5.7",
     "restler": "2.0.1",
     "mocha": "1.8.1",
     "should": "1.2.2"
-  },
-  "devDependencies": {}
+  }
 }

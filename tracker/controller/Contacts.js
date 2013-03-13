@@ -65,8 +65,8 @@ module.exports = function (app) {
                 response.write('</tr>');
                 for (var i in cohort) {
                     var users = cohort[i].filter([],0,utm),
-		                activated = cohort[i].filter(['adicionar transação', 'adicionar tarefa'],1, utm),
-			            engaged = cohort[i].filter(['marcar tarefa como feita', 'adicionar transação'],2, utm);
+		                activated = cohort[i].filter(['adicionar tarefa'],1, utm),
+			            engaged = cohort[i].filter(['marcar tarefa como feita'],2, utm);
 
                     response.write('<tr>');
                     response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');

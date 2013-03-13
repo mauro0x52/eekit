@@ -8,6 +8,7 @@
 module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         auth = require('../Utils.js').auth,
+        config = require('../config'),
         Event = Model.Event;
 
     /** GET /user/:id/events
@@ -124,10 +125,6 @@ module.exports = function (app) {
         response.header('Access-Control-Allow-Origin', '*');
        
         Event.find(function (error, events) {
-            var mongodb = require("mongodb"),
-                config = require("../config.js"),
-                mongoserver = new mongodb.Server(config.mongodb.url, config.mongodb.port, {}),
-                connector = new mongodb.Db('profiles', mongoserver);
 
             events.sort(function(a,b) {
                 if (a.date > b.date) return  1;
@@ -135,32 +132,31 @@ module.exports = function (app) {
                 return 0;
             });
 
-            connector.open(function (error, db) {
-                db.collection('profiles', function (error, collection) {
-                    collection.find({}).toArray(function (error, users) {
-                        var i;
-
-                        function user (event) {
-                            var j;
-                            if (event.user) {
-                                for (j in users) {
-                                    if (event.user.toString() === users[j].user.toString()) {
-                                        return users[j];
-                                    }
-                                }
-                            }
+            require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
+                data: {
+                    secret : config.security.secret
+                }
+            }).on('success', function (data) {
+                function user (id) {
+                    for (var i in data.users) {
+                        if (data.users[i]._id.toString() === id.toString()) {
+                            return data.users[i];
                         }
+                    }
+                }
 
-                        for (i in events) {
-                            if (user(events[i])) {
-                                response.write('"' + events[i].label + '","' + events[i].app + '","' + events[i].source + '","' + events[i].user + '","' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '","' + user(events[i]).role + '","' + user(events[i]).sector + '"\n');
-                            } else {
-                                response.write('"' + events[i].label + '","' + events[i].app + '","' + events[i].source + '","' + 'ip:' + events[i].ip + '","' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '","deslogado","deslogado"' + '","' + events[i].utm.source + '","' + events[i].utm.content + '","' + events[i].utm.campaign + '","' + events[i].utm.medium + '\n');
-                            }
-                        }
-                        response.end();
-                    });
-                });
+                for (i in events) {
+                    if (user(events[i])) {
+                        response.write('"' + events[i].label + '","' + events[i].app + '","' + events[i].source + '","' + events[i].user + '","' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '","' + user(events[i]).role + '","' + user(events[i]).sector + '"\n');
+                    } else {
+                        response.write('"' + events[i].label + '","' + events[i].app + '","' + events[i].source + '","' + 'ip:' + events[i].ip + '","' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '","deslogado","deslogado"' + '","' + events[i].utm.source + '","' + events[i].utm.content + '","' + events[i].utm.campaign + '","' + events[i].utm.medium + '\n');
+                    }
+                }
+                response.end();
+
+            }).on('error', function(error) {
+                response.write(error.toString());
+                response.end();
             });
         });
     });

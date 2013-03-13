@@ -221,10 +221,11 @@ app.routes.dialog('/cadastro', function (params, data) {
                         login.errors.add(new app.ui.inputError({ message : 'este email já está cadastrado' }));
                     }
                 } else {
-                    token = response.user.token;
-                    app.ajax.post({
-                        url : 'http://' + app.config.services.profiles.host + ':' + app.config.services.profiles.port + '/profile',
-                        data : {
+                    token = response.token;
+                    app.tracker.event('cadastrar');
+                    app.close({
+                        token : token,
+                        profile : {
                             name : name.value(),
                             surname : surname.value(),
                             role : role.value()[0],
@@ -232,13 +233,6 @@ app.routes.dialog('/cadastro', function (params, data) {
                             size : size.value()[0],
                             why : why.value(),
                             token : token
-                        }
-                    }, function (response) {
-                        if (!response || response.error) {
-                            app.ui.error('Erro ao cadastrar perfil');
-                        } else {
-                            app.tracker.event('cadastrar');
-                            app.close(token);
                         }
                     });
                 }
