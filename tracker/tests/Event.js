@@ -7,6 +7,7 @@
  */
 
 var should = require("should"),
+    config = require("../config.js"),
     api = require("./utils.js").api,
     rand = require("./utils.js").rand;
 
@@ -18,9 +19,10 @@ describe('POST /event', function () {
         api.post('auth', '/user', {
             username : 'testes+' + rand() + '@empreendemia.com.br',
             password : 'testando',
-            password_confirmation : 'testando'
+            password_confirmation : 'testando',
+            secret : 'www'
         }, function (error, data) {
-            token = data.user.token;
+            token = data.token;
             done();
         });
     });

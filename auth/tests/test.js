@@ -9,3 +9,7 @@
 describe('User', function() {
     require('./User.js');
 });
+
+describe('Auth', function() {
+    require('./Auth.js');
+});

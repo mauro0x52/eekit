@@ -1,15 +1,10 @@
 {
   "name": "Auth",
-  "description": "serviço de auth do empreendemia 3",
-  "version": "0.0.1",
-  "author": "Rafael Almeida Erthal Hermano",
   "dependencies": {
-    "ejs": "0.8.x",
-    "express": "3.0.0rc3",
-    "mongoose": "3.0.1",
+    "express": "3.1.0",
+    "mongoose": "3.5.7",
     "restler": "2.0.1",
-    "restler": "2.0.1",
-    "should": "1.1.0"
-  },
-  "devDependencies": {}
+    "mocha": "1.8.1",
+    "should": "1.2.2"
+  }
 }

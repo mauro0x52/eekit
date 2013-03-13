@@ -15,11 +15,10 @@ module.exports = {
         username : undefined,
         password : undefined,
     },
+    security : {
+        secret : 'tasks'
+    },
     services : {
-        www : {
-            url  : 'localhost',
-            port : 8000
-        },
         auth : {
             url  : 'localhost',
             port : 8001
@@ -27,6 +26,10 @@ module.exports = {
         tasks : {
             url  : 'localhost',
             port : 8005
+        },
+        kamisama : {
+            url  : 'localhost',
+            port : 8008
         }
     }
 };

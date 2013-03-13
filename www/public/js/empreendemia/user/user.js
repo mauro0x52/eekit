@@ -6,7 +6,50 @@
  * @description : controlador de seção de usuário
  */
 empreendemia.user = {
-    token : getCookie('token'),
+    auth : function (cb) {
+        var www_token = getCookie('token');
+        if (www_token) {
+            empreendemia.ajax.get({
+                url : 'http://' + empreendemia.config.services.auth.host + ':' + empreendemia.config.services.auth.port + '/validate',
+                data : {
+                    secret : empreendemia.config.services.www.secret,
+                    token  : www_token
+                }
+            }, function (data) {
+                var i,j;
+                if (data && data.user && data.user.auths) {
+                    for (i in data.user.auths) {
+                        for (j in data.user.auths[i].tokens) {
+                            if ((new Date() - new Date(data.user.auths[i].tokens[j].dateUpdated))/(1000*60*60*24) < 30) {
+                                empreendemia.config.services[data.user.auths[i].service].token = data.user.auths[i].tokens[j].token;
+                            }
+                        }
+                    }
+                }
+                cb();
+            });
+        } else {
+            cb();
+        }
+    },
+
+    serviceLogin : function (service, cb) {
+        var www_token = getCookie('token');
+        if (www_token) {
+            empreendemia.ajax.post({
+                url : 'http://' + empreendemia.config.services.auth.host + ':' + empreendemia.config.services.auth.port + '/service/' + service + '/auth',
+                data : {
+                    secret : empreendemia.config.services.www.secret,
+                    token  : www_token
+                }
+            }, function (data) {
+                empreendemia.config.services[service].token = data.token;
+                cb(empreendemia.config.services[service].token);
+            });
+        } else {
+            cb();
+        }
+    },
 
     login : function () {
         empreendemia.apps.open({
@@ -18,8 +61,14 @@ empreendemia.user = {
             },
             close : function (params) {
                 if (params && params.token) {
-                    empreendemia.user.token = params.token;
-                    empreendemia.load();
+                    if (params.remindme) {
+                        setCookie('token', params.token, 30);
+                    } else {
+                        setCookie('token', params.token, 1);
+                    }
+                    empreendemia.user.auth(function () {
+                        empreendemia.load();
+                    });
                 }
             }
         });
@@ -33,35 +82,62 @@ empreendemia.user = {
                 tool.open();
                 empreendemia.apps.render(tool);
             },
-            close : function (token) {
-                if (token) {
-                    empreendemia.user.token = token;
-                    setCookie('token', token, 1);
-                    empreendemia.routes.set('ee/usuario-cadastrado');
-                    empreendemia.load();
+            close : function (params) {
+                if (params && params.token) {
+                    if (params.remindme) {
+                        setCookie('token', params.token, 30);
+                    } else {
+                        setCookie('token', params.token, 1);
+                    }
+                    empreendemia.user.auth(function () {
+                        empreendemia.user.serviceLogin('profiles', function (token) {
+                            params.profile.token = token;
+                            empreendemia.ajax.post({
+                                url : 'http://' + empreendemia.config.services.profiles.host + ':' + empreendemia   .config.services.profiles.port + '/profile',
+                                data : params.profile
+                            }, function () {
+                                empreendemia.routes.set('ee/usuario-cadastrado');
+                                empreendemia.load();
+                            });
+                        });
+                    });
                 }
             }
         });
     },
 
     logout : function () {
-        empreendemia.user.token = null;
-        setCookie('token', null, 0);
-        setCookie('remindme', null, 0);
-        empreendemia.load();
+        var www_token = getCookie('token');
+        empreendemia.ajax.post({
+            url : 'http://' + empreendemia.config.services.auth.host + ':' + empreendemia.config.services.auth.port + '/user/logout',
+            data : {
+                secret : empreendemia.config.services.www.secret,
+                token  : www_token
+            }
+        }, function (data) {
+            var i;
+            setCookie('token', null, 0);
+            setCookie('remindme', null, 0);
+            for (i in empreendemia.config.services) {
+                empreendemia.config.services[i].token = undefined;
+            }
+            empreendemia.routes.set('ee/');
+            empreendemia.load();
+        });
     },
 
     profile : function (cb) {
         empreendemia.ajax.get({
-            url : 'http://' + empreendemia.config.services.profiles.host + ':' + empreendemia.config.services.profiles.port + '/profile'
+            url : 'http://' + empreendemia.config.services.profiles.host + ':' + empreendemia.config.services.profiles.port + '/profile',
+            data : {
+                token : empreendemia.config.services.profiles.token
+            }
         }, function (response) {
             if (response && !response.error) {
                 if (getCookie('remindme')) {
-                    setCookie('token', empreendemia.user.token, 30);
-                    setCookie('id', response.profile._id, 30);
+                    setCookie('token', getCookie('token'), 30);
                 } else {
-                    setCookie('token', empreendemia.user.token, 1);
-                    setCookie('id', response.profile._id, 1);
+                    setCookie('token', getCookie('token'), 1);
                 }
                 cb(response.profile);
             } else {

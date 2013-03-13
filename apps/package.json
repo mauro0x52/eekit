@@ -1,10 +1,6 @@
 {
   "name": "App",
-  "description": "serviço de apps do empreendemia 3",
-  "version": "0.0.1",
-  "author": "Rafael Almeida Erthal Hermano",
   "dependencies": {
-    "ejs": "0.8.x",
     "express": "3.0.0rc3",
     "mongoose": "3.0.1",
     "restler": "2.0.1",
@@ -12,6 +8,5 @@
     "uglify-js": "1.3.3",
     "mocha": "1.3.2",
     "should": "1.1.0"
-  },
-  "devDependencies": {}
+  }
 }

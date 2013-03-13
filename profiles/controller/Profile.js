@@ -10,37 +10,6 @@ module.exports = function (app) {
         auth = require('../Utils.js').auth,
         Profile  = Model.Profile;
 
-    /** GET /profile/:slug
-     *
-     * @autor : Lucas Kalado
-     * @since : 2012-08
-     *
-     * @description : Visualiza um Perfil
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Público
-     *
-     * @request : {slug}
-     * @response : {jobs, slugs, name, surname, thumbnail, about, phones, contacts, links}
-     */
-    app.get('/profile/:profile_id', function (request,response) {
-        response.contentType('json');
-        response.header('Access-Control-Allow-Origin', '*');
-
-        //Localiza o Profile
-        Profile.findByIdentity(request.params.profile_id, function (error, profile) {
-            if (error) {
-                response.send({error: error});
-            } else {
-                if (profile === null) {
-                    response.send({error : { message : 'profile not found', name : 'NotFoundError', id : request.params.slug, path : 'profile'}});
-                } else {
-                    response.send({profile : profile});
-                }
-            }
-        });
-    });
-
     /** GET /profile
      *
      * @autor : Rafael Erthal

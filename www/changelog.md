@@ -1,14 +1,16 @@
 Changelog
 =========
 
-## 0.8 (2013-03-08)
+## 0.8
+
+Features
+- Autenticação de serviço
+- Comunicação com barramento de eventos
+
+## 0.7 (2013-03-08)
 
 Features
 - Ping retorna versão
-
-## 0.7 (?)
-
-Features
 - Tipboxes nas ações e nos menus
 
 Correções

@@ -1,6 +1,6 @@
 /** User
  * @author : Rafael Erthal & Mauro Ribeiro & Lucas Kalado
- * @since : 2012-07
+ * @since : 2013-02
  *
  * @description : Representação da entidade de usuários
  */
@@ -16,9 +16,8 @@ var crypto = require('crypto'),
 userSchema = new Schema({
     username         : {type : String, trim : true, required : true, unique : true},
     password         : {type : String, required : true},
-    tokens           : [require('./Token.js').Token],
     dateCreated      : {type : Date},
-    status           : {type : String, required : true, enum : ['active', 'inactive']}
+    auths            : [require('./Auth').Auth]
 });
 
 /** pre('save')
@@ -30,58 +29,14 @@ userSchema = new Schema({
 userSchema.pre('save', function (next) {
     if (this.isNew) {
         this.password = User.encryptPassword(this.password);
-    }
-    next();
-});
-
-/** findByIdentity
- * @author : Mauro Ribeiro
- * @since : 2012-08
- *
- * @description : Procura um usuário pelo id ou pelo username
- * @param id : id ou username do produto
- * @param cb : callback a ser chamado
- */
-userSchema.statics.findByIdentity = function (id, cb) {
-    "use strict";
-
-    if (new RegExp("[0-9 a-f]{24}").test(id)) {
-        // procura por id
-        User.findById(id, cb);
+        this.auths.push({
+            service : 'www'
+        });
+        next();
     } else {
-        // procura por username
-        User.findOne({username : id}, cb);
+        next();
     }
-};
-
-/** findByValidToken
- * @author : Mauro Ribeiro
- * @since : 2012-08
- *
- * @description : Procura um usuário pelo token e verifica se é válido
- * @param token : token do usuário
- * @param cb : callback a ser chamado
- */
-userSchema.statics.findByValidToken = function (tokenKey, cb) {
-    "use strict";
-    User.findOne({'tokens.token' : tokenKey}, function(error, user) {
-        if (error) {
-            cb(error);
-        } else {
-            if (!user) {
-                cb({ message : 'Invalid token', name : 'InvalidTokenError'});
-            } else {
-                user.checkToken(tokenKey, function(valid) {
-                    if (valid) {
-                        cb(undefined, user);
-                    } else {
-                        cb({ message : 'Invalid token', name : 'InvalidTokenError'}, user);
-                    }
-                });
-            }
-        }
-    });
-};
+});
 
 /** encryptPassword
  * @author : Mauro Ribeiro
@@ -103,89 +58,59 @@ userSchema.statics.encryptPassword = function (password) {
     return password;
 };
 
-/** GenerateToken
+/** findByToken
  * @author : Rafael Erthal
- * @since : 2012-07
+ * @since : 2013-02
  *
- * @description : Gera o token do usuário
- * @param cb : callback a ser chamado após a ativação da conta
+ * @description : Procura um usuário pelo token
+ * @param tokenKey : token do usuário
+ * @param cb : callback a ser chamado
  */
-userSchema.methods.generateToken = function () {
+userSchema.statics.findByToken = function (tokenKey, cb) {
     "use strict";
 
-    var token = crypto
-        .createHash('sha256')
-        .update(config.security.token + this.login + this.password + crypto.randomBytes(10))
-        .digest('hex');
-
-    return token;
+    if (tokenKey) {
+        User.findOne({'auths.tokens.token' : tokenKey}, cb);
+    } else {
+        cb({ message : 'invalid token', name : 'InvalidTokenError'}, null);
+    }
 };
 
-/** CheckToken
- * @author : Rafael Erthal, Mauro Ribeiro
- * @since : 2012-07
+/** checkToken
+ * @author : Rafael Erthal
+ * @since : 2013-02
  *
- * @description : Verifica se o token passado é correo
- * @param cb : callback a ser chamado após a ativação da conta
+ * @description : valida o token de um usuário
+ * @param tokenKey : token do usuário
+ * @param serviceKey : serviço do token
  */
-userSchema.methods.checkToken = function (tokenKey, cb) {
+userSchema.methods.checkToken = function (tokenKey, serviceKey) {
     "use strict";
 
-    var token, i, dateDiff,
-        user = this;
-
-    for (i = 0; i < user.tokens.length; i++) {
-        // verifica se expirou
-        dateDiff = (new Date() - new Date(user.tokens[i].dateUpdated))/(1000*60*60*24);
-        if (dateDiff > 30) {
-            // se expirou, remove
-            user.tokens[i].remove();
-        } else if (user.tokens[i].token === tokenKey) {
-            // verifica se é o que procura
-            token = user.tokens[i];
+    var i, j, token;
+    for (i in this.auths) {
+        if (this.auths[i].service === serviceKey) {
+            for (j in this.auths[i].tokens) {
+                token = this.auths[i].tokens[j];
+                if (token.token) {
+                    if (
+                        this.auths[i].tokens[j].token.toString() === tokenKey.toString() &&
+                        (new Date() - new Date(this.auths[i].tokens[j].dateUpdated))/(1000*60*60*24) < 30
+                    ) {
+                        this.auths[i].tokens[j].dateUpdated = new Date();
+                        this.save()
+                        return true;
+                    }
+                }
+            }
         }
     }
-
-    if (token) {
-        token.dateUpdated = new Date();
-        token.save(function() {
-            cb(true);
-        });
-    }
-
+    return false;
 };
 
-/** Activate
- * @author : Rafael Erthal
- * @since : 2012-07
- *
- * @description : Ativa a conta do usuário
- * @param cb : callback a ser chamado após a ativação da conta
- */
-userSchema.methods.activate = function (cb) {
-    "use strict";
-
-    this.status = 'active';
-    this.save(cb);
-};
-
-/** Deactivate
- * @author : Rafael Erthal
- * @since : 2012-07
- *
- * @description : Desativa a conta do usuário
- * @param cb : callback a ser chamado após a desativação da conta
- */
-userSchema.methods.deactivate = function (cb) {
-    "use strict";
-
-    this.status = 'inactive';
-    this.save(cb);
-};
-
-/** Login
- * @author : Mauro Ribeiro
- * @since : 2012-10
+/** login
+ * @author : Rafael Erthal, Mauro Ribeiro
+ * @since : 2013-02
  *
  * @description : Loga o usuário no sistema
  * @param cb : callback a ser chamado após o usuário ser logado
@@ -193,55 +118,85 @@ userSchema.methods.deactivate = function (cb) {
 userSchema.methods.login = function (cb) {
     "use strict";
 
-    var token = this.generateToken();
+    var config = require('../config.js');
 
-    this.tokens.push({
-        token       : token,
-        dateCreated : new Date(),
-        dateUpdated : new Date()
-    });
-
-    this.save(function() {
-        cb(undefined, token);
-    });
+    this.auth('www', cb);
 };
 
-/** Logout
- * @author : Rafael Erthal
- * @since : 2012-07
+/** logout
+ * @author : Rafael Erthal, Mauro Ribeiro
+ * @since : 2013-02
  *
  * @description : Desloga o usuário no sistema
+ * @param tokenKey : token da seção que será fechada
  * @param cb : callback a ser chamado após o usuário ser deslogado
  */
 userSchema.methods.logout = function (tokenKey, cb) {
     "use strict";
 
-    var token, i;
+    var config = require('../config.js'),
+        that = this;
 
-    for (i = 0; i < this.tokens.length; i = i + 1) {
-        if (this.tokens[i].token === tokenKey) {
-            token = this.tokens[i];
+    for (var i in this.auths) {
+        if (this.auths[i].service === 'www') {
+            var i;
+
+            for (var j in this.auths[i].tokens) {
+                if (this.auths[i].tokens[j].token === tokenKey) {
+                    this.auths[i].tokens[j].remove();
+                }
+            }
         }
     }
-    token = undefined;
     this.save(cb);
 };
 
-/** ChangePassword
- * @author : Rafael Erthal
- * @since : 2012-07
+/** auth
+ * @author : Rafael Erthal, Mauro Ribeiro
+ * @since : 2013-02
  *
- * @description : Muda a senha de um usuário do sistema
- * @param password : nova senha do usuário
- * @param cb : callback a ser chamado após a mudança da senha
+ * @description : Loga o usuário em um serviço
+ * @param cb : callback a ser chamado após o usuário ser logado
  */
-userSchema.methods.changePassword = function (password, cb) {
+userSchema.methods.auth = function (service, cb) {
     "use strict";
 
-    password = User.encryptPassword(password);
+    var i,
+        auth,
+        token = crypto
+            .createHash('sha256')
+            .update(config.security.token + this._id + crypto.randomBytes(10))
+            .digest('hex');
 
-    this.password = password;
-    this.save(cb);
+    for (i in this.auths) {
+        if (this.auths[i].service === service) {
+            auth = this.auths[i];
+        }
+    }
+    if (!auth) {
+        this.auths.push({
+            service : service,
+            tokens  : [{
+                token       : token,
+                dateCreated : new Date(),
+                dateUpdated : new Date()
+            }]
+        });
+
+        this.save(function (error) {
+            cb(error, token);
+        });
+    } else {
+        auth.tokens.push({
+            token       : token,
+            dateCreated : new Date(),
+            dateUpdated : new Date()
+        });
+
+        this.save(function (error) {
+            cb(error, token);
+        });
+    }
 };
 
 /*  Exportando o pacote  */

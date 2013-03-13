@@ -19,9 +19,6 @@ module.exports = function (app) {
      *
      * @description : Cadastra uma conta
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {name, token}
      * @response : {transaction}
      */
@@ -57,54 +54,12 @@ module.exports = function (app) {
                                 isTransfer  : request.param('isTransfer', null)
                             });
                             transaction.save(function (error) {
-                                var requester = require('request');
                                 if (error) {
                                     response.send({error : error});
                                 } else {
                                     if (request.param('reminder', null)) {
-                                        /* Pega as categorias do usuário no financeiro */
-                                        requester({
-                                            url    : 'http://' + config.services.tasks.url + ':' + config.services.tasks.port + '/user?token=' + request.param('token', null),
-                                            method : 'POST'
-                                        }, function (error, result, data) {
-                                            var url = 'http://' + config.services.tasks.url + ':' + config.services.tasks.port + '/task?token=' + request.param('token', null);
-                                            data = JSON.parse(data);
-                                            if (data.categories) {
-                                                /* Busca a categoria finanças */
-                                                for (i in data.categories) {
-                                                    if (data.categories[i].name === 'Finanças') {
-                                                        category = data.categories[i];
-                                                    }
-                                                }
-                                                /* Cria a task relacionada */
-                                                url += '&category=' + category._id;
-                                                url += '&title=' + (request.param('type', null) === 'credit' ? 'Receber: ' : 'Pagar: ') + request.param('name', null);
-                                                url += '&embeddeds=' + '/financas/transacao-relacionada/' + transaction._id;
-                                                url += '&reminder=' + request.param('reminder', null);
-                                                url += '&dateDeadline=' + request.param('date', null);
-                                                requester({
-                                                    url    : url,
-                                                    method : 'POST'
-                                                }, function (error, result, data) {
-                                                    data = JSON.parse(data);
-                                                    if (data.task){
-                                                        /* coloca o id da task na trasação */
-                                                        transaction.task = data.task._id;
-                                                        transaction.save(function (error) {
-                                                            if (!error) {
-                                                                response.send({transaction : transaction});
-                                                            } else {
-                                                                response.send({error : error});
-                                                            }
-                                                        });
-                                                    } else {
-                                                        response.send({transaction : transaction});
-                                                    }
-                                                });
-                                            } else {
-                                                response.send({transaction : transaction});
-                                            }
-                                        });
+                                        /* @TODO: COLOCAR BARREAMENTO*/
+                                        response.send({transaction : transaction});
                                     } else {
                                         response.send({transaction : transaction});
                                     }
@@ -125,11 +80,8 @@ module.exports = function (app) {
      *
      * @description : Lista contas
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {token}
-     * @response : {transactions}
+     * @request : {token, filterByCategories, filterByAccounts}
+     * @response : {transactions[]}
      */
     app.get('/transactions', function (request,response) {
         response.contentType('json');
@@ -183,9 +135,6 @@ module.exports = function (app) {
      *
      * @description : Exibe uma conta
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
      * @response : {transaction}
      */
@@ -231,9 +180,6 @@ module.exports = function (app) {
      *
      * @description : Excluir uma conta
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
      * @response : {}
      */
@@ -270,14 +216,8 @@ module.exports = function (app) {
                                                 response.send({error : error});
                                             } else {
                                                 if (task) {
-                                                    url = 'http://' + config.services.tasks.url + ':' + config.services.tasks.port + '/task/' + task + '/delete?token=' + request.param('token', null)
-                                                    /* remove a task relacionada */
-                                                    requester({
-                                                        url    : url,
-                                                        method : 'POST'
-                                                    }, function (error, result, data) {
-                                                        response.send(null);
-                                                    });
+                                                    /* @TODO: COLOCAR BARREAMENTO*/
+                                                    response.send(null);
                                                 } else {
                                                     response.send(null);
                                                 }
@@ -300,10 +240,7 @@ module.exports = function (app) {
      *
      * @description : Editar uma conta
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {name, token}
+     * @request : {category, account, name, value, date, recurrence, noteNumber, situation, token}
      * @response : {transaction}
      */
     app.post('/transaction/:id/update', function (request,response) {
@@ -340,26 +277,16 @@ module.exports = function (app) {
                                         transaction.recurrence  = request.param('recurrence', transaction.recurrence);
                                         transaction.noteNumber  = request.param('noteNumber', transaction.noteNumber);
                                         transaction.situation   = request.param('situation', transaction.situation);
-
                                         transaction.save(function (error) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
                                                 if (transaction.task) {
-                                                    url = 'http://' + config.services.tasks.url + ':' + config.services.tasks.port + '/task/' + transaction.task + '/update?token=' + request.param('token', null)
-                                                    url += '&title=' + (transaction.type === 'credit' ? 'Receber: ' : 'Pagar: ') + request.param('name', transaction.name);
-                                                    url += '&dateDeadline=' + request.param('date', transaction.date);
-                                                    /* remove a task relacionada */
-                                                    requester({
-                                                        url    : url,
-                                                        method : 'POST'
-                                                    }, function (error, result, data) {
-                                                        response.send({transaction : transaction});
-                                                    });
+                                                    /* @TODO: COLOCAR BARREAMENTO*/
+                                                    response.send({transaction : transaction});
                                                 } else {
                                                     response.send({transaction : transaction});
                                                 }
-
                                             }
                                         });
                                     }
@@ -382,7 +309,7 @@ module.exports = function (app) {
      * @allowedApp : Qualquer APP
      * @allowedUser : Logado
      *
-     * @request : {name, token}
+     * @request : {token}
      * @response : {transaction}
      */
     app.post('/transaction/:id/reconcile', function (request,response) {
@@ -409,12 +336,17 @@ module.exports = function (app) {
                                     if (transaction === null) {
                                         response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
                                     } else {
-                                        transaction.situation   = 'paid';
+                                        transaction.situation = 'paid';
                                         transaction.save(function (error) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
-                                                response.send({transaction : transaction});
+                                                if (transaction.task) {
+                                                    /* @TODO: COLOCAR BARREAMENTO*/
+                                                    response.send({transaction : transaction});
+                                                } else {
+                                                    response.send({transaction : transaction});
+                                                }
                                             }
                                         });
                                     }

@@ -1,4 +1,6 @@
-/** Field
+/** 
+ * Field
+ *
  * @author : Rafael Erthal
  * @since : 2013-01
  *
@@ -8,6 +10,7 @@
 module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         auth = require('../Utils.js').auth,
+        trigger = require('../Utils.js').trigger,
         Field = Model.Field,
         User = Model.User;
 
@@ -18,14 +21,10 @@ module.exports = function (app) {
      *
      * @description : Cadastra um campo configurável
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {name}
+     * @request : {token, name, position}
      * @response : {field}
      */
     app.post('/field', function (request,response) {
-
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
@@ -45,10 +44,11 @@ module.exports = function (app) {
                                 position : request.param('position', null)
                             });
                             user.save(function (error) {
+                                var field = user.fields.pop();
                                 if (error) {
                                     response.send({error : error});
                                 } else {
-                                    response.send({field : user.fields.pop()});
+                                    response.send({field : field});
                                 }
                             });
                         }
@@ -65,11 +65,8 @@ module.exports = function (app) {
      *
      * @description : Lista campos configuráveis
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
-     * @response : {fields : [name]}
+     * @response : {fields[]}
      */
     app.get('/fields', function (request,response) {
         response.contentType('json');
@@ -102,11 +99,8 @@ module.exports = function (app) {
      *
      * @description : Exibe campo configurável
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
-     * @response : {name}
+     * @response : {field}
      */
     app.get('/field/:id', function (request,response) {
         response.contentType('json');
@@ -148,11 +142,8 @@ module.exports = function (app) {
      *
      * @description : Edita campo configurável
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {token, name}
-     * @response : {name}
+     * @request : {token, name, position}
+     * @response : {field}
      */
     app.post('/field/:id/update', function (request,response) {
         response.contentType('json');
@@ -202,9 +193,6 @@ module.exports = function (app) {
      *
      * @description : Exclui campo configurável
      *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
      * @request : {token}
      * @response : {}
      */
@@ -230,6 +218,7 @@ module.exports = function (app) {
                                     if (field === null) {
                                         response.send({error : { message : 'field not found', name : 'NotFoundError', token : request.params.id, path : 'field'}});
                                     } else {
+                                        var field_id = field._id;
                                         field.remove();
                                         user.save(function (error) {
                                             if (error) {
@@ -247,5 +236,4 @@ module.exports = function (app) {
             }
         });
     });
-
 }

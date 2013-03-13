@@ -7,6 +7,9 @@ module.exports = {
     appsFiles : {
         path : '../apps-client/'
     },
+    security : {
+        secret : 'apps'
+    },
     mongodb : {
         port : 27017,
         url : 'localhost',
@@ -22,6 +25,10 @@ module.exports = {
         apps : {
             url  : 'localhost',
             port : 8002
+        },
+        kamisama : {
+            url  : 'localhost',
+            port : 8008
         }
     }
 };

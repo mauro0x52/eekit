@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 0.5
+- Autenticação de serviço
+- Comunicação com barramento de eventos
+
 ## 0.4 (2013-03-08)
 
 Features

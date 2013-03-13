@@ -18,8 +18,8 @@ app.configure(function () {
     app.use(express.bodyParser());
     app.use(express.methodOverride());
 
-    //caso seja ambiente de produção, esconder erros
-    if(config.host.debuglevel === 0){
+    /* caso seja ambiente de produção, esconder erros */
+    if (config.host.debuglevel === 0) {
         app.use(express.errorHandler({ dumpExceptions: true }));
     }
 

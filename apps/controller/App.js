@@ -12,7 +12,7 @@ module.exports = function (app) {
         auth = require('../Utils.js').auth,
         App = Model.App,
         Source = Model.Source,
-        Payer = Model.Payer;
+        User = Model.User;
 
     /** GET /apps
      *
@@ -21,11 +21,8 @@ module.exports = function (app) {
      *
      * @description : Listar apps
      *
-     * @allowedApp : Qualquer App
-     * @allowedUser : Deslogado
-     *
      * @request : {}
-     * @response : {[name,slug,type]}
+     * @response : {apps[]}
      */
     app.get('/apps', function (request, response) {
         response.contentType('json');
@@ -48,11 +45,8 @@ module.exports = function (app) {
      *
      * @description : Exibir app
      *
-     * @allowedApp : Qualquer App
-     * @allowedUser : Deslogado
-     *
      * @request : {}
-     * @response : {[name,slug,type]}
+     * @response : {app}
      */
     app.get('/app/:slug', function (request, response) {
         response.contentType('json');
@@ -81,11 +75,8 @@ module.exports = function (app) {
      *
      * @description : Pega o código da ferramenta
      *
-     * @allowedApp : Qualquer App
-     * @allowedUser : Deslogado
-     *
      * @request : {token}
-     * @response : {tool}
+     * @response : {source, name, slug}
      */
     app.get('/app/:app_slug/source', function (request, response) {
         response.contentType('json');
@@ -119,11 +110,11 @@ module.exports = function (app) {
                         if (error) {
                             getSource(app, 'free');
                         } else {
-                            Payer.findOne({user : user._id, app : app._id, expiration : {"$lt": new Date()}}, function (error, payer) {
+                            User.findOne({user : user._id, app : app._id, expiration : {"$lt": new Date()}}, function (error, user) {
                                 if (error) {
                                     getSource(app, 'free');
                                 } else {
-                                    if (payer === null) {
+                                    if (user === null) {
                                         getSource(app, 'free');
                                     } else {
                                         getSource(app, 'paid');
@@ -144,14 +135,11 @@ module.exports = function (app) {
      *
      * @description : Libera app pago
      *
-     * @allowedApp : Qualquer App
-     * @allowedUser : Deslogado
-     *
      * @request : {token, expiration}
-     * @response : {payer}
+     * @response : {user}
      */
     app.get('/app/:slug/pay', function (request, response) {
-        var payer;
+        var user;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
@@ -168,16 +156,16 @@ module.exports = function (app) {
                         if (app === null) {
                             response.send({error : { message : 'app not found', name : 'NotFoundError', id : request.params.slug, path : 'app'}});
                         } else {
-                            payer = new Payer({
+                            user = new User({
                                 user : user._id,
                                 app  : app._id,
                                 expiration : request.param('expiration', null)
                             });
-                            payer.save(function (error) {
+                            user.save(function (error) {
                                 if (error) {
                                     response.send(error);
                                 } else {
-                                    response.send(payer);
+                                    response.send(user);
                                 }
                             })
                         }

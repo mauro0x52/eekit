@@ -11,18 +11,21 @@ module.exports = {
         password : undefined,
         db : 'contacts'
     },
+    security : {
+        secret : 'contacts'
+    },
     services : {
         auth : {
             url  : 'localhost',
             port : 8001
         },
-        tasks : {
-            url  : 'localhost',
-            port : 8005
-        },
         contacts : {
             url  : 'localhost',
             port : 8006
+        },
+        kamisama : {
+            url  : 'localhost',
+            port : 8008
         }
     }
 };

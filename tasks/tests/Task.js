@@ -12,7 +12,8 @@ var should = require("should"),
     rand = require("./utils.js").rand;
 
 describe('POST /task', function () {
-    var token,
+    var www_token,
+        token,
         category;
 
     before(function (done) {
@@ -20,11 +21,16 @@ describe('POST /task', function () {
         api.post('auth', '/user', {
             username : 'testes+' + rand() + '@empreendemia.com.br',
             password : 'testando',
-            password_confirmation : 'testando'
+            password_confirmation : 'testando',
+            secret : 'www'
         }, function (error, data) {
-            token = data.user.token;
-            api.post('tasks', '/user', {token : token}, function (error, data, response) {
-                api.get('tasks', '/categories', {token : token}, function (error, data, response) {
+            www_token = data.token;
+            api.post('auth', '/service/tasks/auth', {
+                secret : 'www',
+                token : www_token
+            }, function (error, data) {
+                token = data.token;
+                api.post('tasks', '/user', {token : token}, function (error, data, response) {
                     category = data.categories[0];
                     done();
                 });
@@ -173,7 +179,8 @@ describe('POST /task', function () {
 })
 
 describe('GET /task/[task_id]', function () {
-    var token,
+    var www_token,
+        token,
         category,
         task;
 
@@ -182,22 +189,29 @@ describe('GET /task/[task_id]', function () {
         api.post('auth', '/user', {
             username : 'testes+' + rand() + '@empreendemia.com.br',
             password : 'testando',
-            password_confirmation : 'testando'
+            password_confirmation : 'testando',
+            secret : 'www'
         }, function (error, data) {
-            token = data.user.token;
-            api.post('tasks', '/user', {token : token}, function (error, data, response) {
-                api.get('tasks', '/categories', {token : token}, function (error, data, response) {
+            www_token = data.token;
+            api.post('auth', '/service/tasks/auth', {
+                secret : 'www',
+                token : www_token
+            }, function (error, data) {
+                token = data.token;
+                api.post('tasks', '/user', {token : token}, function (error, data, response) {
                     category = data.categories[0];
-                    api.post('tasks', '/task', {
-                        category : category._id,
-                        title : 'teste ' + rand(),
-                        description : rand(),
-                        important : true,
-                        dateDeadline : new Date(),
-                        token : token
-                    }, function (error, data, response) {
-                        task = data.task;
-                        done();
+                    api.get('tasks', '/categories', {token : token}, function (error, data, response) {
+                        api.post('tasks', '/task', {
+                            category : category._id,
+                            title : 'teste ' + rand(),
+                            description : rand(),
+                            important : true,
+                            dateDeadline : new Date(),
+                            token : token
+                        }, function (error, data, response) {
+                            task = data.task;
+                            done();
+                        });
                     });
                 });
             });
@@ -252,7 +266,8 @@ describe('GET /task/[task_id]', function () {
 });
 
 describe('POST /task/[task_id]/delete', function () {
-    var token,
+    var www_token,
+        token,
         category,
         task;
 
@@ -261,22 +276,29 @@ describe('POST /task/[task_id]/delete', function () {
         api.post('auth', '/user', {
             username : 'testes+' + rand() + '@empreendemia.com.br',
             password : 'testando',
-            password_confirmation : 'testando'
+            password_confirmation : 'testando',
+            secret : 'www'
         }, function (error, data) {
-            token = data.user.token;
-            api.post('tasks', '/user', {token : token}, function (error, data, response) {
-                api.get('tasks', '/categories', {token : token}, function (error, data, response) {
+            www_token = data.token;
+            api.post('auth', '/service/tasks/auth', {
+                secret : 'www',
+                token : www_token
+            }, function (error, data) {
+                token = data.token;
+                api.post('tasks', '/user', {token : token}, function (error, data, response) {
                     category = data.categories[0];
-                    api.post('tasks', '/task', {
-                        category : category._id,
-                        title : 'teste ' + rand(),
-                        description : rand(),
-                        important : true,
-                        dateDeadline : new Date(),
-                        token : token
-                    }, function (error, data, response) {
-                        task = data.task;
-                        done();
+                    api.get('tasks', '/categories', {token : token}, function (error, data, response) {
+                        api.post('tasks', '/task', {
+                            category : category._id,
+                            title : 'teste ' + rand(),
+                            description : rand(),
+                            important : true,
+                            dateDeadline : new Date(),
+                            token : token
+                        }, function (error, data, response) {
+                            task = data.task;
+                            done();
+                        });
                     });
                 });
             });
@@ -338,7 +360,8 @@ describe('POST /task/[task_id]/delete', function () {
 });
 
 describe('POST /task/[task_id]/done', function () {
-    var token,
+    var www_token,
+        token,
         category,
         task;
 
@@ -347,22 +370,29 @@ describe('POST /task/[task_id]/done', function () {
         api.post('auth', '/user', {
             username : 'testes+' + rand() + '@empreendemia.com.br',
             password : 'testando',
-            password_confirmation : 'testando'
+            password_confirmation : 'testando',
+            secret : 'www'
         }, function (error, data) {
-            token = data.user.token;
-            api.post('tasks', '/user', {token : token}, function (error, data, response) {
-                api.get('tasks', '/categories', {token : token}, function (error, data, response) {
+            www_token = data.token;
+            api.post('auth', '/service/tasks/auth', {
+                secret : 'www',
+                token : www_token
+            }, function (error, data) {
+                token = data.token;
+                api.post('tasks', '/user', {token : token}, function (error, data, response) {
                     category = data.categories[0];
-                    api.post('tasks', '/task', {
-                        category : category._id,
-                        title : 'teste ' + rand(),
-                        description : rand(),
-                        important : true,
-                        dateDeadline : new Date(),
-                        token : token
-                    }, function (error, data, response) {
-                        task = data.task;
-                        done();
+                    api.get('tasks', '/categories', {token : token}, function (error, data, response) {
+                        api.post('tasks', '/task', {
+                            category : category._id,
+                            title : 'teste ' + rand(),
+                            description : rand(),
+                            important : true,
+                            dateDeadline : new Date(),
+                            token : token
+                        }, function (error, data, response) {
+                            task = data.task;
+                            done();
+                        });
                     });
                 });
             });
@@ -423,101 +453,9 @@ describe('POST /task/[task_id]/done', function () {
 
 });
 
-describe('POST /task/[task_id]/undone', function () {
-    var token,
-        category,
-        task;
-
-    before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('tasks', '/user', {token : token}, function (error, data, response) {
-                api.get('tasks', '/categories', {token : token}, function (error, data, response) {
-                    category = data.categories[0];
-                    api.post('tasks', '/task', {
-                        category : category._id,
-                        title : 'teste ' + rand(),
-                        description : rand(),
-                        important : true,
-                        dateDeadline : new Date(),
-                        token : token
-                    }, function (error, data, response) {
-                        task = data.task;
-                        done();
-                    });
-                });
-            });
-        });
-    });
-
-    it('url tem que existir', function (done) {
-        api.post('tasks', '/task/qualquer/undone', {}, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                response.should.have.status(200);
-                should.exist(data, 'não retornou dado nenhum');
-                done();
-            }
-        });
-    });
-
-    it('token inválido', function (done) {
-        api.post('tasks', '/task/' + task._id + '/undone', {token : 'invalido'}, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('error').property('name', 'InvalidTokenError');
-                done();
-            }
-        });
-    });
-
-    it('task inexistente', function (done) {
-        api.post('tasks', '/task/inexistente/undone' , {token : token}, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('error').property('name', 'NotFoundError');
-                done();
-            }
-        });
-    });
-
-    it('marca task como não feita', function (done) {
-        api.post('tasks', '/task/' + task._id + '/done', {token : token}, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('task').have.property('done', true);
-                api.post('tasks', '/task/' + task._id + '/undone', {token : token}, function (error, data, response) {
-                    if (error) {
-                        return done(error);
-                    } else {
-                        data.should.have.property('task').have.property('done', false);
-                        api.get('tasks', '/task/' + task._id, {token : token}, function (error, data, response) {
-                            if (error) {
-                                return done(error);
-                            } else {
-                                data.should.have.property('task').property('done', false);
-                                done();
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    });
-
-});
-
 describe('GET /tasks sem filtro', function () {
-    var token,
+    var www_token,
+        token,
         category,
         handled = 0;
 
@@ -526,27 +464,34 @@ describe('GET /tasks sem filtro', function () {
         api.post('auth', '/user', {
             username : 'testes+' + rand() + '@empreendemia.com.br',
             password : 'testando',
-            password_confirmation : 'testando'
+            password_confirmation : 'testando',
+            secret : 'www'
         }, function (error, data) {
-            token = data.user.token;
-            api.post('tasks', '/user', {token : token}, function (error, data, response) {
-                api.get('tasks', '/categories', {token : token}, function (error, data, response) {
+            www_token = data.token;
+            api.post('auth', '/service/tasks/auth', {
+                secret : 'www',
+                token : www_token
+            }, function (error, data) {
+                token = data.token;
+                api.post('tasks', '/user', {token : token}, function (error, data, response) {
                     category = data.categories[0];
-                    for (var i = 0; i < 20; i++) {
-                        api.post('tasks', '/task', {
-                            category : category._id,
-                            title : 'teste ' + rand(),
-                            description : rand(),
-                            important : true,
-                            dateDeadline : new Date(),
-                            token : token
-                        }, function (error, data, response) {
-                            handled++;
-                            if (handled === 20) {
-                                done();
-                            }
-                        });
-                    }
+                    api.get('tasks', '/categories', {token : token}, function (error, data, response) {
+                        for (var i = 0; i < 20; i++) {
+                            api.post('tasks', '/task', {
+                                category : category._id,
+                                title : 'teste ' + rand(),
+                                description : rand(),
+                                important : true,
+                                dateDeadline : new Date(),
+                                token : token
+                            }, function (error, data, response) {
+                                handled++;
+                                if (handled === 20) {
+                                    done();
+                                }
+                            });
+                        }
+                    });
                 });
             });
         });
@@ -589,7 +534,8 @@ describe('GET /tasks sem filtro', function () {
 });
 
 describe('GET /tasks filter by done', function () {
-    var token,
+    var www_token,
+        token,
         category,
         handled = 0;
 
@@ -598,29 +544,36 @@ describe('GET /tasks filter by done', function () {
         api.post('auth', '/user', {
             username : 'testes+' + rand() + '@empreendemia.com.br',
             password : 'testando',
-            password_confirmation : 'testando'
+            password_confirmation : 'testando',
+            secret : 'www'
         }, function (error, data) {
-            token = data.user.token;
-            api.post('tasks', '/user', {token : token}, function (error, data, response) {
-                api.get('tasks', '/categories', {token : token}, function (error, data, response) {
+            www_token = data.token;
+            api.post('auth', '/service/tasks/auth', {
+                secret : 'www',
+                token : www_token
+            }, function (error, data) {
+                token = data.token;
+                api.post('tasks', '/user', {token : token}, function (error, data, response) {
                     category = data.categories[0];
-                    for (var i = 0; i < 20; i++) {
-                        api.post('tasks', '/task', {
-                            category : category._id,
-                            title : 'teste ' + rand(),
-                            description : rand(),
-                            important : true,
-                            dateDeadline : new Date(),
-                            token : token
-                        }, function (error, data, response) {
-                            api.post('tasks', '/task/' + data.task._id + '/done', {token : token}, function (error, data, response) {
-                                handled++;
-                                if (handled === 20) {
-                                    done();
-                                }
+                    api.get('tasks', '/categories', {token : token}, function (error, data, response) {
+                        for (var i = 0; i < 20; i++) {
+                            api.post('tasks', '/task', {
+                                category : category._id,
+                                title : 'teste ' + rand(),
+                                description : rand(),
+                                important : true,
+                                dateDeadline : new Date(),
+                                token : token
+                            }, function (error, data, response) {
+                                api.post('tasks', '/task/' + data.task._id + '/done', {token : token}, function (error, data, response) {
+                                    handled++;
+                                    if (handled === 20) {
+                                        done();
+                                    }
+                                });
                             });
-                        });
-                    }
+                        }
+                    });
                 });
             });
         });
@@ -665,7 +618,7 @@ describe('GET /tasks filter by done', function () {
     });
 
 });
-
+/*
 describe('GET /tasks filter by category', function () {
     var token,
         category,
@@ -832,3 +785,4 @@ describe('GET /tasks filter by embedded', function () {
     });
 
 });
+*/

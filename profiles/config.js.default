@@ -11,6 +11,9 @@ module.exports = {
         password : undefined,
         db : 'profiles'
     },
+    security : {
+        secret : 'profiles'
+    },
     services : {
         auth : {
             url  : 'localhost',
@@ -19,6 +22,10 @@ module.exports = {
         profiles : {
             url  : 'localhost',
             port : 8004
+        },
+        kamisama : {
+            url  : 'localhost',
+            port : 8008
         }
     }
 };
