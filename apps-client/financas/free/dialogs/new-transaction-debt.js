@@ -221,6 +221,9 @@ app.routes.dialog('/adicionar-despesa', function (params, data) {
                 }
                 if (recurrence == 30) {
                     data.date = new Date(date.getFullYear(), date.getMonth() + i, date.getDate());
+                    if (data.date.getMonth() != date.getMonth() + i) {
+                        data.date.setDate(0);
+                    }
                 } else {
                     data.date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + (i*recurrence));
                 }
