@@ -202,7 +202,6 @@ module.exports = function (app) {
                         } else {
                             Transaction.findOne({user : user._id, _id : request.params.id}, function (error, transaction) {
                                 var task,
-                                    requester = require('request'),
                                     url;
                                 if (error) {
                                     response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
@@ -261,8 +260,7 @@ module.exports = function (app) {
                             response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
                         } else {
                             Transaction.findOne({user : user._id, _id : request.params.id}, function (error, transaction) {
-                                var requester = require('request'),
-                                    url;
+                                var url;
                                 if (error) {
                                     response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
                                 } else {
