@@ -14,7 +14,7 @@ app.routes.entity('/contato/:id', function (params, data) {
      */
     categories,
 
-    /**
+   /**
      * Lista de campos personalizados
      */
     userFields,
@@ -124,7 +124,7 @@ app.routes.entity('/contato/:id', function (params, data) {
             fieldsets.fields.fields.remove();
             for (i in value) {
                 for (j in userFields) {
-                    if (value[i].field.toString() === userFields[j]._id.toString()) {
+                    if (value[i].field && userFields[j]._id && value[i].field.toString() === userFields[j]._id.toString()) {
                         fieldsets.fields.fields.add(new app.ui.data({
                             legend : userFields[j].name,
                             values : [new app.ui.value({value : value[i].value})]

@@ -50,5 +50,24 @@ app.get('/ping', function (request, response) {
     });
 });
 
+<<<<<<< HEAD
+=======
+app.get('/config', function (request, response) {
+    "use strict";
+
+    response.contentType('json');
+    response.header('Access-Control-Allow-Origin', '*');
+
+    var result = {services : {}};
+    for (var i in config.services) {
+        result.services[i] = {
+            host : config.services[i].url,
+            port : config.services[i].port
+        }
+    }
+    response.send(result);
+});
+
+>>>>>>> release
 /*  Ativando o server */
 app.listen(config.host.port);

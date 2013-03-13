@@ -134,8 +134,8 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
             itau104     : new app.ui.inputOption({ legend : '104', value : '104' }),
             itau109     : new app.ui.inputOption({ legend : '109', value : '109' }),
             itau157     : new app.ui.inputOption({ legend : '157', value : '157' }),
-            itau175     : new app.ui.inputOption({ legend : '175', value : '175' }),
             itau174     : new app.ui.inputOption({ legend : '174', value : '174' }),
+            itau175     : new app.ui.inputOption({ legend : '175', value : '175' }),
             itau178     : new app.ui.inputOption({ legend : '178', value : '178' })
         }
 
@@ -283,7 +283,7 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
                 accountVD : fields.account.value().split('-')[1],
                 wallet : fields.wallet.value()[0],
                 agreement : fields.agreement.value(),
-                value : fields.value.value(),
+                value : fields.value.value().replace(',','.'),
                 /* datas */
                 creationDate : fields.creationDate.date(),
                 dueDate : fields.dueDate.date(),
@@ -292,7 +292,7 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
                 demonstrative : fields.demonstrative.value(),
                 instructions : fields.instructions.value()
             }
-            if (data.value.indexOf(',') === -1) {
+            if (data.value.indexOf('.') === -1) {
                 data.value += '.00';
             }
             if (!data.bankId) {
