@@ -176,7 +176,7 @@ sdk.modules.ui.inputDate = function (app) {
                     input_text.focus();
                 }
                 changing_month = false;
-            }, 500);
+            }, 400);
         };
         this.previousMonth = function () {
             changing_month = true;

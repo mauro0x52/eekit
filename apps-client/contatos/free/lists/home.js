@@ -76,7 +76,7 @@ app.routes.list('/', function (params, data) {
         /* Botões do grupo */
         actions = {
             add : new app.ui.action({
-                legend : 'adicionar contato',
+                tip   : 'adicionar contato como "'+category.name+'"',
                 image : 'add',
                 click : function () {
                     app.apps.open({
@@ -231,19 +231,19 @@ app.routes.list('/', function (params, data) {
         /* Botões do item */
         actions = {
             edit         : new app.ui.action({
-                legend : 'editar contato',
+                tip    : 'editar este contato',
                 image  : 'pencil',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/editar-contato/' + contact._id});
                 }
             }),
             drag         : new app.ui.action({
-                legend : 'mover contato',
+                tip    : 'mover este contato',
                 image  : 'move',
                 click  : that.item.drag
             }),
             remove       : new app.ui.action({
-                legend : 'remover contato',
+                tip    : 'remover este contato',
                 image  : 'trash',
                 click  : function() {
                     app.apps.open({app : app.slug, route : '/remover-contato/' + contact._id});
