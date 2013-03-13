@@ -10,7 +10,7 @@
 var Billet = {
     bank : 'Banco Bradesco',
     bankId : '237',
-    wallets : ['06', '03']
+    wallets : ['06', '03', '09']
 }
 
 /**
