@@ -77,7 +77,7 @@ app.routes.dialog('/cadastro', function (params, data) {
         name : 'login',
         rules : [
             {rule : /.{3,}/, message : 'campo obrigatório'},
-            {rule : /^[a-z0-9\.]+\@[a-z0-9]+(\.[a-z]+)+$/i, message : 'email inválido'}
+            {rule : /^[a-z0-9\.\_\-]+\@[a-z0-9\-]+(\.[a-z]+)+$/i, message : 'email inválido'}
         ],
         change : function () {
             if (!login_tracked) {
