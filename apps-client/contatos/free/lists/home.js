@@ -344,11 +344,19 @@ app.routes.list('/', function (params, data) {
                 that.item.visibility('hide');
             } else {
                 that.item.visibility('show');
+
+                var fields = '';
+                for (var i in contact.fieldValues) {
+                    fields += ' %2C' + escape(contact.fieldValues[i].value);
+                }
+
                 app.ui.actions.get()[0].href(
                     app.ui.actions.get()[0].href() +
-                    contact.name  + ' %2C' +
-                    contact.phone + ' %2C' +
-                    contact.email + '%0A'
+                    escape(contact.name)  + ' %2C' +
+                    escape(contact.phone) + ' %2C' +
+                    escape(contact.email) +
+                    fields        +
+                    '%0A'
                 );
             }
         });
