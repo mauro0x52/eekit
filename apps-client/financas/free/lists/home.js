@@ -376,12 +376,12 @@ app.routes.list('/', function (params, data) {
                 that.item.visibility('show');
                 app.ui.actions.get()[0].href(
                     app.ui.actions.get()[0].href() +
-                    transaction.name + ' %2C' +
+                    escape(transaction.name) + ' %2C' +
                     (transaction.date.getDate() + '/' + (transaction.date.getMonth() + 1) + '/' + transaction.date.getFullYear()) + ' %2C' +
                     (transaction.type === 'credit' ? '+' : '-') + '$' + transaction.value + ' %2C' +
-                    that.item.label.legend()  + ' %2C' +
-                    icons.account.legend() + ' %2C' +
-                    transaction.noteNumber + '%0A'
+                    escape(that.item.label.legend())  + ' %2C' +
+                    escape(icons.account.legend()) + ' %2C' +
+                    escape(transaction.noteNumber) + '%0A'
                 );
                 balance.period += (transaction.type === 'credit' ? 1 : -1) * parseFloat(transaction.value);
                 fitGroup(transaction).balance += (transaction.type === 'credit' ? 1 : -1) * parseFloat(transaction.value);
