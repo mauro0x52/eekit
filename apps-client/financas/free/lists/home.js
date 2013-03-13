@@ -590,7 +590,9 @@ app.routes.list('/', function (params, data) {
                             previous : 0
                         };
                         for (i in accounts) {
-                            balance.previous += accounts[i].initialBalance;
+                            if (fields.accounts.value().indexOf(accounts[i]._id) > -1) {
+                                balance.previous += accounts[i].initialBalance;
+                            }
                         }
 
                         /* zera o saldo dos grupos */
