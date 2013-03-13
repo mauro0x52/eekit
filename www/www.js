@@ -50,8 +50,7 @@ app.get('/ping', function (request, response) {
     });
 });
 
-<<<<<<< HEAD
-=======
+/*  Métodos para dev e teste */
 app.get('/config', function (request, response) {
     "use strict";
 
@@ -68,6 +67,5 @@ app.get('/config', function (request, response) {
     response.send(result);
 });
 
->>>>>>> release
 /*  Ativando o server */
 app.listen(config.host.port);
