@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.1
+
+Melhorias
+- Charset no exportar dados
+
 ## 1.0 (2013-03-04)
 
 Features

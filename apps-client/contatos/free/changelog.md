@@ -1,6 +1,15 @@
 Changelog
 =========
 
+## 1.0.3
+
+Melhorias
+- Exibir campos personalizados e charset no exportar dados
+
+Correções
+- Apagar categoria de tipo e sumirem os contatos de outra categoria 
+- Medição de evento de adição de tarefas via integração
+
 ## 1.0.2 (2013-03-12)
 
 Melhorias

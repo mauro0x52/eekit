@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.5
+- Initial refer
+
 ## 0.4
 - Autenticação de serviço
 - Comunicação com barramento de eventos
