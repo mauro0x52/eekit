@@ -315,6 +315,7 @@ app.routes.list('/', function (params, data) {
                 that.email(contact.email);
                 that.phone(contact.phone);
             }
+            app.ui.filter.submit();
         });
 
         /* Pegando o drop do contato */
@@ -327,7 +328,10 @@ app.routes.list('/', function (params, data) {
         });
 
         /* Pegando a exclusão do contato */
-        app.events.bind('remove contact ' + contact._id, this.item.detach);
+        app.events.bind('remove contact ' + contact._id, function () {
+            this.item.detach();
+            app.ui.filter.submit();
+        });
 
         /* Pegando quando o filtro é acionado */
         app.events.bind('filter contact', function (fields) {
@@ -525,6 +529,7 @@ app.routes.list('/', function (params, data) {
                     app.apps.open({app : app.slug, route : '/contato/' + contact._id})
                 }
                 contacts.push(contact);
+                app.ui.filter.submit();
             });
 
             /* exibe o orientador */
