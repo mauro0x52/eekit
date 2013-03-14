@@ -303,7 +303,9 @@ app.routes.list('/', function (params, data) {
 
             if (oldGroup !== fitGroup(contact)) {
                 that.item.detach();
-                fitGroup(contact).items.add(that.item);
+                if (fitGroup(contact)) {
+                    fitGroup(contact).items.add(that.item);
+                }
             }
 
             if (contact) {
@@ -504,7 +506,9 @@ app.routes.list('/', function (params, data) {
 
             /* listando os contatos */
             for (var i in contacts) {
-                fitGroup(contacts[i]).items.add((new Item(contacts[i])).item);
+                if (fitGroup(contacts[i])) {
+                    fitGroup(contacts[i]).items.add((new Item(contacts[i])).item);
+                }
             }
 
             /* Pegando categorias cadastradas ao longo do uso do app */
@@ -514,7 +518,9 @@ app.routes.list('/', function (params, data) {
 
             /* Pegando campos que são cadastradas ao longo do uso do app */
             app.events.bind('create contact', function (contact) {
-                fitGroup(contact).items.add((new Item(contact)).item);
+                if (fitGroup(contact)) {
+                    fitGroup(contact).items.add((new Item(contact)).item);
+                }
                 if (!contacts.length) {
                     app.apps.open({app : app.slug, route : '/contato/' + contact._id})
                 }
