@@ -33,6 +33,7 @@ app.routes.dialog('/cadastro', function (params, data) {
 
     var name_tracked = false,
         surname_tracked = false,
+        phone_tracked = false,
         login_tracked = false,
         login_confirmation_tracked = false,
         password_tracked = false,
@@ -68,6 +69,20 @@ app.routes.dialog('/cadastro', function (params, data) {
             if (!surname_tracked) {
                 surname_tracked = true;
                 app.tracker.event('cadastrar: sobrenome');
+            }
+        }
+    });
+
+    phone = new app.ui.inputText({
+        legend : 'Telefone',
+        name : 'phone',
+        rules : [
+            {rule : /.{3,}/, message : 'campo obrigatório'}
+        ],
+        change : function () {
+            if (!phone_tracked) {
+                phone_tracked = true;
+                app.tracker.event('cadastrar: telefone');
             }
         }
     });
@@ -192,7 +207,7 @@ app.routes.dialog('/cadastro', function (params, data) {
 
     fieldsets.profile = new app.ui.fieldset({
         legend : 'Dados pessoais',
-        fields : [name, surname, login, login_confirmation, password, password_confirmation]
+        fields : [name, surname, phone, login, login_confirmation, password, password_confirmation]
     });
 
     fieldsets.aditional = new app.ui.fieldset({
@@ -228,6 +243,7 @@ app.routes.dialog('/cadastro', function (params, data) {
                         profile : {
                             name : name.value(),
                             surname : surname.value(),
+                            phone : phone.value(),
                             role : role.value()[0],
                             sector : sector.value()[0],
                             size : size.value()[0],

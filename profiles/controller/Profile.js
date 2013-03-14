@@ -57,7 +57,7 @@ module.exports = function (app) {
      * @allowedApp : Profiles
      * @allowedUser : Logado
      *
-     * @request : {jobs, slugs, name, surname, thumbnail, about, phones, contacts, links, login, token}
+     * @request : {name, surname, about, phone, role, sector, size, why, token}
      * @response : {this}
      */
     app.post('/profile', function (request,response) {
@@ -77,6 +77,7 @@ module.exports = function (app) {
                     name        : request.param('name', null),
                     surname     : request.param('surname', null),
                     about       : request.param('about', null),
+                    phone       : request.param('phone', null),
                     dateCreated : new Date(),
                     dateUpdated : new Date(),
                     role        : request.param('role', null),
@@ -107,7 +108,7 @@ module.exports = function (app) {
      * @allowedApp : Profiles
      * @allowedUser : Logado
      *
-     * @request : {slugs, name, surname, about, login, token}
+     * @request : {name, surname, about, phone, role, sector, size, why, token}
      * @response : {this}
      */
     app.post('/profile/:profile_id/update', function (request,response) {
@@ -128,23 +129,18 @@ module.exports = function (app) {
                         if (profile === null) {
                             response.send({error : { message : 'profile not found', name : 'NotFoundError', id : request.params.profile_id, path : 'profile'}});
                         } else {
-                            if (!profile.isOwner(user._id)) {
-                                response.send({ error : { message : 'permission denied', name : 'PermissionDeniedError'}});
-                            } else {
-                                profile.name    = request.body.name !== undefined ? request.body.name : profile.name;
-                                profile.surname = request.body.surname !== undefined ? request.body.surname : profile.surname;
-                                profile.about   = request.body.about !== undefined ? request.body.about : profile.about;
-
-                                profile.dateUpdated = new Date();
-
-                                profile.save(function (error) {
-                                    if (error) {
-                                        response.send({error : error});
-                                    } else {
-                                        response.send({profile : profile});
-                                    }
-                                });
-                            }
+                            profile.name    = request.param('name', profile.name);
+                            profile.surname = request.param('surname', profile.surname);
+                            profile.about   = request.param('about', profile.about);
+                            profile.phone   = request.param('phone', profile.phone);
+                            profile.dateUpdated = new Date();
+                            profile.save(function (error) {
+                                if (error) {
+                                    response.send({error : error});
+                                } else {
+                                    response.send({profile : profile});
+                                }
+                            });
                         }
                     }
                 });
@@ -183,18 +179,14 @@ module.exports = function (app) {
                         if (profile === null) {
                             response.send({error : { message : 'profile not found', name : 'NotFoundError', id : request.params.slug, path : 'profile'}});
                         } else {
-                            if (!profile.isOwner(user._id)) {
-                                response.send({ error : { message : 'permission denied', name : 'PermissionDeniedError'}});
-                            } else {
-                                //remove o profile
-                                profile.remove(function (error) {
-                                    if (error) {
-                                        response.send({error : error});
-                                    } else {
-                                        response.send(null);
-                                    }
-                                });
-                            }
+                            //remove o profile
+                            profile.remove(function (error) {
+                                if (error) {
+                                    response.send({error : error});
+                                } else {
+                                    response.send(null);
+                                }
+                            });
                         }
                     }
                 });

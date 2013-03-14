@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 0.4
+- Limpando requisições antigas
+- COlocando telefone
+
 ## 0.3
 - Autenticação de serviço
 - Comunicação com barramento de eventos

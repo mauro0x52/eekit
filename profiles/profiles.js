@@ -28,12 +28,6 @@ app.configure(function () {
 
 /*  Chamando controllers */
 require('./controller/Profile.js')(app);
-require('./controller/Phone.js')(app);
-require('./controller/Thumbnail.js')(app);
-require('./controller/Link.js')(app);
-require('./controller/Job.js')(app);
-require('./controller/Phone.js')(app);
-require('./controller/Contact.js')(app);
 
 /*  Métodos para dev e teste */
 app.get('/ping', function (request,response) {
