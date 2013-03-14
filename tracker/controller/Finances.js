@@ -64,7 +64,7 @@ module.exports = function (app) {
                 response.write('<td>Engajamento Total</td>');
                 response.write('</tr>');
                 for (var i in cohort) {
-                    var users = cohort[i].filter([],0,utm),
+                    var users = cohort[i].filter([],1,utm),
 		                activated = cohort[i].filter(['adicionar transação'],1, utm),
 			            engaged = cohort[i].filter(['editar transação', 'adicionar transação'],3, utm);
 

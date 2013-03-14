@@ -66,7 +66,7 @@ module.exports = function (app) {
                 response.write('<td>Engajamento Total</td>');
                 response.write('</tr>');
                 for (var i in cohort) {
-                    var users = cohort[i].filter([],0,utm),
+                    var users = cohort[i].filter([],1,utm),
 		                taskAdder = cohort[i].filter(['adicionar tarefa'],1,utm),
 			            taskMarker1 = cohort[i].filter(['marcar tarefa como feita'],1,utm),
 			            taskMarker3 = cohort[i].filter(['marcar tarefa como feita'],3,utm),

@@ -27,7 +27,7 @@ eventSchema = new schema({
 });
 
 eventSchema.statics.cohort = function (app, frequency, cb) {
-	Event.find({$or : [{app : app}, {source : app}]}, function (error, events) {
+	Event.find(function (error, events) {
         var cohorts = [],
 	        date = new Date(2013,0,20,0),
 	        users = {};
@@ -45,10 +45,11 @@ eventSchema.statics.cohort = function (app, frequency, cb) {
 	                } else {
 	                    users[events[i].user.toString()] = {
 	                        firstEvent : events[i].date,
-	                        events : [events[i]] 
+	                        events : [events[i]] ,
+	                        utm : {}
 	                    };
 	                }
-	                if (events[i].utm) {
+	                if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
 	                	users[events[i].user.toString()].utm = events[i].utm;
 	                }
 	            }
@@ -84,6 +85,10 @@ eventSchema.statics.cohort = function (app, frequency, cb) {
 		                            if (
 		                                this.users[i].events[j].date <= dateTo   &&
 		                                this.users[i].events[j].date >= dateFrom &&
+		                                (
+		                                	this.users[i].events[j].app === app ||
+		                                	this.users[i].events[j].source === app
+	                                	) &&
 		                                (
 		                                	labels.indexOf(this.users[i].events[j].label) >= 0 ||
 		                                	labels.length === 0
