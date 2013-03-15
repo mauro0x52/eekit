@@ -378,7 +378,7 @@ app.routes.list('/', function (params, data) {
                     app.ui.actions.get()[0].href() +
                     escape(transaction.name) + ' %2C' +
                     (transaction.date.getDate() + '/' + (transaction.date.getMonth() + 1) + '/' + transaction.date.getFullYear()) + ' %2C' +
-                    (transaction.type === 'credit' ? '+' : '-') + '$' + transaction.value + ' %2C' +
+                    (transaction.type === 'credit' ? '+' : '-') + transaction.value + ' %2C' +
                     escape(that.item.label.legend())  + ' %2C' +
                     escape(icons.account.legend()) + ' %2C' +
                     escape(transaction.noteNumber) + '%0A'
