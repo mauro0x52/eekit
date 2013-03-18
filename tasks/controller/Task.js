@@ -309,7 +309,13 @@ module.exports = function (app) {
                                                         if (error) {
                                                             response.send({error : error});
                                                         } else {
-                                                            response.send({task : task});
+                                                            if (newTask.embeddeds) {
+                                                                for (var i = 0; i < newTask.embeddeds.length; i++) {
+                                                                    bind(request.param('token', null), 'update embed ' + newTask.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/task/' + newTask._id + '/update');
+                                                                    bind(request.param('token', null), 'delete embed ' + newTask.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/task/' + newTask._id + '/delete');
+                                                                }
+                                                            }
+                                                            response.send({task : newTask});
                                                         }
                                                     });
                                                 }
