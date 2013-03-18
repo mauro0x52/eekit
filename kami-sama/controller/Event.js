@@ -103,7 +103,7 @@ module.exports = function (app) {
                                         for (i in events) {
                                             var host = events[i].callback.match(/(http\:\/\/)?([a-zA-Z0-9\.]+)(\:([0-9]+))?/)[2],
                                                 port = events[i].callback.match(/(http\:\/\/)?([a-zA-Z0-9\.]+)(\:([0-9]+))?/)[4],
-                                                data = request.param('data'),
+                                                data = request.param('data', {}),
                                                 token;
 
                                             for (var l in services) {
