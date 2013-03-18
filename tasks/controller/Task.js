@@ -8,6 +8,8 @@
 module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         auth = require('../Utils.js').auth,
+        bind = require('../Utils.js').bind,
+        config = require('../config.js'),
         Task = Model.Task,
         User = Model.User;
 
@@ -49,12 +51,13 @@ module.exports = function (app) {
                                             user        : user._id,
                                             category    : request.param('category', null),
                                             title       : request.param('title', null),
+                                            subtitle    : request.param('subtitle', null),
                                             description : request.param('description', null),
                                             important   : request.param('important', null) === 'true' || request.param('important', null) === true,
                                             done        : false,
                                             recurrence  : request.param('recurrence', null),
                                             priority    : request.param('priority', null),
-                                            embeddeds    : request.param('embeddeds', null),
+                                            embeddeds   : request.param('embeddeds', null),
                                             reminder    : request.param('reminder', null),
                                             dateCreated : new Date(),
                                             dateUpdated : new Date(),
@@ -64,6 +67,10 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
+                                                for (var i = 0; i < task.embeddeds.length; i++) {
+                                                    //bind(request.param('token', null), 'remove embed ' + task.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.url + '/task/' + task._id + '/delete');
+                                                    //bind(request.param('token', null), 'update embed ' + task.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.url + '/task/' + task._id + '/update');
+                                                }
                                                 response.send({task : task});
                                             }
                                         });
