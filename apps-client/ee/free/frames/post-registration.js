@@ -100,16 +100,6 @@ app.routes.frame('/usuario-cadastrado', function (params, data) {
                 html : [
                     {
                         tag : 'div',
-                        attributes : { style : 'background-color:#2b4f67; color:#fff; font-weight:bold; width:120px; padding:5px 0; text-align:center; margin:20px; border-radius:8px; font-size:12px; cursor:pointer; float:left;'},
-                        html : 'voltar',
-                        events : {
-                            click : function () {
-                                app.ui.html(questionHtml);
-                            }
-                        }
-                    },
-                    {
-                        tag : 'div',
                         attributes : { style : 'background-color:#f38305; color:#fff; font-weight:bold; width:140px; padding:5px 0; text-align:center; margin:20px; border-radius:8px; font-size:12px; cursor:pointer; float:left;'},
                         html : 'testar já!',
                         events : {
@@ -119,6 +109,13 @@ app.routes.frame('/usuario-cadastrado', function (params, data) {
                                     app   : tool.app,
                                     route : '/',
                                     open  : function (tool) {
+                                        if (toolName === 'contacts') {
+                                            app.tracker.event('ir para app: contatos');
+                                        } else if (answer === 'finances') {
+                                            app.tracker.event('ir para app: finanças');
+                                        } else if (answer === 'tasks') {
+                                            app.tracker.event('ir para app: tarefas');
+                                        }
                                         tool.open();
                                         app.empreendemia.apps.render(tool, true);
                                     }

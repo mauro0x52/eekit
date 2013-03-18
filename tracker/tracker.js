@@ -31,6 +31,7 @@ require('./controller/Event.js')(app);
 require('./controller/Tasks.js')(app);
 require('./controller/Contacts.js')(app);
 require('./controller/Finances.js')(app);
+require('./controller/www.js')(app);
 
 /*  Métodos para dev e teste */
 app.get('/ping', function (request,response) {

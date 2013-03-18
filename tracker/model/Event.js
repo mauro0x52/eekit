@@ -36,23 +36,22 @@ eventSchema.statics.cohort = function (app, frequency, cb) {
         	cb(error, null)
         } else {
 	        for (var i = 0; i < events.length; i += 1) {
-	            if (events[i].user) {
-	                if (users[events[i].user.toString()]) {
-	                    users[events[i].user.toString()].events.push(events[i]);
-	                    if (users[events[i].user.toString()].date < events[i].date) {
-	                        users[events[i].user.toString()].firstEvent = events[i].date;
-	                    }
-	                } else {
-	                    users[events[i].user.toString()] = {
-	                        firstEvent : events[i].date,
-	                        events : [events[i]] ,
-	                        utm : {}
-	                    };
-	                }
-	                if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
-	                	users[events[i].user.toString()].utm = events[i].utm;
-	                }
-	            }
+            	var id = events[i].user ? events[i].user.toString() : events[i].ip.toString();
+                if (users[id]) {
+                    users[id].events.push(events[i]);
+                    if (users[id].date < events[i].date) {
+                        users[id].firstEvent = events[i].date;
+                    }
+                } else {
+                    users[id] = {
+                        firstEvent : events[i].date,
+                        events : [events[i]] ,
+                        utm : {}
+                    };
+                }
+                if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
+                	users[id].utm = events[i].utm;
+                }
 	        }
 
 	        while (date < new Date()) {
