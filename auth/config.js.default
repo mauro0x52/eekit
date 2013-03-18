@@ -27,7 +27,8 @@ module.exports = {
             permissions : {
                 users     : false,
                 username  : false,
-                tokens    : true
+                tokens    : true,
+                auth      : true
             }
         },
         profiles : {
@@ -37,7 +38,8 @@ module.exports = {
             permissions : {
                 users     : false,
                 username  : false,
-                tokens    : false
+                tokens    : false,
+                auth      : false
             }
         },
         tasks : {
@@ -47,7 +49,8 @@ module.exports = {
             permissions : {
                 users     : false,
                 username  : true,
-                tokens    : false
+                tokens    : false,
+                auth      : false
             }
         },
         contacts : {
@@ -57,7 +60,8 @@ module.exports = {
             permissions : {
                 users     : false,
                 username  : false,
-                tokens    : false
+                tokens    : false,
+                auth      : false
             }
         },
         tracker : {
@@ -67,7 +71,8 @@ module.exports = {
             permissions : {
                 users     : true,
                 username  : true,
-                tokens    : true
+                tokens    : true,
+                auth      : false
             }
         },
         finances : {
@@ -77,7 +82,8 @@ module.exports = {
             permissions : {
                 users     : false,
                 username  : false,
-                tokens    : false
+                tokens    : false,
+                auth      : false
             }
         },
         kamisama : {
@@ -87,7 +93,8 @@ module.exports = {
             permissions : {
                 users     : false,
                 username  : false,
-                tokens    : true
+                tokens    : true,
+                auth      : true
             }
         },
         billets : {
@@ -97,7 +104,8 @@ module.exports = {
             permissions : {
                 users     : false,
                 username  : false,
-                tokens    : false
+                tokens    : false,
+                auth      : false
             }
         }
     },
