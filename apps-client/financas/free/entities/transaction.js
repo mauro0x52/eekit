@@ -147,7 +147,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
             transaction = new app.models.transaction(data);
 
             if (transaction) {
-                that.name(transaction.name);
+                that.name(transaction.name + (transaction.subtitle ? ' (' + transaction.subtitle + ')' : ''));
                 that.category(transaction.category);
                 that.account(transaction.account);
                 that.value((transaction.type === 'debt' ? -1 : 1) * transaction.value);
@@ -158,7 +158,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
         app.events.bind('remove transaction ' + transaction._id, app.close);
 
         if (transaction) {
-            this.name(transaction.name);
+            this.name(transaction.name + (transaction.subtitle ? ' (' + transaction.subtitle + ')' : ''));
             this.category(transaction.category);
             this.account(transaction.account);
             this.value((transaction.type === 'debt' ? -1 : 1) * transaction.value);
@@ -177,6 +177,19 @@ app.routes.entity('/transacao/:id', function (params, data) {
             accounts = data;
             app.models.transaction.find(params.id, function (transaction) {
                 new Entity(transaction);
+                
+                if (transaction.embeddeds) {
+                    var appa = transaction.embeddeds[0].split('/')[1],
+                        route = transaction.embeddeds[0].replace('/' + appa, '');
+
+                    app.apps.open({
+                        app : appa,
+                        route : route,
+                        open : function (tool) {
+                            app.ui.embbeds.add(tool);
+                        }
+                    })
+                }
             });
         });
     });

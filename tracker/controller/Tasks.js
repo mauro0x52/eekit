@@ -26,6 +26,15 @@ module.exports = function (app) {
     app.get('/events/tasks', function (request,response) {
         var utm = {};
 
+        function ids (obj) {
+            res = ''
+            for (var i in obj) {
+                if (obj[i].events[0])
+                res += obj[i].events[0].user + ', ';
+            }
+            return res;
+        }
+
         if (request.param('utm_source', null)) {
             utm.source = request.param('utm_source', null);
         }
@@ -74,17 +83,17 @@ module.exports = function (app) {
 
                     response.write('<tr>');
                     response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
-                    response.write('<td>' + users + '</td>');
-                    response.write('<td>' + (taskAdder / users * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td>' + (taskAdder) + '</td>');                    
-                    response.write('<td>' + (taskMarker1 / taskAdder * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td>' + (taskMarker1) + '</td>');                   
-                    response.write('<td>' + (taskMarker3 / taskMarker1 * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td>' + (taskMarker3) + '</td>');                   
-                    response.write('<td>' + (taskMarker5 / taskMarker3 * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td>' + (taskMarker5) + '</td>');
-                    response.write('<td>' + (taskMarker3 / users * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td>' + (taskMarker5 / users * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
+                    response.write('<td onclick="console.log(\'' + ids(users) + '\')">' + users.length + '</td>');
+                    response.write('<td>' + (taskAdder.length / users.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
+                    response.write('<td onclick="console.log(\'' + ids(taskAdder) + '\')">' + (taskAdder.length) + '</td>');                    
+                    response.write('<td>' + (taskMarker1.length / taskAdder.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
+                    response.write('<td onclick="console.log(\'' + ids(taskMarker1) + '\')">' + (taskMarker1.length) + '</td>');                   
+                    response.write('<td>' + (taskMarker3.length / taskMarker1.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
+                    response.write('<td onclick="console.log(\'' + ids(taskMarker3) + '\')">' + (taskMarker3.length) + '</td>');                   
+                    response.write('<td>' + (taskMarker5.length / taskMarker3.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
+                    response.write('<td onclick="console.log(\'' + ids(taskMarker5) + '\')">' + (taskMarker5.length) + '</td>');
+                    response.write('<td>' + (taskMarker3.length / users.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
+                    response.write('<td>' + (taskMarker5.length / users.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
                     response.write('</tr>');
                 }
                 response.write('</table><br />');
@@ -104,7 +113,7 @@ module.exports = function (app) {
                     response.write('<tr>');
                     response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
                     while (date < new Date) {
-                        response.write('<td>' + cohort[i].filter(['marcar como feita'], 5, utm, date) + '</td>')
+                        response.write('<td>' + cohort[i].filter(['marcar como feita'], 5, utm, date).length + '</td>')
                         date.setDate(date.getDate() + 7);
                     }
                     response.write('</tr>');
@@ -126,7 +135,7 @@ module.exports = function (app) {
                     var engaged = 0;
                     count += cohort[i].users.length;
                     for (var j = 0; j <= i; j += 1) {
-                        engaged += cohort[j].filter(['marcar como feita'], 5, utm, cohort[i].date);
+                        engaged += cohort[j].filter(['marcar como feita'], 5, utm, cohort[i].date).length;
                     }
                     response.write('<tr>');
                     response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');

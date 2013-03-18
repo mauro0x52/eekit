@@ -67,9 +67,11 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
-                                                for (var i = 0; i < task.embeddeds.length; i++) {
-                                                    bind(request.param('token', null), 'update embed ' + task.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/task/' + task._id + '/update');
-                                                    bind(request.param('token', null), 'delete embed ' + task.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/task/' + task._id + '/delete');
+                                                if (task.embeddeds) {
+                                                    for (var i = 0; i < task.embeddeds.length; i++) {
+                                                        bind(request.param('token', null), 'update embed ' + task.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/task/' + task._id + '/update');
+                                                        bind(request.param('token', null), 'delete embed ' + task.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/task/' + task._id + '/delete');
+                                                    }
                                                 }
                                                 response.send({task : task});
                                             }

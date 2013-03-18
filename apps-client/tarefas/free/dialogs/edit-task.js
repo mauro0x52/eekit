@@ -160,6 +160,7 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
         app.ui.form.submit(function() {
             var data = {
                 title : fields.title.value(),
+                subtitle : task.subtitle,
                 dateDeadline : fields.date.value() ? fields.date.date() : null,
                 category : fields.category.value()[0],
                 important : fields.important.value()[0] === 'important',

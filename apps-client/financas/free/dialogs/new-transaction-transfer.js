@@ -7,11 +7,7 @@
  * @param data {date : date} data padrão
  */
 app.routes.dialog('/adicionar-transferencia', function (params, data) {
-    var
-    /**
-     * Dados de entrada
-     */
-    request = data ? data : {};
+    var request = data ? data : {};
 
     /**
      * Cria o formulário

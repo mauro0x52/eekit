@@ -191,7 +191,7 @@ app.routes.entity('/tarefa/:id', function (params, data) {
             task = new app.models.task(data);
 
             if (task) {
-                that.title(task.title);
+                that.title(task.title + (task.subtitle ? ' (' + task.subtitle + ')' : ''));
                 that.description(task.description);
                 that.important(task.important);
                 that.recurrence(task.recurrence);
@@ -217,7 +217,7 @@ app.routes.entity('/tarefa/:id', function (params, data) {
         app.events.bind('do task ' + task._id, app.close);
 
         if (task) {
-            this.title(task.title);
+            this.title(task.title + (task.subtitle ? ' (' + task.subtitle + ')' : ''));
             this.description(task.description);
             this.important(task.important);
             this.recurrence(task.recurrence);

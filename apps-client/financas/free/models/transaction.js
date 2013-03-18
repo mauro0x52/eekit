@@ -18,6 +18,16 @@ app.models.transaction = function (params) {
     this.name = params.name;
 
     /**
+     * Nome da transação
+     */
+    this.subtitle = params.subtitle;
+
+    /**
+     * Lista de embeddeds da tarefa
+     */
+    this.embeddeds = params.embeddeds;
+
+    /**
      * Id da categoria
      */
     this.category = params.category;
@@ -114,9 +124,11 @@ app.models.transaction = function (params) {
             data = {
                 _id : this._id,
                 name : this.name,
+                subtitle : this.subtitle,
                 category : this.category,
                 account : this.account,
                 value : this.value,
+                embeddeds : this.embeddeds,
                 date : new Date(this.date),
                 recurrence : this.recurrence,
                 noteNumber : this.noteNumber,

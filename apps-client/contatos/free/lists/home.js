@@ -329,7 +329,7 @@ app.routes.list('/', function (params, data) {
 
         /* Pegando a exclusão do contato */
         app.events.bind('remove contact ' + contact._id, function () {
-            this.item.detach();
+            that.item.detach();
             app.ui.filter.submit();
         });
 

@@ -15,6 +15,10 @@ app.models.task = function (params) {
      */
     this.title = params.title;
     /**
+     * Nome do relacionável
+     */
+    this.subtitle = params.subtitle;
+    /**
      * Descrição da tarefa
      */
     this.description = params.description;
@@ -126,6 +130,7 @@ app.models.task = function (params) {
         var data = {
             category : this.category,
             title : this.title,
+            subtitle : this.subtitle,
             description : this.description,
             done : this.done,
             embeddeds : this.embeddeds,

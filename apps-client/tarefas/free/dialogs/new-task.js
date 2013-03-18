@@ -194,7 +194,7 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
                 data.category = fields.category.value()[0];
             }
             if (request.title) {
-                data.title += ' ('+request.title+')';
+                data.subtitle = request.title;
             }
             var task = new app.models.task(data);
             if (request.embeddeds) task.embeddeds = request.embeddeds;

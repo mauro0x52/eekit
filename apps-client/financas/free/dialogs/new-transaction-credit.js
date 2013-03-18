@@ -7,11 +7,7 @@
  * @param data {date : date} data padrão
  */
 app.routes.dialog('/adicionar-receita', function (params, data) {
-    var
-    /**
-     * Dados de entrada
-     */
-    request = data ? data : {};
+    var request = data ? data : {};
 
     /**
      * Cria o formulário
@@ -131,7 +127,7 @@ app.routes.dialog('/adicionar-receita', function (params, data) {
             legend : 'Recorrência',
             options : recurrenceOptions
         });
-        fields.reminder = new app.ui.inputSelector({
+        /*fields.reminder = new app.ui.inputSelector({
             name : 'reminder',
             type : 'single',
             legend : 'Lembrete por email',
@@ -142,7 +138,7 @@ app.routes.dialog('/adicionar-receita', function (params, data) {
                 new app.ui.inputOption({legend : '2 dias antes', value : '2'}),
                 new app.ui.inputOption({legend : '1 semana antes', value : '7'})
             ]
-        });
+        });*/
         fields.recurrence.visibility('hide');
         fields.repetitions = new app.ui.inputText({
             legend : 'No. de parcelas',
@@ -216,9 +212,17 @@ app.routes.dialog('/adicionar-receita', function (params, data) {
                 date = new Date(data.date);
                 data.name = repetitions > 1 ? data.name + ' ('+(i+1)+'/'+repetitions+')' : data.name;
 
-                if (fields.reminder.value()[0] !== 'null') {
-                    data.reminder = fields.reminder.value()[0];
+                if (request.title) {
+                    data.subtitle = request.title;
                 }
+
+                if (request.embeddeds) {
+                    data.embeddeds = request.embeddeds;
+                }
+
+                /*if (fields.reminder.value()[0] !== 'null') {
+                    data.reminder = fields.reminder.value()[0];
+                }*/
                 if (recurrence == 30) {
                     data.date = new Date(date.getFullYear(), date.getMonth() + i, date.getDate());
                     if (data.date.getMonth() != date.getMonth() + i) {

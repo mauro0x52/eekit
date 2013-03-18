@@ -39,7 +39,7 @@ module.exports = function (app) {
         if (service === null) {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
-            if (service.slug !== 'www') {
+            if (!service.permissions.auth) {
                 response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
             } else {
                 User.findByToken(request.param('token', null), function (error, user) {
@@ -92,7 +92,7 @@ module.exports = function (app) {
         if (service === null) {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
-            if (service.slug !== 'www') {
+            if (!service.permissions.auth) {
                 response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
             } else {
                 User.findByToken(request.param('token', null), function (error, user) {

@@ -193,13 +193,27 @@ app.routes.entity('/contato/:id', function (params, data) {
                         }
                     },
                     open : function (tool) {
-                            /* Exibe o orientador */
-                            setTimeout(function() {
-                                if (tool.groups.get()[0].items.get().length + tool.groups.get()[1].items.get().length === 0) {
-                                    tool.groups.get()[0].header.actions.get()[0].helper.description('Adicione tarefas para o seu contato e mantenha seu relacionamento em dia');
-                                    tool.groups.get()[0].header.actions.get()[0].helper.example('Ex.: "Enviar proposta", "Reunião", "Pedir relatório", "emitir nota fiscal" etc.');
-                                }
-                            }, 2000)
+                        /* Exibe o orientador */
+                        setTimeout(function() {
+                            if (tool.groups.get()[0].items.get().length + tool.groups.get()[1].items.get().length === 0) {
+                                tool.groups.get()[0].header.actions.get()[0].helper.description('Adicione tarefas para o seu contato e mantenha seu relacionamento em dia');
+                                tool.groups.get()[0].header.actions.get()[0].helper.example('Ex.: "Enviar proposta", "Reunião", "Pedir relatório", "emitir nota fiscal" etc.');
+                            }
+                        }, 2000)
+                        app.ui.embbeds.add(tool);
+                    }
+                })
+
+                app.apps.open({
+                    app : 'financas',
+                    route : '/relacionadas',
+                    data : {
+                        embed  : ['/contatos/contato-relacionado/' + contact._id],
+                        insert : {
+                            title : contact.name
+                        }
+                    },
+                    open : function (tool) {
                         app.ui.embbeds.add(tool);
                     }
                 })

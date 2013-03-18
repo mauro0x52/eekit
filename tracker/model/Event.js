@@ -62,7 +62,7 @@ eventSchema.statics.cohort = function (app, frequency, cb) {
 	                filter : function (labels, minimum, utm, date) {
 	                    var dateFrom = new Date(date || this.date),
 		                    dateTo   = new Date(date || this.date),
-		                    count    = 0;
+		                    result   = [];
 		                    dateTo.setDate(dateTo.getDate() + frequency),
 		                    hasUtm = false;
 
@@ -98,11 +98,11 @@ eventSchema.statics.cohort = function (app, frequency, cb) {
 		                            }
 		                        }
 		                        if (ocurrences >= minimum) {
-		                            count += 1;
+		                            result.push(this.users[i]);
 		                        }
                         	}
 	                    }
-	                    return count;
+	                    return result;
 	                }
 	            };
 

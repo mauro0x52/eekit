@@ -74,29 +74,71 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
-            if (error) {
-                response.send({error : error});
-            } else {
-                Event.find({label : request.param('label', null), user : user._id}, function (error, events) {
-                    var i;
-
-                    if (error) {
-                        response.send({error : error});
-                    } else {
-                        for (i in events) {
-                            require('restler').request(events[i].callback, {
-                                method : events[i].method,
-                                data   : {
-                                    token  : ''/* PENSAR NESSA MERDA */,
-                                    data : request.param('data')
+        require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
+            data: {
+                token  : request.param('token', null),
+                secret : request.param('secret', null)
+            }
+        }).on('success', function(data) {
+            if (data.user) {
+                var user = data.user;
+                require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/services').on('success', function (data) {
+                    if (data.services) {
+                        var services = data.services;
+                        require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
+                            data : {secret : config.security.secret}
+                        }).on('success', function (data) {
+                            if (data.users) {
+                                for (var i in data.users) {
+                                    if (data.users[i]._id === user._id) {
+                                        user = data.users[i];
+                                    }
                                 }
-                            });
-                        }
-                        response.send(null);
+                                Event.find({label : request.param('label', null), user : user._id}, function (error, events) {
+                                    var i;
+
+                                    if (error) {
+                                        response.send({error : error});
+                                    } else {
+                                        for (i in events) {
+                                            var host = events[i].callback.match(/(http\:\/\/)?([a-zA-Z0-9\.]+)(\:([0-9]+))?/)[2],
+                                                port = events[i].callback.match(/(http\:\/\/)?([a-zA-Z0-9\.]+)(\:([0-9]+))?/)[4],
+                                                data = request.param('data'),
+                                                token;
+
+                                            for (var l in services) {
+                                                if (services[l].host.toString() === host.toString() && services[l].port.toString() === port.toString()) {
+                                                    for (var j in user.auths) {
+                                                        if (user.auths[j].service === l) {
+                                                            for (var k in user.auths[j].tokens) {
+                                                                if ((new Date() - new Date(user.auths[j].tokens[k].dateUpdated))/(1000*60*60*24) < 30) {
+                                                                    token = user.auths[j].tokens[k].token;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            data.token = token;
+
+                                            require('restler').request(events[i].callback, {
+                                                method : events[i].method,
+                                                data   : data
+                                            });
+                                        }
+                                        response.send(null);
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
+            } else {
+                response.send({error : data.error});
             }
+        }).on('error', function(error) {
+            response.send({error : error});
         });
     });
 

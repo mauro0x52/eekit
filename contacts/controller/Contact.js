@@ -269,7 +269,6 @@ module.exports = function (app) {
                                     } else {
                                         var contact_id = contact._id;
                                         contact.remove(function (error) {
-                                            var field_id = field._id;
                                             if (error) {
                                                 response.send({error : error});
                                             } else {

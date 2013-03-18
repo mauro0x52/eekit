@@ -9,6 +9,7 @@ module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         config = require('./../config.js'),
         auth = require('../Utils.js').auth,
+        bind = require('../Utils.js').bind,
         User = Model.User,
         Transaction = Model.Transaction;
 
@@ -59,9 +60,11 @@ module.exports = function (app) {
                                 if (error) {
                                     response.send({error : error});
                                 } else {
-                                    for (var i = 0; i < transaction.embeddeds.length; i++) {
-                                        bind(request.param('token', null), 'update embed ' + transaction.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/transaction/' + transaction._id + '/update');
-                                        bind(request.param('token', null), 'delete embed ' + transaction.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/transaction/' + transaction._id + '/delete');
+                                    if (transaction.embeddeds) {
+                                        for (var i = 0; i < transaction.embeddeds.length; i++) {
+                                            bind(request.param('token', null), 'update embed ' + transaction.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/transaction/' + transaction._id + '/update');
+                                            bind(request.param('token', null), 'delete embed ' + transaction.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/transaction/' + transaction._id + '/delete');
+                                        }   
                                     }
                                     if (request.param('reminder', null)) {
                                         response.send({transaction : transaction});

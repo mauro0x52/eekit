@@ -303,7 +303,7 @@ app.routes.list('/', function (params, data) {
             }
 
             if (transaction) {
-                that.name(transaction.name);
+                that.name(transaction.name + (transaction.subtitle ? ' (' + transaction.subtitle + ')' : ''));
                 that.category(transaction.category);
                 that.account(transaction.account);
                 that.value(transaction.value);
@@ -394,7 +394,7 @@ app.routes.list('/', function (params, data) {
         });
 
         if (transaction) {
-            this.name(transaction.name);
+            this.name(transaction.name + (transaction.subtitle ? ' (' + transaction.subtitle + ')' : ''));
             this.category(transaction.category);
             this.account(transaction.account);
             this.value(transaction.value);
