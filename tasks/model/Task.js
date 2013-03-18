@@ -14,6 +14,7 @@ taskSchema = new schema({
     user        : {type : objectId, required : true},
     category    : {type : objectId, required : true},
     title       : {type : String, trim : true, required : true},
+    subtitle    : {type : String},
     description : {type : String},
     done        : {type : Boolean},
     important   : {type : Boolean},

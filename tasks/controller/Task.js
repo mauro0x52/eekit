@@ -20,7 +20,7 @@ module.exports = function (app) {
      *
      * @description : Cadastra uma task
      *
-     * @request : {category,title,description,important,recurrence,priority,embeddes,reminder,dateDeadline,token}
+     * @request : {category,title,subtitle,description,important,recurrence,priority,embeddes,reminder,dateDeadline,token}
      * @response : {task}
      */
     app.post('/task', function (request,response) {
@@ -51,6 +51,7 @@ module.exports = function (app) {
                                             user        : user._id,
                                             category    : request.param('category', null),
                                             title       : request.param('title', null),
+                                            subtitle    : request.param('subtitle', null),
                                             description : request.param('description', null),
                                             important   : request.param('important', null) === 'true' || request.param('important', null) === true,
                                             done        : false,
@@ -66,6 +67,10 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
+                                                for (var i = 0; i < task.embeddeds.length; i++) {
+                                                    bind(request.param('token', null), 'update embed ' + task.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/task/' + task._id + '/update');
+                                                    bind(request.param('token', null), 'delete embed ' + task.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/task/' + task._id + '/delete');
+                                                }
                                                 response.send({task : task});
                                             }
                                         });
@@ -287,6 +292,7 @@ module.exports = function (app) {
                                                         user        : task.user,
                                                         category    : task.category,
                                                         title       : task.title,
+                                                        subtitle    : task.subtitle,
                                                         description : task.description,
                                                         important   : task.important,
                                                         done        : false,
@@ -324,7 +330,7 @@ module.exports = function (app) {
      *
      * @description : Edita tarefa
      *
-     * @request : {category, title, description, important, recurrence, dateDealine, priority, embeddeds, reminder, token}
+     * @request : {category, title, subtitle, description, important, recurrence, dateDealine, priority, embeddeds, reminder, token}
      * @response : {task}
      */
     app.post('/task/:id/update', function (request,response) {
@@ -351,6 +357,7 @@ module.exports = function (app) {
                                     } else {
                                         task.category    = request.param('category', task.category);
                                         task.title       = request.param('title', task.title);
+                                        task.subtitle    = request.param('subtitle', task.subtitle);
                                         task.description = request.param('description', task.description);
                                         task.important   = request.param('important', task.important) === 'true' || request.param('important', task.important) === true;
                                         task.recurrence  = request.param('recurrence', task.recurrence);

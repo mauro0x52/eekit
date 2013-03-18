@@ -86,7 +86,7 @@ module.exports = function (app) {
                     } else {
                         for (i in events) {
                             require('restler').request(events[i].callback, {
-                                method : events[i].method
+                                method : events[i].method,
                                 data   : {
                                     token  : ''/* PENSAR NESSA MERDA */,
                                     data : request.param('data')

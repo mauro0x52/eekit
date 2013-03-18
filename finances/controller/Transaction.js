@@ -17,9 +17,9 @@ module.exports = function (app) {
      * @autor : Rafael Erthal
      * @since : 2012-10
      *
-     * @description : Cadastra uma conta
+     * @description : Cadastra uma transação
      *
-     * @request : {name, token}
+     * @request : {category, account, name, subtitle, value, date, recurrence, embeddeds, noteNumber, situation, type, isTransfer, token}
      * @response : {transaction}
      */
     app.post('/transaction', function (request,response) {
@@ -45,9 +45,11 @@ module.exports = function (app) {
                                 category    : request.param('category', null),
                                 account     : request.param('account', null),
                                 name        : request.param('name', null),
+                                subtitle    : request.param('subtitle', null),
                                 value       : request.param('value', null),
                                 date        : request.param('date', null),
                                 recurrence  : request.param('recurrence', null),
+                                embeddeds   : request.param('embeddeds', null),
                                 noteNumber  : request.param('noteNumber', null),
                                 situation   : request.param('situation', null),
                                 type        : request.param('type', null),
@@ -57,8 +59,11 @@ module.exports = function (app) {
                                 if (error) {
                                     response.send({error : error});
                                 } else {
+                                    for (var i = 0; i < transaction.embeddeds.length; i++) {
+                                        bind(request.param('token', null), 'update embed ' + transaction.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/transaction/' + transaction._id + '/update');
+                                        bind(request.param('token', null), 'delete embed ' + transaction.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/transaction/' + transaction._id + '/delete');
+                                    }
                                     if (request.param('reminder', null)) {
-                                        /* @TODO: COLOCAR BARREAMENTO*/
                                         response.send({transaction : transaction});
                                     } else {
                                         response.send({transaction : transaction});
@@ -78,9 +83,9 @@ module.exports = function (app) {
      * @autor : Rafael Erthal
      * @since : 2012-10
      *
-     * @description : Lista contas
+     * @description : Lista transações
      *
-     * @request : {token, filterByCategories, filterByAccounts}
+     * @request : {token, filterByCategories, filterByAccounts, filterByEmbeddeds}
      * @response : {transactions[]}
      */
     app.get('/transactions', function (request,response) {
@@ -114,6 +119,9 @@ module.exports = function (app) {
                                     query.account = {$in : request.param('filterByAccounts')};
                                 }
                             }
+                            if (request.param('filterByEmbeddeds')) {
+                                query.embeddeds = {$in : request.param('filterByEmbeddeds')};
+                            }
                             Transaction.find(query, function (error, transactions) {
                                 if (error) {
                                     response.send({error : error});
@@ -133,7 +141,7 @@ module.exports = function (app) {
      * @autor : Rafael Erthal
      * @since : 2012-10
      *
-     * @description : Exibe uma conta
+     * @description : Exibe uma transação
      *
      * @request : {token}
      * @response : {transaction}
@@ -178,7 +186,7 @@ module.exports = function (app) {
      * @autor : Rafael Erthal
      * @since : 2012-10
      *
-     * @description : Excluir uma conta
+     * @description : Excluir uma transação
      *
      * @request : {token}
      * @response : {}
@@ -237,9 +245,9 @@ module.exports = function (app) {
      * @autor : Rafael Erthal
      * @since : 2012-10
      *
-     * @description : Editar uma conta
+     * @description : Editar uma transação
      *
-     * @request : {category, account, name, value, date, recurrence, noteNumber, situation, token}
+     * @request : {category, account, name, subtitle, value, date, recurrence, embeddeds, noteNumber, situation, token}
      * @response : {transaction}
      */
     app.post('/transaction/:id/update', function (request,response) {
@@ -270,71 +278,13 @@ module.exports = function (app) {
                                         transaction.category    = request.param('category', transaction.category);
                                         transaction.account     = request.param('account', transaction.account);
                                         transaction.name        = request.param('name', transaction.name);
+                                        transaction.subtitle    = request.param('subtitle', transaction.subtitle);
                                         transaction.value       = request.param('value', transaction.value);
                                         transaction.date        = request.param('date', transaction.date);
                                         transaction.recurrence  = request.param('recurrence', transaction.recurrence);
+                                        transaction.embeddeds   = request.param('embeddeds', transaction.embeddeds);
                                         transaction.noteNumber  = request.param('noteNumber', transaction.noteNumber);
                                         transaction.situation   = request.param('situation', transaction.situation);
-                                        transaction.save(function (error) {
-                                            if (error) {
-                                                response.send({error : error});
-                                            } else {
-                                                if (transaction.task) {
-                                                    /* @TODO: COLOCAR BARREAMENTO*/
-                                                    response.send({transaction : transaction});
-                                                } else {
-                                                    response.send({transaction : transaction});
-                                                }
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    });
-
-    /** POST /transaction/:id/reconcile
-     *
-     * @autor : Rafael Erthal
-     * @since : 2012-10
-     *
-     * @description : Editar uma conta
-     *
-     * @allowedApp : Qualquer APP
-     * @allowedUser : Logado
-     *
-     * @request : {token}
-     * @response : {transaction}
-     */
-    app.post('/transaction/:id/reconcile', function (request,response) {
-        var transaction;
-
-        response.contentType('json');
-        response.header('Access-Control-Allow-Origin', '*');
-
-        auth(request.param('token', null), function (error, user) {
-            if (error) {
-                response.send({error : error});
-            } else {
-                User.findOne({user : user._id}, function (error, user) {
-                    if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                    } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            Transaction.findOne({userId : user._id, _id : request.params.id}, function (error, transaction) {
-                                if (error) {
-                                    response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
-                                } else {
-                                    if (transaction === null) {
-                                        response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
-                                    } else {
-                                        transaction.situation = 'paid';
                                         transaction.save(function (error) {
                                             if (error) {
                                                 response.send({error : error});

@@ -48,7 +48,7 @@ exports.auth = function (token, cb) {
  */
 exports.bind = function (token, name, method, callback) {
     "use strict";
-    
+
     require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/bind', {
         data: {
             token : token,

@@ -16,6 +16,8 @@ transactionSchema = new schema({
     account     : {type : objectId},
     task        : {type : objectId},
     name        : {type : String, trim : true, required : true},
+    subtitle    : {type : String},
+    embeddeds   : [{type : String, trim : true}],
     value       : {type : Number, required : true},
     date        : {type : Date, required : true},
     recurrence  : {type : Number},
