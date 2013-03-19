@@ -1,5 +1,6 @@
 {
   "name": "Billet",
+  "version": "0.0.1",
   "dependencies": {
     "ejs" : "0.8.3",
     "express": "3.0.0rc3",
