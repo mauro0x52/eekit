@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 0.5
+## 0.5 (2013-03-19)
 - Autenticação de serviço
 - Comunicação com barramento de eventos
 

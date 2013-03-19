@@ -1,11 +1,11 @@
 Changelog
 =========
 
-## 0.4
+## 0.4 (2013-03-19)
 - Limpando requisições antigas
 - COlocando telefone
 
-## 0.3
+## 0.3 (2013-03-19)
 - Autenticação de serviço
 - Comunicação com barramento de eventos
 
