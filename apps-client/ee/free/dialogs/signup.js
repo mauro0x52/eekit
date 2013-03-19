@@ -16,18 +16,6 @@ app.routes.dialog('/cadastro', function (params, data) {
             login_confirmation.errors.add(new app.ui.inputError({ message : 'os emails não conferem' }));
             validate = false;
         }
-        if (!size.value().length) {
-            validate = false;
-            app.ui.error('Escolha um tamanho');
-        }
-        if (!sector.value().length) {
-            validate = false;
-             app.ui.error('Escolha um setor');
-        }
-        if (!role.value().length) {
-            validate = false;
-            app.ui.error('Escolha uma função');
-        }
         return validate;
     }
 
@@ -38,9 +26,6 @@ app.routes.dialog('/cadastro', function (params, data) {
         login_confirmation_tracked = false,
         password_tracked = false,
         password_confirmation_tracked = false,
-        role_tracked = false,
-        sector_tracked = false,
-        size_tracked = false,
         why_tracked = false,
 
     name = new app.ui.inputText({
@@ -74,7 +59,7 @@ app.routes.dialog('/cadastro', function (params, data) {
     });
 
     phone = new app.ui.inputText({
-        legend : 'Telefone',
+        legend : 'Telefone com DDD',
         name : 'phone',
         rules : [
             {rule : /.{3,}/, message : 'campo obrigatório'}
@@ -138,59 +123,6 @@ app.routes.dialog('/cadastro', function (params, data) {
         }
     });
 
-    role = new app.ui.inputSelector({
-        type : 'single',
-        name : 'role',
-        legend : 'Qual a sua função na empresa?',
-        options : [
-            new app.ui.inputOption({legend : 'Dono/sócio', value : 'Dono/sócio'}),
-            new app.ui.inputOption({legend : 'Marketing e Vendas', value : 'Marketing e Vendas'}),
-            new app.ui.inputOption({legend : 'Administrativo', value : 'Administrativo'}),
-            new app.ui.inputOption({legend : 'Outros', value : 'Outros'})
-        ],
-        change : function () {
-            if (!role_tracked) {
-                role_tracked = true;
-                app.tracker.event('cadastrar: funcao');
-            }
-        }
-    });
-
-    sector = new app.ui.inputSelector({
-        type : 'single',
-        name : 'sector',
-        legend : 'Qual é o setor da sua empresa?',
-        options : [
-            new app.ui.inputOption({legend : 'Assessoria e consultoria', value : 'Assessoria e consultoria'}),
-            new app.ui.inputOption({legend : 'TI', value : 'TI'}),
-            new app.ui.inputOption({legend : 'Comércio atacado e varejo', value : 'Comércio atacado e varejo'}),
-            new app.ui.inputOption({legend : 'Outros', value : 'Outros'})
-        ],
-        change : function () {
-            if (!sector_tracked) {
-                sector_tracked = true;
-                app.tracker.event('cadastrar: setor');
-            }
-        }
-    });
-
-    size = new app.ui.inputSelector({
-        type : 'single',
-        name : 'size',
-        legend : 'Qual o tamanho da sua empresa?',
-        options : [
-            new app.ui.inputOption({legend : '1 a 5', value : '1 a 5'}),
-            new app.ui.inputOption({legend : '6 a 10', value : '6 a 10'}),
-            new app.ui.inputOption({legend : 'Mais que 10', value : 'Mais que 10'})
-        ],
-        change : function () {
-            if (!size_tracked) {
-                size_tracked = true;
-                app.tracker.event('cadastrar: tamanho');
-            }
-        }
-    });
-
     why = new app.ui.inputText({
         legend : 'O que você espera do EmpreendeKit?',
         name : 'why',
@@ -212,7 +144,7 @@ app.routes.dialog('/cadastro', function (params, data) {
 
     fieldsets.aditional = new app.ui.fieldset({
         legend : 'Informações da empresa',
-        fields : [role, sector, size, why]
+        fields : [why]
     });
 
     app.ui.form.fieldsets.add([fieldsets.profile, fieldsets.user, fieldsets.aditional]);
@@ -244,9 +176,6 @@ app.routes.dialog('/cadastro', function (params, data) {
                             name : name.value(),
                             surname : surname.value(),
                             phone : phone.value(),
-                            role : role.value()[0],
-                            sector : sector.value()[0],
-                            size : size.value()[0],
                             why : why.value(),
                             token : token
                         }
