@@ -41,8 +41,8 @@ empreendemia.ajax = {
             path.data = {};
         }
 
-        var host = path.url.match(/(http\:\/\/)?([a-zA-Z0-9\.]+)(\:([0-9]+))?/)[2],
-            port = path.url.match(/(http\:\/\/)?([a-zA-Z0-9\.]+)(\:([0-9]+))?/)[4],
+        var host = path.url.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[2],
+            port = path.url.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[4],
             i,j;
 
         if (!path.data.token && empreendemia.config && empreendemia.config.services) {

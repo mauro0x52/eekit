@@ -101,8 +101,8 @@ module.exports = function (app) {
                                         response.send({error : error});
                                     } else {
                                         for (i in events) {
-                                            var host = events[i].callback.match(/(http\:\/\/)?([a-zA-Z0-9\.]+)(\:([0-9]+))?/)[2],
-                                                port = events[i].callback.match(/(http\:\/\/)?([a-zA-Z0-9\.]+)(\:([0-9]+))?/)[4],
+                                            var host = events[i].callback.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[2],
+                                                port = events[i].callback.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[4],
                                                 data = request.param('data', {}),
                                                 token;
 

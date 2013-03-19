@@ -91,7 +91,7 @@ module.exports = {
             port : 8008,
             secret : 'kamisama',
             permissions : {
-                users     : false,
+                users     : true,
                 username  : false,
                 tokens    : true,
                 auth      : true
