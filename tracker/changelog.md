@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 0.6
+- Exibir ids no cohort
+- Cohort do www
+
 ## 0.5
 - Initial refer
 
