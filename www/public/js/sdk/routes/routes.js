@@ -88,18 +88,16 @@ sdk.modules.routes = function (app) {
         }
     };
 
-    if (app.slug === 'ee') {
-        /** frame
-         *
-         * @autor : Rafael Erthal
-         * @since : 2012-11
-         *
-         * @description : roteia um frame
-         */
-        this.frame = function (route, callback) {
-            routes.push({route : route, callback : callback, type : 'frame'});
-        };
-    }
+    /** frame
+     *
+     * @autor : Rafael Erthal
+     * @since : 2012-11
+     *
+     * @description : roteia um frame
+     */
+    this.frame = function (route, callback) {
+        routes.push({route : route, callback : callback, type : 'frame'});
+    };
 
     /** entity
      *
