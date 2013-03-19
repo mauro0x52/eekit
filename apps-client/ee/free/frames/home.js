@@ -255,11 +255,11 @@ app.routes.frame('/', function (params, data) {
                                 html : [
                                     {
                                         tag : 'span',
-                                        html : 'Testar por um '
+                                        html : 'Experimente '
                                     },
                                     {
                                         tag : 'span',
-                                        html : 'mês grátis',
+                                        html : 'grátis',
                                         attributes : {
                                             style : 'color:#f38305;'
                                         }
