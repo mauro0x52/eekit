@@ -230,7 +230,6 @@ app.routes.list('/', function (params, data) {
 
         this.item = new app.ui.item({
             droppableGroups : [
-                groups.pending,
                 groups.today,
                 groups.thisWeek.sunday,
                 groups.thisWeek.monday,
