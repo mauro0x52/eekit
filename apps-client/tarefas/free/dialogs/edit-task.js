@@ -67,6 +67,7 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
         /* Input com as frequencias */
         recurrenceOptions.push(new app.ui.inputOption({legend : 'sem recorrência', value : '0', clicked : task.recurrence.toString() === '0'}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'diariamente', value : '1', clicked : task.recurrence.toString() === '1'}));
+        recurrenceOptions.push(new app.ui.inputOption({legend : 'dias úteis', value : '5', clicked : task.recurrence.toString() === '5'}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'semanalmente', value : '7', clicked : task.recurrence.toString() === '7'}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'quinzenalmente', value : '14', clicked : task.recurrence.toString() === '14'}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'mensalmente', value : '30', clicked : task.recurrence.toString() === '30'}));
