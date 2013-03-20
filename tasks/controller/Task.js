@@ -287,6 +287,13 @@ module.exports = function (app) {
                                                     task.dateDeadline = new Date();
                                                     if (task.recurrence === 30) {
                                                         newDate = new Date(task.dateDeadline.getFullYear(), task.dateDeadline.getMonth() + 1, task.dateDeadline.getDate());
+                                                    } else if (task.recurrence === 5) {
+                                                        newDate = new Date(task.dateDeadline.getFullYear(), task.dateDeadline.getMonth(), task.dateDeadline.getDate() + 1);
+                                                        if (newDate.getDay() === 6) {
+                                                            newDate = new Date(task.dateDeadline.getFullYear(), task.dateDeadline.getMonth(), task.dateDeadline.getDate() + 3);
+                                                        } else if (newDate.getDay() === 0) {
+                                                            newDate = new Date(task.dateDeadline.getFullYear(), task.dateDeadline.getMonth(), task.dateDeadline.getDate() + 2);
+                                                        }
                                                     } else {
                                                         newDate = new Date(task.dateDeadline.getFullYear(), task.dateDeadline.getMonth(), task.dateDeadline.getDate() + task.recurrence);
                                                     }
