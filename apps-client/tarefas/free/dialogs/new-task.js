@@ -74,13 +74,14 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
 
         date = request.date ? new Date(request.date) : null;
 
-        /* Input com as categorias */
+        /* Input com as fases */
         for (var i in categories) {
             if (categories.hasOwnProperty(i)) {
                 categoriesOptions.push(new app.ui.inputOption({
                     legend : categories[i].name,
                     value : categories[i]._id,
-                    clicked : parseInt(i) === 0
+                    label : categories[i].color || 'blue',
+                    clicked : request.category ? categories[i]._id === request.category : parseInt(i) === 0
                 }));
             }
         }
@@ -137,7 +138,8 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
             type : 'single',
             name : 'category',
             legend : 'Categoria',
-            options : categoriesOptions
+            options : categoriesOptions,
+            filterable : true
         });
 
         /* se é importante */
