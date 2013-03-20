@@ -236,6 +236,12 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
                 app.models.transaction.list({filterByEmbeddeds : response.embed}, function (transactions) {
                     app.ui.title('Transações relacionadas');
 
+                    transactions.sort(function (a,b) {
+                        if (a.date > b.date) return -1;
+                        if (a.date < b.date) return  1;
+                        return 0;
+                    });
+
                     /* listando as transações */
                     for (var i in transactions) {
                         fitGroup(transactions[i]).items.add((new Item(transactions[i])).item);
