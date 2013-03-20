@@ -30,78 +30,78 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                var mongodb = require("mongodb"),
-                    config = require("../config.js"),
-                    mongoserver = new mongodb.Server(config.mongodb.url, config.mongodb.port, {}),
-                    connector = new mongodb.Db('profiles', mongoserver);
+                require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
+                    data: {
+                        secret : config.security.secret
+                    }
+                }).on('success', function (data) {
 
-                connector.open(function (error, db) {
-                    db.collection('profiles', function (error, collection) {
-                        collection.find().toArray(function (error, users) {
+                    function format (date) {
+                        if (date) {
+                            return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                        }
+                    }
 
-                            function format (date) {
-                                if (date) {
-                                    return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
-                                }
-                            }
+                    var j,
+                        user,
+                        utm = {}
+                        appDays = {};
 
-                            var j,
-                                user,
-                                appDays = {};
+                    for (i in data.users) {
+                        if (data.users[i]._id.toString() === request.params.id.toString()) {
+                            user = data.users[i];
+                        }
+                    }
 
-                            for (j in users) {
-                                if (request.params.id === users[j].user.toString()) {
-                                    user = users[j];
-                                }
-                            }
+                    for (i in events) {
+                        if (!appDays[events[i].app]) {
+                            appDays[events[i].app] = {};
+                        }
+                        if (!appDays[events[i].app][format(events[i].date)]) {
+                            appDays[events[i].app][format(events[i].date)] = true;
+                        }
+                        if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
+                            utm = events[i].utm;
+                        }
+                    }
+                    
+                    response.write(user.username + '</br></br>');
+                    
+                    response.write('utm_source : ' + utm.source + '</br>');
+                    response.write('utm_medium : ' + utm.medium + '</br>');
+                    response.write('utm_content : ' + utm.content + '</br>');
+                    response.write('utm_campaign : ' + utm.campaign + '</br></br>');
 
-                            for (i in events) {
-                                if (!appDays[events[i].app]) {
-                                    appDays[events[i].app] = {};
-                                }
-                                if (!appDays[events[i].app][format(events[i].date)]) {
-                                    appDays[events[i].app][format(events[i].date)] = true;
-                                }
-                            }
-                            
-                            response.write(user.name + ' ' + user.surname + '</br>');
-                            response.write(user.role + '</br>');
-                            response.write(user.sector + '</br>');
-                            response.write(user.size + '</br>');
-                            response.write(user.why + '</br>');
-
-                            response.write('<table border="1">');
-                            response.write('<tr>');
-                            response.write('<td>App</td>');
-                            response.write('<td>Dias com acesso</td>');
-                            response.write('</tr>');
-                            for (i in appDays) {
-                                var total = 0;
-                                for (var prop in appDays[i]) if (appDays[i].hasOwnProperty(prop)) total++;
-                                response.write('<tr>');
-                                response.write('<td>' + i + '</td>');
-                                response.write('<td>' + total + '</td>');
-                                response.write('</tr>');
-                            }
-                            response.write('</table><br />');
-                            
-                            response.write('<table border="1">');
-                            response.write('<tr>');
-                            response.write('<td>Data</td>');
-                            response.write('<td>App</td>');
-                            response.write('<td>Evento</td>');
-                            response.write('</tr>');
-                            for (i in events) {
-                                response.write('<tr>');
-                                response.write('<td>' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '</td>');
-                                response.write('<td>' + events[i].app + '</td>');
-                                response.write('<td>' + events[i].label + '</td>');
-                                response.write('</tr>');
-                            }
-                            response.write('</table>');
-                            response.end();
-                        });
-                    });
+                    response.write('<table border="1">');
+                    response.write('<tr>');
+                    response.write('<td>App</td>');
+                    response.write('<td>Dias com acesso</td>');
+                    response.write('</tr>');
+                    for (i in appDays) {
+                        var total = 0;
+                        for (var prop in appDays[i]) if (appDays[i].hasOwnProperty(prop)) total++;
+                        response.write('<tr>');
+                        response.write('<td>' + i + '</td>');
+                        response.write('<td>' + total + '</td>');
+                        response.write('</tr>');
+                    }
+                    response.write('</table><br />');
+                    
+                    response.write('<table border="1">');
+                    response.write('<tr>');
+                    response.write('<td>Data</td>');
+                    response.write('<td>App</td>');
+                    response.write('<td>Evento</td>');
+                    response.write('</tr>');
+                    for (i in events) {
+                        response.write('<tr>');
+                        response.write('<td>' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '</td>');
+                        response.write('<td>' + events[i].app + '</td>');
+                        response.write('<td>' + events[i].label + '</td>');
+                        response.write('</tr>');
+                    }
+                    response.write('</table>');
+                    response.end();
                 });
             }
         });
