@@ -1,5 +1,5 @@
 /**
- * Diálogo para criação de um novo contato
+ * Diálogo para criação de uma categoria
  *
  * @author Mauro Ribeiro
  * @since  2012-12

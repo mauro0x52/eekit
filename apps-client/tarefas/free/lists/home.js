@@ -33,25 +33,6 @@ app.routes.list('/', function (params, data) {
     now = new Date();
 
     /**
-     * Cor de uma categoria
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  name : nome da categoria
-     * @return nome da cor
-     */
-    function categoryColor (name) {
-        switch (name) {
-            case 'Geral'    : return 'blue';
-            case 'Reuniões' : return 'brown';
-            case 'Finanças' : return 'green';
-            case 'Vendas'   : return 'olive';
-            case 'Projetos' : return 'cyan';
-        }
-    }
-
-    /**
      * Monta data
      *
      * @author Mauro Ribeiro
@@ -384,7 +365,7 @@ app.routes.list('/', function (params, data) {
             for (i in categories) {
                 if (categories[i]._id === value) {
                     this.item.label.legend(categories[i].name);
-                    this.item.label.color(categoryColor(categories[i].name));
+                    this.item.label.color(categories[i].color || 'blue');
                 }
             }
         }
@@ -431,7 +412,14 @@ app.routes.list('/', function (params, data) {
             var important = fields.important.value()[0] || fields.important.value()[0] === 'true';
 
             if (
-                fields.category.value().indexOf(that.item.label.legend()) === -1 ||
+                (
+                    fields.categories.general.value().indexOf(that.item.label.legend()) === -1 &&
+                    fields.categories.meetings.value().indexOf(that.item.label.legend()) === -1 &&
+                    fields.categories.finances.value().indexOf(that.item.label.legend()) === -1 &&
+                    fields.categories.sales.value().indexOf(that.item.label.legend()) === -1 &&
+                    fields.categories.projects.value().indexOf(that.item.label.legend()) === -1 &&
+                    fields.categories.personals.value().indexOf(that.item.label.legend()) === -1
+                ) ||
                 (!(icons.important.legend().replace('-', ' ').toLowerCase() === 'importante') && important) ||
                 (fields.query.value().length > 1 && (that.item.title() + ' ' + that.item.description()).toLowerCase().indexOf(fields.query.value().toLowerCase()) === -1)
             ) {
@@ -486,25 +474,85 @@ app.routes.list('/', function (params, data) {
             change : app.ui.filter.submit
         });
         /* filtro de categorias */
-        fields.category = new app.ui.inputSelector({
-            type : 'multiple',
-            name : 'category',
-            legend : 'Categorias',
-            options : (function () {
-                var options = [];
-                for (var i in categories) {
+        function categoryOption(type) {
+            var options = [],
+                i;
+
+            for (i in categories) {
+                if (categories[i].type === type || (!categories[i].type && type === 'general')) {
                     options.push(new app.ui.inputOption({
-                        legend : categories[i].name,
-                        value : categories[i].name,
+                        legend  : categories[i].name,
+                        value   : categories[i].name,
                         clicked : true,
-                        label : categoryColor(categories[i].name)
+                        label   : categories[i].color || 'blue'
                     }));
                 }
-                return options;
-            })(),
-            change : app.ui.filter.submit,
-            actions : true
-        });
+            }
+            return options;
+        }
+        /* filtro por categoria */
+        fields.categories = {
+            general : new app.ui.inputSelector({
+                type    : 'multiple',
+                name    : 'category',
+                legend  : 'Geral',
+                options : categoryOption('general'),
+                change  : function () {
+                    app.ui.filter.submit()
+                },
+                actions : true
+            }),
+            meetings : new app.ui.inputSelector({
+                type    : 'multiple',
+                name    : 'category',
+                legend  : 'Reuniões',
+                options : categoryOption('meetings'),
+                change  : function () {
+                    app.ui.filter.submit()
+                },
+                actions : true
+            }),
+            finances : new app.ui.inputSelector({
+                type    : 'multiple',
+                name    : 'category',
+                legend  : 'Finanças',
+                options : categoryOption('finances'),
+                change  : function () {
+                    app.ui.filter.submit()
+                },
+                actions : true
+            }),
+            sales : new app.ui.inputSelector({
+                type    : 'multiple',
+                name    : 'category',
+                legend  : 'Vendas',
+                options : categoryOption('sales'),
+                change  : function () {
+                    app.ui.filter.submit()
+                },
+                actions : true
+            }),
+            projects : new app.ui.inputSelector({
+                type    : 'multiple',
+                name    : 'category',
+                legend  : 'Projetos',
+                options : categoryOption('projects'),
+                change  : function () {
+                    app.ui.filter.submit()
+                },
+                actions : true
+            }),
+            personals : new app.ui.inputSelector({
+                type    : 'multiple',
+                name    : 'category',
+                legend  : 'Pessoais',
+                options : categoryOption('personals'),
+                change  : function () {
+                    app.ui.filter.submit()
+                },
+                actions : true
+            })
+        };
         /* filtro de tarefas importantes */
         fields.important = new app.ui.inputSelector({
             name : 'important',
@@ -515,7 +563,7 @@ app.routes.list('/', function (params, data) {
         /* fieldset principal */
         app.ui.filter.fieldsets.add(new app.ui.fieldset({
             legend : 'Filtrar tarefas',
-            fields : [fields.query, fields.category, fields.important]
+            fields : [fields.query, fields.categories.general, fields.categories.meetings, fields.categories.finances, fields.categories.sales, fields.categories.projects, fields.categories.personals, fields.important]
         }));
         /* dispara o evento de filtro */
         app.ui.filter.submit(function () {
