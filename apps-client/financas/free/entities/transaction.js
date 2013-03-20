@@ -42,7 +42,8 @@ app.routes.entity('/transacao/:id', function (params, data) {
         fields = {
             category : new app.ui.data({legend : 'categoria'}),
             account  : new app.ui.data({legend : 'conta'}),
-            value    : new app.ui.data({legend : 'valor'})
+            value    : new app.ui.data({legend : 'valor'}),
+            date     : new app.ui.data({legend : 'data'})
         };
 
         /* Botões do item */
@@ -108,6 +109,20 @@ app.routes.entity('/transacao/:id', function (params, data) {
             }
         };
 
+        /* Exibe a data da transação */
+        this.date = function (value) {
+            var monthsNames = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
+                daysNames = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+
+            fields.date.values.remove();
+            if (value) {
+                fields.date.values.add(new app.ui.value({value : value.getDate() + '/' + monthsNames[value.getMonth()] + '/' + value.getFullYear() + ' - ' + daysNames[value.getDay()]}));
+                fieldsets.details.fields.add(fields.date);
+            } else {
+                fieldsets.details.fields.remove(fields.date);
+            }
+        };
+
         /* Exibe a conta da transação */
         this.account = function (value) {
             var i;
@@ -150,6 +165,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
                 that.name(transaction.name + (transaction.subtitle ? ' (' + transaction.subtitle + ')' : ''));
                 that.category(transaction.category);
                 that.account(transaction.account);
+                that.date(transaction.date);
                 that.value((transaction.type === 'debt' ? -1 : 1) * transaction.value);
             }
         });
@@ -161,6 +177,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
             this.name(transaction.name + (transaction.subtitle ? ' (' + transaction.subtitle + ')' : ''));
             this.category(transaction.category);
             this.account(transaction.account);
+            this.date(transaction.date);
             this.value((transaction.type === 'debt' ? -1 : 1) * transaction.value);
         }
     };
