@@ -36,7 +36,7 @@ app.routes.entity('/contato/:id', function (params, data) {
             details : new app.ui.dataset({legend : 'Detalhes'}),
             fields  : new app.ui.dataset({legend : 'Mais informações'})
         };
-        app.ui.datasets.add([fieldsets.details, fieldsets.fields]);
+        app.ui.datasets.add([fieldsets.details]);
 
 
         /* Campos de dados */
@@ -119,7 +119,8 @@ app.routes.entity('/contato/:id', function (params, data) {
 
         /* Exibe campos personalizados do contato */
         this.fields = function (value) {
-            var i, j;
+            var i, j,
+                show = false;
 
             fieldsets.fields.fields.remove();
             for (i in value) {
@@ -129,8 +130,14 @@ app.routes.entity('/contato/:id', function (params, data) {
                             legend : userFields[j].name,
                             values : [new app.ui.value({value : value[i].value})]
                         }));
+                        show = show || value[i].value
                     }
                 }
+            }
+            if (show) {
+                app.ui.datasets.add([fieldsets.fields]);
+            } else {
+                app.ui.datasets.remove([fieldsets.fields]);
             }
         }
 

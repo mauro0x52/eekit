@@ -25,7 +25,12 @@ app.routes.list('/', function (params, data) {
     /*
      * Vetor com as categorias do usuário
      */
-    categories;
+    categories,
+
+    /*
+     * Vetor com os campos personalizados do usuário
+     */
+    userfields;
 
     /* montando os gruposets */
     groupsets = {
@@ -343,6 +348,10 @@ app.routes.list('/', function (params, data) {
             query += ' ' + contact.phone;
             query += ' ' + contact.notes;
 
+            for (var i in contact.fieldValues) {
+                query += ' ' + contact.fieldValues[i].value;
+            }
+
             if (
                 (queryField.length > 1) &&
                 query.toLowerCase().indexOf(queryField.toLowerCase()) === -1
@@ -377,170 +386,179 @@ app.routes.list('/', function (params, data) {
     }
 
     /* autenticando usuário e pegando categorias */
-    app.models.category.list(function (data) {
-        /* monta a listagem */
-        app.models.contact.list({}, function (contacts) {
-            var fields = {},
-                firstFilter = true;
+    app.models.field.list(function (data) {
+        userfields = data;
+        app.models.category.list(function (data) {
+            /* monta a listagem */
+            app.models.contact.list({}, function (contacts) {
+                var fields = {},
+                    firstFilter = true;
 
-            /* variável global com categorias */
-            categories = data;
+                /* variável global com categorias */
+                categories = data;
 
-            app.ui.title('Contatos');
+                app.ui.title('Contatos');
 
-            /* Botão global de baixar dados */
-            app.ui.actions.add(new app.ui.action({
-                legend : 'baixar dados',
-                tip : 'importar seus dados em um arquivo CSV',
-                image : 'download'
-            }));
-            /* Botão global de adicionar campo */
-            app.ui.actions.add(new app.ui.action({
-                legend : 'contato',
-                tip : 'adicionar contato',
-                image  : 'add',
-                click  : function () {
-                    app.apps.open({
-                        app : app.slug,
-                        route : '/adicionar-contato'
-                    });
+                /* Botão global de baixar dados */
+                app.ui.actions.add(new app.ui.action({
+                    legend : 'baixar dados',
+                    tip : 'importar seus dados em um arquivo CSV',
+                    image : 'download'
+                }));
+                /* Botão global de adicionar campo */
+                app.ui.actions.add(new app.ui.action({
+                    legend : 'contato',
+                    tip : 'adicionar contato',
+                    image  : 'add',
+                    click  : function () {
+                        app.apps.open({
+                            app : app.slug,
+                            route : '/adicionar-contato'
+                        });
+                    }
+                }));
+
+                /* Monta o filtro */
+                app.ui.filter.action('filtrar');
+                /* filtro por texto */
+                fields.query = new app.ui.inputText({
+                    legend : 'Buscar',
+                    type : 'text',
+                    name : 'query',
+                    change : app.ui.filter.submit
+                });
+                function categoryOption(type) {
+                    var options = [],
+                        i;
+
+                    for (i in categories) {
+                        if (categories[i].type === type) {
+                            options.push(new app.ui.inputOption({
+                                legend  : categories[i].name,
+                                value   : categories[i]._id,
+                                clicked : true,
+                                label   : categories[i].color
+                            }));
+                        }
+                    }
+                    return options;
                 }
-            }));
+                /* filtro por categoria */
+                fields.categories = {
+                    clients : new app.ui.inputSelector({
+                        type    : 'multiple',
+                        name    : 'category',
+                        legend  : 'Clientes',
+                        options : categoryOption('clients'),
+                        change  : function () {
+                            app.ui.filter.submit()
+                        },
+                        actions : true
+                    }),
+                    suppliers : new app.ui.inputSelector({
+                        type    : 'multiple',
+                        name    : 'category',
+                        legend  : 'Fornecedores',
+                        options : categoryOption('suppliers'),
+                        change  : function () {
+                            app.ui.filter.submit()
+                        },
+                        actions : true
+                    }),
+                    partners : new app.ui.inputSelector({
+                        type    : 'multiple',
+                        name    : 'category',
+                        legend  : 'Parceiros',
+                        options : categoryOption('partners'),
+                        change  : function () {
+                            app.ui.filter.submit()
+                        },
+                        actions : true
+                    }),
+                    personals : new app.ui.inputSelector({
+                        type    : 'multiple',
+                        name    : 'category',
+                        legend  : 'Pessoais',
+                        options : categoryOption('personals'),
+                        change  : function () {
+                            app.ui.filter.submit()
+                        },
+                        actions : true
+                    })
+                };
+                /* fieldset principal */
+                app.ui.filter.fieldsets.add(new app.ui.fieldset({
+                    legend : 'Filtrar contatos',
+                    fields : [fields.query, fields.categories.clients, fields.categories.suppliers, fields.categories.partners, fields.categories.personals]
+                }));
+                /* dispara o evento de filtro */
+                app.ui.filter.submit(function () {
+                    var header = 'nome %2Ctelefone %2Cemail';
 
-            /* Monta o filtro */
-            app.ui.filter.action('filtrar');
-            /* filtro por texto */
-            fields.query = new app.ui.inputText({
-                legend : 'Buscar',
-                type : 'text',
-                name : 'query',
-                change : app.ui.filter.submit
-            });
-            function categoryOption(type) {
-                var options = [],
-                    i;
+                    for (var i in userfields) {
+                        header += '%2C' + escape(userfields[i].name) + ' ';
+                    }
 
-                for (i in categories) {
-                    if (categories[i].type === type) {
-                        options.push(new app.ui.inputOption({
-                            legend  : categories[i].name,
-                            value   : categories[i]._id,
-                            clicked : true,
-                            label   : categories[i].color
-                        }));
+                    app.ui.actions.get()[0].href('data:application/octet-stream,' + header + '%0A');
+
+                    if (firstFilter) {
+                        firstFilter = false;
+                    } else {
+                        app.models.helpers.fiveContactsAndFiltered(contacts);
+                    }
+
+                    app.events.trigger('filter contact', fields);
+                });
+
+                /* ordenando os contatos */
+                contacts.sort(function (a,b) {
+                    var priority_a = a.priority || 0,
+                        priority_b = b.priority || 0;
+
+                    if (priority_a > priority_b) return  1;
+                    if (priority_a < priority_b) return -1;
+                    return 0
+                });
+
+                /* listando as categorias */
+                for (var i in categories) {
+                    fitGroupset(categories[i]).groups.add((new Group(categories[i])).group);
+                }
+
+                /* listando os contatos */
+                for (var i in contacts) {
+                    if (fitGroup(contacts[i])) {
+                        fitGroup(contacts[i]).items.add((new Item(contacts[i])).item);
                     }
                 }
-                return options;
-            }
-            /* filtro por categoria */
-            fields.categories = {
-                clients : new app.ui.inputSelector({
-                    type    : 'multiple',
-                    name    : 'category',
-                    legend  : 'Clientes',
-                    options : categoryOption('clients'),
-                    change  : function () {
-                        app.ui.filter.submit()
-                    },
-                    actions : true
-                }),
-                suppliers : new app.ui.inputSelector({
-                    type    : 'multiple',
-                    name    : 'category',
-                    legend  : 'Fornecedores',
-                    options : categoryOption('suppliers'),
-                    change  : function () {
-                        app.ui.filter.submit()
-                    },
-                    actions : true
-                }),
-                partners : new app.ui.inputSelector({
-                    type    : 'multiple',
-                    name    : 'category',
-                    legend  : 'Parceiros',
-                    options : categoryOption('partners'),
-                    change  : function () {
-                        app.ui.filter.submit()
-                    },
-                    actions : true
-                }),
-                personals : new app.ui.inputSelector({
-                    type    : 'multiple',
-                    name    : 'category',
-                    legend  : 'Pessoais',
-                    options : categoryOption('personals'),
-                    change  : function () {
-                        app.ui.filter.submit()
-                    },
-                    actions : true
-                })
-            };
-            /* fieldset principal */
-            app.ui.filter.fieldsets.add(new app.ui.fieldset({
-                legend : 'Filtrar contatos',
-                fields : [fields.query, fields.categories.clients, fields.categories.suppliers, fields.categories.partners, fields.categories.personals]
-            }));
-            /* dispara o evento de filtro */
-            app.ui.filter.submit(function () {
-                app.ui.actions.get()[0].href('data:application/octet-stream,');
 
-                if (firstFilter) {
-                    firstFilter = false;
-                } else {
-                    app.models.helpers.fiveContactsAndFiltered(contacts);
+                /* Pegando categorias cadastradas ao longo do uso do app */
+                app.events.bind('create category', function (category) {
+                    fitGroupset(category).groups.add((new Group(category)).group);
+                });
+
+                /* Pegando campos que são cadastradas ao longo do uso do app */
+                app.events.bind('create contact', function (contact) {
+                    if (fitGroup(contact)) {
+                        fitGroup(contact).items.add((new Item(contact)).item);
+                    }
+                    if (!contacts.length) {
+                        app.apps.open({app : app.slug, route : '/contato/' + contact._id})
+                    }
+                    contacts.push(contact);
+                    app.ui.filter.submit();
+                });
+
+                /* exibe o orientador */
+                if (contacts.length === 0) {
+                    app.ui.actions.get()[1].helper.description('Comece cadastrando seus principais clientes, parceiros e fornecedores e guarde suas informações principais');
+                    app.ui.actions.get()[1].helper.example('Dê preferência para aqueles com quem você precisará conversar em breve, seja para fazer uma venda ou pedir a nota fiscal.');
                 }
-
-                app.events.trigger('filter contact', fields);
-            });
-
-            /* ordenando os contatos */
-            contacts.sort(function (a,b) {
-                var priority_a = a.priority || 0,
-                    priority_b = b.priority || 0;
-
-                if (priority_a > priority_b) return  1;
-                if (priority_a < priority_b) return -1;
-                return 0
-            });
-
-            /* listando as categorias */
-            for (var i in categories) {
-                fitGroupset(categories[i]).groups.add((new Group(categories[i])).group);
-            }
-
-            /* listando os contatos */
-            for (var i in contacts) {
-                if (fitGroup(contacts[i])) {
-                    fitGroup(contacts[i]).items.add((new Item(contacts[i])).item);
-                }
-            }
-
-            /* Pegando categorias cadastradas ao longo do uso do app */
-            app.events.bind('create category', function (category) {
-                fitGroupset(category).groups.add((new Group(category)).group);
-            });
-
-            /* Pegando campos que são cadastradas ao longo do uso do app */
-            app.events.bind('create contact', function (contact) {
-                if (fitGroup(contact)) {
-                    fitGroup(contact).items.add((new Item(contact)).item);
-                }
-                if (!contacts.length) {
-                    app.apps.open({app : app.slug, route : '/contato/' + contact._id})
-                }
-                contacts.push(contact);
+                app.models.helpers.firstContact(contacts);
+                app.models.helpers.noFields(contacts);
+                app.models.helpers.fiveContacts(contacts);
                 app.ui.filter.submit();
             });
-
-            /* exibe o orientador */
-            if (contacts.length === 0) {
-                app.ui.actions.get()[1].helper.description('Comece cadastrando seus principais clientes, parceiros e fornecedores e guarde suas informações principais');
-                app.ui.actions.get()[1].helper.example('Dê preferência para aqueles com quem você precisará conversar em breve, seja para fazer uma venda ou pedir a nota fiscal.');
-            }
-            app.models.helpers.firstContact(contacts);
-            app.models.helpers.noFields(contacts);
-            app.models.helpers.fiveContacts(contacts);
-            app.ui.filter.submit();
         });
     });
 });
