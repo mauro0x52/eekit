@@ -348,6 +348,10 @@ app.routes.list('/', function (params, data) {
             query += ' ' + contact.phone;
             query += ' ' + contact.notes;
 
+            for (var i in contact.fieldValues) {
+                query += ' ' + contact.fieldValues[i].value;
+            }
+
             if (
                 (queryField.length > 1) &&
                 query.toLowerCase().indexOf(queryField.toLowerCase()) === -1
