@@ -53,13 +53,14 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
 
         date = task.dateDeadline ? new Date(task.dateDeadline) : null;
 
-        /* Input com as categorias */
+        /* Input com as fases */
         for (var i in categories) {
             if (categories.hasOwnProperty(i)) {
                 categoriesOptions.push(new app.ui.inputOption({
                     legend : categories[i].name,
                     value : categories[i]._id,
-                    clicked : categories[i]._id.toString() === task.category.toString()
+                    label : categories[i].color || 'blue',
+                    clicked : categories[i]._id === task.category
                 }));
             }
         }
@@ -118,7 +119,8 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
             type : 'single',
             name : 'category',
             legend : 'Categoria',
-            options : categoriesOptions
+            options : categoriesOptions,
+            filterable : true
         });
 
         /* se é importante */
