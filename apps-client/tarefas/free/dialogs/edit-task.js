@@ -94,7 +94,14 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
             legend : 'Data',
             type : 'date',
             name : 'date',
-            value : date ? parseInt(date.getDate()) + '/' + parseInt(date.getMonth() + 1) + '/' + date.getFullYear() : ''
+            value : date ? parseInt(date.getDate()) + '/' + parseInt(date.getMonth() + 1) + '/' + date.getFullYear() : '',
+            change : function () {
+                if (fields.date.value()) {
+                    fields.reminder.visibility('show');
+                } else {
+                    fields.reminder.visibility('hide');
+                }
+            }
         });
 
         /* recorrência */
@@ -131,6 +138,11 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
                 app.tracker.event('clicar: adicionar lembrete');
             }
         });
+        if (fields.date.value()) {
+            fields.reminder.visibility('show');
+        } else {
+            fields.reminder.visibility('hide');
+        }
 
         /* descrição */
         fields.description = new app.ui.inputText({
