@@ -220,19 +220,27 @@ module.exports = function (app) {
                                     if (transaction === null) {
                                         response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
                                     } else {
-                                        task = transaction.task;
-                                        transaction.remove(function (error) {
-                                            if (error) {
-                                                response.send({error : error});
-                                            } else {
-                                                if (task) {
-                                                    /* @TODO: COLOCAR BARREAMENTO*/
-                                                    response.send(null);
+                                        if (
+                                            request.param('source',null) === 'contacts' &&
+                                            new Date(transaction.date) < new Date()
+                                        ) {
+                                            transaction.subtitle = null;
+                                            transaction.save(function (error) {
+                                                if (error) {
+                                                    response.send({error : error});
                                                 } else {
                                                     response.send(null);
                                                 }
-                                            }
-                                        });
+                                            });
+                                        } else {
+                                            transaction.remove(function (error) {
+                                                if (error) {
+                                                    response.send({error : error});
+                                                } else {
+                                                    response.send(null);
+                                                }
+                                            });
+                                        }
                                     }
                                 }
                             });
