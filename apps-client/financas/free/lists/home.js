@@ -368,6 +368,7 @@ app.routes.list('/', function (params, data) {
                     query.length = 0 ||
                     (
                         transaction.name + ' ' +
+                        transaction.subtitle + ' ' +
                         transaction.value + ' ' +
                         transaction.noteNumber
                     ).toLowerCase().indexOf(query.toLowerCase()) > -1
