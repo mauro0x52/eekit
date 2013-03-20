@@ -40,11 +40,12 @@ module.exports = function (app) {
                             newuser = new User({
                                 user : id,
                                 categories : [
-                                    {name : 'Geral'},
-                                    {name : 'Reuniões'},
-                                    {name : 'Finanças'},
-                                    {name : 'Vendas'},
-                                    {name : 'Projetos'}
+                                    {name : 'Geral', type : 'general', color : 'blue'},
+                                    {name : 'Reuniões', type : 'meetings', color : 'brown'},
+                                    {name : 'Finanças', type : 'finances', color : 'green'},
+                                    {name : 'Vendas', type : 'sales', color : 'olive'},
+                                    {name : 'Projetos', type : 'projects', color : 'cyan'},
+                                    {name : 'Pessoal', type : 'personals', color : 'navy'}
                                 ]
                             });
                             newuser.save(function (error) {

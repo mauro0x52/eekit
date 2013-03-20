@@ -1,5 +1,5 @@
 /**
- * Diálogo para criação de uma categoria
+ * Diálogo para criação de um novo contato
  *
  * @author Mauro Ribeiro
  * @since  2012-12
@@ -18,19 +18,29 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
 
         /* Input com os tipos */
         typesOptions.push(new app.ui.inputOption({
-            legend : 'clientes',
-            value : 'clients',
-            clicked : request.type ? request.type === 'clients' : true
+            legend : 'geral',
+            value : 'general',
+            clicked : request.type ? request.type === 'general' : true
         }));
         typesOptions.push(new app.ui.inputOption({
-            legend : 'fornecedores',
-            value : 'suppliers',
-            clicked : request.type ? request.type === 'suppliers' : false
+            legend : 'reuniões',
+            value : 'meetings',
+            clicked : request.type ? request.type === 'meetings' : false
         }));
         typesOptions.push(new app.ui.inputOption({
-            legend : 'parceiros',
-            value : 'partners',
-            clicked : request.type ? request.type === 'partners' : false
+            legend : 'finanças',
+            value : 'finances',
+            clicked : request.type ? request.type === 'finances' : false
+        }));
+        typesOptions.push(new app.ui.inputOption({
+            legend : 'vendas',
+            value : 'sales',
+            clicked : request.type ? request.type === 'sales' : false
+        }));
+        typesOptions.push(new app.ui.inputOption({
+            legend : 'projetos',
+            value : 'projects',
+            clicked : request.type ? request.type === 'projects' : false
         }));
         typesOptions.push(new app.ui.inputOption({
             legend : 'pessoais',

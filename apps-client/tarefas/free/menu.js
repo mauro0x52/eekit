@@ -17,5 +17,11 @@
         tip    : 'lista de tarefas marcadas como feitas',
         image  : 'check',
         href   : '/feitas'
+    },
+    {
+        legend : 'categorias',
+        tip    : 'gerenciar minhas categorias de tarefas',
+        image  : 'tag',
+        href   : '/categorias'
     }
 ]

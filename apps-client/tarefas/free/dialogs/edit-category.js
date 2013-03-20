@@ -1,10 +1,10 @@
 /**
- * Diálogo para criação de uma categoria
+ * Diálogo para edição de uma categoria
  *
  * @author Mauro Ribeiro
- * @since  2012-12
+ * @since  2013-02
  */
-app.routes.dialog('/adicionar-categoria', function (params, data) {
+app.routes.dialog('/editar-categoria/:id', function (params, data) {
     var request = data ? data : {};
 
     /**
@@ -13,29 +13,39 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
      * @author Mauro Ribeiro
      * @since  2013-02
      */
-    function form () {
+    function form (category) {
         var fields = {}, typesOptions = [], colorsOptions = [], fieldset, i;
 
         /* Input com os tipos */
         typesOptions.push(new app.ui.inputOption({
-            legend : 'clientes',
-            value : 'clients',
-            clicked : request.type ? request.type === 'clients' : true
+            legend : 'geral',
+            value : 'general',
+            clicked : category.type === 'general'
         }));
         typesOptions.push(new app.ui.inputOption({
-            legend : 'fornecedores',
-            value : 'suppliers',
-            clicked : request.type ? request.type === 'suppliers' : false
+            legend : 'reuniões',
+            value : 'meetings',
+            clicked : category.type === 'meetings'
         }));
         typesOptions.push(new app.ui.inputOption({
-            legend : 'parceiros',
-            value : 'partners',
-            clicked : request.type ? request.type === 'partners' : false
+            legend : 'finanças',
+            value : 'finances',
+            clicked : category.type === 'finances'
+        }));
+        typesOptions.push(new app.ui.inputOption({
+            legend : 'vendas',
+            value : 'sales',
+            clicked : category.type === 'sales'
+        }));
+        typesOptions.push(new app.ui.inputOption({
+            legend : 'projetos',
+            value : 'projects',
+            clicked : category.type === 'projects'
         }));
         typesOptions.push(new app.ui.inputOption({
             legend : 'pessoais',
             value : 'personals',
-            clicked : request.type ? request.type === 'personals' : false
+            clicked : category.type === 'personals'
         }));
 
         fields.types = new app.ui.inputSelector({
@@ -51,7 +61,7 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
                 legend : app.models.colors[i],
                 value : i,
                 label : i,
-                clicked : i === 'navy'
+                clicked : i === category.color
             }));
         }
 
@@ -67,7 +77,8 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
         fields.name = new app.ui.inputText({
             legend : 'Nome',
             name : 'name',
-            rules : [{rule:/.{3,}/, message : 'campo obrigatório'}]
+            rules : [{rule:/.{3,}/, message : 'campo obrigatório'}],
+            value : category.name
         });
 
         fieldset = new app.ui.fieldset({
@@ -83,14 +94,11 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
 
         /* Controle de envio do form */
         app.ui.form.submit(function() {
-            var data = {
-                name : fields.name.value(),
-                type : fields.types.value()[0],
-                color : fields.colors.value()[0]
-            };
-            var category = new app.models.category(data);
+            category.name = fields.name.value();
+            category.type = fields.types.value()[0];
+            category.color = fields.colors.value()[0];
             category.save(function () {
-                app.events.trigger('create category', category);
+                app.events.trigger('update category ' + params.id, category);
                 app.close(category);
             });
         });
@@ -103,8 +111,10 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
      * @author Mauro Ribeiro
      * @since  2013-02
      */
-    app.ui.title("Adicionar categoria");
-    app.ui.form.action("Adicionar!");
+    app.ui.title("Editar categoria");
+    app.ui.form.action("Editar!");
 
-    form();
+    app.models.category.find(params.id, function(category) {
+        form(category);
+    });
 });
