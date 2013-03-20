@@ -64,20 +64,6 @@ app.models.task = function (params) {
     this._id = params._id;
 
    /**
-    * Marca tarefa como não feita
-    *
-    * @author Rafael Erthal
-    * @since  2012-09
-    *
-    * @param  cb : callback a ser chamado após a edição
-    */
-    this.markAsUndone = function (cb) {
-        app.ajax.post({
-            url : 'http://' + app.config.services.tasks.host + ':' + app.config.services.tasks.port + '/task/' + this._id + '/undone'
-        }, cb);
-    };
-
-   /**
     * Marca tarefa como feita
     *
     * @author Rafael Erthal
@@ -88,12 +74,16 @@ app.models.task = function (params) {
     this.markAsDone = function (cb) {
         app.ajax.post({
             url : 'http://' + app.config.services.tasks.host + ':' + app.config.services.tasks.port + '/task/' + this._id + '/done'
-        }, function (task) {
+        }, function (data) {
             that.done = true;
-            that.dateUpdate = new Date(task.dateUpdated);
+            that.dateUpdate = new Date(data.task.dateUpdated);
 
             if (cb) {
                 cb();
+            }
+
+            if (data.task) {
+                app.events.trigger('create task', data.task);
             }
 
             app.events.trigger('do task ' + that._id, that);
