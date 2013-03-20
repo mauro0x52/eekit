@@ -14,7 +14,7 @@ app.routes.dialog('/remover-categoria/:id', function (params, data) {
 
 
     app.models.category.find(params.id, function(category) {
-        app.ui.description('Ao apagar esta categoria, todos os contatos desta categoria serão apagados. Deseja realmente apagar \"'+category.name+'\"?');
+        app.ui.description('Ao apagar esta categoria, todos as tarefas desta categoria serão apagadas. Deseja realmente apagar \"'+category.name+'\"?');
 
         app.ui.form.submit(function() {
             category.remove(function () {

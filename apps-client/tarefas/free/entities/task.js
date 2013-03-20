@@ -162,23 +162,15 @@ app.routes.entity('/tarefa/:id', function (params, data) {
         /* Exibe o lembrete da tarefa */
         this.reminder = function (value) {
             fields.reminder.values.remove();
-            if (value) {
-                switch (value*1) {
-                    case 0  :
-                        fields.reminder.values.add(new app.ui.value({value : 'no dia'}));
-                        break;
-                    case 1  :
-                        fields.reminder.values.add(new app.ui.value({value : '1 dia antes'}));
-                        break;
-                    case 2  :
-                        fields.reminder.values.add(new app.ui.value({value : '2 dias antes'}));
-                        break;
-                    case 7  :
-                        fields.reminder.values.add(new app.ui.value({value : '1 semana antes'}));
-                        break;
-                    default :
-                        fields.reminder.values.add(new app.ui.value({value : value + ' dias antes'}));
-                        break;
+            if (value === 0 || value) {
+                if (value.toString() == '0') {
+                    fields.reminder.values.add(new app.ui.value({value : 'no dia'}));
+                } else if (value.toString() == '1') {
+                    fields.reminder.values.add(new app.ui.value({value : '1 dia antes'}));
+                } else if (value.toString() == '2') {
+                    fields.reminder.values.add(new app.ui.value({value : '2 dias antes'}));
+                } else if (value.toString() == '7') {
+                    fields.reminder.values.add(new app.ui.value({value : '1 semana antes'}));
                 }
                 fieldsets.details.fields.add(fields.reminder);
             } else {

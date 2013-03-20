@@ -18,7 +18,7 @@ app.routes.dialog('/adicionar-campo-personalizado', function (params, data) {
 
         /* Inputs do formulário */
         fields.name = new app.ui.inputText({
-            legend : 'Nome',
+            legend : 'Nome do campo',
             type : 'text',
             name : 'name',
             rules : [{rule:/.{3,}/, message : 'campo obrigatório'}]

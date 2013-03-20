@@ -217,7 +217,7 @@ module.exports = function (app) {
                                                         if (error) {
                                                             response.send({error : error});
                                                         } else {
-                                                            trigger(request.param('token', null), 'update embed /contatos/contato-relacionado/' + contact._id ,{subtitle : contact.name});
+                                                            trigger(request.param('token', null), 'update embed /contatos/contato-relacionado/' + contact._id ,{subtitle : contact.name, source : 'contacts'});
                                                             response.send({contact : contact});
                                                         }
                                                     });
@@ -272,7 +272,7 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
-                                                trigger(request.param('token', null), 'delete embed /contatos/contato-relacionado/' + contact_id);
+                                                trigger(request.param('token', null), 'delete embed /contatos/contato-relacionado/' + contact_id ,{source : 'contacts'});
                                                 response.send(null);
                                             }
                                         });

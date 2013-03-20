@@ -74,13 +74,14 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
 
         date = request.date ? new Date(request.date) : null;
 
-        /* Input com as categorias */
+        /* Input com as fases */
         for (var i in categories) {
             if (categories.hasOwnProperty(i)) {
                 categoriesOptions.push(new app.ui.inputOption({
                     legend : categories[i].name,
                     value : categories[i]._id,
-                    clicked : parseInt(i) === 0
+                    label : categories[i].color || 'blue',
+                    clicked : request.category ? categories[i]._id === request.category : parseInt(i) === 0
                 }));
             }
         }
@@ -88,6 +89,7 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
         /* Input com as frequencias */
         recurrenceOptions.push(new app.ui.inputOption({legend : 'sem recorrência', value : '0', clicked : true}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'diariamente', value : '1'}));
+        recurrenceOptions.push(new app.ui.inputOption({legend : 'dias úteis', value : '5'}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'semanalmente', value : '7'}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'quinzenalmente', value : '14'}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'mensalmente', value : '30'}));
@@ -113,7 +115,14 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
             legend : 'Data',
             type : 'date',
             name : 'date',
-            value : date ? parseInt(date.getDate()) + '/' + parseInt(date.getMonth() + 1) + '/' + date.getFullYear() : ''
+            value : date ? parseInt(date.getDate()) + '/' + parseInt(date.getMonth() + 1) + '/' + date.getFullYear() : '',
+            change : function () {
+                if (fields.date.value()) {
+                    fields.reminder.visibility('show');
+                } else {
+                    fields.reminder.visibility('hide');
+                }
+            }
         });
 
         /* recorrência */
@@ -129,7 +138,8 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
             type : 'single',
             name : 'category',
             legend : 'Categoria',
-            options : categoriesOptions
+            options : categoriesOptions,
+            filterable : true
         });
 
         /* se é importante */
@@ -150,6 +160,11 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
                 app.tracker.event('clicar: adicionar lembrete');
             }
         });
+        if (fields.date.value()) {
+            fields.reminder.visibility('show');
+        } else {
+            fields.reminder.visibility('hide');
+        }
 
         /* descrição */
         fields.description = new app.ui.inputText({
