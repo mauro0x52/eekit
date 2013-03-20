@@ -88,6 +88,7 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
         /* Input com as frequencias */
         recurrenceOptions.push(new app.ui.inputOption({legend : 'sem recorrência', value : '0', clicked : true}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'diariamente', value : '1'}));
+        recurrenceOptions.push(new app.ui.inputOption({legend : 'dias úteis', value : '5'}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'semanalmente', value : '7'}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'quinzenalmente', value : '14'}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'mensalmente', value : '30'}));

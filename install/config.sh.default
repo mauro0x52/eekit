@@ -23,6 +23,7 @@ CONFIG_SERVICES+=('kami-sama')
 CONFIG_SERVICES+=('tasks')
 CONFIG_SERVICES+=('contacts')
 CONFIG_SERVICES+=('finances')
+CONFIG_SERVICES+=('billets')
 
 # Outros componentes
 CONFIG_COMPONENTS+=('apps-client')
