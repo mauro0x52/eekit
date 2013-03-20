@@ -22,7 +22,7 @@ app.routes.dialog('/editar-campo-personalizado/:id', function (params, data) {
 
         /* Inputs do formulário */
         fields.name = new app.ui.inputText({
-            legend : 'Nome',
+            legend : 'Nome do campo',
             type : 'text',
             name : 'name',
             value : field.name,
