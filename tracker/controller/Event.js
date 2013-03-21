@@ -121,10 +121,22 @@ module.exports = function (app) {
      * @response : {events}
      */
     app.get('/events', function (request,response) {
+        var query = {};
+
         response.contentType('txt');
         response.header('Access-Control-Allow-Origin', '*');
        
-        Event.find(function (error, events) {
+        if (request.param('from', null) || request.param('to', null)) {
+            query.date = {};
+            if (request.param('from', null)) {
+                query.date.$gt = new Date(request.param('from', null));
+            }
+            if (request.param('to', null)) {
+                query.date.$lt = new Date(request.param('to', null));
+            }
+        }
+
+        Event.find(query, function (error, events) {
 
             events.sort(function(a,b) {
                 if (a.date > b.date) return  1;
