@@ -1,3 +1,7 @@
+function fixAllBugs () {
+    location.href = "https://www.youtube.com/watch?v=tViZc37zxGw";
+}
+
 /** GetCookie
  *
  * @autor : Rafael Erthal
