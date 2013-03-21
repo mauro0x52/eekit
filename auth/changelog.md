@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 0.3
+## 0.3 (2013-03-19)
 
 Features
 - Autenticação de serviço
