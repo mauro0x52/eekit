@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 0.8.1 (2013-03-21)
+
+Correções
+- Chamada do tracker colocando token deprecado
+
 ## 0.8 (2013-03-19)
 
 Features

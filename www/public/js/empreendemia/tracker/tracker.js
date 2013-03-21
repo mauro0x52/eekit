@@ -8,7 +8,7 @@
 
 empreendemia.tracker = {
     events : [],
-    
+
     /** event
      *
      * @autor : Rafael Erthal
@@ -18,11 +18,9 @@ empreendemia.tracker = {
      */
     event : function(event, app, source){
         var query = queryToJson(location.search);
-        console.log(query)
         empreendemia.ajax.post({
             url : 'http://' + empreendemia.config.services.tracker.host + ':' + empreendemia.config.services.tracker.port + '/event',
             data : {
-                token : empreendemia.user.token,
                 app : app.name,
                 source : source,
                 label : event,
