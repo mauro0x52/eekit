@@ -257,7 +257,7 @@ app.routes.frame('/lp-09', function (params, data) {
                                 attributes : {
                                     style : 'font-size:14px; color:#2b4f67; font-weight:bold; cursor:pointer;'
                                 },
-                                html : 'Ou descubra como essa ferramenta<br />por ajudar a sua empresa',
+                                html : 'Ou descubra como essa ferramenta<br />pode ajudar a sua empresa',
                                 events : {
                                     click : function () {
                                         app.apps.open({
