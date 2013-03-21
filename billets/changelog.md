@@ -2,10 +2,12 @@ Changelog
 =========
 
 ## 0.3 (2013-03-19)
+
+Features
 - Autenticação de serviço
 - Comunicação com barramento de eventos
 
-## 0.2.1
+## 0.2.1 (?)
 
 Correções
 - Faltava a carteira 09 no bradesco
