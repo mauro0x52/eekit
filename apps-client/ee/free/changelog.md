@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.0.3
+- Mais landing pages
+
 ## 1.0.2 (2013-03-20)
 - Landing pages
 
