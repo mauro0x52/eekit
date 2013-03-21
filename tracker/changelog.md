@@ -1,14 +1,14 @@
 Changelog
 =========
 
-## 0.6
+## 0.6 (2013-03-19)
 - Exibir ids no cohort
 - Cohort do www
 
-## 0.5
+## 0.5 (2013-03-19)
 - Initial refer
 
-## 0.4
+## 0.4 (2013-03-19)
 - Autenticação de serviço
 - Comunicação com barramento de eventos
 
