@@ -402,6 +402,8 @@ app.routes.list('/', function (params, data) {
                         escape(icons.account.legend()) + ' %2C' +
                         escape(transaction.noteNumber) + '%0A'
                     );   
+                } else {
+                    that.item.visibility('hide');
                 }
             } else {
                 balanceable = false;
