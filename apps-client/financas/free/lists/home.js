@@ -129,7 +129,7 @@ app.routes.list('/', function (params, data) {
             for (i in items) {
                 balance += items[i].balance();
             }
-            groups[i].footer.title('Saldo: $ ' + balance.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') );
+            that.group.footer.title('Saldo: $ ' + balance.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') );
             return balance;
         };
 
@@ -627,20 +627,14 @@ app.routes.list('/', function (params, data) {
 
                         for (i in groups) {
                             if (groups[i].date < (fields.dateStart.date() || new Date())) {
-                                var items = groups[i].items.get()
-                                for (j in items) {
-                                    current += items[j].balance();
-                                }
+                                current = groups[i].balance(current);
                             }
                         }
                         initial = current;
 
                         for (i in groups) {
                             if (groups[i].date >= (fields.dateStart.date() || new Date())) {
-                                var items = groups[i].items.get()
-                                for (j in items) {
-                                    current += items[j].balance();
-                                }
+                                current = groups[i].balance(current);
                             }
                         }
 
