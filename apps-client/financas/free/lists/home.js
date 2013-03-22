@@ -40,12 +40,7 @@ app.routes.list('/', function (params, data) {
     /**
      * Data de hoje sem horário
      */
-    today = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-
-    /**
-     * Variável global com saldos
-     */
-    balance;
+    today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     /* montando os groupsets */
     groupsets = {
@@ -74,7 +69,6 @@ app.routes.list('/', function (params, data) {
 
         this.group = new app.ui.group();
         this.group.date = date;
-        this.group.balance = 0;
 
         /* Botões do grupo */
         actions = {
@@ -126,6 +120,19 @@ app.routes.list('/', function (params, data) {
             }
         };
 
+        /* Retorna o balanço do grupo */
+        this.group.balance = function (balance) {
+            var items = that.group.items.get(),
+                i,
+                visible = 0;
+
+            for (i in items) {
+                balance += items[i].balance();
+            }
+            groups[i].footer.title('Saldo: $ ' + balance.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') );
+            return balance;
+        };
+
         /* Pegando quando elementos do grupo são filtrados é acionado */
         app.events.bind('filter group', function () {
             var items = that.group.items.get(),
@@ -161,7 +168,7 @@ app.routes.list('/', function (params, data) {
     function fitGroup (transaction) {
         var i,
             groups,
-            group;
+            groupz;
 
         groups = groupsets.groupset.groups.get();
         for (i in groups) {
@@ -196,7 +203,8 @@ app.routes.list('/', function (params, data) {
         var that = this,
             transaction = new app.models.transaction(data),
             icons,
-            actions;
+            actions,
+            balanceable = true;
 
         this.item = new app.ui.item({
             click : function () {
@@ -287,6 +295,15 @@ app.routes.list('/', function (params, data) {
             }
         };
 
+        /* Retorna o balanço da transação */
+        this.item.balance = function () {
+            if (balanceable) {
+                return (transaction.type === 'credit' ? 1 : -1) * parseFloat(transaction.value);
+            } else {
+                return 0;
+            }
+        };
+
         /* Pegando a edição da transação */
         app.events.bind('update transaction ' + transaction._id, function (data) {
             var oldGroup = fitGroup(transaction);
@@ -340,8 +357,7 @@ app.routes.list('/', function (params, data) {
                 !that.deleted &&
                 //Filtra por data
                 (
-                    transaction.date <= dateEnd &&
-                    transaction.date >= dateStart
+                    transaction.date <= dateEnd
                 ) &&
                 //Filtra por tipo
                 (
@@ -374,22 +390,21 @@ app.routes.list('/', function (params, data) {
                     ).toLowerCase().indexOf(query.toLowerCase()) > -1
                 )
             ) {
-                that.item.visibility('show');
-                app.ui.actions.get()[0].href(
-                    app.ui.actions.get()[0].href() +
-                    escape(transaction.name) + ' %2C' +
-                    (transaction.date.getDate() + '/' + (transaction.date.getMonth() + 1) + '/' + transaction.date.getFullYear()) + ' %2C' +
-                    (transaction.type === 'credit' ? '+' : '-') + transaction.value + ' %2C' +
-                    escape(that.item.label.legend())  + ' %2C' +
-                    escape(icons.account.legend()) + ' %2C' +
-                    escape(transaction.noteNumber) + '%0A'
-                );
-                balance.period += (transaction.type === 'credit' ? 1 : -1) * parseFloat(transaction.value);
-                fitGroup(transaction).balance += (transaction.type === 'credit' ? 1 : -1) * parseFloat(transaction.value);
-            } else {
-                if (transaction.date < dateStart) {
-                    balance.previous += (transaction.type === 'credit' ? 1 : -1) * parseFloat(transaction.value);
+                balanceable = true;
+                if (transaction.date >= dateStart) {
+                    that.item.visibility('show');
+                    app.ui.actions.get()[0].href(
+                        app.ui.actions.get()[0].href() +
+                        escape(transaction.name) + ' %2C' +
+                        (transaction.date.getDate() + '/' + (transaction.date.getMonth() + 1) + '/' + transaction.date.getFullYear()) + ' %2C' +
+                        (transaction.type === 'credit' ? '+' : '-') + transaction.value + ' %2C' +
+                        escape(that.item.label.legend())  + ' %2C' +
+                        escape(icons.account.legend()) + ' %2C' +
+                        escape(transaction.noteNumber) + '%0A'
+                    );   
                 }
+            } else {
+                balanceable = false;
                 that.item.visibility('hide');
             }
         });
@@ -581,34 +596,18 @@ app.routes.list('/', function (params, data) {
                     }));
                     /* dispara o evento de filtro */
                     app.ui.filter.submit(function () {
-                        var i,
-                            groups = groupsets.groupset.groups.get(),
-                            current;
-
-                        /* iniciando balanços */
-                        balance = {
-                            period   : 0,
-                            previous : 0
-                        };
-                        for (i in accounts) {
-                            if (fields.accounts.value().indexOf(accounts[i]._id) > -1) {
-                                balance.previous += accounts[i].initialBalance;
-                            }
-                        }
-
-                        /* zera o saldo dos grupos */
-                        for (i in groups) {
-                            groups[i].balance = 0;
-                        }
+                        app.ui.actions.get()[0].href('data:application/octet-stream,');
 
                         /* dispara o evento */
-                        app.ui.actions.get()[0].href('data:application/octet-stream,');
                         app.events.trigger('filter transaction', fields);
                         app.events.trigger('filter group');
 
-                        current = balance.previous;
+                        var i,j,
+                            groups = groupsets.groupset.groups.get(),
+                            current = 0,
+                            initial;
 
-                        /* icone do saldo corrente em cada grupo */
+                        /* saldo anterior */
                         groups.sort(function (a, b) {
                             var aDate = a.date || new Date(),
                                 bDate = b.date || new Date();
@@ -618,22 +617,42 @@ app.routes.list('/', function (params, data) {
                             return 0;
                         });
 
+                        for (i in accounts) {
+                            if (fields.accounts.value().indexOf(accounts[i]._id) > -1) {
+                                current += accounts[i].initialBalance;
+                            }
+                        }
+
                         for (i in groups) {
-                            current += groups[i].balance;
-                            groups[i].footer.title('Saldo: $ ' + current.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') );
+                            if (groups[i].date < (fields.dateStart.date() || new Date())) {
+                                var items = groups[i].items.get()
+                                for (j in items) {
+                                    current += items[j].balance();
+                                }
+                            }
+                        }
+                        initial = current;
+
+                        for (i in groups) {
+                            if (groups[i].date >= (fields.dateStart.date() || new Date())) {
+                                var items = groups[i].items.get()
+                                for (j in items) {
+                                    current += items[j].balance();
+                                }
+                            }
                         }
 
                         /* icone do saldo anterior */
-                        icons.previous.image(balance.previous >= 0 ? 'add' : 'sub');
-                        icons.previous.legend('$ ' + balance.previous.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (anterior)');
+                        icons.previous.image(initial >= 0 ? 'add' : 'sub');
+                        icons.previous.legend('$ ' + initial.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (anterior)');
 
                         /* icone do saldo do período */
-                        icons.period.image(balance.period >= 0 ? 'add' : 'sub');
-                        icons.period.legend('$ ' + balance.period.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (período)');
+                        icons.period.image((current - initial) >= 0 ? 'add' : 'sub');
+                        icons.period.legend('$ ' + (current - initial).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (período)');
 
                         /* icone do saldo corrente */
-                        icons.current.image((balance.period + balance.previous) >= 0 ? 'add' : 'sub');
-                        icons.current.legend('$ ' + (balance.period + balance.previous).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (acumulado)');
+                        icons.current.image(current >= 0 ? 'add' : 'sub');
+                        icons.current.legend('$ ' + current.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(\,))/g, '.') + ' (acumulado)');
                     });
 
                     /* listando as transações */
