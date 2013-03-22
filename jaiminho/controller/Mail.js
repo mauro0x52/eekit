@@ -21,17 +21,17 @@ module.exports = function (app) {
             sendgrid = new Sendgrid.SendGrid(config.sendgrid.username, config.sendgrid.password),
             token = request.param('token', null),
             subject = request.param('subject', null),
-            body = request.param('body', null),
-            category = request.param('category', 'undefined'),
+            html = request.param('html', null),
+            categories = request.param('categories', 'undefined'),
             service = request.param('service', null),
-            html, userId, userEmail, mail;
+            categoriesArray = [], userId, userEmail, mail;
 
             if (!token) {
                 response.send({error : { message : 'Validator "required" failed for path token', name : 'ValidatorError', path : 'token', type : 'required'}});
             } else if (!subject) {
                 response.send({error : { message : 'Validator "required" failed for path subject', name : 'ValidatorError', path : 'subject', type : 'required'}});
-            } else if (!body) {
-                response.send({error : { message : 'Validator "required" failed for path body', name : 'ValidatorError', path : 'body', type : 'required'}});
+            } else if (!html) {
+                response.send({error : { message : 'Validator "required" failed for path html', name : 'ValidatorError', path : 'html', type : 'required'}});
             } else if (!service) {
                 response.send({error : { message : 'Validator "required" failed for path service', name : 'ValidatorError', path : 'service', type : 'required'}});
             } else {
@@ -52,14 +52,25 @@ module.exports = function (app) {
                             if (data.user) {
                                 userId = data.user._id;
                                 userEmail = data.user.username;
+                                categoriesArray.push('eekit');
+
+                                if (!categories) {
+                                    categoriesArray.push('eekit '+service+': undefined category');
+                                } else if (typeof categories === 'string') {
+                                    categoriesArray.push('eekit '+service+': '+categories);
+                                } else {
+                                    for (var i in categories) {
+                                        categoriesArray.push('eekit '+service+': '+categories[i]);
+                                    }
+                                }
 
                                 mail = {
                                     from    : '"'+config.emails.contact.name+'"<'+config.emails.contact.address+'>',
                                     replyTo : '"'+config.emails.contact.name+'"<'+config.emails.contact.address+'>',
                                     to      : userEmail,
                                     subject : subject,
-                                    html    : body,
-                                    categories : ['eekit', 'eekit '+service+': '+category]
+                                    html    : html,
+                                    categories : categoriesArray
                                 }
 
                                 sendgrid.send(mail, function(success) {
