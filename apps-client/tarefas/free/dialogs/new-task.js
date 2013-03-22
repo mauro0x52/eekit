@@ -179,12 +179,12 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
 
         /* adiciona os campos no fieldset */
         fieldset.fields.add(fields.title);
-        fieldset.fields.add(fields.date);
-        fieldset.fields.add(fields.important);
-        fieldset.fields.add(fields.reminder);
         if (!request.category) {
             fieldset.fields.add(fields.category);
         }
+        fieldset.fields.add(fields.date);
+        fieldset.fields.add(fields.important);
+        fieldset.fields.add(fields.reminder);
         fieldset.fields.add(fields.recurrence);
         fieldset.fields.add(fields.description);
         app.ui.form.fieldsets.add(fieldset);
