@@ -1,7 +1,10 @@
 Changelog
 =========
 
-## 1.0.1 (?)
+## 1.0.2 (2013-03-21)
+- Orientador
+
+## 1.0.1 ## 1.0.4 (2013-03-18)
 
 Melhorias
 - Charset no exportar dados

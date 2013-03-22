@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.4 (2013-03-20)
+- Telefone no cadastro de usuários
+- Remoção dos campos setor, tamanho e função do cadastro
+- Criação de landing pages
+
 ## 1.0.3 (2013-03-21)
 
 Melhorias

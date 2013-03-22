@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.0.3 (2013-03-21)
+- Orientador
+
+## 1.0.2 (2013-03-20)
+- Adição, edição e remoção de categorias
+
 ## 1.0 (2013-03-04)
 
 Features
