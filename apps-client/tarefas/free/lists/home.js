@@ -573,8 +573,8 @@ app.routes.list('/', function (params, data) {
         /* exibe o orientador */
         app.models.task.list({}, function (tasks) {
             if (tasks.length === 0) {
-                app.ui.actions.get()[0].helper.description('Comece registrando o que você ainda precisa fazer hoje até o fim do dia');
-                app.ui.actions.get()[0].helper.example('Ex.: "Reunião com João", "Revisar proposta comercial da Cliente S.A", "Mandar relatório para o contador", etc.');
+                app.ui.actions.get()[0].helper.description('Adicione sua primeira tarefa');
+                app.ui.actions.get()[0].helper.example('Ex: Reunião de planejamento');
             }
         });
 
