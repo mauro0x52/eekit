@@ -49,17 +49,13 @@ module.exports = function (app) {
                         if (user === null) {
                             response.send({error : {message :  'user not found', name : 'InvalidTokenError', id : request.params.login, path : 'user' }});
                         } else {
-                            if (user.checkToken(request.param('token', null), service.slug)) {
-                                user.auth(request.params.service_slug, function (error, token) {
-                                    if (error) {
-                                        response.send({error : error});
-                                    } else {
-                                        response.send({token : token});
-                                    }
-                                });
-                            } else {
-                                response.send({ error : { message : 'Invalid token', name : 'InvalidTokenError'}});
-                            }
+                            user.auth(request.params.service_slug, function (error, token) {
+                                if (error) {
+                                    response.send({error : error});
+                                } else {
+                                    response.send({token : token});
+                                }
+                            });
                         }
                     }
                 });
