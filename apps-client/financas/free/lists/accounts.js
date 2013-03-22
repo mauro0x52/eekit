@@ -220,9 +220,6 @@ app.routes.list('/contas', function (params, data) {
             app.events.bind('create account', function (account) {
                 fitGroup(account).items.add((new Item(account)).item);
             });
-
-            /* Exibe o orientador */
-            app.models.helpers.defaultAccounts(accounts);
         });
     });
 });
