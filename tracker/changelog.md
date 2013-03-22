@@ -1,6 +1,8 @@
 Changelog
 =========
 
+## 1.0.4 (2013-03-20)
+
 ## 0.6 (2013-03-19)
 - Exibir ids no cohort
 - Cohort do www

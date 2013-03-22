@@ -1,7 +1,14 @@
 Changelog
 =========
 
-## 1.0.3 (?)
+## 1.0.5 (2013-03-21)
+- Orientador
+
+## 1.0.4 (2013-03-20)
+- Integração com financeiro
+- Exportar dados
+
+## 1.0.3 (2013-03-18)
 
 Melhorias
 - Exibir campos personalizados e charset no exportar dados
