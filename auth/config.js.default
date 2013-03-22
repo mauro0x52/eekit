@@ -113,7 +113,7 @@ module.exports = {
             port : 8010,
             secret : 'jaiminho',
             permissions : {
-                users     : true,
+                users     : false,
                 username  : true,
                 tokens    : false,
                 auth      : true
