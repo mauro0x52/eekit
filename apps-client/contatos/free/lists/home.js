@@ -391,8 +391,7 @@ app.routes.list('/', function (params, data) {
         app.models.category.list(function (data) {
             /* monta a listagem */
             app.models.contact.list({}, function (contacts) {
-                var fields = {},
-                    firstFilter = true;
+                var fields = {};
 
                 /* variável global com categorias */
                 categories = data;
@@ -501,12 +500,6 @@ app.routes.list('/', function (params, data) {
 
                     app.ui.actions.get()[0].href('data:application/octet-stream,' + header + '%0A');
 
-                    if (firstFilter) {
-                        firstFilter = false;
-                    } else {
-                        app.models.helpers.fiveContactsAndFiltered(contacts);
-                    }
-
                     app.events.trigger('filter contact', fields);
                 });
 
@@ -551,12 +544,9 @@ app.routes.list('/', function (params, data) {
 
                 /* exibe o orientador */
                 if (contacts.length === 0) {
-                    app.ui.actions.get()[1].helper.description('Comece cadastrando seus principais clientes, parceiros e fornecedores e guarde suas informações principais');
-                    app.ui.actions.get()[1].helper.example('Dê preferência para aqueles com quem você precisará conversar em breve, seja para fazer uma venda ou pedir a nota fiscal.');
+                    app.ui.actions.get()[1].helper.description('Adicione seu primeiro contato');
+                    app.ui.actions.get()[1].helper.example('Ex: Seu principal cliente ou parceiro');
                 }
-                app.models.helpers.firstContact(contacts);
-                app.models.helpers.noFields(contacts);
-                app.models.helpers.fiveContacts(contacts);
                 app.ui.filter.submit();
             });
         });

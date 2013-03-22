@@ -663,11 +663,10 @@ app.routes.list('/', function (params, data) {
                     });
 
                     /* exibe o orientador */
-                    app.models.helpers.noTransactions(transactions);
-                    app.models.helpers.firstTransaction(transactions, accounts);
-                    app.models.helpers.defaultCategories(categories, accounts);
-                    app.models.helpers.thirdTransaction(transactions);
-                    app.models.helpers.sixthTransaction(transactions);
+                    if (transactions.length === 0) {
+                        app.ui.actions.get()[2].helper.description('Adicione sua primeira movimentação');
+                        app.ui.actions.get()[2].helper.example('Ex: Pagar conta de internet');
+                    }
 
                     app.ui.filter.submit();
                 })
