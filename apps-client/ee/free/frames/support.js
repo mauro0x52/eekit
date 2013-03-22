@@ -45,13 +45,6 @@ app.routes.frame('/suporte', function (params, data) {
             html : 'skype: empreendemia'
         },
         {
-            tag : 'p',
-            attributes : {
-                style : 'position: absolute; right: 20px; top: 166px; text-align: right; color:#332F2F; font-size:14px; font-family:Arial,Helvetica,sans-serif; line-height:1.2em;'
-            },
-            html : 'Está com pressa?<br />Fale com nosso consultor pelo chat abaixo!'
-        },
-        {
             tag : 'div',
             attributes : {
                 style : 'background-color:#2b4f67; font-size:14x; color:#fff; font-weight:bold; width: 300px; border-radius:8px; padding:10px 20px; text-align:center; margin: 120px 20px 0 20px; font-family:Arial,Helvetica,sans-serif; cursor:pointer;'
