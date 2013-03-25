@@ -370,16 +370,17 @@ module.exports = function (app) {
                                     if (task === null) {
                                         response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                                     } else {
-                                        task.category    = request.param('category', task.category);
-                                        task.title       = request.param('title', task.title);
-                                        task.subtitle    = request.param('subtitle', task.subtitle);
-                                        task.description = request.param('description', task.description);
-                                        task.important   = request.param('important', task.important) === 'true' || request.param('important', task.important) === true;
-                                        task.recurrence  = request.param('recurrence', task.recurrence);
+                                        task.category     = request.param('category', task.category);
+                                        task.title        = request.param('title', task.title);
+                                        task.subtitle     = request.param('subtitle', task.subtitle);
+                                        task.description  = request.param('description', task.description);
+                                        task.important    = request.param('important', task.important) === 'true' || request.param('important', task.important) === true;
+                                        task.recurrence   = request.param('recurrence', task.recurrence);
                                         task.dateDeadline = request.param('dateDeadline', task.dateDeadline);
-                                        task.priority    = request.param('priority', task.priority);
+                                        task.dateUpdated  = request.param('dateUpdated', task.dateUpdated);
+                                        task.priority     = request.param('priority', task.priority);
                                         task.embeddeds    = request.param('embeddeds', task.embeddeds);
-                                        task.reminder    = request.param('reminder', task.reminder);
+                                        task.reminder     = request.param('reminder', task.reminder);
                                         task.save(function (error) {
                                             if (error) {
                                                 response.send({error : error});

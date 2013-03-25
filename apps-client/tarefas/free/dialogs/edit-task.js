@@ -51,7 +51,11 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
          */
         date;
 
-        date = task.dateDeadline ? new Date(task.dateDeadline) : null;
+        if (task.done) {
+            date = task.dateUpdated ? new Date(task.dateUpdated) : null;
+        } else {
+            date = task.dateDeadline ? new Date(task.dateDeadline) : null;
+        }
 
         /* Input com as fases */
         for (var i in categories) {
@@ -176,12 +180,18 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
             var data = {
                 title : fields.title.value(),
                 subtitle : task.subtitle,
-                dateDeadline : fields.date.value() ? fields.date.date() : null,
                 category : fields.category.value()[0],
                 important : fields.important.value()[0] === 'important',
                 recurrence : fields.recurrence.value()[0],
                 description : fields.description.value()
             };
+
+            if (task.done) {
+                data.dateUpdated  = fields.date.value() ? fields.date.date() : null;
+            } else {
+                data.dateDeadline = fields.date.value() ? fields.date.date() : null;
+            }
+
             if (fields.reminder.value()[0] !== 'null') {
                 data.reminder = fields.reminder.value()[0];
             } else {
