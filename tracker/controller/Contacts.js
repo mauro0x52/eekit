@@ -122,16 +122,18 @@ module.exports = function (app) {
                 response.write('<td>Usuarios que continuam engajados</td>');
                 response.write('<td>% de engajados</td>');
                 response.write('</tr>');
+                var users = 0;
                 for (var i in cohort) {
                     var engaged = 0;
                     for (var j = 0; j <= i; j += 1) {
                         engaged += cohort[j].filter(['marcar tarefa como feita', 'adicionar transação'],2, utm, cohort[i].date).length;
                     }
+                    users += cohort[i].filter([],1,utm).length;
                     response.write('<tr>');
                     response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
-                    response.write('<td>' + cohort[i].filter([],1,utm).length + '</td>');
+                    response.write('<td>' + users + '</td>');
                     response.write('<td>' + engaged + '</td>');
-                    response.write('<td>' + (engaged / cohort[i].filter([],1,utm).length * 100).toFixed(2) + '%</td>');
+                    response.write('<td>' + (engaged / users * 100).toFixed(2) + '%</td>');
                     response.write('</tr>');
                 }
                 response.write('</table><br />');
