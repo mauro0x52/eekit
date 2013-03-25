@@ -171,6 +171,13 @@ app.routes.list('/feitas', function (params, data) {
 
         /* Botões do item */
         actions = {
+            edit         : new app.ui.action({
+                tip : 'editar esta tarefa',
+                image  : 'pencil',
+                click  : function() {
+                    app.apps.open({app : app.slug, route : '/editar-tarefa/' + task._id});
+                }
+            }),
             remove       : new app.ui.action({
                 tip : 'remover esta tarefa',
                 image  : 'trash',
@@ -179,7 +186,7 @@ app.routes.list('/feitas', function (params, data) {
                 }
             })
         };
-        this.item.actions.add([actions.remove]);
+        this.item.actions.add([actions.edit, actions.remove]);
 
         /* Exibe o titulo da tarefa */
         this.title = function (value) {
@@ -207,6 +214,8 @@ app.routes.list('/feitas', function (params, data) {
             if (value) {
                 if (value == 1) {
                     icons.recurrence.legend('diariamente');
+                } else if (value == 5) {
+                    icons.recurrence.legend('dias úteis');
                 } else if (value == 7) {
                     icons.recurrence.legend('semanalmente');
                 } else if (value == 14) {
@@ -267,6 +276,28 @@ app.routes.list('/feitas', function (params, data) {
                 }
             }
         }
+
+        /* Pegando a edição da tarefa */
+        app.events.bind('update task ' + task._id, function (data) {
+            var oldGroup = fitGroup(task);
+
+            task = new app.models.task(data);
+
+            if (oldGroup !== fitGroup(task)) {
+                that.item.detach();
+                fitGroup(task).items.add(that.item);
+            }
+
+            if (task) {
+                that.title(task.title + (task.subtitle ? ' (' + task.subtitle + ')' : ''));
+                that.description(task.description);
+                that.important(task.important);
+                that.recurrence(task.recurrence);
+                that.reminder(task.reminder);
+                that.dateUpdated(task.dateUpdated);
+                that.category(task.category);
+            }
+        });
 
         /* Pegando a exclusão da tarefa */
         app.events.bind('remove task ' + task._id, this.item.detach);
@@ -429,8 +460,8 @@ app.routes.list('/feitas', function (params, data) {
                 var a_priority = a.dateUpdated || new Date();
                 var b_priority = b.dateUpdated || new Date();
 
-                if (a_priority < b_priority)  return -1;
-                if (a_priority > b_priority)  return  1;
+                if (a_priority > b_priority)  return -1;
+                if (a_priority < b_priority)  return  1;
                 return 0;
             });
 

@@ -113,7 +113,7 @@ module.exports = function (app) {
                     response.write('<tr>');
                     response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
                     while (date < new Date) {
-                        response.write('<td>' + cohort[i].filter(['marcar como feita'], 5, utm, date).length + '</td>')
+                        response.write('<td>' + cohort[i].filter(['marcar tarefa como feita'], 5, utm, date).length + '</td>')
                         date.setDate(date.getDate() + 7);
                     }
                     response.write('</tr>');
@@ -130,18 +130,18 @@ module.exports = function (app) {
                 response.write('<td>Usuarios que continuam engajados</td>');
                 response.write('<td>% de engajados</td>');
                 response.write('</tr>');
-                var count = 0;
+                var users = 0;
                 for (var i in cohort) {
                     var engaged = 0;
-                    count += cohort[i].users.length;
                     for (var j = 0; j <= i; j += 1) {
-                        engaged += cohort[j].filter(['marcar como feita'], 5, utm, cohort[i].date).length;
+                        engaged += cohort[j].filter(['marcar tarefa como feita'], 5, utm, cohort[i].date).length;
                     }
+                    users += cohort[i].filter([],1,utm).length;
                     response.write('<tr>');
                     response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
-                    response.write('<td>' + count + '</td>');
+                    response.write('<td>' + users + '</td>');
                     response.write('<td>' + engaged + '</td>');
-                    response.write('<td>' + (engaged / count * 100).toFixed(2) + '%</td>');
+                    response.write('<td>' + (engaged / users * 100).toFixed(2) + '%</td>');
                     response.write('</tr>');
                 }
                 response.write('</table><br />');

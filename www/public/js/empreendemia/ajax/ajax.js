@@ -53,6 +53,7 @@ empreendemia.ajax = {
                 ) {
                     if (i === 'auth') {
                         path.data.secret = empreendemia.config.services.www.secret;
+                        path.data.token = empreendemia.config.services.www.token;
                         cb(path);
                     } else if (empreendemia.config.services[i].token) {
                         path.data.token = empreendemia.config.services[i].token;

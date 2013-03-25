@@ -113,6 +113,9 @@ app.routes.entity('/tarefa/:id', function (params, data) {
                     case 1  :
                         fields.recurrence.values.add(new app.ui.value({value : 'diariamente'}));
                         break;
+                    case 5  :
+                        fields.recurrence.values.add(new app.ui.value({value : 'dias úteis'}));
+                        break;
                     case 7  :
                         fields.recurrence.values.add(new app.ui.value({value : 'semanalmente'}));
                         break;

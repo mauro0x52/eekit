@@ -107,6 +107,17 @@ module.exports = {
                 tokens    : false,
                 auth      : false
             }
+        },
+        jaiminho : {
+            url  : 'localhost',
+            port : 8010,
+            secret : 'jaiminho',
+            permissions : {
+                users     : false,
+                username  : true,
+                tokens    : false,
+                auth      : true
+            }
         }
     },
     security : {

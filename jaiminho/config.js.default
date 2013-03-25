@@ -1,0 +1,30 @@
+module.exports = {
+    host : {
+        port : 8010,
+        url  : 'localhost',
+        debuglevel : 1 // 0 sem erros, 1 com erros
+    },
+    emails : {
+        contact : {
+            name : 'Contato EmpreendeKit',
+            address : 'testes+contato@empreendemia.com.br'
+        }
+    },
+    sendgrid : {
+        username : undefined,
+        password : undefined
+    },
+    security : {
+        secret : 'jaiminho'
+    },
+    services : {
+        auth : {
+            port : 8001,
+            url  : 'localhost'
+        },
+        jaiminho : {
+            port : 8010,
+            url  : 'localhost'
+        }
+    }
+};

@@ -302,6 +302,8 @@ app.routes.list('/', function (params, data) {
             if (value) {
                 if (value == 1) {
                     icons.recurrence.legend('diariamente');
+                } else if (value == 5) {
+                    icons.recurrence.legend('dias úteis');
                 } else if (value == 7) {
                     icons.recurrence.legend('semanalmente');
                 } else if (value == 14) {
