@@ -30,7 +30,7 @@ app.routes.dialog('/login', function (params, data) {
         }),
         fieldset = new app.ui.fieldset({
             legend : 'login',
-            fields : [login, password, remindme, forgotpassword]
+            fields : [login, password, remindme/*, forgotpassword*/]
         });
 
     app.ui.form.fieldsets.add(fieldset);
