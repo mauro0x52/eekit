@@ -431,8 +431,8 @@ app.routes.list('/feitas', function (params, data) {
                 var a_priority = a.dateUpdated || new Date();
                 var b_priority = b.dateUpdated || new Date();
 
-                if (a_priority < b_priority)  return -1;
-                if (a_priority > b_priority)  return  1;
+                if (a_priority > b_priority)  return -1;
+                if (a_priority < b_priority)  return  1;
                 return 0;
             });
 
