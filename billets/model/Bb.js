@@ -84,6 +84,7 @@ Billet.validate = function (billet, cb) {
     }
 
     if (valid) {
+        billet.bank = this.bank;
     } else {
         error = {
             message : 'Validation failed',
@@ -123,10 +124,11 @@ Billet.print = function (billet, cb) {
             dueFactor = that.dueFactor(billet.dueDate);
 
             for (var i in billet) {
-                if (typeof billet[i] !== 'function' && billet.hasOwnProperty(i)) {
+                if (typeof billet[i] !== 'function' && i[0] !== '_') {
                     print[i] = billet[i];
                 }
             }
+
             if (print.agreement.length === 6) {
                 print.ourNumber = that.formatNumber(print.ourNumber, 17, 0);
                 vd = that.modulus11(print.bankId + '' + print.currency + '' + dueFactor + '' + fValue + '' + '' + print.agreement + '' + print.ourNumber + '21', 9, 0, false);
