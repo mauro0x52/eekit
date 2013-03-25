@@ -259,13 +259,13 @@ module.exports = function (app) {
                             } else {
                                 require('restler').post('http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail', {
                                     data: {
-                                        token      : token,
+                                        token      : tokenKey,
                                         subject    : 'Recuperação de senha',
-                                        html       : 'Para criar uma nova senha no empreendekit, entre no link <a href="http://www.empreendekit.com.br/?token=' + token + '#!/ee/mudar-senha">http://www.empreendekit.com.br/?token=' + token + '#!/ee/mudar-senha</a>',
+                                        html       : 'Para criar uma nova senha no empreendekit, entre no link <a href="http://www.empreendekit.com.br/?token=' + tokenKey + '#!/ee/mudar-senha">http://www.empreendekit.com.br/?token=' + tokenKey + '#!/ee/mudar-senha</a>',
                                         categories : 'password recovery',
                                         service    : 'auth'
                                     }
-                                }).on('success', function(data) {}).on('error', function() {});
+                                }).on('success', function(data) {response.send(null);}).on('error', function() {});
                                 response.send(null);
                             }
                         });
