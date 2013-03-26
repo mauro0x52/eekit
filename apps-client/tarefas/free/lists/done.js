@@ -326,7 +326,7 @@ app.routes.list('/feitas', function (params, data) {
 
         /* Montando o item */
         if (task) {
-            this.title(task.title);
+            this.title(task.title + (task.subtitle ? ' (' + task.subtitle + ')' : ''));
             this.description(task.description);
             this.important(task.important);
             this.recurrence(task.recurrence);
