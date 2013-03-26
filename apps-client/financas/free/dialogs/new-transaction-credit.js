@@ -263,7 +263,15 @@ app.routes.dialog('/adicionar-receita', function (params, data) {
 
     app.models.category.list(function(categories) {
         app.models.account.list(function(accounts) {
-            if (categories.length && accounts.length) {
+            var selected = false;
+
+            for (var i in categories) {
+                if (categories.hasOwnProperty(i) && categories[i].type === 'credit') {
+                    selected = true;
+                }
+            }
+
+            if (selected && accounts.length) {
                 categories.sort(function (a,b) {
                     var aName = a.name || '';
                         bName = b.name || '';

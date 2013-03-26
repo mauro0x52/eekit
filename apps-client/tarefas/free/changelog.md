@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 1.0.4
+- Exibir nome do contato nas tarefas feitas
+
 ## 1.0.3 (2013-03-21)
 - Orientador
 
