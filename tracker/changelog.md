@@ -1,7 +1,13 @@
 Changelog
 =========
 
-## 1.0.4 (2013-03-20)
+## 0.8 (2013-03-26)
+
+Features
+- Exibir nome, telefone expectativa na ficha do usuário
+- Lista de usuários
+
+## 0.7 (2013-03-20)
 
 ## 0.6 (2013-03-19)
 - Exibir ids no cohort

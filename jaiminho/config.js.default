@@ -8,6 +8,10 @@ module.exports = {
         contact : {
             name : 'Contato EmpreendeKit',
             address : 'testes+contato@empreendemia.com.br'
+        },
+        noreply : {
+            name : 'No-reply EmpreendeKit',
+            address : 'testes+noreply@empreendemia.com.br'
         }
     },
     sendgrid : {

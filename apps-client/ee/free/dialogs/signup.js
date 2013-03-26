@@ -7,7 +7,7 @@ app.routes.dialog('/cadastro', function (params, data) {
         token;
 
     function validate () {
-        var validate = true;
+        var validate = true;/*
         if (password.value() !== password_confirmation.value()) {
             password_confirmation.errors.add(new app.ui.inputError({ message : 'as senhas não conferem' }));
             validate = false;
@@ -15,18 +15,18 @@ app.routes.dialog('/cadastro', function (params, data) {
         if (login.value() !== login_confirmation.value()) {
             login_confirmation.errors.add(new app.ui.inputError({ message : 'os emails não conferem' }));
             validate = false;
-        }
+        }*/
         return validate;
     }
 
     var name_tracked = false,
-        surname_tracked = false,
+        //surname_tracked = false,
         phone_tracked = false,
         login_tracked = false,
-        login_confirmation_tracked = false,
-        password_tracked = false,
-        password_confirmation_tracked = false,
-        why_tracked = false,
+        //login_confirmation_tracked = false,
+        //password_confirmation_tracked = false,
+        //why_tracked = false,
+        password_tracked = false;
 
     name = new app.ui.inputText({
         legend : 'Nome',
@@ -42,7 +42,7 @@ app.routes.dialog('/cadastro', function (params, data) {
             }
         }
     });
-
+/*
     surname = new app.ui.inputText({
         legend : 'Sobrenome',
         name : 'login',
@@ -57,7 +57,7 @@ app.routes.dialog('/cadastro', function (params, data) {
             }
         }
     });
-
+*/
     phone = new app.ui.inputText({
         legend : 'Telefone com DDD',
         name : 'phone',
@@ -86,7 +86,7 @@ app.routes.dialog('/cadastro', function (params, data) {
             }
         }
     });
-
+/*
     login_confirmation = new app.ui.inputText({
         legend : 'Confirmar email',
         name : 'login',
@@ -97,7 +97,7 @@ app.routes.dialog('/cadastro', function (params, data) {
             }
         }
     });
-
+*/
     password = new app.ui.inputPassword({
         legend : 'Senha',
         name : 'password',
@@ -111,7 +111,7 @@ app.routes.dialog('/cadastro', function (params, data) {
             }
         }
     });
-
+/*
     password_confirmation = new app.ui.inputPassword({
         legend : 'Confirmar senha',
         name : 'password',
@@ -136,18 +136,18 @@ app.routes.dialog('/cadastro', function (params, data) {
             }
         }
     });
-
+*/
     fieldsets.profile = new app.ui.fieldset({
         legend : 'Dados pessoais',
-        fields : [name, surname, phone, login, login_confirmation, password, password_confirmation]
+        fields : [name/*, surname*/, phone, login/*, login_confirmation*/, password/*, password_confirmation*/]
     });
-
+/*
     fieldsets.aditional = new app.ui.fieldset({
         legend : 'Informações da empresa',
         fields : [why]
     });
-
-    app.ui.form.fieldsets.add([fieldsets.profile, fieldsets.user, fieldsets.aditional]);
+*/
+    app.ui.form.fieldsets.add([fieldsets.profile/*, fieldsets.user, fieldsets.aditional*/]);
     app.ui.form.action('cadastrar!');
 
     name.focus();
@@ -159,7 +159,8 @@ app.routes.dialog('/cadastro', function (params, data) {
                 data : {
                     username : login.value(),
                     password : password.value(),
-                    password_confirmation : password_confirmation.value()
+                    //password_confirmation : password_confirmation.value()
+                    password_confirmation : password.value()
                 }
             }, function (response) {
                 if (!response || response.error) {
@@ -174,9 +175,9 @@ app.routes.dialog('/cadastro', function (params, data) {
                         token : token,
                         profile : {
                             name : name.value(),
-                            surname : surname.value(),
+                            //surname : surname.value(),
                             phone : phone.value(),
-                            why : why.value(),
+                            //why : why.value(),
                             token : token
                         }
                     });

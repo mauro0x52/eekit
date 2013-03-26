@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 0.4.1 (2013-03-26)
+
+Melhorias
+- Envia email para o Lucas a cada novo cadastro
+
 ## 0.4 (2013-03-19)
 - Limpando requisições antigas
 - COlocando telefone

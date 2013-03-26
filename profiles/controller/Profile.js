@@ -8,6 +8,7 @@
 module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         auth = require('../Utils.js').auth,
+        mailAdmin = require('../Utils.js').mailAdmin,
         Profile  = Model.Profile;
 
     /** GET /profile
@@ -92,6 +93,12 @@ module.exports = function (app) {
                         response.send({error : error});
                     } else {
                         response.send({profile : profile});
+                        mailAdmin(request.param('token'), {
+                            subject : 'Novo usuário cadastrado',
+                            categories : ['novo usuário'],
+                            to : 'lucas@empreendemia.com.br',
+                            html : '<p>Nome: '+request.param('name', null) + ' ' + request.param('surname', null) + '</p><p>Telefone: ' + request.param('phone', null) + '</p>'
+                        })
                     }
                 });
             }

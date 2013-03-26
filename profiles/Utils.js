@@ -18,7 +18,7 @@ var config = require('./config.js');
  */
 exports.auth = function (token, cb) {
     "use strict";
-    
+
     require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
         data: {
             token  : token,
@@ -48,7 +48,7 @@ exports.auth = function (token, cb) {
  */
 exports.bind = function (token, name, method, callback) {
     "use strict";
-    
+
     require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/bind', {
         data: {
             token : token,
@@ -71,7 +71,7 @@ exports.bind = function (token, name, method, callback) {
  */
 exports.trigger = function (token, name, data) {
     "use strict";
-    
+
     require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/tigger', {
         data: {
             token : token,
@@ -80,4 +80,36 @@ exports.trigger = function (token, name, data) {
             data : data
         }
     }).on('success', function() {}).on('error', function() {});
+};
+
+
+//            token : token,
+//            subject : 'Aew admin!',
+//            html : 'Email para o admin',
+//            categories : 'teste',
+//            service : 'serviço de teste',
+//            to : 'testes+aew@empreendemia.com.br'
+
+/**
+ * Envia email para admin
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-03
+ *
+ * @param token             token do usuário
+ * @param data              dados do email
+ * @param data.subject      titulo do email
+ * @param data.html         corpo do email
+ * @param data.categories   categorias associadas ao sendgrid
+ * @param data.to           email de alguem especifico
+ */
+exports.mailAdmin = function(token, data) {
+    "use strict";
+
+    data.token = token;
+    data.service = 'profiles';
+    
+    require('restler').post('http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail/admin', {
+        data: data
+    }).on('success', function(data) {console.log(data)}).on('error', function(data) {console.log(data)});;
 };
