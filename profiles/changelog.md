@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 0.4.1
+## 0.4.1 (2013-03-26)
 
 Melhorias
 - Envia email para o Lucas a cada novo cadastro

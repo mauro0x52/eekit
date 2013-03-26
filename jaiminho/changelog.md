@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 0.1
+## 0.1 (2013-03-26)
 
 Features
 - Mandar email para o próprio usuário
