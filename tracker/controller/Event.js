@@ -30,78 +30,102 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
-                    data: {
-                        secret : config.security.secret
-                    }
-                }).on('success', function (data) {
-
-                    function format (date) {
-                        if (date) {
-                            return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/services').on('success', function (data) {
+                    var profiles = data.services.profiles;
+                    require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
+                        data: {
+                            secret : config.security.secret
                         }
-                    }
+                    }).on('success', function (data) {
 
-                    var j,
-                        user,
-                        utm = {}
-                        appDays = {};
+                        function format (date) {
+                            if (date) {
+                                return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                            }
+                        }
 
-                    for (i in data.users) {
-                        if (data.users[i]._id.toString() === request.params.id.toString()) {
-                            user = data.users[i];
-                        }
-                    }
+                        var j,
+                            user,
+                            utm = {}
+                            appDays = {};
 
-                    for (i in events) {
-                        if (!appDays[events[i].app]) {
-                            appDays[events[i].app] = {};
+                        for (i in data.users) {
+                            if (data.users[i]._id.toString() === request.params.id.toString()) {
+                                user = data.users[i];
+                            }
                         }
-                        if (!appDays[events[i].app][format(events[i].date)]) {
-                            appDays[events[i].app][format(events[i].date)] = true;
-                        }
-                        if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
-                            utm = events[i].utm;
-                        }
-                    }
-                    
-                    response.write(user.username + '</br></br>');
-                    
-                    response.write('utm_source : ' + utm.source + '</br>');
-                    response.write('utm_medium : ' + utm.medium + '</br>');
-                    response.write('utm_content : ' + utm.content + '</br>');
-                    response.write('utm_campaign : ' + utm.campaign + '</br></br>');
 
-                    response.write('<table border="1">');
-                    response.write('<tr>');
-                    response.write('<td>App</td>');
-                    response.write('<td>Dias com acesso</td>');
-                    response.write('</tr>');
-                    for (i in appDays) {
-                        var total = 0;
-                        for (var prop in appDays[i]) if (appDays[i].hasOwnProperty(prop)) total++;
-                        response.write('<tr>');
-                        response.write('<td>' + i + '</td>');
-                        response.write('<td>' + total + '</td>');
-                        response.write('</tr>');
-                    }
-                    response.write('</table><br />');
-                    
-                    response.write('<table border="1">');
-                    response.write('<tr>');
-                    response.write('<td>Data</td>');
-                    response.write('<td>App</td>');
-                    response.write('<td>Evento</td>');
-                    response.write('</tr>');
-                    for (i in events) {
-                        response.write('<tr>');
-                        response.write('<td>' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '</td>');
-                        response.write('<td>' + events[i].app + '</td>');
-                        response.write('<td>' + events[i].label + '</td>');
-                        response.write('</tr>');
-                    }
-                    response.write('</table>');
-                    response.end();
+                        for (i in events) {
+                            if (!appDays[events[i].app]) {
+                                appDays[events[i].app] = {};
+                            }
+                            if (!appDays[events[i].app][format(events[i].date)]) {
+                                appDays[events[i].app][format(events[i].date)] = true;
+                            }
+                            if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
+                                utm = events[i].utm;
+                            }
+                        }
+
+                        for (i in user.auths) {
+                            if (user.auths[i].service === 'profiles') {
+                                for (j in user.auths[i].tokens) {
+                                    if ((new Date() - new Date(user.auths[i].tokens[j].dateUpdated))/(1000*60*60*24) < 30) {
+                                        token = user.auths[i].tokens[j].token
+                                    }
+                                }
+                            }
+                        }
+                        
+                        require('restler').get('http://'+profiles.host+':'+profiles.port+'/profile', {
+                            data: {
+                                token : token
+                            }
+                        }).on('success', function (data) {
+                            response.write(user.username + '</br></br>');
+                            
+                            response.write('nome : ' + data.profile.name + '</br>');
+                            response.write('telefone : ' + data.profile.phone + '</br>');
+                            response.write('expectativa : ' + data.profile.why + '</br></br>');
+
+                            response.write('utm_source : ' + utm.source + '</br>');
+                            response.write('utm_medium : ' + utm.medium + '</br>');
+                            response.write('utm_content : ' + utm.content + '</br>');
+                            response.write('utm_campaign : ' + utm.campaign + '</br></br>');
+
+                            response.write('<table border="1">');
+                            response.write('<tr>');
+                            response.write('<td>App</td>');
+                            response.write('<td>Dias com acesso</td>');
+                            response.write('</tr>');
+                            for (i in appDays) {
+                                var total = 0;
+                                for (var prop in appDays[i]) if (appDays[i].hasOwnProperty(prop)) total++;
+                                response.write('<tr>');
+                                response.write('<td>' + i + '</td>');
+                                response.write('<td>' + total + '</td>');
+                                response.write('</tr>');
+                            }
+                            response.write('</table><br />');
+                            
+                            response.write('<table border="1">');
+                            response.write('<tr>');
+                            response.write('<td>Data</td>');
+                            response.write('<td>App</td>');
+                            response.write('<td>Evento</td>');
+                            response.write('</tr>');
+                            for (i in events) {
+                                response.write('<tr>');
+                                response.write('<td>' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '</td>');
+                                response.write('<td>' + events[i].app + '</td>');
+                                response.write('<td>' + events[i].label + '</td>');
+                                response.write('</tr>');
+                            }
+                            response.write('</table>');
+                            response.end();
+                        });
+                    });
+
                 });
             }
         });
