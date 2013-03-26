@@ -44,7 +44,7 @@ app.get('/ping', function (request,response) {
     fs.readFile('changelog.md', 'utf8', function(error, data) {
         if (error) response.send({error : error});
         else {
-            regexm = data.match(/\#{2} ([0-9]+\.[0-9]+\.?[0-9]?)( \((.*)\))?/);
+            regexm = data.match(/\#{2} ([0-9]+\.[0-9]+\.?[0-9]?)\s*(\((.*)\))?/);
             response.send({ version : regexm[1], date : regexm[3] });
         }
     });
