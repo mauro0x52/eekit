@@ -19,6 +19,7 @@ CONFIG_SERVICES+=('apps')
 CONFIG_SERVICES+=('profiles')
 CONFIG_SERVICES+=('tracker')
 CONFIG_SERVICES+=('kami-sama')
+CONFIG_SERVICES+=('jaiminho')
 # outros
 CONFIG_SERVICES+=('tasks')
 CONFIG_SERVICES+=('contacts')
