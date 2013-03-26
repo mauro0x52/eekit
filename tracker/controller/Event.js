@@ -107,6 +107,40 @@ module.exports = function (app) {
         });
     });
 
+    /** GET /users
+     *
+     * @autor : Rafael Erthal
+     * @since : 2012-10
+     *
+     * @description : Lista usuários
+     *
+     * @allowedApp : Qualquer APP
+     * @allowedUser : Logado
+     *
+     * @request : {}
+     * @response : {events}
+     */
+    app.get('/users', function (request,response) {
+        var query = {};
+
+        response.contentType('json');
+        response.header('Access-Control-Allow-Origin', '*');
+
+
+        require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
+            data: {
+                secret : config.security.secret
+            }
+        }).on('success', function (data) {
+            
+            response.send({users : data.users});
+
+        }).on('error', function(error) {
+            response.write(error.toString());
+            response.end();
+        });
+    });
+
     /** GET /events
      *
      * @autor : Rafael Erthal
