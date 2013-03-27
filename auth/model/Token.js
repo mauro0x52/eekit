@@ -12,9 +12,11 @@ var mongoose = require('mongoose'),
 
 tokenSchema = new Schema({
     token       : {type : String, trim : true},
+    user        : {type : objectId, required : true},
+    company     : {type : objectId, required : true},
     dateCreated : {type : Date},
     dateUpdated : {type : Date}
 });
 
 /*  Exportando o pacote  */
-exports.Token = tokenSchema;
+Token = exports.Token = mongoose.model('Token', tokenSchema);

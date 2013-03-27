@@ -10,7 +10,6 @@ module.exports = function (app) {
 
     var Model = require('./../model/Model.js'),
         User  = Model.User,
-        Service  = Model.Service,
         config  = require('../config.js');
 
     /** POST /service/:id/auth

@@ -28,7 +28,8 @@ app.configure(function () {
 
 /*  Chamando controllers */
 require('./controller/User.js')(app);
-require('./controller/Services.js')(app);
+require('./controller/Service.js')(app);
+require('./controller/Company.js')(app);
 require('./controller/Auth.js')(app);
 
 /*  Métodos para dev e teste */
