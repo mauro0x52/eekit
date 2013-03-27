@@ -93,6 +93,37 @@ module.exports = function (app) {
     });
 
     /**
+     * Remove um boleto
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-03
+     */
+    app.post('/billet/:id/delete', function (request, response) {
+        response.contentType('json');
+        response.header('Access-Control-Allow-Origin', '*');
+
+        auth(request.param('token', null), function (error, user) {
+            if (error) {
+                response.send({error : error});
+            } else {
+                Billet.findOne({ _id : request.params.id, user : user._id }, function (error, billet) {
+                    if (error) {
+                        response.send({error : error});
+                    } else {
+                        billet.remove(function (error) {
+                            if (error) {
+                                response.send({error : error});
+                            } else {
+                                response.send(null);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    /**
      * Imprime um boleto
      *
      * @author Mauro Ribeiro

@@ -61,7 +61,6 @@ describe('POST /billet', function () {
 });
 
 describe('GET /billet/:id', function () {
-
     it('pega os dados do boleto', function (done) {
         api.get('billets', '/billet/'+billet._id, {
             token : token
