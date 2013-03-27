@@ -15,14 +15,9 @@ describe('POST /field', function () {
     var token;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('contacts', '/user', {token : token}, function (error, data, response) {
+        auth('contacts', function (newToken) {
+            token = newToken;
+            api.post('contacts', '/company', {token : token}, function (error, data, response) {
                 done();
             });
         });
@@ -87,14 +82,9 @@ describe('GET /field/[field]', function () {
         field;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('contacts', '/user', {token : token}, function (error, data, response) {
+        auth('contacts', function (newToken) {
+            token = newToken;
+            api.post('contacts', '/company', {token : token}, function (error, data, response) {
                 api.post('contacts', '/field', {token : token, name : 'name'}, function (error, data, response) {
                     field = data.field;
                     done();
@@ -126,7 +116,7 @@ describe('GET /field/[field]', function () {
         });
     });
 
-    it('cliente inexistente', function (done) {
+    it('campo inexistente', function (done) {
         api.get('contacts', '/field/inexistente' , {token : token}, function (error, data, response) {
             if (error) {
                 return done(error);
@@ -137,7 +127,7 @@ describe('GET /field/[field]', function () {
         });
     });
 
-    it('exibe cliente', function (done) {
+    it('exibe campo', function (done) {
         api.get('contacts', '/field/' + field._id, {token : token}, function (error, data, response) {
             if (error) {
                 return done(error);
@@ -155,14 +145,9 @@ describe('POST /field/[field]/update', function () {
         field;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('contacts', '/user', {token : token}, function (error, data, response) {
+        auth('contacts', function (newToken) {
+            token = newToken;
+            api.post('contacts', '/company', {token : token}, function (error, data, response) {
                 api.post('contacts', '/field', {token : token, name : 'name'}, function (error, data, response) {
                     field = data.field;
                     done();
@@ -211,19 +196,6 @@ describe('POST /field/[field]/update', function () {
         });
     });
 
-    it('edita campo nome em branco', function (done) {
-        api.post('contacts', '/field/' + field._id + '/update', {
-            token : token
-        }, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('field');
-                done();
-            }
-        });
-    });
-
     it('edita campo', function (done) {
         api.post('contacts', '/field/' + field._id + '/update', {
             name : 'Nome ' + rand(),
@@ -240,45 +212,28 @@ describe('POST /field/[field]/update', function () {
 
 });
 
-/*
 describe('GET /fields', function () {
     var token,
-        phase,
         handled = 0;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('contacts', '/user', {token : token}, function (error, data, response) {
-                api.get('contacts', '/phases', {token : token}, function (error, data, response) {
-                    phase = data.phases[0];
-                    for (var i = 0; i < 20; i++) {
-                        api.post('contacts', '/customer', {
-                            phase : phase._id,
-                            name : 'Nome ' + rand(),
-                            email : 'Email ' + rand(),
-                            phone : 'Telefone ' + rand(),
-                            notes : 'Notas ' + rand(),
-                            token : token
-                        }, function (error, data, response) {
-                            handled++;
-                            if (handled === 20) {
-                                done();
-                            }
-                        });
-                    }
-                });
+        auth('contacts', function (newToken) {
+            token = newToken;
+            api.post('contacts', '/company', {token : token}, function (error, data, response) {
+                for (var i = 0; i < 20; i++) {
+                    api.post('contacts', '/field', {name : 'Nome ' + rand(), token : token}, function (error, data, response) {
+                        handled++;
+                        if (handled === 20) {
+                            done();
+                        }
+                    });
+                }
             });
         });
     });
 
     it('url tem que existir', function (done) {
-        api.get('contacts', '/customers', {}, function (error, data, response) {
+        api.get('contacts', '/fields', {}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
@@ -290,7 +245,7 @@ describe('GET /fields', function () {
     });
 
     it('token inválido', function (done) {
-        api.get('contacts', '/customers', {token : 'invalido'}, function (error, data, response) {
+        api.get('contacts', '/fields', {token : 'invalido'}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
@@ -300,15 +255,15 @@ describe('GET /fields', function () {
         });
     });
 
-    it('lista clientes', function (done) {
-        api.get('contacts', '/customers', {token : token}, function (error, data, response) {
+    it('lista campos', function (done) {
+        api.get('contacts', '/fields', {token : token}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
-                data.should.have.property('customers');
+                data.should.have.property('fields');
                 done();
             }
         });
     });
 
-});*/
+});

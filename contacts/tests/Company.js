@@ -8,26 +8,21 @@
 
 var should = require("should"),
     api = require("./utils.js").api,
-    db = require("./utils.js").db,
-    rand = require("./utils.js").rand;
+    rand = require("./utils.js").rand,
+    auth = require("./utils.js").auth;
 
 describe('POST /user', function () {
     var token;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
+        auth('contacts', function (newToken) {
+            token = newToken;
             done();
         });
     });
 
     it('url tem que existir', function (done) {
-        api.post('contacts', '/user', {}, function (error, data, response) {
+        api.post('contacts', '/company', {}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
@@ -39,7 +34,7 @@ describe('POST /user', function () {
     });
 
     it('token inválido', function (done) {
-        api.post('contacts', '/user', {token : 'invalido'}, function (error, data, response) {
+        api.post('contacts', '/company', {token : 'invalido'}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
@@ -50,7 +45,7 @@ describe('POST /user', function () {
     });
 
     it('registra usuário', function (done) {
-        api.post('contacts', '/user', {token : token}, function (error, data, response) {
+        api.post('contacts', '/company', {token : token}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
@@ -59,5 +54,4 @@ describe('POST /user', function () {
             }
         });
     });
-
 })

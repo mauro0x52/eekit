@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
     contactSchema;
 
 contactSchema = new schema({
-    user        : {type : objectId, required : true},
+    company     : {type : objectId, required : true},
     category    : {type : objectId},
     name        : {type : String, trim : true, required : true},
     email       : {type : String},
@@ -25,4 +25,4 @@ contactSchema = new schema({
 });
 
 /*  Exportando o pacote  */
-exports.Contact = mongoose.model('Contacts', contactSchema);
+exports.Contact = mongoose.model('Contact', contactSchema);

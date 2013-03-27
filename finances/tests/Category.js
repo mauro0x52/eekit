@@ -15,14 +15,9 @@ describe('POST /category', function () {
     var token;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
                 done();
             });
         });
@@ -87,21 +82,11 @@ describe('GET /category/id', function () {
         category;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
-                api.post('finances', '/category', {
-                    token : token,
-                    name : 'Nome ' + rand()
-                }, function (error, data, response) {
-                    category = data.category;
-                    done();
-                });
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
+                category = data.categories[0];
+                done();
             });
         });
     });
@@ -158,21 +143,11 @@ describe('POST /category/id/delete', function () {
         category;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
-                api.post('finances', '/category', {
-                    token : token,
-                    name : 'Nome ' + rand()
-                }, function (error, data, response) {
-                    category = data.category;
-                    done();
-                });
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
+                category = data.categories[0];
+                done();
             });
         });
     });
@@ -234,21 +209,11 @@ describe('POST /category/id/update', function () {
         category;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
-                api.post('finances', '/category', {
-                    token : token,
-                    name : 'Nome ' + rand()
-                }, function (error, data, response) {
-                    category = data.category;
-                    done();
-                });
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
+                category = data.categories[0];
+                done();
             });
         });
     });
@@ -333,14 +298,9 @@ describe('GET /categories', function () {
         handled = 0;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
                 for (var i = 0; i < 20; i++) {
                     api.post('finances', '/category', {
                         token : token,

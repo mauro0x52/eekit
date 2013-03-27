@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
     transactionSchema;
 
 transactionSchema = new schema({
-    user        : {type : objectId},
+    company     : {type : objectId},
     category    : {type : objectId},
     account     : {type : objectId},
     task        : {type : objectId},
@@ -28,4 +28,4 @@ transactionSchema = new schema({
 });
 
 /*  Exportando o pacote  */
-exports.Transaction = mongoose.model('Transactions', transactionSchema);
+exports.Transaction = mongoose.model('Transaction', transactionSchema);

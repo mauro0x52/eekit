@@ -8,7 +8,7 @@
 module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         auth = require('../Utils.js').auth,
-        User = Model.User;
+        Company = Model.Company;
 
     /** POST /account
      *
@@ -24,32 +24,30 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, company) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            user.accounts.push({
-                                name : request.param('name', null),
-                                bank : request.param('bank', null),
-                                account : request.param('account', null),
-                                agency : request.param('agency', null),
-                                initialBalance : request.param('initialBalance', null)
-                            });
-                            user.save(function (error) {
-                                if (error) {
-                                    response.send({error : error});
-                                } else {
-                                    response.send({account : user.accounts.pop()});
-                                }
-                            });
-                        }
+                        company.accounts.push({
+                            name : request.param('name', null),
+                            bank : request.param('bank', null),
+                            account : request.param('account', null),
+                            agency : request.param('agency', null),
+                            initialBalance : request.param('initialBalance', null)
+                        });
+                        company.save(function (error) {
+                            if (error) {
+                                response.send({error : error});
+                            } else {
+                                response.send({account : company.accounts.pop()});
+                            }
+                        });
                     }
                 });
             }
@@ -70,19 +68,17 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, company) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            response.send({accounts : user.accounts});
-                        }
+                        response.send({accounts : company.accounts});
                     }
                 });
             }
@@ -105,29 +101,25 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, company) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            user.findAccount(request.params.id, function (error, account) {
-                                if (error) {
-                                    response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
-                                } else {
-                                    if (account === null) {
-                                        response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
-                                    } else {
-                                        response.send({account : account});
-                                    }
-                                }
-                            });
-                        }
+                        company.findAccount(request.params.id, function (error, account) {
+                            if (error) {
+                                response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
+                            } else if (account === null) {
+                                response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
+                            } else {
+                                response.send({account : account});
+                            }
+                        });
                     }
                 });
             }
@@ -150,40 +142,36 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, company) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            user.findAccount(request.params.id, function (error, account) {
-                                if (error) {
-                                    response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
-                                } else {
-                                    if (account === null) {
-                                        response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
+                        company.findAccount(request.params.id, function (error, account) {
+                            if (error) {
+                                response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
+                            } else if (account === null) {
+                                response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
+                            } else {
+                                account.name = request.param('name', account.name);
+                                account.bank = request.param('bank', account.bank);
+                                account.account = request.param('account', account.account);
+                                account.agency = request.param('agency', account.agency);
+                                account.initialBalance = request.param('initialBalance', account.initialBalance);
+                                company.save(function (error) {
+                                    if (error) {
+                                        response.send({error : error});
                                     } else {
-                                        account.name = request.param('name', account.name);
-                                        account.bank = request.param('bank', account.bank);
-                                        account.account = request.param('account', account.account);
-                                        account.agency = request.param('agency', account.agency);
-                                        account.initialBalance = request.param('initialBalance', account.initialBalance);
-                                        user.save(function (error) {
-                                            if (error) {
-                                                response.send({error : error});
-                                            } else {
-                                                response.send({account : account});
-                                            }
-                                        });
+                                        response.send({account : account});
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
+                        });
                     }
                 });
             }
@@ -206,36 +194,32 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, company) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            user.findAccount(request.params.id, function (error, account) {
-                                if (error) {
-                                    response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
-                                } else {
-                                    if (account === null) {
-                                        response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
+                        company.findAccount(request.params.id, function (error, account) {
+                            if (error) {
+                                response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
+                            } else if (account === null) {
+                                response.send({error : { message : 'account not found', name : 'NotFoundError', token : request.params.id, path : 'account'}});
+                            } else {
+                                account.remove();
+                                company.save(function (error) {
+                                    if (error) {
+                                        response.send({error : error});
                                     } else {
-                                        account.remove();
-                                        user.save(function (error) {
-                                            if (error) {
-                                                response.send({error : error});
-                                            } else {
-                                                response.send(null);
-                                            }
-                                        });
+                                        response.send(null);
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
+                        });
                     }
                 });
             }

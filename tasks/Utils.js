@@ -25,8 +25,8 @@ exports.auth = function (token, cb) {
             secret : config.security.secret
         }
     }).on('success', function(data) {
-        if (data.user) {
-            cb(null, data.user);
+        if (data.company) {
+            cb(null, data.company);
         } else if (data.error) {
             cb(data.error, null);
         } else {
@@ -48,7 +48,7 @@ exports.auth = function (token, cb) {
  */
 exports.bind = function (token, name, method, callback) {
     "use strict";
-
+    
     require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/bind', {
         data: {
             token : token,
@@ -71,13 +71,18 @@ exports.bind = function (token, name, method, callback) {
  */
 exports.trigger = function (token, name, data) {
     "use strict";
-    
-    require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/tigger', {
-        data: {
-            token : token,
-            secret : config.security.secret,
-            label : name,
-            data : data
-        }
+
+    var post = {
+        token : token,
+        secret : config.security.secret,
+        label : name
+    }
+
+    for (var prop in data) {
+        post['data[' + prop + ']'] = data[prop]
+    }
+
+    require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/trigger', {
+        data: post
     }).on('success', function() {}).on('error', function() {});
 };

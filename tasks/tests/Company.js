@@ -1,9 +1,9 @@
-/** Tests Finances.User
+/** Tests Tasks.User
  *
  * @autor : Rafael Almeida Erthal Hermano
- * @since : 2012-10
+ * @since : 2012-09
  *
- * @description : Kit de testes do controller user do serviço finances
+ * @description : Kit de testes do controller user do serviço tasks
  */
 
 var should = require("should"),
@@ -15,19 +15,14 @@ describe('POST /user', function () {
     var token;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
+        auth('tasks', function (newToken) {
+            token = newToken;
             done();
         });
     });
     
     it('url tem que existir', function (done) {
-        api.post('finances', '/user', {}, function (error, data, response) {
+        api.post('tasks', '/company', {}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
@@ -39,7 +34,7 @@ describe('POST /user', function () {
     });
     
     it('token inválido', function (done) {
-        api.post('finances', '/user', {token : 'invalido'}, function (error, data, response) {
+        api.post('tasks', '/company', {token : 'invalido'}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
@@ -50,11 +45,11 @@ describe('POST /user', function () {
     });
     
     it('registra usuário', function (done) {
-        api.post('finances', '/user', {token : token}, function (error, data, response) {
+        api.post('tasks', '/company', {token : token}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
-                data.should.have.property('user')
+                data.should.have.property('categories')
                 done();
             }
         });
