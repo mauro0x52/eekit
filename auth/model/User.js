@@ -8,16 +8,20 @@
 var crypto = require('crypto'),
     config = require('./../config.js'),
     mongoose = require('mongoose'),
+    Company = require('./Company.js').Company,
+    Token = require('./Token.js').Token,
     Schema   = mongoose.Schema,
     objectId = Schema.ObjectId,
     userSchema,
     User;
 
 userSchema = new Schema({
-    username         : {type : String, trim : true, required : true, unique : true},
-    password         : {type : String, required : true},
-    dateCreated      : {type : Date},
-    auths            : [require('./Auth').Auth]
+    name            : {type : String, trim : true, required : true},
+    username        : {type : String, trim : true, required : true, unique : true},
+    password        : {type : String, required : true},
+    company         : {type : objectId, required : true},
+    dateCreated     : {type : Date},
+    info            : {type : Schema.Types.Mixed}
 });
 
 /** pre('save')
@@ -29,9 +33,6 @@ userSchema = new Schema({
 userSchema.pre('save', function (next) {
     if (this.isNew) {
         this.password = User.encryptPassword(this.password);
-        this.auths.push({
-            service : 'www'
-        });
         next();
     } else {
         next();
@@ -115,12 +116,46 @@ userSchema.methods.checkToken = function (tokenKey, serviceKey) {
  * @description : Loga o usuário no sistema
  * @param cb : callback a ser chamado após o usuário ser logado
  */
-userSchema.methods.login = function (cb) {
+userSchema.methods.login = function (service, cb) {
     "use strict";
 
-    var config = require('../config.js');
+    var i, found, user, token;
 
-    this.auth('www', cb);
+    user = this;
+
+    Company.findById(this.company, function (error, company) {
+        if (error) {
+            cb(error);
+        } else {
+            // Verifica se a empresa tem autorização para acessar o serviço
+            for (i in company.services) {
+                if (company.services[i].service === service) {
+                    found = company.services[i];
+                }
+            }
+            if (found) {
+               // se a empresa tem autorização
+               token = new Token({
+                    token : crypto
+                        .createHash('sha256')
+                        .update(config.security.token + this._id + crypto.randomBytes(10))
+                        .digest('hex'),
+                    service : service,
+                    company : company._id,
+                    user : user._id,
+                    dateCreated : new Date(),
+                    dateUpdated : new Date()
+               });
+
+               token.save(function(error) {
+                   cb(error, token);
+               });
+            } else {
+                // se a empresa não tem autorização
+                cb({ message : 'company not authorized in service "'+service+'"', name : 'InvalidServiceError' });
+            }
+        }
+    });
 };
 
 /** logout
@@ -151,12 +186,14 @@ userSchema.methods.logout = function (tokenKey, cb) {
     this.save(cb);
 };
 
-/** auth
- * @author : Rafael Erthal, Mauro Ribeiro
- * @since : 2013-02
+/**
+ * Autentica um usuário em um serviço
  *
- * @description : Loga o usuário em um serviço
- * @param cb : callback a ser chamado após o usuário ser logado
+ * @author Rafael Erthal, Mauro Ribeiro
+ * @since  2013-02
+ *
+ * @param service   serviço a ser autenticado
+ * @param cb        callback a ser chamado após o usuário ser logado
  */
 userSchema.methods.auth = function (service, cb) {
     "use strict";
@@ -200,4 +237,4 @@ userSchema.methods.auth = function (service, cb) {
 };
 
 /*  Exportando o pacote  */
-User = exports.User = mongoose.model('Users', userSchema);
+User = exports.User = mongoose.model('User', userSchema);
