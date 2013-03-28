@@ -86,7 +86,7 @@ module.exports = function (app) {
                                 if (error) {
                                     response.write({error : error});
                                 } else {
-                                    user.login(service.slug, function(error, token) {
+                                    user.login(request.params.service_slug, function(error, token) {
                                         if (error) {
                                             response.send({error : error});
                                         } else {

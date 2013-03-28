@@ -45,7 +45,7 @@ module.exports = function (app) {
         } else {
             // cria a empresa
             company = new Company({
-                name : request.param('name', null),
+                name : request.param('name', null)
             });
             // cria o usuário
             userData = request.param('admin', {});
