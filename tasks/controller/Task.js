@@ -40,7 +40,7 @@ module.exports = function (app) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
                         task = new Task({
-                            company     : request.param('company', null),
+                            company     : company._id,
                             user        : request.param('user', null),
                             category    : request.param('category', null),
                             title       : request.param('title', null),

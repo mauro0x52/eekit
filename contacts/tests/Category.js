@@ -8,8 +8,8 @@
 
 var should = require("should"),
     api = require("./utils.js").api,
-    db = require("./utils.js").db,
-    rand = require("./utils.js").rand;
+    rand = require("./utils.js").rand,
+    auth = require("./utils.js").auth;
 
 describe('GET /categories', function () {
     var token;
@@ -241,7 +241,7 @@ describe('POST /category/:id/update', function () {
     });
 
     it('categoria inexistente', function (done) {
-        api.post('contacts', '/category/inexistente/update', {token : user.token, name : 'Categoria', type : 'clients', color : 'blue'}, function (error, data, response) {
+        api.post('contacts', '/category/inexistente/update', {token : token, name : 'Categoria', type : 'clients', color : 'blue'}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
@@ -252,7 +252,7 @@ describe('POST /category/:id/update', function () {
     });
 
     it('altera categoria', function (done) {
-        api.post('contacts', '/category/' + category._id + '/update', {token : user.token, name : 'Categoria', type : 'clients', color : 'blue'}, function (error, data, response) {
+        api.post('contacts', '/category/' + category._id + '/update', {token : token, name : 'Categoria', type : 'clients', color : 'blue'}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
@@ -304,7 +304,7 @@ describe('POST /category/:id/delete', function () {
     });
 
     it('categoria inexistente', function (done) {
-        api.post('contacts', '/category/inexistente/delete', {token : user.token}, function (error, data, response) {
+        api.post('contacts', '/category/inexistente/delete', {token : token}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
@@ -315,15 +315,12 @@ describe('POST /category/:id/delete', function () {
     });
 
     it('deleta categoria', function (done) {
-        api.post('contacts', '/category/'+category._id+'/delete', {token : user.token}, function (error, data, response) {
+        api.post('contacts', '/category/'+category._id+'/delete', {token : token}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
                 should.not.exist(data);
-                api.post('contacts', '/user', {token : user.token}, function (error, data, response) {
-                    data.should.have.property('categories').lengthOf(user.categories.length - 1);
-                    done();
-                });
+                done();
             }
         });
     });
