@@ -8,8 +8,8 @@
 
 var should = require("should"),
     api = require("./utils.js").api,
-    db = require("./utils.js").db,
-    rand = require("./utils.js").rand;
+    rand = require("./utils.js").rand,
+    auth = require("./utils.js").auth;
 
 describe('POST /category', function () {
     var token;
@@ -65,7 +65,8 @@ describe('POST /category', function () {
     it('cadastra categoria', function (done) {
         api.post('finances', '/category', {
             token : token,
-            name : 'Nome ' + rand()
+            name : 'Nome ' + rand(),
+            type : 'debt'
         }, function (error, data, response) {
             if (error) {
                 return done(error);

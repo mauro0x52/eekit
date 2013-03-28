@@ -77,15 +77,15 @@ exports.api = api;
 exports.auth = function (service, cb) {
     api.post('auth', '/company', {
         name  : 'testes+' + rand(),
+        secret : 'www',
         admin : {
             name : 'testes+' + rand(),
             username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'   
+            password : 'testando'
         }
     }, function (error, data) {
         api.post('auth', '/service/' + service + '/authorize', {
-            secret : 'www'.
+            secret : 'www',
             token  : data.token
         }, function (error, data) {
             cb(data.token);

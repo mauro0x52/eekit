@@ -8,8 +8,8 @@
 
 var should = require("should"),
     api = require("./utils.js").api,
-    db = require("./utils.js").db,
-    rand = require("./utils.js").rand;
+    rand = require("./utils.js").rand,
+    auth = require("./utils.js").auth;
 
 describe('POST /contact', function () {
     var token,
@@ -50,23 +50,6 @@ describe('POST /contact', function () {
                 return done(error);
             } else {
                 data.should.have.property('error').property('name', 'InvalidTokenError');
-                done();
-            }
-        });
-    });
-
-    it('categoriao em branco', function (done) {
-        api.post('contacts', '/contact', {
-            name : 'Nome ' + rand(),
-            email : 'Email ' + rand(),
-            phone : 'Telefone ' + rand(),
-            notes : 'Notas ' + rand(),
-            token : token
-        }, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('error').property('name', 'ValidationError');
                 done();
             }
         });
@@ -215,7 +198,6 @@ describe('POST /contact/[contact]/update', function () {
 
     it('token inválido', function (done) {
         api.post('contacts', '/contact/' + contact._id + '/update', {
-            category : category._id,
             name : 'Nome ' + rand(),
             email : 'Email ' + rand(),
             phone : 'Telefone ' + rand(),
@@ -233,7 +215,6 @@ describe('POST /contact/[contact]/update', function () {
 
     it('contato inexistente', function (done) {
         api.post('contacts', '/contact/inexistente/update' , {
-            category : category._id,
             name : 'Nome ' + rand(),
             email : 'Email ' + rand(),
             phone : 'Telefone ' + rand(),
@@ -251,7 +232,6 @@ describe('POST /contact/[contact]/update', function () {
 
     it('edita contato', function (done) {
         api.post('contacts', '/contact/' + contact._id + '/update', {
-            category : category._id,
             name : 'Nome ' + rand(),
             email : 'Email ' + rand(),
             phone : 'Telefone ' + rand(),

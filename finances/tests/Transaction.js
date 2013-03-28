@@ -8,8 +8,8 @@
 
 var should = require("should"),
     api = require("./utils.js").api,
-    db = require("./utils.js").db,
-    rand = require("./utils.js").rand;
+    rand = require("./utils.js").rand,
+    auth = require("./utils.js").auth;
 
 describe('POST /transaction', function () {
     var token,
@@ -63,7 +63,7 @@ describe('POST /transaction', function () {
             value : 1000,
             categoy : category._id,
             account : account._id,
-            situation : 'payed',
+            situation : 'paid',
             type : 'debt',
             date : new Date()
         }, function (error, data, response) {
@@ -82,7 +82,7 @@ describe('POST /transaction', function () {
             name : 'Nome ' + rand(),
             categoy : category._id,
             account : account._id,
-            situation : 'payed',
+            situation : 'paid',
             type : 'debt',
             date : new Date()
         }, function (error, data, response) {
@@ -102,7 +102,7 @@ describe('POST /transaction', function () {
             value : 1000,
             categoy : category._id,
             account : account._id,
-            situation : 'payed',
+            situation : 'paid',
             type : 'debt',
             date : new Date()
         }, function (error, data, response) {
@@ -155,7 +155,7 @@ describe('GET /transaction/id', function () {
                     value : 1000,
                     categoy : category._id,
                     account : account._id,
-                    situation : 'payed',
+                    situation : 'paid',
                     type : 'debt',
                     date : new Date()
                 }, function (error, data, response) {
@@ -231,7 +231,7 @@ describe('POST /transaction/id/delete', function () {
                     value : 1000,
                     categoy : category._id,
                     account : account._id,
-                    situation : 'payed',
+                    situation : 'paid',
                     type : 'debt',
                     date : new Date()
                 }, function (error, data, response) {
@@ -312,7 +312,7 @@ describe('POST /transaction/id/update', function () {
                     value : 1000,
                     categoy : category._id,
                     account : account._id,
-                    situation : 'payed',
+                    situation : 'paid',
                     type : 'debt',
                     date : new Date()
                 }, function (error, data, response) {
@@ -417,7 +417,7 @@ describe('GET /transactions', function () {
                         value : 1000,
                         categoy : category._id,
                         account : account._id,
-                        situation : 'payed',
+                        situation : 'paid',
                         type : 'debt',
                         date : new Date()
                     }, function (error, data, response) {
