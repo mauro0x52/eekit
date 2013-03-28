@@ -21,14 +21,15 @@ userSchema = new Schema({
     password        : {type : String, required : true},
     company         : {type : objectId, required : true},
     dateCreated     : {type : Date},
-    info            : {type : Schema.Types.Mixed}
+    info            : {type : Schema.Types.Mixed},
+    tokens          : [Token]
 });
 
-/** pre('save')
- * @author : Rafael Erthal
- * @since : 2012-08
+/**
+ * Verifica se o username já existe
  *
- * @description : verifica se o username ainda não foi cadastrado
+ * @author Rafael Erthal
+ * @since  2012-08
  */
 userSchema.pre('save', function (next) {
     if (this.isNew) {
@@ -39,12 +40,13 @@ userSchema.pre('save', function (next) {
     }
 });
 
-/** encryptPassword
- * @author : Mauro Ribeiro
- * @since : 2012-08
+/**
+ * Encripta um password
  *
- * @description : Encripta um password
- * @param password : password
+ * @author Mauro Ribeiro
+ * @since  2012-08
+ *
+ * @param password      senha do brother
  */
 userSchema.statics.encryptPassword = function (password) {
     "use strict";
@@ -59,62 +61,62 @@ userSchema.statics.encryptPassword = function (password) {
     return password;
 };
 
-/** findByToken
- * @author : Rafael Erthal
- * @since : 2013-02
+/**
+ * Encontra um usuário pelo seu token
  *
- * @description : Procura um usuário pelo token
- * @param tokenKey : token do usuário
- * @param cb : callback a ser chamado
+ * @author Rafael Erthal
+ * @since  2013-02
+ *
+ * @param tokenKey  token do usuário
+ * @param cb        callback a ser chamado
  */
 userSchema.statics.findByToken = function (tokenKey, cb) {
     "use strict";
 
     if (tokenKey) {
-        User.findOne({'auths.tokens.token' : tokenKey}, cb);
+        User.findOne({'tokens.token' : tokenKey}, cb);
     } else {
         cb({ message : 'invalid token', name : 'InvalidTokenError'}, null);
     }
 };
 
-/** checkToken
- * @author : Rafael Erthal
- * @since : 2013-02
+/**
+ * Verifica se o token é válido
  *
- * @description : valida o token de um usuário
- * @param tokenKey : token do usuário
- * @param serviceKey : serviço do token
+ * @author Rafael Erthal
+ * @since  2013-02
+ *
+ * @param tokenKey      token do usuário
+ * @param serviceKey    serviço do token
  */
 userSchema.methods.checkToken = function (tokenKey, serviceKey) {
     "use strict";
 
-    var i, j, token;
-    for (i in this.auths) {
-        if (this.auths[i].service === serviceKey) {
-            for (j in this.auths[i].tokens) {
-                token = this.auths[i].tokens[j];
-                if (token.token) {
-                    if (
-                        this.auths[i].tokens[j].token.toString() === tokenKey.toString() &&
-                        (new Date() - new Date(this.auths[i].tokens[j].dateUpdated))/(1000*60*60*24) < 30
-                    ) {
-                        this.auths[i].tokens[j].dateUpdated = new Date();
-                        this.save()
-                        return true;
-                    }
-                }
-            }
+    var i, j, token, expiration;
+
+    for (i = 0; i < this.tokens.length; i++) {// in this.tokens) {
+        expiration = new Date(this.tokens[i].dateExpiration);
+        if (
+            this.tokens[i].service === serviceKey &&
+            this.tokens[i].token.toString() === tokenKey.toString() &&
+            (new Date() <= expiration)
+        ) {
+                this.tokens[i].dateExpiration = expiration.setMinutes(expiration.getMinutes() + 24*60);
+                this.save()
+                return true;
         }
     }
     return false;
 };
 
-/** login
- * @author : Rafael Erthal, Mauro Ribeiro
- * @since : 2013-02
+/**
+ * Loga o usuário em um serviço
  *
- * @description : Loga o usuário no sistema
- * @param cb : callback a ser chamado após o usuário ser logado
+ * @author Rafael Erthal, Mauro Ribeiro
+ * @since  2013-02
+ *
+ * @param service   serviço para logar
+ * @param cb        callback a ser chamado após o usuário ser logado
  */
 userSchema.methods.login = function (service, cb) {
     "use strict";
@@ -135,20 +137,13 @@ userSchema.methods.login = function (service, cb) {
             }
             if (found) {
                // se a empresa tem autorização
-               token = new Token({
-                    token : crypto
-                        .createHash('sha256')
-                        .update(config.security.token + this._id + crypto.randomBytes(10))
-                        .digest('hex'),
-                    service : service,
-                    company : company._id,
-                    user : user._id,
-                    dateCreated : new Date(),
-                    dateUpdated : new Date()
-               });
+               // gera token de 24h
+               token = Token.generate(24*60, found.service);
 
-               token.save(function(error) {
-                   cb(error, token);
+               // salva usuário com novo token
+               user.tokens.push(token);
+               user.save(function(error) {
+                   cb(error, token.token);
                });
             } else {
                 // se a empresa não tem autorização
@@ -158,82 +153,24 @@ userSchema.methods.login = function (service, cb) {
     });
 };
 
-/** logout
- * @author : Rafael Erthal, Mauro Ribeiro
- * @since : 2013-02
- *
- * @description : Desloga o usuário no sistema
- * @param tokenKey : token da seção que será fechada
- * @param cb : callback a ser chamado após o usuário ser deslogado
- */
-userSchema.methods.logout = function (tokenKey, cb) {
-    "use strict";
-
-    var config = require('../config.js'),
-        that = this;
-
-    for (var i in this.auths) {
-        if (this.auths[i].service === 'www') {
-            var i;
-
-            for (var j in this.auths[i].tokens) {
-                if (this.auths[i].tokens[j].token === tokenKey) {
-                    this.auths[i].tokens[j].remove();
-                }
-            }
-        }
-    }
-    this.save(cb);
-};
-
 /**
- * Autentica um usuário em um serviço
+ * Desloga o token
  *
  * @author Rafael Erthal, Mauro Ribeiro
  * @since  2013-02
  *
- * @param service   serviço a ser autenticado
- * @param cb        callback a ser chamado após o usuário ser logado
+ * @param tokenKey  token da seção que será fechada
+ * @param cb        callback a ser chamado após o usuário ser deslogado
  */
-userSchema.methods.auth = function (service, cb) {
+userSchema.methods.removeToken = function (tokenKey, cb) {
     "use strict";
 
-    var i,
-        auth,
-        token = crypto
-            .createHash('sha256')
-            .update(config.security.token + this._id + crypto.randomBytes(10))
-            .digest('hex');
-
-    for (i in this.auths) {
-        if (this.auths[i].service === service) {
-            auth = this.auths[i];
+    for (var i in this.tokens) {
+        if (this.tokens[i].token === tokenKey) {
+            this.tokens[i].remove();
         }
     }
-    if (!auth) {
-        this.auths.push({
-            service : service,
-            tokens  : [{
-                token       : token,
-                dateCreated : new Date(),
-                dateUpdated : new Date()
-            }]
-        });
-
-        this.save(function (error) {
-            cb(error, token);
-        });
-    } else {
-        auth.tokens.push({
-            token       : token,
-            dateCreated : new Date(),
-            dateUpdated : new Date()
-        });
-
-        this.save(function (error) {
-            cb(error, token);
-        });
-    }
+    this.save(cb);
 };
 
 /*  Exportando o pacote  */

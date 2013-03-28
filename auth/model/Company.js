@@ -31,7 +31,6 @@ companySchema.pre('save', function (next) {
             service : 'www',
             apps : []
         }];
-        console.log(this)
         next();
     } else {
         next();
@@ -48,7 +47,7 @@ companySchema.pre('save', function (next) {
  * @param service   serviço a ser autenticado
  * @param cb        callback a ser chamado
  */
-companySchema.methods.authorize = function (service, cb) {
+companySchema.methods.authorizeService = function (service, cb) {
     "use strict";
 
     var i, found;
@@ -68,6 +67,41 @@ companySchema.methods.authorize = function (service, cb) {
         });
     } else {
         cb();
+    }
+};
+
+/**
+ * Autoriza um aplicativo em um servico
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-03
+ *
+ * @param app       app a ser autorizado
+ * @param service   serviço a ser autorizado
+ * @param cb        callback a ser chamado
+ */
+companySchema.methods.authorizeApp = function (app, service, cb) {
+    "use strict";
+
+    var i, found;
+
+    for (i in this.services) {
+        if (this.services[i].service === service) {
+            found = this.services[i];
+        }
+    }
+    if (found) {
+        if (found.app) {
+            found.apps.push(app);
+        } else {
+            found.apps = [app];
+        }
+
+        this.save(function (error) {
+            cb(error);
+        });
+    } else {
+        cb({ message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'});
     }
 };
 
