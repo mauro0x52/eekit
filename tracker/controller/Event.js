@@ -184,7 +184,7 @@ module.exports = function (app) {
         response.contentType('txt');
         response.header('Access-Control-Allow-Origin', '*');
        
-        response.write("version:1<br />");
+        response.write("version:2\n");
 
         if (request.param('from', null) || request.param('to', null)) {
             query.date = {};
