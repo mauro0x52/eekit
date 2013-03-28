@@ -26,8 +26,7 @@ eventSchema = new schema({
     label       : {type : String}
 });
 
-eventSchema.pre('init', function (next, doc) {
-	console.log(doc);
+/*eventSchema.pre('init', function (next, doc) {
 	if (!doc.user) {
 		Event.findOne({ip : this.ip, user : {$ne : null}}, function (error, event) {
 			if (event) {
@@ -38,7 +37,7 @@ eventSchema.pre('init', function (next, doc) {
 	} else {
 		next();
 	}
-})
+})*/
 
 eventSchema.statics.cohort = function (app, frequency, cb) {
 	Event.find(function (error, events) {
