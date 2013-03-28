@@ -36,7 +36,7 @@ module.exports = function (app) {
                         data: {
                             secret : config.security.secret
                         }
-                    }).on('success', function (data) {
+                    }).on('success', function (data) {console.log('0')
 
                         function format (date) {
                             if (date) {
@@ -124,7 +124,7 @@ module.exports = function (app) {
                             response.write('</table>');
                             response.end();
                         });
-                    });
+                    }).on('error', function () {response.end()});
 
                 });
             }
