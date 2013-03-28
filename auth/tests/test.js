@@ -18,3 +18,7 @@ describe('User', function() {
 describe('Auth', function() {
     require('./Auth.js');
 });
+
+describe('Service', function() {
+    require('./Service.js');
+});

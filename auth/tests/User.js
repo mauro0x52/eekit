@@ -1,9 +1,8 @@
-/** Testes do Auth.User
+/** 
+ * Testes do Auth.User
  *
- * @autor : Mauro Ribeiro
- * @since : 2012-08
- *
- * @description : Kit de testes do controller User do serviço Auth
+ * @author Mauro Ribeiro
+ * @since  2012-08
  */
 
 var should = require("should"),
@@ -434,6 +433,59 @@ describe('POST /user/change-password', function () {
                     should.not.exist(data);
                     done();
                 }
+            }
+        });
+    });
+    it('tenta logar com senha antiga', function (done) {
+        api.post('auth', '/user/logout', {
+            token : token,
+            secret : services.www.secret
+        },
+        function(error, data, response) {
+            if (error) {
+                done(error);
+            } else {
+                api.post('auth', '/user/login', {
+                    username : user.username,
+                    password : 'testando',
+                    secret : services.www.secret
+                },
+                function(error, data, response) {
+                    if (error) {
+                        done(error);
+                    } else {
+                        data.should.have.property('error');
+                        done();
+                    }
+                });
+            }
+        });
+    });
+    it('loga com senha nova', function (done) {
+        api.post('auth', '/user/logout', {
+            token : token,
+            secret : services.www.secret
+        },
+        function(error, data, response) {
+            if (error) {
+                done(error);
+            } else {
+                api.post('auth', '/user/login', {
+                    username : user.username,
+                    password : 'testando2',
+                    secret : services.www.secret
+                },
+                function(error, data, response) {
+                    if (error) {
+                        done(error);
+                    } else {
+                        data.should.not.have.property('error');
+                        data.should.have.property('token');
+                        data.should.have.property('company');
+                        data.should.have.property('user');
+                        done();
+                    }
+                });
             }
         });
     });
