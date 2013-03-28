@@ -12,7 +12,7 @@ module.exports = function (app) {
         auth = require('../Utils.js').auth,
         trigger = require('../Utils.js').trigger,
         Field = Model.Field,
-        User = Model.User;
+        Company = Model.Company;
 
     /** POST /field
      *
@@ -28,30 +28,27 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, company) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            user.fields.push({
-                                name     : request.param('name', null),
-                                position : request.param('position', null)
-                            });
-                            user.save(function (error) {
-                                var field = user.fields.pop();
-                                if (error) {
-                                    response.send({error : error});
-                                } else {
-                                    response.send({field : field});
-                                }
-                            });
-                        }
+                        company.fields.push({
+                            name     : request.param('name', null),
+                            position : request.param('position', null)
+                        });
+                        company.save(function (error) {
+                            if (error) {
+                                response.send({error : error});
+                            } else {
+                                response.send({field : company.fields.pop()});
+                            }
+                        });
                     }
                 });
             }
@@ -72,20 +69,17 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, company) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
-                    var query = {};
+                Company.findOne({company : company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            response.send({fields : user.fields});
-                        }
+                        response.send({fields : company.fields});
                     }
                 });
             }
@@ -106,29 +100,25 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, company) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                            response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            user.findField(request.params.id, function (error, field) {
-                                if (error) {
-                                    response.send({error : error});
-                                } else {
-                                    if (field === null) {
-                                        response.send({error : { message : 'field not found', name : 'NotFoundError', token : request.params.id, path : 'field'}});
-                                    } else {
-                                        response.send({field : field});
-                                    }
-                                }
-                            });
-                        }
+                        company.findField(request.params.id, function (error, field) {
+                            if (error) {
+                                response.send({error : error});
+                            } else if (field === null) {
+                                response.send({error : { message : 'field not found', name : 'NotFoundError', token : request.params.id, path : 'field'}});
+                            } else {
+                                response.send({field : field});
+                            }
+                        });
                     }
                 });
             }
@@ -149,37 +139,33 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, company) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            user.findField(request.params.id, function (error, field) {
-                                if (error) {
-                                    response.send({error : error});
-                                } else {
-                                    if (field === null) {
-                                        response.send({error : { message : 'field not found', name : 'NotFoundError', token : request.params.id, path : 'field'}});
+                        company.findField(request.params.id, function (error, field) {
+                            if (error) {
+                                response.send({error : error});
+                            } else if (field === null) {
+                                    response.send({error : { message : 'field not found', name : 'NotFoundError', token : request.params.id, path : 'field'}});
+                            } else {
+                                field.name = request.param('name', field.name);
+                                field.position = request.param('position', field.position);
+                                company.save(function (error) {
+                                    if (error) {
+                                        response.send({error: error});
                                     } else {
-                                        field.name = request.param('name', field.name);
-                                        field.position = request.param('position', field.position);
-                                        user.save(function (error) {
-                                            if (error) {
-                                                response.send({error: error});
-                                            } else {
-                                                response.send({field : field});
-                                            }
-                                        });
+                                        response.send({field : field});
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
+                        });
                     }
                 });
             }
@@ -200,37 +186,32 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, company) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            user.findField(request.params.id, function (error, field) {
-                                if (error) {
-                                    response.send({error : error});
-                                } else {
-                                    if (field === null) {
-                                        response.send({error : { message : 'field not found', name : 'NotFoundError', token : request.params.id, path : 'field'}});
+                        company.findField(request.params.id, function (error, field) {
+                            if (error) {
+                                response.send({error : error});
+                            } else if (field === null) {
+                                response.send({error : { message : 'field not found', name : 'NotFoundError', token : request.params.id, path : 'field'}});
+                            } else {
+                                field.remove();
+                                company.save(function (error) {
+                                    if (error) {
+                                        response.send({error: error});
                                     } else {
-                                        var field_id = field._id;
-                                        field.remove();
-                                        user.save(function (error) {
-                                            if (error) {
-                                                response.send({error: error});
-                                            } else {
-                                                response.send(null);
-                                            }
-                                        });
+                                        response.send(null);
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
+                        });
                     }
                 });
             }

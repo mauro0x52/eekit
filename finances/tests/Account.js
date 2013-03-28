@@ -13,16 +13,11 @@ var should = require("should"),
 
 describe('POST /account', function () {
     var token;
-    
+
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
                 done();
             });
         });
@@ -87,21 +82,11 @@ describe('GET /account/id', function () {
         account;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
-                api.post('finances', '/account', {
-                    token : token,
-                    name : 'Nome ' + rand()
-                }, function (error, data, response) {
-                    account = data.account;
-                    done();
-                });
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
+                account = data.accounts[0];
+                done();
             });
         });
     });
@@ -158,21 +143,11 @@ describe('POST /account/id/delete', function () {
         account;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
-                api.post('finances', '/account', {
-                    token : token,
-                    name : 'Nome ' + rand()
-                }, function (error, data, response) {
-                    account = data.account;
-                    done();
-                });
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
+                account = data.accounts[0];
+                done();
             });
         });
     });
@@ -234,21 +209,11 @@ describe('POST /account/id/update', function () {
         account;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
-                api.post('finances', '/account', {
-                    token : token,
-                    name : 'Nome ' + rand()
-                }, function (error, data, response) {
-                    account = data.account;
-                    done();
-                });
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
+                account = data.accounts[0];
+                done();
             });
         });
     });
@@ -287,25 +252,6 @@ describe('POST /account/id/update', function () {
         });
     });
     
-    it('nome em branco', function (done) {
-        api.post('finances', '/account/' + account._id + '/update', {
-            token : token
-        }, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                api.get('finances', '/account/' + account._id, {token : token}, function (error, data, response) {
-                    if (error) {
-                        return done(error);
-                    } else {
-                        data.should.have.property('account').property('name', account.name);
-                        done();
-                    }
-                });
-            }
-        });
-    });
-    
     it('edita conta', function (done) {
         var newName = 'Nome' + rand()
         api.post('finances', '/account/' + account._id + '/update', {
@@ -333,14 +279,9 @@ describe('GET /accounts', function () {
         handled = 0;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
                 for (var i = 0; i < 20; i++) {
                     api.post('finances', '/account', {
                         token : token,

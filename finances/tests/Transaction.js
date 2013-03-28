@@ -17,27 +17,12 @@ describe('POST /transaction', function () {
         account;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
-                api.post('finances', '/category', {
-                    token : token,
-                    name : 'Nome ' + rand()
-                }, function (error, data, response) {
-                    category = data.category;
-                    api.post('finances', '/account', {
-                        token : token,
-                        name : 'Nome ' + rand()
-                    }, function (error, data, response) {
-                        account = data.account;
-                        done();
-                    });
-                });
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
+                category = data.categories[0];
+                account = data.accounts[0];
+                done();
             });
         });
     });
@@ -159,39 +144,23 @@ describe('GET /transaction/id', function () {
         transaction;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
-                api.post('finances', '/category', {
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
+                category = data.categories[0];
+                account = data.accounts[0];
+                api.post('finances', '/transaction', {
                     token : token,
-                    name : 'Nome ' + rand()
+                    name : 'Nome ' + rand(),
+                    value : 1000,
+                    categoy : category._id,
+                    account : account._id,
+                    situation : 'payed',
+                    type : 'debt',
+                    date : new Date()
                 }, function (error, data, response) {
-                    category = data.category;
-                    api.post('finances', '/account', {
-                        token : token,
-                        name : 'Nome ' + rand(),
-                        value : 1000
-                    }, function (error, data, response) {
-                        account = data.account;
-                        api.post('finances', '/transaction', {
-                            token : token,
-                            name : 'Nome ' + rand(),
-                            value : 1000,
-                            categoy : category._id,
-                            account : account._id,
-                            situation : 'payed',
-                            type : 'debt',
-                            date : new Date()
-                        }, function (error, data, response) {
-                            transaction = data.transaction;
-                            done();
-                        });
-                    });
+                    transaction = data.transaction;
+                    done();
                 });
             });
         });
@@ -251,39 +220,23 @@ describe('POST /transaction/id/delete', function () {
         transaction;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
-                api.post('finances', '/category', {
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
+                category = data.categories[0];
+                account = data.accounts[0];
+                api.post('finances', '/transaction', {
                     token : token,
-                    name : 'Nome ' + rand()
+                    name : 'Nome ' + rand(),
+                    value : 1000,
+                    categoy : category._id,
+                    account : account._id,
+                    situation : 'payed',
+                    type : 'debt',
+                    date : new Date()
                 }, function (error, data, response) {
-                    category = data.category;
-                    api.post('finances', '/account', {
-                        token : token,
-                        name : 'Nome ' + rand(),
-                        value : 1000
-                    }, function (error, data, response) {
-                        account = data.account;
-                        api.post('finances', '/transaction', {
-                            token : token,
-                            name : 'Nome ' + rand(),
-                            value : 1000,
-                            categoy : category._id,
-                            account : account._id,
-                            situation : 'payed',
-                            type : 'debt',
-                            date : new Date()
-                        }, function (error, data, response) {
-                            transaction = data.transaction;
-                            done();
-                        });
-                    });
+                    transaction = data.transaction;
+                    done();
                 });
             });
         });
@@ -348,39 +301,23 @@ describe('POST /transaction/id/update', function () {
         transaction;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
-                api.post('finances', '/category', {
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
+                category = data.categories[0];
+                account = data.accounts[0];
+                api.post('finances', '/transaction', {
                     token : token,
-                    name : 'Nome ' + rand()
+                    name : 'Nome ' + rand(),
+                    value : 1000,
+                    categoy : category._id,
+                    account : account._id,
+                    situation : 'payed',
+                    type : 'debt',
+                    date : new Date()
                 }, function (error, data, response) {
-                    category = data.category;
-                    api.post('finances', '/account', {
-                        token : token,
-                        name : 'Nome ' + rand(),
-                        value : 1000
-                    }, function (error, data, response) {
-                        account = data.account;
-                        api.post('finances', '/transaction', {
-                            token : token,
-                            name : 'Nome ' + rand(),
-                            value : 1000,
-                            categoy : category._id,
-                            account : account._id,
-                            situation : 'payed',
-                            type : 'debt',
-                            date : new Date()
-                        }, function (error, data, response) {
-                            transaction = data.transaction;
-                            done();
-                        });
-                    });
+                    transaction = data.transaction;
+                    done();
                 });
             });
         });
@@ -461,151 +398,35 @@ describe('POST /transaction/id/update', function () {
     });
 });
 
-describe('POST /transaction/id/reconcile', function () {
-    var token,
-        category,
-        account,
-        transaction;
-
-    before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
-                api.post('finances', '/category', {
-                    token : token,
-                    name : 'Nome ' + rand()
-                }, function (error, data, response) {
-                    category = data.category;
-                    api.post('finances', '/account', {
-                        token : token,
-                        name : 'Nome ' + rand(),
-                        value : 1000
-                    }, function (error, data, response) {
-                        account = data.account;
-                        api.post('finances', '/transaction', {
-                            token : token,
-                            name : 'Nome ' + rand(),
-                            value : 1000,
-                            categoy : category._id,
-                            account : account._id,
-                            situation : 'payed',
-                            type : 'debt',
-                            date : new Date()
-                        }, function (error, data, response) {
-                            transaction = data.transaction;
-                            done();
-                        });
-                    });
-                });
-            });
-        });
-    });
-
-    it('url tem que existir', function (done) {
-        api.post('finances', '/transaction/id/reconcile', {}, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                response.should.have.status(200);
-                should.exist(data, 'não retornou dado nenhum');
-                done();
-            }
-        });
-    });
-
-    it('token inválido', function (done) {
-        api.post('finances', '/transaction/' + transaction._id + '/reconcile', {token : 'invalido'}, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('error').property('name', 'InvalidTokenError');
-                done();
-            }
-        });
-    });
-
-    it('conta inexistente', function (done) {
-        api.post('finances', '/transaction/inexistente/reconcile', {token : token}, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('error').property('name', 'NotFoundError');
-                done();
-            }
-        });
-    });
-
-    it('concilia transação', function (done) {
-        var newName = 'Nome' + rand()
-        api.post('finances', '/transaction/' + transaction._id + '/reconcile', {
-            token : token
-        }, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                api.get('finances', '/transaction/' + transaction._id, {token : token}, function (error, data, response) {
-                    if (error) {
-                        return done(error);
-                    } else {
-                        data.should.have.property('transaction').property('situation', 'payed');
-                        done();
-                    }
-                });
-            }
-        });
-    });
-});
-
 describe('GET /transactions', function () {
     var token,
         category,
         account,
-        handled = 0;;
+        handled = 0;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('finances', '/user', {token : token}, function (error, data, response) {
-                api.post('finances', '/category', {
-                    token : token,
-                    name : 'Nome ' + rand()
-                }, function (error, data, response) {
-                    category = data.category;
-                    api.post('finances', '/account', {
+        auth('finances', function (newToken) {
+            token = newToken;
+            api.post('finances', '/company', {token : token}, function (error, data, response) {
+                category = data.categories[0];
+                account = data.accounts[0];
+                for (var i = 0; i < 20; i++) {
+                    api.post('finances', '/transaction', {
                         token : token,
                         name : 'Nome ' + rand(),
-                        value : 1000
+                        value : 1000,
+                        categoy : category._id,
+                        account : account._id,
+                        situation : 'payed',
+                        type : 'debt',
+                        date : new Date()
                     }, function (error, data, response) {
-                        account = data.account;
-                        for (var i = 0; i < 20; i++) {
-                            api.post('finances', '/transaction', {
-                                token : token,
-                                name : 'Nome ' + rand(),
-                                value : 1000,
-                                categoy : category._id,
-                                account : account._id,
-                                situation : 'payed',
-                                type : 'debt',
-                                date : new Date()
-                            }, function (error, data, response) {
-                                handled++;
-                                if (handled === 20) {
-                                    done();
-                                }
-                            });
+                        handled++;
+                        if (handled === 20) {
+                            done();
                         }
                     });
-                });
+                }
             });
         });
     });

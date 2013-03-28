@@ -71,13 +71,18 @@ exports.bind = function (token, name, method, callback) {
  */
 exports.trigger = function (token, name, data) {
     "use strict";
-    
-    require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/tigger', {
-        data: {
-            token : token,
-            secret : config.security.secret,
-            label : name,
-            data : data
-        }
+
+    var post = {
+        token : token,
+        secret : config.security.secret,
+        label : name
+    }
+
+    for (var prop in data) {
+        post['data[' + prop + ']'] = data[prop]
+    }
+
+    require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/trigger', {
+        data: post
     }).on('success', function() {}).on('error', function() {});
 };

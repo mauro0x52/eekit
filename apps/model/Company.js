@@ -1,8 +1,8 @@
-/** User
+/** Company
  * @author : Rafael Erthal
- * @since : 2013-02
+ * @since : 2013-03
  *
- * @description : Representação da entidade de Usuário pagante
+ * @description : Representação da entidade de pagamento empresa
  */
 
 var Source   = require('./Source.js').Source,
@@ -10,13 +10,13 @@ var Source   = require('./Source.js').Source,
     crypto   = require('crypto'),
     Schema   = mongoose.Schema,
     objectId = Schema.ObjectId,
-    userSchema;
+    companySchema;
 
-userSchema = new Schema({
-    user        : {type : objectId, required : true},
+companySchema = new Schema({
+    company     : {type : objectId, required : true},
     app         : {type : objectId, unique : true},
     expiration  : {type : Date, required : true}
 });
 
 /*  Exportando o pacote  */
-exports.User = mongoose.model('Users', userSchema);
+exports.Company = mongoose.model('Company', companySchema);

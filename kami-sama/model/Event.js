@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
     Event;
 
 eventSchema = new schema({
-    user        : {type : objectId},
+    company     : {type : objectId},
     date        : {type : Date},
     label       : {type : String, required : true},
     callback    : {type : String, required : true},

@@ -12,7 +12,7 @@ module.exports = function (app) {
         auth = require('../Utils.js').auth,
         App = Model.App,
         Source = Model.Source,
-        User = Model.User;
+        Company = Model.Company;
 
     /** GET /apps
      *
@@ -56,13 +56,10 @@ module.exports = function (app) {
         App.findByIdentity(request.params.slug, function (error, app) {
             if (error) {
                 response.send({error : error});
+            } else if (app === null) {
+                response.send({error : { message : 'app not found', name : 'NotFoundError', id : request.params.slug, path : 'app'}});
             } else {
-                //verifica se o app foi encontrado
-                if (app === null) {
-                    response.send({error : { message : 'app not found', name : 'NotFoundError', id : request.params.slug, path : 'app'}});
-                } else {
-                    response.send({app : app});
-                }
+                response.send({app : app});
             }
         });
     });
@@ -86,13 +83,10 @@ module.exports = function (app) {
             Source.findOne({app : app, type : type}, function (error, source) {
                 if (error) {
                     response.send({error : error});
+                } else if (source === null) {
+                    response.send({error : { message : 'source not found', name : 'NotFoundError', path : 'source'}});
                 } else {
-                    //verifica se a ferramente foi encontrada
-                    if (source === null) {
-                        response.send({error : { message : 'source not found', name : 'NotFoundError', path : 'source'}});
-                    } else {
-                        response.send({source : source, name : app.name, slug : app.slug});
-                    }
+                    response.send({source : source, name : app.name, slug : app.slug});
                 }
             });
         }
@@ -101,29 +95,24 @@ module.exports = function (app) {
         App.findByIdentity(request.params.app_slug, function (error, app) {
             if (error) {
                 response.send({error : error});
+            } else if (app === null) {
+                response.send({error : { message : 'app not found', name : 'NotFoundError', id : request.params.app_slug, path : 'app'}});
             } else {
-                //verifica se o app foi encontrado
-                if (app === null) {
-                    response.send({error : { message : 'app not found', name : 'NotFoundError', id : request.params.app_slug, path : 'app'}});
-                } else {
-                    auth(request.param('token', null), function (error, user) {
-                        if (error) {
-                            getSource(app, 'free');
-                        } else {
-                            User.findOne({user : user._id, app : app._id, expiration : {"$lt": new Date()}}, function (error, user) {
-                                if (error) {
-                                    getSource(app, 'free');
-                                } else {
-                                    if (user === null) {
-                                        getSource(app, 'free');
-                                    } else {
-                                        getSource(app, 'paid');
-                                    }
-                                }
-                            });
-                        }
-                    });
-                }
+                auth(request.param('token', null), function (error, company) {
+                    if (error) {
+                        getSource(app, 'free');
+                    } else {
+                        Company.findOne({company : company._id, app : app._id, expiration : {"$lt": new Date()}}, function (error, company) {
+                            if (error) {
+                                getSource(app, 'free');
+                            } else if (company === null) {
+                                getSource(app, 'free');
+                            } else {
+                                getSource(app, 'paid');
+                            }
+                        });
+                    }
+                });
             }
         });
     });
@@ -136,39 +125,36 @@ module.exports = function (app) {
      * @description : Libera app pago
      *
      * @request : {token, expiration}
-     * @response : {user}
+     * @response : {company}
      */
     app.get('/app/:slug/pay', function (request, response) {
-        var user;
+        var newcompany;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, company) {
             if (error) {
                 response.send({error : error});
             } else {
                 App.findByIdentity(request.params.slug, function (error, app) {
                     if (error) {
                         response.send({error : error});
+                    } else if (app === null) {
+                        response.send({error : { message : 'app not found', name : 'NotFoundError', id : request.params.slug, path : 'app'}});
                     } else {
-                        //verifica se o app foi encontrado
-                        if (app === null) {
-                            response.send({error : { message : 'app not found', name : 'NotFoundError', id : request.params.slug, path : 'app'}});
-                        } else {
-                            user = new User({
-                                user : user._id,
-                                app  : app._id,
-                                expiration : request.param('expiration', null)
-                            });
-                            user.save(function (error) {
-                                if (error) {
-                                    response.send(error);
-                                } else {
-                                    response.send(user);
-                                }
-                            })
-                        }
+                        newcompany = new Company({
+                            company : company._id,
+                            app  : app._id,
+                            expiration : request.param('expiration', null)
+                        });
+                        newcompany.save(function (error) {
+                            if (error) {
+                                response.send(error);
+                            } else {
+                                response.send(newcompany);
+                            }
+                        })
                     }
                 });
             }

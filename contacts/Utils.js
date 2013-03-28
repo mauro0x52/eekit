@@ -25,8 +25,8 @@ exports.auth = function (token, cb) {
             secret : config.security.secret
         }
     }).on('success', function(data) {
-        if (data.user) {
-            cb(null, data.user);
+        if (data.company) {
+            cb(null, data.company);
         } else if (data.error) {
             cb(data.error, null);
         } else {

@@ -16,18 +16,11 @@ describe('POST /contact', function () {
         category;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('contacts', '/user', {token : token}, function (error, data, response) {
-                api.get('contacts', '/categories', {token : token}, function (error, data, response) {
-                    category = data.categories[0];
-                    done();
-                });
+        auth('contacts', function (newToken) {
+            token = newToken;
+            api.post('contacts', '/company', {token : token}, function (error, data, response) {
+                category = data.categories[0];
+                done();
             });
         });
     });
@@ -62,7 +55,7 @@ describe('POST /contact', function () {
         });
     });
 
-    it('estágio de negociação em branco', function (done) {
+    it('categoriao em branco', function (done) {
         api.post('contacts', '/contact', {
             name : 'Nome ' + rand(),
             email : 'Email ' + rand(),
@@ -73,25 +66,7 @@ describe('POST /contact', function () {
             if (error) {
                 return done(error);
             } else {
-                data.should.have.property('error').property('name', 'NotFoundError');
-                done();
-            }
-        });
-    });
-
-    it('estágio de negociação inválido', function (done) {
-        api.post('contacts', '/contact', {
-            category : 'invalido',
-            name : 'Nome ' + rand(),
-            email : 'Email ' + rand(),
-            phone : 'Telefone ' + rand(),
-            notes : 'Notas ' + rand(),
-            token : token
-        }, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('error').property('name', 'NotFoundError');
+                data.should.have.property('error').property('name', 'ValidationError');
                 done();
             }
         });
@@ -135,31 +110,22 @@ describe('POST /contact', function () {
 
 describe('GET /contact/[contact]', function () {
     var token,
-        category,
         contact;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('contacts', '/user', {token : token}, function (error, data, response) {
-                api.get('contacts', '/categories', {token : token}, function (error, data, response) {
-                    category = data.categories[0];
-                    api.post('contacts', '/contact', {
-                        category : category._id,
-                        name : 'Nome ' + rand(),
-                        email : 'Email ' + rand(),
-                        phone : 'Telefone ' + rand(),
-                        notes : 'Notas ' + rand(),
-                        token : token
-                    }, function (error, data, response) {
-                        contact = data.contact;
-                        done();
-                    });
+        auth('contacts', function (newToken) {
+            token = newToken;
+            api.post('contacts', '/company', {token : token}, function (error, data, response) {
+                api.post('contacts', '/contact', {
+                    category : data.categories[0]._id,
+                    name : 'Nome ' + rand(),
+                    email : 'Email ' + rand(),
+                    phone : 'Telefone ' + rand(),
+                    notes : 'Notas ' + rand(),
+                    token : token
+                }, function (error, data, response) {
+                    contact = data.contact;
+                    done();
                 });
             });
         });
@@ -188,7 +154,7 @@ describe('GET /contact/[contact]', function () {
         });
     });
 
-    it('cliente inexistente', function (done) {
+    it('contato inexistente', function (done) {
         api.get('contacts', '/contact/inexistente' , {token : token}, function (error, data, response) {
             if (error) {
                 return done(error);
@@ -199,7 +165,7 @@ describe('GET /contact/[contact]', function () {
         });
     });
 
-    it('exibe cliente', function (done) {
+    it('exibe contato', function (done) {
         api.get('contacts', '/contact/' + contact._id, {token : token}, function (error, data, response) {
             if (error) {
                 return done(error);
@@ -214,31 +180,22 @@ describe('GET /contact/[contact]', function () {
 
 describe('POST /contact/[contact]/update', function () {
     var token,
-        category,
         contact;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('contacts', '/user', {token : token}, function (error, data, response) {
-                api.get('contacts', '/categories', {token : token}, function (error, data, response) {
-                    category = data.categories[0];
-                    api.post('contacts', '/contact', {
-                        category : category._id,
-                        name : 'Nome ' + rand(),
-                        email : 'Email ' + rand(),
-                        phone : 'Telefone ' + rand(),
-                        notes : 'Notas ' + rand(),
-                        token : token
-                    }, function (error, data, response) {
-                        contact = data.contact;
-                        done();
-                    });
+        auth('contacts', function (newToken) {
+            token = newToken;
+            api.post('contacts', '/company', {token : token}, function (error, data, response) {
+                api.post('contacts', '/contact', {
+                    category : data.categories[0]._id,
+                    name : 'Nome ' + rand(),
+                    email : 'Email ' + rand(),
+                    phone : 'Telefone ' + rand(),
+                    notes : 'Notas ' + rand(),
+                    token : token
+                }, function (error, data, response) {
+                    contact = data.contact;
+                    done();
                 });
             });
         });
@@ -274,7 +231,7 @@ describe('POST /contact/[contact]/update', function () {
         });
     });
 
-    it('cliente inexistente', function (done) {
+    it('contato inexistente', function (done) {
         api.post('contacts', '/contact/inexistente/update' , {
             category : category._id,
             name : 'Nome ' + rand(),
@@ -292,42 +249,7 @@ describe('POST /contact/[contact]/update', function () {
         });
     });
 
-    it('edita cliente category inválido', function (done) {
-        api.post('contacts', '/contact/' + contact._id + '/update', {
-            category : 'invalido',
-            name : 'Nome ' + rand(),
-            email : 'Email ' + rand(),
-            phone : 'Telefone ' + rand(),
-            notes : 'Notas ' + rand(),
-            token : token
-        }, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('error').property('name', 'NotFoundError');
-                done();
-            }
-        });
-    });
-
-    it('edita cliente nome em branco', function (done) {
-        api.post('contacts', '/contact/' + contact._id + '/update', {
-            category : category._id,
-            email : 'Email ' + rand(),
-            phone : 'Telefone ' + rand(),
-            notes : 'Notas ' + rand(),
-            token : token
-        }, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('contact');
-                done();
-            }
-        });
-    });
-
-    it('edita cliente', function (done) {
+    it('edita contato', function (done) {
         api.post('contacts', '/contact/' + contact._id + '/update', {
             category : category._id,
             name : 'Nome ' + rand(),
@@ -348,38 +270,29 @@ describe('POST /contact/[contact]/update', function () {
 });
 
 
-describe('GET /contacts sem filtro', function () {
+describe('GET /contacts', function () {
     var token,
-        category,
         handled = 0;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('contacts', '/user', {token : token}, function (error, data, response) {
-                api.get('contacts', '/categories', {token : token}, function (error, data, response) {
-                    category = data.categories[0];
-                    for (var i = 0; i < 20; i++) {
-                        api.post('contacts', '/contact', {
-                            category : category._id,
-                            name : 'Nome ' + rand(),
-                            email : 'Email ' + rand(),
-                            phone : 'Telefone ' + rand(),
-                            notes : 'Notas ' + rand(),
-                            token : token
-                        }, function (error, data, response) {
-                            handled++;
-                            if (handled === 20) {
-                                done();
-                            }
-                        });
-                    }
-                });
+        auth('contacts', function (newToken) {
+            token = newToken;
+            api.post('contacts', '/company', {token : token}, function (error, data, response) {
+                for (var i = 0; i < 20; i++) {
+                    api.post('contacts', '/contact', {
+                        category : data.categories[0],
+                        name : 'Nome ' + rand(),
+                        email : 'Email ' + rand(),
+                        phone : 'Telefone ' + rand(),
+                        notes : 'Notas ' + rand(),
+                        token : token
+                    }, function (error, data, response) {
+                        handled++;
+                        if (handled === 20) {
+                            done();
+                        }
+                    });
+                }
             });
         });
     });
@@ -407,102 +320,12 @@ describe('GET /contacts sem filtro', function () {
         });
     });
 
-    it('lista clientes', function (done) {
+    it('lista contatos', function (done) {
         api.get('contacts', '/contacts', {token : token}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
                 data.should.have.property('contacts');
-                done();
-            }
-        });
-    });
-
-});
-
-describe('GET /tasks filter by category', function () {
-    var token,
-        category,
-        categories = [],
-        handled = 0;
-
-    before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
-            api.post('contacts', '/user', {token : token}, function (error, data, response) {
-                api.get('contacts', '/categories', {token : token}, function (error, data, response) {
-                    category = data.categories[0];
-                    for (var i in data.categories) {
-                        categories.push(data.categories[i]._id);
-                    }
-                    for (var i = 0; i < 20; i++) {
-                        api.post('contacts', '/contact', {
-                            category : category._id,
-                            name : 'Nome ' + rand(),
-                            email : 'Email ' + rand(),
-                            phone : 'Telefone ' + rand(),
-                            notes : 'Notas ' + rand(),
-                            token : token
-                        }, function (error, data, response) {
-                            handled++;
-                            if (handled === 20) {
-                                done();
-                            }
-                        });
-                    }
-                });
-            });
-        });
-    });
-
-    it('url tem que existir', function (done) {
-        api.get('contacts', '/contacts', {filterByCategory : categories}, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                response.should.have.status(200);
-                should.exist(data, 'não retornou dado nenhum');
-                done();
-            }
-        });
-    });
-
-    it('token inválido', function (done) {
-        api.get('contacts', '/contacts', {token : 'invalido', filterByCategory : categories}, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('error').property('name', 'InvalidTokenError');
-                done();
-            }
-        });
-    });
-
-    it('lista clientes todas as etapas', function (done) {
-        api.get('contacts', '/contacts', {token : token, filterByCategory : categories}, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('contacts');
-                done();
-            }
-        });
-    });
-
-    it('lista clientes apenas uma etapa com resultados', function (done) {
-        api.get('contacts', '/contacts', {token : token, filterByCategory : categories[0]}, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('contacts');
-                for (var i in data.tasks) {
-                    data.tasks[i].should.have.property('contacts').equal(categories[0]);
-                }
                 done();
             }
         });

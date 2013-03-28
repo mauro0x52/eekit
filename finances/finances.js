@@ -27,7 +27,7 @@ app.configure(function () {
 });
 
 /*  Chamando controllers */
-require('./controller/User.js')(app);
+require('./controller/Company.js')(app);
 require('./controller/Category.js')(app);
 require('./controller/Account.js')(app);
 require('./controller/Transaction.js')(app);

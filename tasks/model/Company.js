@@ -1,21 +1,21 @@
-/** User
+/** Company
  * @author : Rafael Erthal
- * @since : 2012-09
+ * @since : 2013-03
  *
- * @description : Representação da entidade de categorias de usuário
+ * @description : Representação da entidade de empresa
  */
 
 var mongoose = require('mongoose'),
     schema   = mongoose.Schema,
     objectId = schema.ObjectId,
-    userSchema;
+    companySchema;
 
-userSchema = new schema({
-    user        : objectId,
+companySchema = new schema({
+    company     : objectId,
     categories  : [require('./Category').Category]
 });
 
-userSchema.methods.findCategory = function (category_id, cb) {
+companySchema.methods.findCategory = function (category_id, cb) {
     var category = null,
         i;
     
@@ -29,4 +29,4 @@ userSchema.methods.findCategory = function (category_id, cb) {
 }
 
 /*  Exportando o pacote  */
-exports.User = mongoose.model('Users', userSchema);
+exports.Company = mongoose.model('Company', companySchema);

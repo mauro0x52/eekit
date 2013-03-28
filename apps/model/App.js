@@ -81,4 +81,4 @@ appSchema.statics.findByIdentity = function (id, cb) {
 };
 
 /*  Exportando o pacote  */
-App = exports.App = mongoose.model('Apps', appSchema);
+App = exports.App = mongoose.model('App', appSchema);
