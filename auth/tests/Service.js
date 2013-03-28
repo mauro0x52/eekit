@@ -35,6 +35,24 @@ describe('before all', function() {
     });
 });
 
+
+describe('GET /services', function () {
+    it('lista servicos', function (done) {
+        api.get('auth', '/services', {},
+            function(error, data, response) {
+                if (error) {
+                    done(error);
+                } else {
+                    data.should.not.have.property('error');
+                    data.should.have.property('services').property('auth');
+                    data.should.have.property('services').property('www');
+                    done();
+                }
+            }
+        );
+    });
+});
+
 describe('POST /service/:service_slug/authorize', function () {
     it('token em branco', function (done) {
         api.post('auth', '/service/contacts/authorize', {

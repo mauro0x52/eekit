@@ -1,4 +1,4 @@
-/** 
+/**
  * Testes do Auth.User
  *
  * @author Mauro Ribeiro
@@ -428,11 +428,8 @@ describe('POST /user/change-password', function () {
             if (error) {
                 done(error);
             } else {
-                if (error) done(error);
-                else {
-                    should.not.exist(data);
-                    done();
-                }
+                should.not.exist(data);
+                done();
             }
         });
     });
@@ -486,6 +483,38 @@ describe('POST /user/change-password', function () {
                         done();
                     }
                 });
+            }
+        });
+    });
+});
+
+
+describe('GET /users', function () {
+    it('tenta listar sem autorização', function(done) {
+        api.get('auth', '/users', {
+            secret : 'contacts'
+        }, function(error, data, response) {
+            if (error) {
+                done(error);
+            } else {
+                data.should.have.property('error').have.property('name', 'InvalidServiceError');
+                done();
+            }
+        });
+    });
+    it('lista de usuários', function(done) {
+        api.get('auth', '/users', {
+            secret : 'tracker'
+        }, function(error, data, response) {
+            if (error) {
+                done(error);
+            } else {
+                data.should.have.property('users').instanceOf(Array);
+                data.users[0].should.have.property('name');
+                data.users[0].should.have.property('username');
+                data.users[0].should.have.property('company');
+                data.users[0].should.not.have.property('password');
+                done();
             }
         });
     });

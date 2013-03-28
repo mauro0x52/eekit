@@ -21,8 +21,6 @@ module.exports = function (app) {
      *
      * @request     {secret}
      * @response    {users[]}
-     *
-     * TODO reescrever
      */
     app.get('/users', function (request, response) {
         response.contentType('json');
@@ -43,7 +41,7 @@ module.exports = function (app) {
             if (!service.permissions.users) {
                 response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
             } else {
-                User.find(function (error, users) {
+                User.find({}, '_id name username company info', function (error, users) {
                     if (error) {
                         response.send({error : error});
                     } else {
