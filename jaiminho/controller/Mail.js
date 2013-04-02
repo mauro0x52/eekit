@@ -23,10 +23,10 @@ module.exports = function (app) {
             from = request.param('from', null),
             subject = request.param('subject', null),
             html = request.param('html', null),
-            categories = request.param('categories', 'undefined'),
+            name = request.param('name', 'undefined'),
             service = request.param('service', null),
             categoriesArray = [], userId, userEmail, mail;
-console.log('enviando email para o usuario')
+
             if (!token) {
                 response.send({error : { message : 'Validator "required" failed for path token', name : 'ValidatorError', path : 'token', type : 'required'}});
             } else if (!subject) {
@@ -57,27 +57,11 @@ console.log('enviando email para o usuario')
                                 userEmail = data.user.username;
 
                                 if (config.environment === 'development' || config.environment === 'testing') {
-                                    categoriesArray.push('eekit teste');
-                                    if (!categories) {
-                                        categoriesArray.push('eekit teste '+service+': undefined category');
-                                    } else if (typeof categories === 'string') {
-                                        categoriesArray.push('eekit teste '+service+': '+categories);
-                                    } else {
-                                        for (var i in categories) {
-                                            categoriesArray.push('eekit teste '+service+': '+categories[i]);
-                                        }
-                                    }
+                                    categoriesArray.push('eekit test');
+                                    categoriesArray.push('eekit test '+service+': '+name);
                                 } else {
                                     categoriesArray.push('eekit');
-                                    if (!categories) {
-                                        categoriesArray.push('eekit '+service+': undefined category');
-                                    } else if (typeof categories === 'string') {
-                                        categoriesArray.push('eekit '+service+': '+categories);
-                                    } else {
-                                        for (var i in categories) {
-                                            categoriesArray.push('eekit '+service+': '+categories[i]);
-                                        }
-                                    }
+                                    categoriesArray.push('eekit '+service+': '+name);
                                 }
 
                                 mail = {
@@ -91,6 +75,7 @@ console.log('enviando email para o usuario')
 
                                 sendgrid.send(mail, function(success) {
                                     if (success) {
+                                        mail.name = name;
                                         response.send({mail : mail});
                                     } else {
                                         response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
@@ -121,7 +106,7 @@ console.log('enviando email para o usuario')
         token = request.param('token', null),
         subject = request.param('subject', null),
         html = request.param('html', null),
-        categories = request.param('categories', 'undefined'),
+        name = request.param('name', 'undefined'),
         service = request.param('service', null),
         categoriesArray = [], userId, userEmail, mail;
 
@@ -157,28 +142,10 @@ console.log('enviando email para o usuario')
 
                             if (config.environment === 'development' || config.environment === 'testing') {
                                 categoriesArray.push('eekit test');
-
-                                if (!categories) {
-                                    categoriesArray.push('eekit test admin '+service+': undefined category');
-                                } else if (typeof categories === 'string') {
-                                    categoriesArray.push('eekit test admin '+service+': '+categories);
-                                } else {
-                                    for (var i in categories) {
-                                        categoriesArray.push('eekit test admin '+service+': '+categories[i]);
-                                    }
-                                }
+                                categoriesArray.push('eekit test admin '+service+': '+name);
                             } else {
                                 categoriesArray.push('eekit');
-
-                                if (!categories) {
-                                    categoriesArray.push('eekit admin '+service+': undefined category');
-                                } else if (typeof categories === 'string') {
-                                    categoriesArray.push('eekit admin '+service+': '+categories);
-                                } else {
-                                    for (var i in categories) {
-                                        categoriesArray.push('eekit admin '+service+': '+categories[i]);
-                                    }
-                                }
+                                categoriesArray.push('eekit admin '+service+': '+name);
                             }
 
                             html = '<p>Id: '+userId+'</p><p>Email: '+userEmail+'</p><br /><br />' + html;
@@ -198,6 +165,7 @@ console.log('enviando email para o usuario')
 
                             sendgrid.send(mail, function(success) {
                                 if (success) {
+                                    mail.name = name;
                                     response.send({mail : mail});
                                 } else {
                                     response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
