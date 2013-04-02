@@ -45,22 +45,20 @@ module.exports = function (app) {
                 if (error) {
                     response.send({error : { message : 'invalid token', name : 'InvalidTokenError'}});
                 } else if (user === null) {
-                        response.send({error : {message :  'invalid token', name : 'InvalidTokenError' }});
-                } else {
-                    if (user.checkToken(request.param('token', null), service.slug)) {
-                        result.user = {_id : user._id};
-                        result.company = {_id : user.company};
-                        result.token = request.param('token', null);
-                        if (service.permissions.username) {
-                            result.user.username = user.username;
-                        }
-                        if (service.permissions.tokens) {
-                            result.tokens = user.tokens;
-                        }
-                        response.send(result);
-                    } else {
-                        response.send({ error : { message : 'Invalid token', name : 'InvalidTokenError'}});
+                    response.send({error : {message :  'invalid token', name : 'InvalidTokenError' }});
+                } else if (user.checkToken(request.param('token', null), service.slug)) {
+                    result.user = {_id : user._id};
+                    result.company = {_id : user.company};
+                    result.token = request.param('token', null);
+                    if (service.permissions.username) {
+                        result.user.username = user.username;
                     }
+                    if (service.permissions.tokens) {
+                        result.tokens = user.tokens;
+                    }
+                    response.send(result);
+                } else {
+                    response.send({ error : { message : 'Invalid token', name : 'InvalidTokenError'}});
                 }
             });
         }
