@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 0.4
+
+Melhorias
+- Alterando "categories" para "name"
+
 ## 0.3 (2013-03-19)
 
 Features
