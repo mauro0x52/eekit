@@ -1,7 +1,9 @@
 Changelog
 =========
 
-## 1.0.3
+## 1.0.3 (2013-03-26)
+
+Correções
 - Não adicionar transações sem categoria do tipo de transação
 
 ## 1.0.2 (2013-03-21)

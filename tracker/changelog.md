@@ -1,7 +1,9 @@
 Changelog
 =========
 
-## 0.8
+## 0.8 (2013-03-26)
+
+Features
 - Exibir nome, telefone expectativa na ficha do usuário
 - Lista de usuários
 
