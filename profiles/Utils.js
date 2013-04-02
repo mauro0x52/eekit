@@ -90,6 +90,31 @@ exports.trigger = function (token, name, data) {
 //            service : 'serviço de teste',
 //            to : 'testes+aew@empreendemia.com.br'
 
+
+/**
+ * Envia email para o usuário
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-03
+ *
+ * @param token             token do usuário
+ * @param data              dados do email
+ * @param data.subject      titulo do email
+ * @param data.html         corpo do email
+ * @param data.categories   categorias associadas ao sendgrid
+ * @param data.from         email de alguem especifico da empreendemia
+ */
+exports.mailUser = function(token, data) {
+    "use strict";
+
+    data.token = token;
+    data.service = 'profiles';
+
+    require('restler').post('http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail/self', {
+        data: data
+    }).on('success', function(data) {}).on('error', function(data) {console.log(data)});;
+};
+
 /**
  * Envia email para admin
  *
@@ -108,8 +133,8 @@ exports.mailAdmin = function(token, data) {
 
     data.token = token;
     data.service = 'profiles';
-    
+
     require('restler').post('http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail/admin', {
         data: data
-    }).on('success', function(data) {console.log(data)}).on('error', function(data) {console.log(data)});;
+    }).on('success', function(data) {}).on('error', function(data) {console.log(data)});;
 };

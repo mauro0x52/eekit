@@ -137,7 +137,7 @@ describe('POST /mail/self', function () {
                 data.should.not.have.property('error');
                 data.should.have.property('mail').property('subject').include('Testando Jaiminho!');
                 data.should.have.property('mail').property('html').include('Jaiminho sem fadiga! =]');
-                data.should.have.property('mail').property('categories').include('eekit serviço de teste: teste');
+                data.should.have.property('mail').property('categories').include('eekit test serviço de teste: teste');
                 done();
             }
         });
@@ -255,7 +255,7 @@ describe('POST /mail/admin', function () {
                 data.should.not.have.property('error');
                 data.should.have.property('mail').property('subject').include('Oi admin!');
                 data.should.have.property('mail').property('html').include('Email para o admin');
-                data.should.have.property('mail').property('categories').include('eekit admin serviço de teste: teste');
+                data.should.have.property('mail').property('categories').include('eekit test admin serviço de teste: teste');
                 done();
             }
         });
@@ -276,7 +276,7 @@ describe('POST /mail/admin', function () {
                 data.should.not.have.property('error');
                 data.should.have.property('mail').property('subject').include('Aew admin!');
                 data.should.have.property('mail').property('html').include('Email para o admin');
-                data.should.have.property('mail').property('categories').include('eekit admin serviço de teste: teste');
+                data.should.have.property('mail').property('categories').include('eekit test admin serviço de teste: teste');
                 done();
             }
         });

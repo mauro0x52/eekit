@@ -9,6 +9,7 @@ module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         auth = require('../Utils.js').auth,
         mailAdmin = require('../Utils.js').mailAdmin,
+        mailUser = require('../Utils.js').mailUser,
         Profile  = Model.Profile;
 
     /** GET /profile
@@ -93,12 +94,18 @@ module.exports = function (app) {
                         response.send({error : error});
                     } else {
                         response.send({profile : profile});
+                        mailUser(request.param('token'), {
+                            subject : 'Presente de boas vindas do Empreendekit',
+                            categories : ['novo usuário'],
+                            from : 'lucas@empreendemia.com.br',
+                            html : '<p>Olá '+request.param('name', null) + ', tudo bom?</p><p>Você se cadastrou no EmpreendeKit e acabou de dar o primeiro passo para tornar sua empresa mais produtiva.</p><p>Para te ajudar nessa jornada, estou te enviando um ebook que acabamos de lançar: "Produtividade sem Enrolação".</p><p>Para baixar gratuitamente o ebook, clique <a href="http://pages.rdstation.com.br/livro-produtividade?utm_source=Etapa2&utm_medium=Email-semana2&utm_content=Contatos-poscadastro&utm_campaign=LC02">aqui</a>.</p><p>Qualquer dúvida sobre o EmpreendeKit, pode mandar um email direto para mim.</p><p>Abraços,<br />Lucas</p><br /><br />'
+                        });
                         mailAdmin(request.param('token'), {
                             subject : 'Novo usuário cadastrado',
                             categories : ['novo usuário'],
                             to : 'lucas@empreendemia.com.br',
                             html : '<p>Nome: '+request.param('name', null) + ' ' + request.param('surname', null) + '</p><p>Telefone: ' + request.param('phone', null) + '</p>'
-                        })
+                        });
                     }
                 });
             }

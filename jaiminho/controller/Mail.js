@@ -20,12 +20,13 @@ module.exports = function (app) {
         var Sendgrid = require('sendgrid'),
             sendgrid = new Sendgrid.SendGrid(config.sendgrid.username, config.sendgrid.password),
             token = request.param('token', null),
+            from = request.param('from', null),
             subject = request.param('subject', null),
             html = request.param('html', null),
             categories = request.param('categories', 'undefined'),
             service = request.param('service', null),
             categoriesArray = [], userId, userEmail, mail;
-
+console.log('enviando email para o usuario')
             if (!token) {
                 response.send({error : { message : 'Validator "required" failed for path token', name : 'ValidatorError', path : 'token', type : 'required'}});
             } else if (!subject) {
@@ -34,6 +35,8 @@ module.exports = function (app) {
                 response.send({error : { message : 'Validator "required" failed for path html', name : 'ValidatorError', path : 'html', type : 'required'}});
             } else if (!service) {
                 response.send({error : { message : 'Validator "required" failed for path service', name : 'ValidatorError', path : 'service', type : 'required'}});
+            } else if (from && /^.*\@empreendemia\.com\.br$/.test(from) === false) {
+            response.send({error : { message : 'Must be a valid email address', name : 'ValidatorError', path : 'from', type : 'format'}});
             } else {
                 restler.post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/jaiminho/auth', {
                     data: {
@@ -78,8 +81,8 @@ module.exports = function (app) {
                                 }
 
                                 mail = {
-                                    from    : '"'+config.emails.contact.name+'"<'+config.emails.contact.address+'>',
-                                    replyTo : '"'+config.emails.contact.name+'"<'+config.emails.contact.address+'>',
+                                    from    : from ? from : '"'+config.emails.contact.name+'"<'+config.emails.contact.address+'>',
+                                    replyTo : from ? from : '"'+config.emails.contact.name+'"<'+config.emails.contact.address+'>',
                                     to      : userEmail,
                                     subject : subject,
                                     html    : html,
