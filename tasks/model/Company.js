@@ -18,13 +18,13 @@ companySchema = new schema({
 companySchema.methods.findCategory = function (category_id, cb) {
     var category = null,
         i;
-    
+
     for (i = 0; i < this.categories.length; i++) {
         if (this.categories[i]._id.toString() === category_id) {
             category = this.categories[i];
         }
     }
-    
+
     cb(undefined, category);
 }
 

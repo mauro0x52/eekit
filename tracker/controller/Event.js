@@ -36,7 +36,7 @@ module.exports = function (app) {
                         data: {
                             secret : config.security.secret
                         }
-                    }).on('success', function (data) {
+                    }).on('success', function (data) {console.log('0')
 
                         function format (date) {
                             if (date) {
@@ -124,7 +124,7 @@ module.exports = function (app) {
                             response.write('</table>');
                             response.end();
                         });
-                    });
+                    }).on('error', function () {response.end()});
 
                 });
             }
@@ -184,6 +184,8 @@ module.exports = function (app) {
         response.contentType('txt');
         response.header('Access-Control-Allow-Origin', '*');
        
+        response.write("version:4\n");
+
         if (request.param('from', null) || request.param('to', null)) {
             query.date = {};
             if (request.param('from', null)) {
