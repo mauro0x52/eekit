@@ -20,9 +20,10 @@ module.exports = function (app) {
         var Sendgrid = require('sendgrid'),
             sendgrid = new Sendgrid.SendGrid(config.sendgrid.username, config.sendgrid.password),
             token = request.param('token', null),
+            from = request.param('from', null),
             subject = request.param('subject', null),
             html = request.param('html', null),
-            categories = request.param('categories', 'undefined'),
+            name = request.param('name', 'undefined'),
             service = request.param('service', null),
             categoriesArray = [], userId, userEmail, mail;
 
@@ -34,6 +35,8 @@ module.exports = function (app) {
                 response.send({error : { message : 'Validator "required" failed for path html', name : 'ValidatorError', path : 'html', type : 'required'}});
             } else if (!service) {
                 response.send({error : { message : 'Validator "required" failed for path service', name : 'ValidatorError', path : 'service', type : 'required'}});
+            } else if (from && /^.*\@empreendemia\.com\.br$/.test(from) === false) {
+            response.send({error : { message : 'Must be a valid email address', name : 'ValidatorError', path : 'from', type : 'format'}});
             } else {
                 restler.post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/jaiminho/auth', {
                     data: {
@@ -52,21 +55,18 @@ module.exports = function (app) {
                             if (data.user) {
                                 userId = data.user._id;
                                 userEmail = data.user.username;
-                                categoriesArray.push('eekit');
 
-                                if (!categories) {
-                                    categoriesArray.push('eekit '+service+': undefined category');
-                                } else if (typeof categories === 'string') {
-                                    categoriesArray.push('eekit '+service+': '+categories);
+                                if (config.environment === 'development' || config.environment === 'testing') {
+                                    categoriesArray.push('eekit test');
+                                    categoriesArray.push('eekit test '+service+': '+name);
                                 } else {
-                                    for (var i in categories) {
-                                        categoriesArray.push('eekit '+service+': '+categories[i]);
-                                    }
+                                    categoriesArray.push('eekit');
+                                    categoriesArray.push('eekit '+service+': '+name);
                                 }
 
                                 mail = {
-                                    from    : '"'+config.emails.contact.name+'"<'+config.emails.contact.address+'>',
-                                    replyTo : '"'+config.emails.contact.name+'"<'+config.emails.contact.address+'>',
+                                    from    : from ? from : '"'+config.emails.contact.name+'"<'+config.emails.contact.address+'>',
+                                    replyTo : from ? from : '"'+config.emails.contact.name+'"<'+config.emails.contact.address+'>',
                                     to      : userEmail,
                                     subject : subject,
                                     html    : html,
@@ -75,6 +75,7 @@ module.exports = function (app) {
 
                                 sendgrid.send(mail, function(success) {
                                     if (success) {
+                                        mail.name = name;
                                         response.send({mail : mail});
                                     } else {
                                         response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
@@ -105,7 +106,7 @@ module.exports = function (app) {
         token = request.param('token', null),
         subject = request.param('subject', null),
         html = request.param('html', null),
-        categories = request.param('categories', 'undefined'),
+        name = request.param('name', 'undefined'),
         service = request.param('service', null),
         categoriesArray = [], userId, userEmail, mail;
 
@@ -138,16 +139,13 @@ module.exports = function (app) {
                         if (data.user) {
                             userId = data.user._id;
                             userEmail = data.user.username;
-                            categoriesArray.push('eekit');
 
-                            if (!categories) {
-                                categoriesArray.push('eekit admin '+service+': undefined category');
-                            } else if (typeof categories === 'string') {
-                                categoriesArray.push('eekit admin '+service+': '+categories);
+                            if (config.environment === 'development' || config.environment === 'testing') {
+                                categoriesArray.push('eekit test');
+                                categoriesArray.push('eekit test admin '+service+': '+name);
                             } else {
-                                for (var i in categories) {
-                                    categoriesArray.push('eekit admin '+service+': '+categories[i]);
-                                }
+                                categoriesArray.push('eekit');
+                                categoriesArray.push('eekit admin '+service+': '+name);
                             }
 
                             html = '<p>Id: '+userId+'</p><p>Email: '+userEmail+'</p><br /><br />' + html;
@@ -164,9 +162,10 @@ module.exports = function (app) {
                                 html    : html,
                                 categories : categoriesArray
                             }
-                            
+
                             sendgrid.send(mail, function(success) {
                                 if (success) {
+                                    mail.name = name;
                                     response.send({mail : mail});
                                 } else {
                                     response.send({error : {message : 'Mail not sent', name : 'ServerError'}});

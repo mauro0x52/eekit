@@ -32,7 +32,7 @@ describe('POST /mail/self', function () {
             token : 'euhaheuaheauheaeauh',
             subject : 'Testando Jaiminho!',
             html : 'Jaiminho sem fadiga! =]',
-            categories : 'teste',
+            name : 'teste',
             service : 'serviço de teste'
         }, function (error, data, response) {
             if (error) {
@@ -48,7 +48,7 @@ describe('POST /mail/self', function () {
         api.post('jaiminho', '/mail/self', {
             subject : 'Testando Jaiminho!',
             html : 'Jaiminho sem fadiga! =]',
-            categories : 'teste',
+            name : 'teste',
             service : 'serviço de teste'
         }, function (error, data, response) {
             if (error) {
@@ -64,7 +64,7 @@ describe('POST /mail/self', function () {
         api.post('jaiminho', '/mail/self', {
             token : token,
             html : 'Jaiminho sem fadiga! =]',
-            categories : 'teste',
+            name : 'teste',
             service : 'serviço de teste'
         }, function (error, data, response) {
             if (error) {
@@ -80,7 +80,7 @@ describe('POST /mail/self', function () {
         api.post('jaiminho', '/mail/self', {
             token : token,
             subject : 'Testando Jaiminho!',
-            categories : 'teste',
+            name : 'teste',
             service : 'serviço de teste'
         }, function (error, data, response) {
             if (error) {
@@ -96,7 +96,7 @@ describe('POST /mail/self', function () {
         api.post('jaiminho', '/mail/self', {
             token : token,
             subject : 'Testando Jaiminho!',
-            categories : 'teste'
+            name : 'teste'
         }, function (error, data, response) {
             if (error) {
                 return done(error);
@@ -128,7 +128,7 @@ describe('POST /mail/self', function () {
             token : token,
             subject : 'Testando Jaiminho!',
             html : 'Jaiminho sem fadiga! =]',
-            categories : 'teste',
+            name : 'teste',
             service : 'serviço de teste'
         }, function (error, data, response) {
             if (error) {
@@ -137,7 +137,7 @@ describe('POST /mail/self', function () {
                 data.should.not.have.property('error');
                 data.should.have.property('mail').property('subject').include('Testando Jaiminho!');
                 data.should.have.property('mail').property('html').include('Jaiminho sem fadiga! =]');
-                data.should.have.property('mail').property('categories').include('eekit serviço de teste: teste');
+                data.should.have.property('mail').property('categories').include('eekit test serviço de teste: teste');
                 done();
             }
         });
@@ -166,7 +166,7 @@ describe('POST /mail/admin', function () {
             token : 'euhaheuaheauheaeauh',
             subject : 'Testando Jaiminho!',
             html : 'Jaiminho sem fadiga! =]',
-            categories : 'teste',
+            name : 'teste',
             service : 'serviço de teste'
         }, function (error, data, response) {
             if (error) {
@@ -182,7 +182,7 @@ describe('POST /mail/admin', function () {
         api.post('jaiminho', '/mail/admin', {
             subject : 'Testando Jaiminho!',
             html : 'Jaiminho sem fadiga! =]',
-            categories : 'teste',
+            name : 'teste',
             service : 'serviço de teste'
         }, function (error, data, response) {
             if (error) {
@@ -198,7 +198,7 @@ describe('POST /mail/admin', function () {
         api.post('jaiminho', '/mail/admin', {
             token : token,
             html : 'Jaiminho sem fadiga! =]',
-            categories : 'teste',
+            name : 'teste',
             service : 'serviço de teste'
         }, function (error, data, response) {
             if (error) {
@@ -214,7 +214,7 @@ describe('POST /mail/admin', function () {
         api.post('jaiminho', '/mail/admin', {
             token : token,
             subject : 'Testando Jaiminho!',
-            categories : 'teste',
+            name : 'teste',
             service : 'serviço de teste'
         }, function (error, data, response) {
             if (error) {
@@ -230,7 +230,7 @@ describe('POST /mail/admin', function () {
         api.post('jaiminho', '/mail/admin', {
             token : token,
             subject : 'Testando Jaiminho!',
-            categories : 'teste'
+            name : 'teste'
         }, function (error, data, response) {
             if (error) {
                 return done(error);
@@ -246,7 +246,7 @@ describe('POST /mail/admin', function () {
             token : token,
             subject : 'Oi admin!',
             html : 'Email para o admin',
-            categories : 'teste',
+            name : 'teste',
             service : 'serviço de teste'
         }, function (error, data, response) {
             if (error) {
@@ -255,7 +255,7 @@ describe('POST /mail/admin', function () {
                 data.should.not.have.property('error');
                 data.should.have.property('mail').property('subject').include('Oi admin!');
                 data.should.have.property('mail').property('html').include('Email para o admin');
-                data.should.have.property('mail').property('categories').include('eekit admin serviço de teste: teste');
+                data.should.have.property('mail').property('categories').include('eekit test admin serviço de teste: teste');
                 done();
             }
         });
@@ -266,7 +266,7 @@ describe('POST /mail/admin', function () {
             token : token,
             subject : 'Aew admin!',
             html : 'Email para o admin',
-            categories : 'teste',
+            name : 'teste',
             service : 'serviço de teste',
             to : 'testes+aew@empreendemia.com.br'
         }, function (error, data, response) {
@@ -276,7 +276,7 @@ describe('POST /mail/admin', function () {
                 data.should.not.have.property('error');
                 data.should.have.property('mail').property('subject').include('Aew admin!');
                 data.should.have.property('mail').property('html').include('Email para o admin');
-                data.should.have.property('mail').property('categories').include('eekit admin serviço de teste: teste');
+                data.should.have.property('mail').property('categories').include('eekit test admin serviço de teste: teste');
                 done();
             }
         });

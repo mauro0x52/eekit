@@ -1,8 +1,8 @@
 module.exports = {
+    environment : 'development',
     host : {
         port : 8010,
-        url  : 'localhost',
-        debuglevel : 1 // 0 sem erros, 1 com erros
+        url  : 'localhost'
     },
     emails : {
         contact : {
