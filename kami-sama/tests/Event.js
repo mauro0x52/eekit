@@ -8,19 +8,15 @@
 
 var should = require("should"),
     api = require("./utils.js").api,
-    rand = require("./utils.js").rand;
+    rand = require("./utils.js").rand,
+    auth = require("./utils.js").auth;
 
 describe('POST /bind', function () {
     var token;
-    
+
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
+        auth('contacts', function (newToken) {
+            token = newToken;
             done();
         });
     });
@@ -42,7 +38,8 @@ describe('POST /bind', function () {
             label    : 'teste',
             callback : 'http://wwww.google.com',
             method   : 'GET',
-            token : 'inválido'
+            token : 'inválido',
+            secret : 'contacts'
         }, function (error, data, response) {
             if (error) {
                 return done(error);
@@ -57,7 +54,8 @@ describe('POST /bind', function () {
         api.post('kamisama', '/bind', {
             callback : 'http://wwww.google.com',
             method   : 'GET',
-            token : token
+            token : token,
+            secret : 'contacts'
         }, function (error, data, response) {
             if (error) {
                 return done(error);
@@ -72,7 +70,8 @@ describe('POST /bind', function () {
         api.post('kamisama', '/bind', {
             label    : 'teste',
             method   : 'GET',
-            token : token
+            token : token,
+            secret : 'contacts'
         }, function (error, data, response) {
             if (error) {
                 return done(error);
@@ -87,7 +86,8 @@ describe('POST /bind', function () {
         api.post('kamisama', '/bind', {
             label    : 'teste',
             callback : 'http://wwww.google.com',
-            token : token
+            token : token,
+            secret : 'contacts'
         }, function (error, data, response) {
             if (error) {
                 return done(error);
@@ -103,31 +103,25 @@ describe('POST /bind', function () {
             label    : 'teste',
             callback : 'http://wwww.google.com',
             method   : 'GET',
-            token : token
+            token : token,
+            secret : 'contacts'
         }, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
-                data.should.have.property('event');
+                should.not.exist(data);
                 done();
             }
         });
     });
 });
 
-
-
 describe('POST /trigger', function () {
     var token;
-    
+
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
+        auth('contacts', function (newToken) {
+            token = newToken;
             done();
         });
     });
@@ -147,7 +141,8 @@ describe('POST /trigger', function () {
     it('token inválido', function (done) {
         api.post('kamisama', '/trigger', {
             label    : 'teste',
-            token : 'inválido'
+            token : 'inválido',
+            secret : 'contacts'
         }, function (error, data, response) {
             if (error) {
                 return done(error);
@@ -161,7 +156,8 @@ describe('POST /trigger', function () {
     it('dispara evento', function (done) {
         api.post('kamisama', '/trigger', {
             label    : 'teste',
-            token : token
+            token : token,
+            secret : 'contacts'
         }, function (error, data, response) {
             if (error) {
                 return done(error);
