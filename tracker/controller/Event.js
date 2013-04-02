@@ -31,12 +31,11 @@ module.exports = function (app) {
                 response.send({error : error});
             } else {
                 require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/services').on('success', function (data) {
-                    var profiles = data.services.profiles;
                     require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
                         data: {
                             secret : config.security.secret
                         }
-                    }).on('success', function (data) {console.log('0')
+                    }).on('success', function (data) {
 
                         function format (date) {
                             if (date) {
@@ -76,54 +75,47 @@ module.exports = function (app) {
                                 }
                             }
                         }
-                        
-                        require('restler').get('http://'+profiles.host+':'+profiles.port+'/profile', {
-                            data: {
-                                token : token
-                            }
-                        }).on('success', function (data) {
-                            response.write(user.username + '</br></br>');
-                            
-                            response.write('nome : ' + data.profile.name + '</br>');
-                            response.write('telefone : ' + data.profile.phone + '</br>');
-                            response.write('expectativa : ' + data.profile.why + '</br></br>');
 
-                            response.write('utm_source : ' + utm.source + '</br>');
-                            response.write('utm_medium : ' + utm.medium + '</br>');
-                            response.write('utm_content : ' + utm.content + '</br>');
-                            response.write('utm_campaign : ' + utm.campaign + '</br></br>');
+                        response.write(user.username + '</br></br>');
 
-                            response.write('<table border="1">');
+                        response.write('nome : ' + (user.name ? user.name : '') + '</br>');
+                        response.write('telefone : ' + (user.informations && user.informations.phone ? user.informations.phone : '') + '</br>');
+
+                        response.write('utm_source : ' + utm.source + '</br>');
+                        response.write('utm_medium : ' + utm.medium + '</br>');
+                        response.write('utm_content : ' + utm.content + '</br>');
+                        response.write('utm_campaign : ' + utm.campaign + '</br></br>');
+
+                        response.write('<table border="1">');
+                        response.write('<tr>');
+                        response.write('<td>App</td>');
+                        response.write('<td>Dias com acesso</td>');
+                        response.write('</tr>');
+                        for (i in appDays) {
+                            var total = 0;
+                            for (var prop in appDays[i]) if (appDays[i].hasOwnProperty(prop)) total++;
                             response.write('<tr>');
-                            response.write('<td>App</td>');
-                            response.write('<td>Dias com acesso</td>');
+                            response.write('<td>' + i + '</td>');
+                            response.write('<td>' + total + '</td>');
                             response.write('</tr>');
-                            for (i in appDays) {
-                                var total = 0;
-                                for (var prop in appDays[i]) if (appDays[i].hasOwnProperty(prop)) total++;
-                                response.write('<tr>');
-                                response.write('<td>' + i + '</td>');
-                                response.write('<td>' + total + '</td>');
-                                response.write('</tr>');
-                            }
-                            response.write('</table><br />');
-                            
-                            response.write('<table border="1">');
+                        }
+                        response.write('</table><br />');
+
+                        response.write('<table border="1">');
+                        response.write('<tr>');
+                        response.write('<td>Data</td>');
+                        response.write('<td>App</td>');
+                        response.write('<td>Evento</td>');
+                        response.write('</tr>');
+                        for (i in events) {
                             response.write('<tr>');
-                            response.write('<td>Data</td>');
-                            response.write('<td>App</td>');
-                            response.write('<td>Evento</td>');
+                            response.write('<td>' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '</td>');
+                            response.write('<td>' + events[i].app + '</td>');
+                            response.write('<td>' + events[i].label + '</td>');
                             response.write('</tr>');
-                            for (i in events) {
-                                response.write('<tr>');
-                                response.write('<td>' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '</td>');
-                                response.write('<td>' + events[i].app + '</td>');
-                                response.write('<td>' + events[i].label + '</td>');
-                                response.write('</tr>');
-                            }
-                            response.write('</table>');
-                            response.end();
-                        });
+                        }
+                        response.write('</table>');
+                        response.end();
                     }).on('error', function () {response.end()});
 
                 });
@@ -156,7 +148,7 @@ module.exports = function (app) {
                 secret : config.security.secret
             }
         }).on('success', function (data) {
-            
+
             response.send({users : data.users});
 
         }).on('error', function(error) {
@@ -183,7 +175,7 @@ module.exports = function (app) {
 
         response.contentType('txt');
         response.header('Access-Control-Allow-Origin', '*');
-       
+
         response.write("version:4\n");
 
         if (request.param('from', null) || request.param('to', null)) {

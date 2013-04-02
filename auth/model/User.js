@@ -21,7 +21,7 @@ userSchema = new Schema({
     password        : {type : String, required : true},
     company         : {type : objectId, required : true},
     dateCreated     : {type : Date},
-    info            : {type : Schema.Types.Mixed},
+    informations    : {type : Schema.Types.Mixed},
     tokens          : [Token]
 });
 
