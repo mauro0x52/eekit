@@ -52,15 +52,28 @@ module.exports = function (app) {
                             if (data.user) {
                                 userId = data.user._id;
                                 userEmail = data.user.username;
-                                categoriesArray.push('eekit');
 
-                                if (!categories) {
-                                    categoriesArray.push('eekit '+service+': undefined category');
-                                } else if (typeof categories === 'string') {
-                                    categoriesArray.push('eekit '+service+': '+categories);
+                                if (config.environment === 'development' || config.environment === 'testing') {
+                                    categoriesArray.push('eekit teste');
+                                    if (!categories) {
+                                        categoriesArray.push('eekit teste '+service+': undefined category');
+                                    } else if (typeof categories === 'string') {
+                                        categoriesArray.push('eekit teste '+service+': '+categories);
+                                    } else {
+                                        for (var i in categories) {
+                                            categoriesArray.push('eekit teste '+service+': '+categories[i]);
+                                        }
+                                    }
                                 } else {
-                                    for (var i in categories) {
-                                        categoriesArray.push('eekit '+service+': '+categories[i]);
+                                    categoriesArray.push('eekit');
+                                    if (!categories) {
+                                        categoriesArray.push('eekit '+service+': undefined category');
+                                    } else if (typeof categories === 'string') {
+                                        categoriesArray.push('eekit '+service+': '+categories);
+                                    } else {
+                                        for (var i in categories) {
+                                            categoriesArray.push('eekit '+service+': '+categories[i]);
+                                        }
                                     }
                                 }
 
@@ -138,15 +151,30 @@ module.exports = function (app) {
                         if (data.user) {
                             userId = data.user._id;
                             userEmail = data.user.username;
-                            categoriesArray.push('eekit');
 
-                            if (!categories) {
-                                categoriesArray.push('eekit admin '+service+': undefined category');
-                            } else if (typeof categories === 'string') {
-                                categoriesArray.push('eekit admin '+service+': '+categories);
+                            if (config.environment === 'development' || config.environment === 'testing') {
+                                categoriesArray.push('eekit test');
+
+                                if (!categories) {
+                                    categoriesArray.push('eekit test admin '+service+': undefined category');
+                                } else if (typeof categories === 'string') {
+                                    categoriesArray.push('eekit test admin '+service+': '+categories);
+                                } else {
+                                    for (var i in categories) {
+                                        categoriesArray.push('eekit test admin '+service+': '+categories[i]);
+                                    }
+                                }
                             } else {
-                                for (var i in categories) {
-                                    categoriesArray.push('eekit admin '+service+': '+categories[i]);
+                                categoriesArray.push('eekit');
+
+                                if (!categories) {
+                                    categoriesArray.push('eekit admin '+service+': undefined category');
+                                } else if (typeof categories === 'string') {
+                                    categoriesArray.push('eekit admin '+service+': '+categories);
+                                } else {
+                                    for (var i in categories) {
+                                        categoriesArray.push('eekit admin '+service+': '+categories[i]);
+                                    }
                                 }
                             }
 
@@ -164,7 +192,7 @@ module.exports = function (app) {
                                 html    : html,
                                 categories : categoriesArray
                             }
-                            
+
                             sendgrid.send(mail, function(success) {
                                 if (success) {
                                     response.send({mail : mail});
