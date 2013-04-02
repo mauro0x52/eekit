@@ -47,7 +47,7 @@ module.exports = function (app) {
                 } else if (user === null) {
                     response.send({error : {message :  'invalid token', name : 'InvalidTokenError' }});
                 } else if (user.checkToken(request.param('token', null), service.slug)) {
-                    result.user = {_id : user._id};
+                    result.user = {_id : user._id, name : user.name};
                     result.company = {_id : user.company};
                     result.token = request.param('token', null);
                     if (service.permissions.username) {

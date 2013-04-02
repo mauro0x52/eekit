@@ -19,17 +19,17 @@ var empreendemia = {
         empreendemia.ui.content.roll.sheets.apps.remove();
         empreendemia.ui.content.roll.menu.remove();
         /* Exibindo user section */
-        empreendemia.user.profile(function (profile) {
+        empreendemia.user.profile(function (user) {
             var routes,
                 slug,
                 route;
 
             empreendemia.ui.header.user.options.remove();
-            if (profile) {
+            if (user) {
                 /* Usuário logado */
                 empreendemia.ui.header.user.login();
                 empreendemia.ui.header.user.options.add(new empreendemia.ui.userOption({
-                    legend : profile.name,
+                    legend : user.name,
                     style  : 'name'
                 }));
                 empreendemia.ui.header.user.options.add(new empreendemia.ui.userOption({

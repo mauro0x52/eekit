@@ -37,7 +37,7 @@ empreendemia.user = {
         var www_token = getCookie('token');
         if (www_token) {
             empreendemia.ajax.post({
-                url : 'http://' + empreendemia.config.services.auth.host + ':' + empreendemia.config.services.auth.port + '/service/' + service + '/auth',
+                url : 'http://' + empreendemia.config.services.auth.host + ':' + empreendemia.config.services.auth.port + '/service/' + service + '/authorize',
                 data : {
                     secret : empreendemia.config.services.www.secret,
                     token  : www_token
@@ -90,16 +90,8 @@ empreendemia.user = {
                         setCookie('token', params.token, 1);
                     }
                     empreendemia.user.auth(function () {
-                        empreendemia.user.serviceLogin('profiles', function (token) {
-                            params.profile.token = token;
-                            empreendemia.ajax.post({
-                                url : 'http://' + empreendemia.config.services.profiles.host + ':' + empreendemia   .config.services.profiles.port + '/profile',
-                                data : params.profile
-                            }, function () {
-                                empreendemia.routes.set('ee/usuario-cadastrado');
-                                empreendemia.load();
-                            });
-                        });
+                        empreendemia.routes.set('ee/usuario-cadastrado');
+                        empreendemia.load();
                     });
                 }
             }
@@ -127,10 +119,12 @@ empreendemia.user = {
     },
 
     profile : function (cb) {
+        var www_token = getCookie('token');
         empreendemia.ajax.get({
-            url : 'http://' + empreendemia.config.services.profiles.host + ':' + empreendemia.config.services.profiles.port + '/profile',
+            url : 'http://' + empreendemia.config.services.auth.host + ':' + empreendemia.config.services.auth.port + '/validate',
             data : {
-                token : empreendemia.config.services.profiles.token
+                secret : empreendemia.config.services.www.secret,
+                token : www_token
             }
         }, function (response) {
             if (response && !response.error) {
@@ -139,7 +133,7 @@ empreendemia.user = {
                 } else {
                     setCookie('token', getCookie('token'), 1);
                 }
-                cb(response.profile);
+                cb(response.user);
             } else {
                 cb(null);
             }

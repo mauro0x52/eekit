@@ -41,7 +41,7 @@ tokenSchema.generate = function (minutes, service) {
          token : crypto
              .createHash('sha512')
              .update(config.security.token + this._id + crypto.randomBytes(10))
-             .digest('base64'),
+             .digest('hex'),
          service : service,
          dateCreated : new Date(),
          dateExpiration : expiration
