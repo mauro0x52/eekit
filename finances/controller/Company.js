@@ -26,16 +26,16 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
         
-        auth(request.param('token', null), function (error, company) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : company._id}, function (error, oldcompany) {
+                Company.findOne({company : data.company._id}, function (error, oldcompany) {
                     if (error) {
                         response.send({error : error});
                     } else if (oldcompany === null) {
                         newcompany = new Company({
-                            company : company._id,
+                            company : data.company._id,
                             categories : [
                                 {name : 'Produto 1', type : 'credit'},
                                 {name : 'Produto 2', type : 'credit'},

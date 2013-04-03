@@ -31,11 +31,11 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, company) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : company._id}, function (error, company) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (Company === null) {
@@ -73,11 +73,11 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, company) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : company._id}, function (error, company) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (Company === null) {
@@ -104,11 +104,11 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, company) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : company._id}, function (error, company) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
@@ -144,11 +144,11 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, company) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : company._id}, function (error, company) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (Company === null) {
@@ -193,11 +193,11 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, company) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : company._id}, function (error, company) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (Company === null) {

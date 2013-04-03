@@ -21,23 +21,21 @@ module.exports = function (app) {
      * @response : {categories[]}
      */
     app.post('/company', function (request,response) {
-        var newcompany,
-            id;
+        var newcompany;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, company) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                id = company._id;
-                Company.findOne({company : company._id}, function (error, company) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : error});
                     } else if (company === null) {
                         newcompany = new Company({
-                            company : id,
+                            company : data.company._id,
                             categories : [
                                 {name : 'Geral', type : 'general', color : 'blue'},
                                 {name : 'Reuniões', type : 'meetings', color : 'brown'},

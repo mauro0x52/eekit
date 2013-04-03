@@ -26,7 +26,7 @@ exports.auth = function (token, cb) {
         }
     }).on('success', function(data) {
         if (data.company) {
-            cb(null, data.company);
+            cb(null, data);
         } else if (data.error) {
             cb(data.error, null);
         } else {
