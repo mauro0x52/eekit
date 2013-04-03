@@ -7,6 +7,10 @@
 app.models.task = function (params) {
     var that = this;
     /**
+     * Id do usuário responsável pela tarefa
+     */
+    this.user = params.user;
+    /**
      * Id da categoria da tarefa
      */
     this.category = params.category;
@@ -131,6 +135,7 @@ app.models.task = function (params) {
             dateDeadline : this.dateDeadline,
             priority : this.priority,
             reminder : this.reminder,
+            user : this.user,
             _id : this._id
         }
         if (data._id) {

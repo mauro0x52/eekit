@@ -131,6 +131,43 @@ module.exports = function (app) {
     });
 
     /**
+     * Lista os usuários de uma empresa
+     *
+     * @author Rafael Erthal
+     * @since  2012-07
+     *
+     * @request     {token}
+     * @response    {users}
+     */
+    app.get('/company/users', function (request, response) {
+
+        response.contentType('json');
+        response.header('Access-Control-Allow-Origin', '*');
+
+        // procura token
+        User.findByToken(request.param('token', null), function(error, user) {
+            if (error || !user) {
+                response.send({error : { message : 'invalid token', name : 'InvalidTokenError', id : request.param('token', null), path : 'token'}});
+            } else {
+                User.find({company : user.company}, function (error, users) {
+                    var result = [];
+                    if (error) {
+                        response.send({error : error});
+                    } else {
+                        for (var i in users) {
+                            result.push({
+                                _id : users[i]._id,
+                                name : users[i].name
+                            });
+                        }
+                        response.send({users : result});
+                    }
+                });
+            }
+        });
+    });
+
+    /**
      * Loga o usuário
      *
      * @autor : Rafael Erthal

@@ -29,8 +29,18 @@ var empreendemia = {
                 /* Usuário logado */
                 empreendemia.ui.header.user.login();
                 empreendemia.ui.header.user.options.add(new empreendemia.ui.userOption({
-                    legend : user.name,
-                    style  : 'name'
+                    legend : user.name + ' - configurações',
+                    style  : 'name',
+                    click  : function () {
+                        empreendemia.apps.open({
+                            app   : 'ee',
+                            route : '/usuarios',
+                            open  : function (tool) {
+                                tool.open();
+                                empreendemia.apps.render(tool);
+                            }
+                        });
+                    }
                 }));
                 empreendemia.ui.header.user.options.add(new empreendemia.ui.userOption({
                     legend : 'sair',

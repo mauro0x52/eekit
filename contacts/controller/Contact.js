@@ -42,6 +42,7 @@ module.exports = function (app) {
                     } else {
                         contact = new Contact({
                             company     : company._id,
+                            fromUser    : data.user._id,
                             category    : request.param('category', null),
                             name        : request.param('name', null),
                             email       : request.param('email', null),

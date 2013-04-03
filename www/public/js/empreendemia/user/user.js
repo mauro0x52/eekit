@@ -16,17 +16,25 @@ empreendemia.user = {
                     token  : www_token
                 }
             }, function (data) {
-                var i,j;
-                if (data && data.user && data.user.auths) {
-                    for (i in data.user.auths) {
-                        for (j in data.user.auths[i].tokens) {
-                            if ((new Date() - new Date(data.user.auths[i].tokens[j].dateUpdated))/(1000*60*60*24) < 30) {
-                                empreendemia.config.services[data.user.auths[i].service].token = data.user.auths[i].tokens[j].token;
-                            }
+                sdk.config.user = data.user;
+                var i;
+                if (data && data.tokens) {
+                    for (i in data.tokens) {
+                        if (new Date() < new Date(data.tokens[i].dateExpiration)) {
+                            empreendemia.config.services[data.tokens[i].service].token = data.tokens[i].token;
                         }
                     }
                 }
-                cb();
+                empreendemia.ajax.get({
+                    url : 'http://' + empreendemia.config.services.auth.host + ':' + empreendemia.config.services.auth.port + '/company/users',
+                    data : {
+                        token : www_token
+                    }
+                }, function (data) {
+                    empreendemia.config.users = data.users;
+                    sdk.config.users = data.users;
+                    cb();
+                });
             });
         } else {
             cb();
