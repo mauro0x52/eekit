@@ -41,7 +41,7 @@ module.exports = function (app) {
                     } else {
                         task = new Task({
                             company     : company._id,
-                            fromUser    : data.user._id,
+                            author      : data.user._id,
                             user        : request.param('user', null),
                             category    : request.param('category', null),
                             title       : request.param('title', null),
