@@ -113,9 +113,7 @@ module.exports = function (app) {
                     }
                 });
             }
-        }).on('error', function(error) {
-            response.send({error : error});
-        });
+        })
     });
 
 }

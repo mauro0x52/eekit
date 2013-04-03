@@ -18,7 +18,7 @@ var config = require('./config.js');
 exports.tokens = function (token, cb) {
     "use strict";
 
-    require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/kamisama/authorize', {
+    require('restler').post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/kamisama/authorize', {
         data: {
             token  : token,
             secret : config.security.secret
