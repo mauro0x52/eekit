@@ -1,5 +1,5 @@
 /**
- * Migração da versão 1.0
+ * Migração da versão 0.2
  * Fases para categorias e novas categorias padrão
  *
  * @author Mauro Ribeiro
