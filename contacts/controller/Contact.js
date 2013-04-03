@@ -89,7 +89,7 @@ module.exports = function (app) {
                     } else if (company === null) {
                             response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        query.company = company.company;
+                        query.company = company._id;
                         if (request.param('filterByCategory')) {
                             if (typeof request.param('filterByCategory') === 'string') {
                                 query.category = request.param('filterByCategory');
