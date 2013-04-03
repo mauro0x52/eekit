@@ -37,7 +37,7 @@ while (users.hasNext()) {
     }
 
     /* cria a empresa */
-    company._id = ObjectId(user_id.toString().substring(0,8)+'000000'+user_id.toString().substring(14));
+    company._id = ObjectId(user_id.substring(0,8)+'000000'+user_id.substring(14));
     company.name = user.name;
     company.users = [user._id];
     company.services = [];
