@@ -42,7 +42,7 @@ module.exports = function (app) {
                     } else {
                         transaction = new Transaction({
                             company     : company._id,
-                            fromUser    : data.user._id,
+                            author      : data.user._id,
                             category    : request.param('category', null),
                             account     : request.param('account', null),
                             name        : request.param('name', null),
