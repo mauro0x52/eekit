@@ -25,7 +25,7 @@ while (companies.hasNext()) {
     while (transactions.hasNext()) {
         var transaction = transactions.next();
 
-        transaction.company = transaction.user;
+        transaction.company = company._id;
         transaction.author = ObjectId(user_id);
 
         delete transaction.user;

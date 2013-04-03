@@ -26,7 +26,7 @@ while (companies.hasNext()) {
     while (tasks.hasNext()) {
         var task = tasks.next();
 
-        task.company = task.user;
+        task.company = company._id;
         task.author = ObjectId(user_id);
         task.user = ObjectId(user_id);
 
