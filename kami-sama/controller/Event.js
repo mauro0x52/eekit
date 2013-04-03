@@ -8,6 +8,7 @@
 module.exports = function (app) {
     var Model = require('./../model/Model.js'),
         tokens = require('../Utils.js').tokens,
+        services = require('../Utils.js').services,
         config = require('../config.js'),
         Event = Model.Event;
 
@@ -39,7 +40,7 @@ module.exports = function (app) {
                     label     : request.param('label', null),
                     callback  : request.param('callback', null),
                     method    : request.param('method', null),
-                    user      : data.user._id
+                    company   : data.company._id
                 });
                 newevent.save(function (error) {
                     if (error) {
@@ -79,37 +80,42 @@ module.exports = function (app) {
             } else if (data.tokens === null) {
                 response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
             } else {
-                Event.find({label : request.param('label', null), user : data.user._id}, function (error, events) {
+                Event.find({label : request.param('label', null), company : data.company._id}, function (error, events) {
                     var i;
                     if (error) {
                         response.send({error : error});
                     } else {
-                        for (i in events) {
-                            var host = events[i].callback.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[2],
-                                port = events[i].callback.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[4],
-                                responseData = request.param('data', {});
-
-                            for (var service in services) {
-                                if (
-                                    services[service].host.toString() === host.toString() &&
-                                    services[service].port.toString() === port.toString()
-                                ) {
-                                    for (var token in data.tokens) {
+                        services(function (error, services) {
+                            if (error) {
+                                response.send({error : error});
+                            } else {
+                                for (i in events) {
+                                    var host = events[i].callback.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[2],
+                                        port = events[i].callback.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[4],
+                                        responseData = request.param('data', {});
+                                    for (var service in services) {
                                         if (
-                                            data.tokens[token].service === service &&
-                                            (new Date() - new Date(data.tokens[token].dateUpdated)) / (1000*60*60*24) < 30
+                                            services[service].host.toString() === host.toString() &&
+                                            services[service].port.toString() === port.toString()
                                         ) {
-                                            responseData.token = data.tokens[token].token;
-                                            require('restler').request(events[i].callback, {
-                                                method : events[i].method,
-                                                data   : responseData
-                                            });
+                                            for (var token in data.tokens) {
+                                                if (
+                                                    data.tokens[token].service === service &&
+                                                    new Date(data.tokens[token].dateExpiration) > new Date()
+                                                ) {
+                                                    responseData.token = data.tokens[token].token;
+                                                    require('restler').request(events[i].callback, {
+                                                        method : events[i].method,
+                                                        data   : responseData
+                                                    });
+                                                }
+                                            }
                                         }
                                     }
                                 }
+                                response.send(null);
                             }
-                        }
-                        response.send(null);
+                        });
                     }
                 });
             }

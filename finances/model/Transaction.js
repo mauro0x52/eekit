@@ -12,6 +12,7 @@ var mongoose = require('mongoose'),
 
 transactionSchema = new schema({
     company     : {type : objectId},
+    fromUser    : {type : objectId},
     category    : {type : objectId},
     account     : {type : objectId},
     task        : {type : objectId},
