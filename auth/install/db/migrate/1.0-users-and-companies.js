@@ -3,7 +3,7 @@
  * Agora usuários pertencem a uma empresa, e não existe mais o profiles
  *
  * @author Mauro Ribeiro
- * @since
+ * @since  2013-04
  */
 
 use profiles;
