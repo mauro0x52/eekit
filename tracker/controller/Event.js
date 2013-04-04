@@ -137,20 +137,17 @@ module.exports = function (app) {
      * @response : {events}
      */
     app.get('/users', function (request,response) {
-        var query = {};
-
-        response.contentType('json');
-        response.header('Access-Control-Allow-Origin', '*');
-
-
         require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
             data: {
                 secret : config.security.secret
             }
         }).on('success', function (data) {
-
-            response.send({users : data.users});
-
+            var date;
+            for (var i in data.users) {
+                date = new Date(data.users[i].dateCreated);
+                response.write(data.users[i]._id + ', ' + data.users[i].username + ', ' + date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + '\n');
+            }
+            response.end();
         }).on('error', function(error) {
             response.write(error.toString());
             response.end();
