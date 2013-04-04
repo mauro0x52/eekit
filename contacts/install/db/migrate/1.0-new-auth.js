@@ -25,7 +25,7 @@ while (companies.hasNext()) {
     while (contacts.hasNext()) {
         var contact = contacts.next();
 
-        contact.company = contact.user;
+        contact.company = company._id;
         contact.author = ObjectId(user_id);
 
         delete contact.user;

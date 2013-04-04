@@ -15,11 +15,13 @@ describe('POST /mail/self', function () {
 
     before(function (done) {
         // cria um usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando',
-            status : 'active',
+        api.post('auth', '/company', {
+            name : 'Nome da Empresa',
+            admin : {
+                name : 'Nome do Broder',
+                username : 'testes+' + rand() + '@empreendemia.com.br',
+                password : 'testando'
+            },
             secret : 'www'
         }, function(error, data) {
             token = data.token;
@@ -36,7 +38,7 @@ describe('POST /mail/self', function () {
             service : 'serviço de teste'
         }, function (error, data, response) {
             if (error) {
-                return done(error);
+                done(error);
             } else {
                 data.should.have.property('error');
                 done();
@@ -107,7 +109,7 @@ describe('POST /mail/self', function () {
         });
     });
 
-    it('envia email sem category', function (done) {
+    it('envia email sem nome', function (done) {
         api.post('jaiminho', '/mail/self', {
             token : token,
             subject : 'Testando Jaiminho!',
@@ -149,11 +151,13 @@ describe('POST /mail/admin', function () {
 
     before(function (done) {
         // cria um usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando',
-            status : 'active',
+        api.post('auth', '/company', {
+            name : 'Nome da Empresa',
+            admin : {
+                name : 'Nome do Broder',
+                username : 'testes+' + rand() + '@empreendemia.com.br',
+                password : 'testando'
+            },
             secret : 'www'
         }, function(error, data) {
             token = data.token;

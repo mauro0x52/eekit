@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0
+
+Features
+- Adaptação para novo Auth
+
 ## 0.1 (2013-03-26)
 
 Features

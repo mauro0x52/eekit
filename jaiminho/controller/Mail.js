@@ -38,7 +38,7 @@ module.exports = function (app) {
             } else if (from && /^.*\@empreendemia\.com\.br$/.test(from) === false) {
             response.send({error : { message : 'Must be a valid email address', name : 'ValidatorError', path : 'from', type : 'format'}});
             } else {
-                restler.post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/jaiminho/auth', {
+                restler.post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/jaiminho/authorize', {
                     data: {
                         token  : token,
                         secret : config.security.secret
@@ -121,7 +121,7 @@ module.exports = function (app) {
         } else if (to && /^.*\@empreendemia\.com\.br$/.test(to) === false) {
             response.send({error : { message : 'Must be a valid email address', name : 'ValidatorError', path : 'to', type : 'format'}});
         } else {
-            restler.post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/jaiminho/auth', {
+            restler.post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/jaiminho/authorize', {
                 data: {
                     token  : token,
                     secret : config.security.secret

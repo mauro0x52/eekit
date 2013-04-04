@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 2.0
+
+Features
+- Adaptação para o novo Auth
+- Painel de controle da empresa
+
 ## 1.0.4 (2013-03-20)
 - Telefone no cadastro de usuários
 - Remoção dos campos setor, tamanho e função do cadastro
