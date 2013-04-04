@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 0.4
+## 0.4 (2013-04-04)
 
 Melhorias
 - Alterando "categories" para "name"
