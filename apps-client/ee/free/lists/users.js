@@ -37,4 +37,11 @@ app.routes.list('/usuarios', function (params, data) {
             title : app.config.users[i].name
         }));
     }
+
+    /* Pegando usuários que são cadastradas ao longo do uso do app */
+    app.events.bind('create user', function (user) {
+        groups.admins.items.add(new app.ui.item({
+            title : user.name
+        }));
+    });
 });
