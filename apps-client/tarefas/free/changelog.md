@@ -5,6 +5,7 @@ Changelog
 
 Features
 - Adaptação para o novo Auth
+- Adição de usuário responsável para tarefa
 
 ## 1.0.4 (2013-03-26)
 

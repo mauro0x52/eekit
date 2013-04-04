@@ -493,6 +493,8 @@ app.routes.list('/feitas', function (params, data) {
             for (i in tasks) {
                 fitGroup(tasks[i]).items.add((new Item(tasks[i])).item);
             }
+
+            app.ui.filter.submit();
         });
     });
 

@@ -25,20 +25,25 @@ empreendemia.user = {
                         }
                     }
                 }
-                empreendemia.ajax.get({
-                    url : 'http://' + empreendemia.config.services.auth.host + ':' + empreendemia.config.services.auth.port + '/company/users',
-                    data : {
-                        token : www_token
-                    }
-                }, function (data) {
-                    empreendemia.config.users = data.users;
-                    sdk.config.users = data.users;
-                    cb();
-                });
+                empreendemia.user.companyUsers(cb);
             });
         } else {
             cb();
         }
+    },
+
+    companyUsers : function (cb) {
+        var www_token = getCookie('token');
+        empreendemia.ajax.get({
+            url : 'http://' + empreendemia.config.services.auth.host + ':' + empreendemia.config.services.auth.port + '/company/users',
+            data : {
+                token : www_token
+            }
+        }, function (data) {
+            empreendemia.config.users = data.users;
+            sdk.config.users = data.users;
+            cb();
+        });
     },
 
     serviceLogin : function (service, cb) {

@@ -5,6 +5,7 @@ Changelog
 
 Features
 - Adaptação para o novo Auth
+- Adição de usuário responsável para tarefa
 
 ## 0.3 (2013-03-19)
 - Autenticação de serviço
