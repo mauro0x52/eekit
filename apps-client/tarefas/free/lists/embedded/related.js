@@ -33,25 +33,6 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
      */
     now = new Date();
 
-    /**
-     * Cor de uma categoria
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  name : nome da categoria
-     * @return nome da cor
-     */
-    function categoryColor (name) {
-        switch (name) {
-            case 'Geral'    : return 'blue';
-            case 'Reuniões' : return 'brown';
-            case 'Finanças' : return 'green';
-            case 'Vendas'   : return 'olive';
-            case 'Projetos' : return 'cyan';
-        }
-    }
-
     /* montando os grupos */
     groups = {
         pending : new app.ui.group({
@@ -231,7 +212,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
             for (i in categories) {
                 if (categories[i]._id === value) {
                     this.item.label.legend(categories[i].name);
-                    this.item.label.color(categoryColor(categories[i].name));
+                    this.item.label.color(categories[i].color || 'blue');
                 }
             }
         }
