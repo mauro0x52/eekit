@@ -8,7 +8,6 @@
 var mongoose = require('mongoose'),
     schema   = mongoose.Schema,
     objectId = schema.ObjectId,
-    Transaction = require('./Transaction.js').Transaction,
     scheduleSchema;
 
 scheduleSchema = new schema({
@@ -28,4 +27,4 @@ scheduleSchema = new schema({
 });
 
 /*  Exportando o pacote  */
-exports.Schedule = scheduleSchema;
+exports.Schedule = mongoose.model('Schedule', scheduleSchema);

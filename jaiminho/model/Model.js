@@ -12,4 +12,3 @@ mongoose.connect('mongodb://' + config.mongodb.username + ':' + config.mongodb.p
 
 /*  Exportar name-space  */
 exports.Schedule = require('./Schedule.js').Schedule;
-exports.Mail = require('./Mail.js').Mail;

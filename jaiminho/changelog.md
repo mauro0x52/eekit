@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.1
+
+Features
+- agendamento de envio de emails
+
 ## 1.0
 
 Features
