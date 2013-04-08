@@ -193,34 +193,15 @@ module.exports = function (app) {
                 return 0;
             });
 
-            require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
-                data: {
-                    secret : config.security.secret
-                }
-            }).on('success', function (data) {
-                function user (id) {
-                    if (id) {
-                        for (var i in data.users) {
-                            if (data.users[i]._id.toString() === id.toString()) {
-                                return data.users[i];
-                            }
-                        }
-                    }
-                }
 
-                for (i in events) {
-                    if (user(events[i].user)) {
-                        response.write('"' + events[i].label + '","' + events[i].app + '","' + events[i].source + '","' + events[i].user + '","' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '","' + events[i].date.getHours() + ':' + events[i].date.getMinutes() + '","' + events[i].utm.source + '","' + events[i].utm.content + '","' + events[i].utm.campaign + '","' + events[i].utm.medium + '"\n');
-                    } else {
-                        response.write('"' + events[i].label + '","' + events[i].app + '","' + events[i].source + '","' + 'ip:' + events[i].ip + '","' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '","' + events[i].date.getHours() + ':' + events[i].date.getMinutes() + '","' + events[i].utm.source + '","' + events[i].utm.content + '","' + events[i].utm.campaign + '","' + events[i].utm.medium + '"\n');
-                    }
+            for (i in events) {
+                if (events[i].user) {
+                   response.write('"' + events[i].label + '","' + events[i].app + '","' + events[i].source + '","' + events[i].user + '","' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '","' + events[i].date.getHours() + ':' + events[i].date.getMinutes() + '","' + events[i].utm.source + '","' + events[i].utm.content + '","' + events[i].utm.campaign + '","' + events[i].utm.medium + '"\n');
+                } else {
+                    response.write('"' + events[i].label + '","' + events[i].app + '","' + events[i].source + '","' + 'ip:' + events[i].ip + '","' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '","' + events[i].date.getHours() + ':' + events[i].date.getMinutes() + '","' + events[i].utm.source + '","' + events[i].utm.content + '","' + events[i].utm.campaign + '","' + events[i].utm.medium + '"\n');
                 }
-                response.end();
-
-            }).on('error', function(error) {
-                response.write(error.toString());
-                response.end();
-            });
+            }
+            response.end();
         });
     });
 

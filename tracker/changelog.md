@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.2 (2013-04-08)
+
+Hotfixes
+- Problemas com _id no /users e /events
+
 ## 1.0.1 (2013-04-05)
 
 Melhorias
