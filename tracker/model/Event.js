@@ -39,6 +39,82 @@ eventSchema.pre('init', function (next, doc) {
 	}
 })
 
+eventSchema.statics.groupByUser = function (app, cb) {
+	Event.find(function (error, events) {
+	    var users = {};
+
+        if (error) {
+        	cb(error, null)
+        } else {
+	        for (var i = 0; i < events.length; i += 1) {
+            	var id = events[i].user ? events[i].user.toString() : events[i].ip.toString();
+                if (users[id]) {
+                    users[id].events.push(events[i]);
+                    if (users[id].date < events[i].date) {
+                        users[id].firstEvent = events[i].date;
+                    }
+                } else {
+                    users[id] = {
+                    	id : id,
+                        firstEvent : events[i].date,
+                        events : [events[i]] ,
+                        utm : {},
+                        filter : function (labels, minimum, from, to) {
+		                    var dateFrom = new Date(from),
+			                    dateTo   = new Date(to),
+			                    ocurrences = 0;
+
+							for (var i in this.events) {
+	                            if (
+	                                (
+	                                	this.events[i].date >= dateFrom ||
+	                                	!from
+                                	) && (
+	                                	this.events[i].date <= dateTo ||
+	                                	!to
+                                	) && (
+	                                	this.events[i].app === app ||
+	                                	this.events[i].source === app ||
+	                                	!app
+                                	) && (
+	                                	labels.indexOf(this.events[i].label) >= 0 ||
+	                                	labels.length === 0
+                                	)
+	                            ) {
+	                                ocurrences += 1;
+	                            }
+		                    }
+		                    return ocurrences >= minimum;
+		                }
+                    };
+                }
+                if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
+                	users[id].utm = events[i].utm;
+                }
+	        }
+	        cb(null, users);
+	    }
+	});
+}
+
+eventSchema.statics.filterByNotActivated = function (app, required, forbidden, cb) {
+	Event.groupByUser(app, function(error, users) {
+		if (error) {
+			cb(error, null);
+		} else {
+			var result = [];
+			for (var i in users) {
+				var selected = users[i].filter(required.labels, required.minimum);
+				var activated = users[i].filter(forbidden.labels, forbidden.minimum);
+				if (!activated && selected) {
+					result.push(users[i]);
+				}
+			}
+			cb(null, result);
+		}
+	});
+}
+
 eventSchema.statics.cohort = function (app, frequency, cb) {
 	Event.find(function (error, events) {
         var cohorts = [],
@@ -57,6 +133,7 @@ eventSchema.statics.cohort = function (app, frequency, cb) {
                     }
                 } else {
                     users[id] = {
+                    	id : id,
                         firstEvent : events[i].date,
                         events : [events[i]] ,
                         utm : {}
