@@ -31,7 +31,7 @@ module.exports = function (app) {
                 response.send({error : error});
             } else {
                 require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/services').on('success', function (data) {
-                    require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
+                    require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/'+request.params.id, {
                         data: {
                             secret : config.security.secret
                         }
@@ -48,11 +48,7 @@ module.exports = function (app) {
                             utm = {}
                             appDays = {};
 
-                        for (i in data.users) {
-                            if (data.users[i]._id.toString() === request.params.id.toString()) {
-                                user = data.users[i];
-                            }
-                        }
+                        user = data.user
 
                         for (i in events) {
                             if (!appDays[events[i].app]) {

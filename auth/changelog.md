@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.1 (2013-04-08)
+
+Features
+- Pegar dados de um usuário
+
 ## 1.0 (2013-04-04)
 
 Features
