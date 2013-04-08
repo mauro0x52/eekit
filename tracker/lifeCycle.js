@@ -18,7 +18,7 @@ Event.filterByNotActivated(
 		} else {
 			for (var i in users) {
 				if ((new Date() - new Date(users[i].firstEvent)) / (1000 * 60 * 60 * 24) < 1) {
-					restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i]._id, {
+					restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i].id, {
 				        data: {
 				            secret : config.security.secret
 				        }
