@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.0
+## 1.0 (2013-04-04)
 
 Features
 - Suporte ao novo sistema de autenticação (cadastro de empresas)

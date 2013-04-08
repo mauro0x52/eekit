@@ -53,6 +53,50 @@ module.exports = function (app) {
     });
 
     /**
+     * Lista as informações de um usuário
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-04
+     *
+     * @request     {id,secret}
+     * @response    {users[]}
+     */
+    app.get('/user/:id', function (request, response) {
+        response.contentType('json');
+        response.header('Access-Control-Allow-Origin', '*');
+
+        var service = null, result = {};
+
+        for (var i in config.services) {
+            if (config.services[i].secret === request.param('secret', '')) {
+                service = config.services[i]
+                service.slug = i;
+            }
+        }
+
+        if (service === null) {
+            response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
+        } else {
+            User.findOne({_id:request.params.id}, '_id name username company informations dateCreated', function (error, user) {
+                if (error || !user) {
+                    response.send({error : { message : 'user not found', name : 'NotFoundError', path : 'id', id : request.params.id}});
+                } else {
+                    result._id = user._id;
+                    result.name = user.name;
+                    result.company = user.company;
+                    if (service.permissions.username) {
+                        result.username = user.username;
+                    }
+                    if (service.permissions.tokens) {
+                        result.tokens = user.tokens;
+                    }
+                    response.send({user : result});
+                }
+            });
+        }
+    });
+
+    /**
      * Cadastra novo usuário na empresa
      *
      * @author Rafael Erthal

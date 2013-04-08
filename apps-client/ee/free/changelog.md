@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 2.0
+## 2.0 (2013-04-04)
 
 Features
 - Adaptação para o novo Auth

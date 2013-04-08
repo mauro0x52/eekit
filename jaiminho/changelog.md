@@ -6,7 +6,7 @@ Changelog
 Features
 - agendamento de envio de emails
 
-## 1.0
+## 1.0 (2013-04-04)
 
 Features
 - Adaptação para novo Auth
