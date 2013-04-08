@@ -160,3 +160,46 @@ Event.filterByNotActivated(
 		}
 	}
 );
+
+/* Lifecycle de pagamento */
+Event.groupByUser(
+    null,
+    function (error, users) {
+        if (error) {
+            console.log(error);
+        } else {
+            for (var i in users) {
+                var date = (new Date() - new Date(users[i].firstEvent)) / (1000 * 60 * 60 * 24);
+                if (date > 10 && date < 11) {
+                    restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i]._id, {
+                        data: {
+                            secret : config.security.secret
+                        }
+                    }).on('success', function(data) {
+                        if (data && data.user && data.user.tokens) {
+                            restler.post('http://'+config.services.jaiminho.url+':'+config.services.jaiminho.port+'/mail/self' , {
+                                data : {
+                                    token : data.user.tokens[0].token,
+                                    from : 'lucas@empreendemia.com.br',
+                                    subject : 'O último passo para sair da planilha',
+                                    html :  '' +
+                                            'Olá |FNAME|, tudo bom?<br />' +
+                                            'Estou mandando este e-mail porque o seu período de testes do EmpreendeKit está terminando. <br />' +
+                                            'Existe alguma forma que posso te ajudar, ou sanar alguma dúvida?<br /><br />' +
+                                            'Abraços<br />' +
+                                            'Lucas',
+                                    name : 'lifecycle fim do test drive',
+                                    service : 'tracker'
+                                }
+                            }).on('success', function(data) {
+                                console.log(data);
+                            }).on('error', function(error) {
+                                console.log(error);
+                            });
+                        }
+                    });
+                }
+            }
+        }
+    }
+);
