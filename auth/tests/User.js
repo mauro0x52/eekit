@@ -22,13 +22,75 @@ describe('before all', function() {
                 username : 'testes+' + rand() + '@empreendemia.com.br',
                 password : 'testando'
             },
-            secret : services.www.secret
+            secret : 'www'
         }, function(error, data, response) {
-            if (error) done(error);
+            if (error) return done(error);
             else {
+                data.should.have.property('user');
+                data.should.have.property('company');
+                data.should.have.property('token');
                 user = data.user;
                 company = data.company;
                 token = data.token;
+                done();
+            }
+        });
+    });
+});
+
+describe('GET /user/:id', function() {
+    it('sem secret', function (done) {
+        api.get('auth', '/user/'+user._id, {
+        },
+        function (error, data, response) {
+            if (error) {
+                return done(error);
+            } else {
+                data.should.have.property('error').have.property('name', 'InvalidServiceError');
+                done();
+            }
+        });
+    });
+    it('id que não existe', function (done) {
+        api.post('auth', '/user/'+user._id, {
+            secret : 'contacts'
+        },
+        function (error, data, response) {
+            if (error) {
+                return done(error);
+            } else {
+                data.should.have.property('error');
+                done();
+            }
+        });
+    });
+    it('sem permissão de ver todas as informações', function (done) {
+        api.post('auth', '/user/'+user._id, {
+            secret : 'contacts'
+        },
+        function (error, data, response) {
+            if (error) {
+                return done(error);
+            } else {
+                data.should.have.property('user').property('_id');
+                data.should.have.property('user').property('name');
+                done();
+            }
+        });
+    });
+    it('com permissão de ver todas as informações', function (done) {
+        api.post('auth', '/user/'+user._id, {
+            secret : 'contacts'
+        },
+        function (error, data, response) {
+            if (error) {
+                return done(error);
+            } else {
+                data.should.have.property('user').property('_id');
+                data.should.have.property('user').property('name');
+                data.should.have.property('user').property('username');
+                data.should.have.property('user').property('dateCreated');
+                data.should.have.property('user').property('company');
                 done();
             }
         });
@@ -43,7 +105,7 @@ describe('POST /user', function () {
         },
         function (error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidServiceError');
                 done();
@@ -57,7 +119,7 @@ describe('POST /user', function () {
             secret : 'kkkkk est sekret esta errdo kkkkk'
         }, function (error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidServiceError');
                 done();
@@ -72,7 +134,7 @@ describe('POST /user', function () {
             secret : services.www.secret
         }, function (error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'ValidationError');
                 done();
@@ -87,7 +149,7 @@ describe('POST /user', function () {
             secret : services.www.secret
         }, function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'ValidationError');
                 done();
@@ -103,7 +165,7 @@ describe('POST /user', function () {
             secret : services.www.secret
         }, function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'ValidationError');
                 done();
@@ -120,7 +182,7 @@ describe('POST /user', function () {
             token : token,
             secret : services.www.secret
         }, function(error, data, response) {
-            if (error) done(error);
+            if (error) return done(error);
             else {
                 data.should.not.have.property('error');
                 data.should.have.property('company');
@@ -139,7 +201,7 @@ describe('POST /user/logout', function() {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidServiceError');
                 done();
@@ -154,7 +216,7 @@ describe('POST /user/logout', function() {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidServiceError');
                 done();
@@ -169,7 +231,7 @@ describe('POST /user/logout', function() {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidServiceError');
                 done();
@@ -184,7 +246,7 @@ describe('POST /user/logout', function() {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidTokenError');
                 done();
@@ -199,7 +261,7 @@ describe('POST /user/logout', function() {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidTokenError');
                 done();
@@ -214,7 +276,7 @@ describe('POST /user/logout', function() {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 should.not.exist(data, "não era para retornar nehum dado");
                 done();
@@ -232,7 +294,7 @@ describe('POST /user/login', function() {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidServiceError');
                 done();
@@ -247,7 +309,7 @@ describe('POST /user/login', function() {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidServiceError');
                 done();
@@ -262,7 +324,7 @@ describe('POST /user/login', function() {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidLoginError');
                 done();
@@ -277,7 +339,7 @@ describe('POST /user/login', function() {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidLoginError');
                 done();
@@ -292,7 +354,7 @@ describe('POST /user/login', function() {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidLoginError');
                 done();
@@ -308,7 +370,7 @@ describe('POST /user/login', function() {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidLoginError');
                 done();
@@ -325,7 +387,7 @@ describe('POST /user/login', function() {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.not.have.property('error');
                 data.should.have.property('token');
@@ -346,7 +408,7 @@ describe('POST /user/change-password', function () {
             password : 'testando'
         }, function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidServiceError');
                 done();
@@ -360,7 +422,7 @@ describe('POST /user/change-password', function () {
             secret : 'aeuiaehieauheaihae'
         }, function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidServiceError');
                 done();
@@ -373,7 +435,7 @@ describe('POST /user/change-password', function () {
             secret : services.www.secret
         }, function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidTokenError');
                 done();
@@ -386,7 +448,7 @@ describe('POST /user/change-password', function () {
             secret : services.www.secret
         }, function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidTokenError');
                 done();
@@ -400,7 +462,7 @@ describe('POST /user/change-password', function () {
             secret : services.www.secret
         }, function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidTokenError');
                 done();
@@ -412,7 +474,7 @@ describe('POST /user/change-password', function () {
             token : token,
             secret : services.www.secret
         }, function(error, data, response) {
-            if (error) done(error);
+            if (error) return done(error);
             else {
                 data.should.have.property('error').have.property('name', 'ValidationError');
                 done();
@@ -426,7 +488,7 @@ describe('POST /user/change-password', function () {
             secret : services.www.secret
         }, function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 should.not.exist(data);
                 done();
@@ -440,7 +502,7 @@ describe('POST /user/change-password', function () {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 api.post('auth', '/user/login', {
                     username : user.username,
@@ -449,7 +511,7 @@ describe('POST /user/change-password', function () {
                 },
                 function(error, data, response) {
                     if (error) {
-                        done(error);
+                        return done(error);
                     } else {
                         data.should.have.property('error');
                         done();
@@ -465,7 +527,7 @@ describe('POST /user/change-password', function () {
         },
         function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 api.post('auth', '/user/login', {
                     username : user.username,
@@ -474,7 +536,7 @@ describe('POST /user/change-password', function () {
                 },
                 function(error, data, response) {
                     if (error) {
-                        done(error);
+                        return done(error);
                     } else {
                         data.should.not.have.property('error');
                         data.should.have.property('token');
@@ -495,7 +557,7 @@ describe('GET /users', function () {
             secret : 'contacts'
         }, function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('error').have.property('name', 'InvalidServiceError');
                 done();
@@ -507,7 +569,7 @@ describe('GET /users', function () {
             secret : 'tracker'
         }, function(error, data, response) {
             if (error) {
-                done(error);
+                return done(error);
             } else {
                 data.should.have.property('users').instanceOf(Array);
                 data.users[0].should.have.property('name');
