@@ -116,7 +116,7 @@ module.exports = function (app) {
             html = request.param('html', null),
             name = request.param('name', 'undefined'),
             service = request.param('service', null),
-            categoriesArray = [], userId, userEmail, mail;
+            categoriesArray = [], userId, userEmail, mail, sgEmail;
 
             if (!token) {
                 response.send({error : { message : 'Validator "required" failed for path token', name : 'ValidatorError', path : 'token', type : 'required'}});
@@ -160,13 +160,16 @@ module.exports = function (app) {
                                     replyTo : from ? from : '"'+config.emails.contact.name+'"<'+config.emails.contact.address+'>',
                                     to      : userEmail,
                                     subject : subject,
-                                    html    : html,
-                                    categories : categoriesArray
+                                    html    : html
                                 }
 
-                                sendgrid.send(mail, function(success) {
+                                sgEmail = new Sendgrid.Email(mail);
+                                sgEmail.setCategory(categoriesArray);
+
+                                sendgrid.send(sgEmail, function(success) {
                                     if (success) {
                                         mail.name = name;
+                                        mail.categories = categoriesArray;
                                         response.send({mail : mail});
                                     } else {
                                         response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
@@ -199,7 +202,7 @@ module.exports = function (app) {
         html = request.param('html', null),
         name = request.param('name', 'undefined'),
         service = request.param('service', null),
-        categoriesArray = [], userId, userEmail, mail;
+        categoriesArray = [], userId, userEmail, mail, sgEmail;
 
         if (!token) {
             response.send({error : { message : 'Validator "required" failed for path token', name : 'ValidatorError', path : 'token', type : 'required'}});
@@ -254,9 +257,13 @@ module.exports = function (app) {
                                 categories : categoriesArray
                             }
 
-                            sendgrid.send(mail, function(success) {
+                            sgEmail = new Sendgrid.Email(mail);
+                            sgEmail.setCategory(categoriesArray);
+
+                            sendgrid.send(sgEmail, function(success) {
                                 if (success) {
                                     mail.name = name;
+                                    mail.categories = categoriesArray;
                                     response.send({mail : mail});
                                 } else {
                                     response.send({error : {message : 'Mail not sent', name : 'ServerError'}});

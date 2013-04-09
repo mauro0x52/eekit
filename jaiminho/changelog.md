@@ -6,6 +6,9 @@ Changelog
 Features
 - agendamento de envio de emails
 
+Correções
+- Categorias dos emails
+
 ## 1.0 (2013-04-04)
 
 Features

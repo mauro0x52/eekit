@@ -9,191 +9,191 @@
 var should = require("should"),
     api = require("./utils.js").api,
     rand = require("./utils.js").rand;
-
-describe('POST /mail/schedule', function () {
-    var token;
-
-    before(function (done) {
-        // cria um usuario
-        api.post('auth', '/company', {
-            name : 'Nome da Empresa',
-            admin : {
-                name : 'Nome do Broder',
-                username : 'testes+' + rand() + '@empreendemia.com.br',
-                password : 'testando'
-            },
-            secret : 'www'
-        }, function(error, data) {
-            token = data.token;
-            done();
-        });
-    });
-
-    it('token inválido', function (done) {
-        api.post('jaiminho', '/mail/schedule', {
-            token       : 'inválido',
-            request     : {
-                service : 'serviço de teste',
-                name    : 'teste'
-            },
-            mail        : {
-                from    : 'teste@empreendemia.com.br',
-                to      : 'teste2@empreendemia.com.br',
-                subject : 'teste',
-                html    : 'UHHUUUUULLLL!!!'
-            },
-            date        : new Date()
-        }, function (error, data, response) {
-            if (error) {
-                done(error);
-            } else {
-                data.should.have.property('error');
-                done();
-            }
-        });
-    });
-
-    it('sem token', function (done) {
-        api.post('jaiminho', '/mail/schedule', {
-            request     : {
-                service : 'serviço de teste',
-                name    : 'teste'
-            },
-            mail        : {
-                from    : 'teste@empreendemia.com.br',
-                to      : 'teste2@empreendemia.com.br',
-                subject : 'teste',
-                html    : 'UHHUUUUULLLL!!!'
-            },
-            date        : new Date()
-        }, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('error');
-                done();
-            }
-        });
-    });
-
-    it('sem subject', function (done) {
-        api.post('jaiminho', '/mail/schedule', {
-            token       : token,
-            request     : {
-                service : 'serviço de teste',
-                name    : 'teste'
-            },
-            mail        : {
-                from    : 'teste@empreendemia.com.br',
-                to      : 'teste2@empreendemia.com.br',
-                html    : 'UHHUUUUULLLL!!!'
-            },
-            date        : new Date()
-        }, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('error');
-                done();
-            }
-        });
-    });
-
-    it('sem html', function (done) {
-        api.post('jaiminho', '/mail/schedule', {
-            token       : token,
-            request     : {
-                service : 'serviço de teste',
-                name    : 'teste'
-            },
-            mail        : {
-                from    : 'teste@empreendemia.com.br',
-                to      : 'teste2@empreendemia.com.br',
-                subject : 'teste'
-            },
-            date        : new Date()
-        }, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('error');
-                done();
-            }
-        });
-    });
-
-    it('sem service', function (done) {
-        api.post('jaiminho', '/mail/schedule', {
-            token       : token,
-            request     : {
-                name    : 'teste'
-            },
-            mail        : {
-                from    : 'teste@empreendemia.com.br',
-                to      : 'teste2@empreendemia.com.br',
-                subject : 'teste',
-                html    : 'UHHUUUUULLLL!!!'
-            },
-            date        : new Date()
-        }, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.have.property('error');
-                done();
-            }
-        });
-    });
-
-    it('envia email sem nome', function (done) {
-        api.post('jaiminho', '/mail/schedule', {
-            token       : token,
-            request     : {
-                service : 'serviço de teste'
-            },
-            mail        : {
-                from    : 'teste@empreendemia.com.br',
-                to      : 'teste2@empreendemia.com.br',
-                subject : 'teste',
-                html    : 'UHHUUUUULLLL!!!'
-            },
-            date        : new Date()
-        }, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.not.have.property('error');
-                done();
-            }
-        });
-    });
-
-    it('envia email', function (done) {
-        api.post('jaiminho', '/mail/schedule', {
-            token       : token,
-            request     : {
-                service : 'serviço de teste',
-                name    : 'teste'
-            },
-            mail        : {
-                from    : 'teste@empreendemia.com.br',
-                to      : 'teste2@empreendemia.com.br',
-                subject : 'teste',
-                html    : 'UHHUUUUULLLL!!!'
-            },
-            date        : new Date()
-        }, function (error, data, response) {
-            if (error) {
-                return done(error);
-            } else {
-                data.should.not.have.property('error');
-                data.should.have.property('schedule').property('mail').property('subject');
-                data.should.have.property('schedule').property('mail').property('html');
-                done();
-            }
-        });
-    });
-});
+//
+//describe('POST /mail/schedule', function () {
+//    var token;
+//
+//    before(function (done) {
+//        // cria um usuario
+//        api.post('auth', '/company', {
+//            name : 'Nome da Empresa',
+//            admin : {
+//                name : 'Nome do Broder',
+//                username : 'testes+' + rand() + '@empreendemia.com.br',
+//                password : 'testando'
+//            },
+//            secret : 'www'
+//        }, function(error, data) {
+//            token = data.token;
+//            done();
+//        });
+//    });
+//
+//    it('token inválido', function (done) {
+//        api.post('jaiminho', '/mail/schedule', {
+//            token       : 'inválido',
+//            request     : {
+//                service : 'serviço de teste',
+//                name    : 'teste'
+//            },
+//            mail        : {
+//                from    : 'teste@empreendemia.com.br',
+//                to      : 'teste2@empreendemia.com.br',
+//                subject : 'teste',
+//                html    : 'UHHUUUUULLLL!!!'
+//            },
+//            date        : new Date()
+//        }, function (error, data, response) {
+//            if (error) {
+//                done(error);
+//            } else {
+//                data.should.have.property('error');
+//                done();
+//            }
+//        });
+//    });
+//
+//    it('sem token', function (done) {
+//        api.post('jaiminho', '/mail/schedule', {
+//            request     : {
+//                service : 'serviço de teste',
+//                name    : 'teste'
+//            },
+//            mail        : {
+//                from    : 'teste@empreendemia.com.br',
+//                to      : 'teste2@empreendemia.com.br',
+//                subject : 'teste',
+//                html    : 'UHHUUUUULLLL!!!'
+//            },
+//            date        : new Date()
+//        }, function (error, data, response) {
+//            if (error) {
+//                return done(error);
+//            } else {
+//                data.should.have.property('error');
+//                done();
+//            }
+//        });
+//    });
+//
+//    it('sem subject', function (done) {
+//        api.post('jaiminho', '/mail/schedule', {
+//            token       : token,
+//            request     : {
+//                service : 'serviço de teste',
+//                name    : 'teste'
+//            },
+//            mail        : {
+//                from    : 'teste@empreendemia.com.br',
+//                to      : 'teste2@empreendemia.com.br',
+//                html    : 'UHHUUUUULLLL!!!'
+//            },
+//            date        : new Date()
+//        }, function (error, data, response) {
+//            if (error) {
+//                return done(error);
+//            } else {
+//                data.should.have.property('error');
+//                done();
+//            }
+//        });
+//    });
+//
+//    it('sem html', function (done) {
+//        api.post('jaiminho', '/mail/schedule', {
+//            token       : token,
+//            request     : {
+//                service : 'serviço de teste',
+//                name    : 'teste'
+//            },
+//            mail        : {
+//                from    : 'teste@empreendemia.com.br',
+//                to      : 'teste2@empreendemia.com.br',
+//                subject : 'teste'
+//            },
+//            date        : new Date()
+//        }, function (error, data, response) {
+//            if (error) {
+//                return done(error);
+//            } else {
+//                data.should.have.property('error');
+//                done();
+//            }
+//        });
+//    });
+//
+//    it('sem service', function (done) {
+//        api.post('jaiminho', '/mail/schedule', {
+//            token       : token,
+//            request     : {
+//                name    : 'teste'
+//            },
+//            mail        : {
+//                from    : 'teste@empreendemia.com.br',
+//                to      : 'teste2@empreendemia.com.br',
+//                subject : 'teste',
+//                html    : 'UHHUUUUULLLL!!!'
+//            },
+//            date        : new Date()
+//        }, function (error, data, response) {
+//            if (error) {
+//                return done(error);
+//            } else {
+//                data.should.have.property('error');
+//                done();
+//            }
+//        });
+//    });
+//
+//    it('envia email sem nome', function (done) {
+//        api.post('jaiminho', '/mail/schedule', {
+//            token       : token,
+//            request     : {
+//                service : 'serviço de teste'
+//            },
+//            mail        : {
+//                from    : 'teste@empreendemia.com.br',
+//                to      : 'teste2@empreendemia.com.br',
+//                subject : 'teste',
+//                html    : 'UHHUUUUULLLL!!!'
+//            },
+//            date        : new Date()
+//        }, function (error, data, response) {
+//            if (error) {
+//                return done(error);
+//            } else {
+//                data.should.not.have.property('error');
+//                done();
+//            }
+//        });
+//    });
+//
+//    it('envia email', function (done) {
+//        api.post('jaiminho', '/mail/schedule', {
+//            token       : token,
+//            request     : {
+//                service : 'serviço de teste',
+//                name    : 'teste'
+//            },
+//            mail        : {
+//                from    : 'teste@empreendemia.com.br',
+//                to      : 'teste2@empreendemia.com.br',
+//                subject : 'teste',
+//                html    : 'UHHUUUUULLLL!!!'
+//            },
+//            date        : new Date()
+//        }, function (error, data, response) {
+//            if (error) {
+//                return done(error);
+//            } else {
+//                data.should.not.have.property('error');
+//                data.should.have.property('schedule').property('mail').property('subject');
+//                data.should.have.property('schedule').property('mail').property('html');
+//                done();
+//            }
+//        });
+//    });
+//});
 
 describe('POST /mail/self', function () {
     var token;
