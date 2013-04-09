@@ -26,15 +26,6 @@ module.exports = function (app) {
     app.get('/events/contacts', function (request,response) {
         var utm = {};
 
-        function ids (obj) {
-            res = ''
-            for (var i in obj) {
-                if (obj[i].events[0])
-                res += obj[i].events[0].user + ', ';
-            }
-            return res;
-        }
-
         if (request.param('utm_source', null)) {
             utm.source = request.param('utm_source', null);
         }
@@ -57,87 +48,34 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                response.write('<table border="1">');
-                response.write('<tr>');
-                response.write('<td colspan="1"></td>');
-                response.write('<td colspan="2">Aquisicao</td>');
-                response.write('<td colspan="2">Ativacao</td>');
-                response.write('<td colspan="1">Engajamento</td>');
-                response.write('</tr>');
-                response.write('<tr>');
-                response.write('<td>Semana</td>');
-                response.write('<td colspan="2">Novos usuarios do app</td>');
-                response.write('<td colspan="2">Adicionaram 1 tarefa ou trasação</td>');
-                response.write('<td colspan="1">Marcaram 2 tarefas como feitas ou adicionaram 2 transações</td>');
-                response.write('<td>Ativacao Total</td>');
-                response.write('<td>Engajamento Total</td>');
-                response.write('</tr>');
-                for (var i in cohort) {
-                    var users = cohort[i].filter([],1,utm),
-		                activated = cohort[i].filter(['adicionar tarefa', 'adicionar transação'],1, utm),
-			            engaged = cohort[i].filter(['marcar tarefa como feita', 'adicionar transação'],2, utm);
+                var result = [];
 
-                    response.write('<tr>');
-                    response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
-                    response.write('<td onclick="console.log(\'' + ids(users) + '\')">' + users.length + '</td>');
-                    response.write('<td>' + (activated.length / users.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td onclick="console.log(\'' + ids(activated) + '\')">' + (activated.length) + '</td>');                    
-                    response.write('<td>' + (engaged.length / activated.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td onclick="console.log(\'' + ids(engaged) + '\')">' + (engaged.length) + '</td>');    
-                    response.write('<td>' + (activated.length / users.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td>' + (engaged.length / users.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('</tr>');
-                }
-                response.write('</table><br />');
-
-                response.write('<table border="1">');
-                response.write('<tr>');
-                response.write('<td colspan="' + (cohort.length + 1) + '">Retencao</td>');
-                response.write('</tr>');
-                response.write('<tr>');
-                response.write('<td>Semana</td>');
-        		for (var i = 0; i < cohort.length; i += 1) {
-        		    response.write('<td>' + i + '</td>');
-        		}
-                response.write('</tr>');
                 for (var i in cohort) {
                     var date = new Date(cohort[i].date);
-                    response.write('<tr>');
-                    response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
-                    while (date < new Date) {
-                        response.write('<td>' + cohort[i].filter(['marcar tarefa como feita', 'adicionar transação'],2, utm, date).length + '</td>')
+                    var monitoring = [];
+                    while (date <= new Date) {
+                        monitoring.push(cohort[i].filter(['marcar tarefa como feita', 'adicionar transação'],2, utm, date))
                         date.setDate(date.getDate() + 7);
                     }
-                    response.write('</tr>');
+                    result.push({
+                        date : cohort[i].date,
+                        acquisition : [{
+                            name  : 'Novos usuarios do app',
+                            users : cohort[i].filter([],1,utm)
+                        }],
+                        activation : [{
+                            name  : 'Adicionaram 1 tarefa ou transação',
+                            users : cohort[i].filter(['adicionar tarefa', 'adicionar transação'],1, utm)
+                        }],
+                        engagement : [{
+                            name  : 'Marcaram 2 tarefas como feitas ou adicionaram 2 transações',
+                            users : cohort[i].filter(['marcar tarefa como feita', 'adicionar transação'],2, utm)
+                        }],
+                        monitoring : monitoring
+                    });
                 }
-                response.write('</table><br />');
 
-                response.write('<table border="1">');
-                response.write('<tr>');
-                response.write('<td colspan="4">Resultado acumulado</td>');
-                response.write('</tr>');
-                response.write('<tr>');
-                response.write('<td>Semana</td>');
-                response.write('<td>Usuario cadastrados</td>');
-                response.write('<td>Usuarios que continuam engajados</td>');
-                response.write('<td>% de engajados</td>');
-                response.write('</tr>');
-                var users = 0;
-                for (var i in cohort) {
-                    var engaged = 0;
-                    for (var j = 0; j <= i; j += 1) {
-                        engaged += cohort[j].filter(['marcar tarefa como feita', 'adicionar transação'],2, utm, cohort[i].date).length;
-                    }
-                    users += cohort[i].filter([],1,utm).length;
-                    response.write('<tr>');
-                    response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
-                    response.write('<td>' + users + '</td>');
-                    response.write('<td>' + engaged + '</td>');
-                    response.write('<td>' + (engaged / users * 100).toFixed(2) + '%</td>');
-                    response.write('</tr>');
-                }
-                response.write('</table><br />');
-                response.end();
+                response.render('../view/cohort', {cohort : result});
             }
         });
     });
