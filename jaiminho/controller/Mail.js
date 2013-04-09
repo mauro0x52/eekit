@@ -253,8 +253,7 @@ module.exports = function (app) {
                                 replyTo : '"'+config.emails.noreply.name+'"<'+config.emails.noreply.address+'>',
                                 to      : to,
                                 subject : subject,
-                                html    : html,
-                                categories : categoriesArray
+                                html    : html
                             }
 
                             sgEmail = new Sendgrid.Email(mail);
