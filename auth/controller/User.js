@@ -77,7 +77,7 @@ module.exports = function (app) {
         if (service === null) {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
-            User.findOne({_id:request.params.id}, '_id name username company informations dateCreated', function (error, user) {
+            User.findOne({_id:request.params.id}, '_id name username company informations dateCreated tokens', function (error, user) {
                 if (error || !user) {
                     response.send({error : { message : 'user not found', name : 'NotFoundError', path : 'id', id : request.params.id}});
                 } else {

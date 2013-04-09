@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.0.3
+
+Melhorias
+- Interface dos cohorts de contatos, finanças e tarefas
+- Emails de lifecycles
+
 ## 1.0.2 (2013-04-08)
 
 Hotfixes
