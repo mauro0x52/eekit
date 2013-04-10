@@ -593,6 +593,7 @@ app.routes.list('/', function (params, data) {
         }));
         /* dispara o evento de filtro */
         app.ui.filter.submit(function () {
+            console.log(fields.user.value())
             app.events.trigger('filter task', fields);
         });
 
