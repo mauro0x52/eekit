@@ -17,5 +17,5 @@ app.models.user = function (params) {
  * @param cb : callback a ser chamado após a autenticação
  */
 app.models.user.auth = function (cb) {
-    app.ajax.post({url : 'http://' + app.config.services.finances.host + ':' + app.config.services.finances.port + '/user'}, cb);
+    app.ajax.post({url : 'http://' + app.config.services.finances.host + ':' + app.config.services.finances.port + '/company'}, cb);
 }

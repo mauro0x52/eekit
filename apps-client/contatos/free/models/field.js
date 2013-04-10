@@ -94,7 +94,7 @@ app.models.field = function (params) {
  * @param  cb : callback
  */
 app.models.field.list = function (cb) {
-    app.ajax.post({url : 'http://' + app.config.services.contacts.host + ':' + app.config.services.contacts.port + '/user'}, function (response) {
+    app.ajax.post({url : 'http://' + app.config.services.contacts.host + ':' + app.config.services.contacts.port + '/company'}, function (response) {
         var fields = [],
             i;
 

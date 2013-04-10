@@ -7,8 +7,8 @@
  */
 
 
-describe('User', function() {
-    require("./User.js");
+describe('Company', function() {
+    require("./Company.js");
 });
 
 describe('Category', function() {

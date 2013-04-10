@@ -30,80 +30,127 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
-                    data: {
-                        secret : config.security.secret
-                    }
-                }).on('success', function (data) {
-
-                    function format (date) {
-                        if (date) {
-                            return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/services').on('success', function (data) {
+                    require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
+                        data: {
+                            secret : config.security.secret
                         }
-                    }
+                    }).on('success', function (data) {
 
-                    var j,
-                        user,
-                        utm = {}
-                        appDays = {};
+                        function format (date) {
+                            if (date) {
+                                return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                            }
+                        }
 
-                    for (i in data.users) {
-                        if (data.users[i]._id.toString() === request.params.id.toString()) {
-                            user = data.users[i];
-                        }
-                    }
+                        var j,
+                            user,
+                            utm = {}
+                            appDays = {};
 
-                    for (i in events) {
-                        if (!appDays[events[i].app]) {
-                            appDays[events[i].app] = {};
+                        for (i in data.users) {
+                            if (data.users[i]._id.toString() === request.params.id.toString()) {
+                                user = data.users[i];
+                            }
                         }
-                        if (!appDays[events[i].app][format(events[i].date)]) {
-                            appDays[events[i].app][format(events[i].date)] = true;
-                        }
-                        if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
-                            utm = events[i].utm;
-                        }
-                    }
-                    
-                    response.write(user.username + '</br></br>');
-                    
-                    response.write('utm_source : ' + utm.source + '</br>');
-                    response.write('utm_medium : ' + utm.medium + '</br>');
-                    response.write('utm_content : ' + utm.content + '</br>');
-                    response.write('utm_campaign : ' + utm.campaign + '</br></br>');
 
-                    response.write('<table border="1">');
-                    response.write('<tr>');
-                    response.write('<td>App</td>');
-                    response.write('<td>Dias com acesso</td>');
-                    response.write('</tr>');
-                    for (i in appDays) {
-                        var total = 0;
-                        for (var prop in appDays[i]) if (appDays[i].hasOwnProperty(prop)) total++;
+                        for (i in events) {
+                            if (!appDays[events[i].app]) {
+                                appDays[events[i].app] = {};
+                            }
+                            if (!appDays[events[i].app][format(events[i].date)]) {
+                                appDays[events[i].app][format(events[i].date)] = true;
+                            }
+                            if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
+                                utm = events[i].utm;
+                            }
+                        }
+
+                        for (i in user.auths) {
+                            if (user.auths[i].service === 'profiles') {
+                                for (j in user.auths[i].tokens) {
+                                    if ((new Date() - new Date(user.auths[i].tokens[j].dateUpdated))/(1000*60*60*24) < 30) {
+                                        token = user.auths[i].tokens[j].token
+                                    }
+                                }
+                            }
+                        }
+
+                        response.write(user.username + '</br></br>');
+
+                        response.write('nome : ' + (user.name ? user.name : '') + '</br>');
+                        response.write('telefone : ' + (user.informations && user.informations.phone ? user.informations.phone : '') + '</br>');
+
+                        response.write('utm_source : ' + utm.source + '</br>');
+                        response.write('utm_medium : ' + utm.medium + '</br>');
+                        response.write('utm_content : ' + utm.content + '</br>');
+                        response.write('utm_campaign : ' + utm.campaign + '</br></br>');
+
+                        response.write('<table border="1">');
                         response.write('<tr>');
-                        response.write('<td>' + i + '</td>');
-                        response.write('<td>' + total + '</td>');
+                        response.write('<td>App</td>');
+                        response.write('<td>Dias com acesso</td>');
                         response.write('</tr>');
-                    }
-                    response.write('</table><br />');
-                    
-                    response.write('<table border="1">');
-                    response.write('<tr>');
-                    response.write('<td>Data</td>');
-                    response.write('<td>App</td>');
-                    response.write('<td>Evento</td>');
-                    response.write('</tr>');
-                    for (i in events) {
+                        for (i in appDays) {
+                            var total = 0;
+                            for (var prop in appDays[i]) if (appDays[i].hasOwnProperty(prop)) total++;
+                            response.write('<tr>');
+                            response.write('<td>' + i + '</td>');
+                            response.write('<td>' + total + '</td>');
+                            response.write('</tr>');
+                        }
+                        response.write('</table><br />');
+
+                        response.write('<table border="1">');
                         response.write('<tr>');
-                        response.write('<td>' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '</td>');
-                        response.write('<td>' + events[i].app + '</td>');
-                        response.write('<td>' + events[i].label + '</td>');
+                        response.write('<td>Data</td>');
+                        response.write('<td>App</td>');
+                        response.write('<td>Evento</td>');
                         response.write('</tr>');
-                    }
-                    response.write('</table>');
-                    response.end();
+                        for (i in events) {
+                            response.write('<tr>');
+                            response.write('<td>' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '</td>');
+                            response.write('<td>' + events[i].app + '</td>');
+                            response.write('<td>' + events[i].label + '</td>');
+                            response.write('</tr>');
+                        }
+                        response.write('</table>');
+                        response.end();
+                    }).on('error', function () {response.end()});
+
                 });
             }
+        });
+    });
+
+    /** GET /users
+     *
+     * @autor : Rafael Erthal
+     * @since : 2012-10
+     *
+     * @description : Lista usuários
+     *
+     * @allowedApp : Qualquer APP
+     * @allowedUser : Logado
+     *
+     * @request : {}
+     * @response : {events}
+     */
+    app.get('/users', function (request,response) {
+        require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
+            data: {
+                secret : config.security.secret
+            }
+        }).on('success', function (data) {
+            var date;
+            for (var i in data.users) {
+                date = new Date(data.users[i].dateCreated);
+                response.write(data.users[i]._id + ', ' + data.users[i].username + ', ' + date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + '\n');
+            }
+            response.end();
+        }).on('error', function(error) {
+            response.write(error.toString());
+            response.end();
         });
     });
 
@@ -125,7 +172,9 @@ module.exports = function (app) {
 
         response.contentType('txt');
         response.header('Access-Control-Allow-Origin', '*');
-       
+
+        response.write("version:4\n");
+
         if (request.param('from', null) || request.param('to', null)) {
             query.date = {};
             if (request.param('from', null)) {
@@ -144,34 +193,15 @@ module.exports = function (app) {
                 return 0;
             });
 
-            require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
-                data: {
-                    secret : config.security.secret
-                }
-            }).on('success', function (data) {
-                function user (id) {
-                    if (id) {
-                        for (var i in data.users) {
-                            if (data.users[i]._id.toString() === id.toString()) {
-                                return data.users[i];
-                            }
-                        }
-                    }
-                }
 
-                for (i in events) {
-                    if (user(events[i].user)) {
-                        response.write('"' + events[i].label + '","' + events[i].app + '","' + events[i].source + '","' + events[i].user + '","' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '","' + events[i].date.getHours() + ':' + events[i].date.getMinutes() + '","' + events[i].utm.source + '","' + events[i].utm.content + '","' + events[i].utm.campaign + '","' + events[i].utm.medium + '"\n');
-                    } else {
-                        response.write('"' + events[i].label + '","' + events[i].app + '","' + events[i].source + '","' + 'ip:' + events[i].ip + '","' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '","' + events[i].date.getHours() + ':' + events[i].date.getMinutes() + '","' + events[i].utm.source + '","' + events[i].utm.content + '","' + events[i].utm.campaign + '","' + events[i].utm.medium + '"\n');
-                    }
+            for (i in events) {
+                if (events[i].user) {
+                   response.write('"' + events[i].label + '","' + events[i].app + '","' + events[i].source + '","' + events[i].user + '","' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '","' + events[i].date.getHours() + ':' + events[i].date.getMinutes() + '","' + events[i].utm.source + '","' + events[i].utm.content + '","' + events[i].utm.campaign + '","' + events[i].utm.medium + '"\n');
+                } else {
+                    response.write('"' + events[i].label + '","' + events[i].app + '","' + events[i].source + '","' + 'ip:' + events[i].ip + '","' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '","' + events[i].date.getHours() + ':' + events[i].date.getMinutes() + '","' + events[i].utm.source + '","' + events[i].utm.content + '","' + events[i].utm.campaign + '","' + events[i].utm.medium + '"\n');
                 }
-                response.end();
-
-            }).on('error', function(error) {
-                response.write(error.toString());
-                response.end();
-            });
+            }
+            response.end();
         });
     });
 

@@ -2,12 +2,12 @@ app.routes.dialog('/cadastro', function (params, data) {
     app.ui.title('Cadastre-se no EmpreendeKit!');
     app.tracker.event('cadastrar: inicio');
 
-    var name, surname, login, login_confirmation, password, password_confirmation, role, sector, size, why,
+    var name, login, password, company, phone,
         fieldsets = {},
         token;
 
     function validate () {
-        var validate = true;
+        var validate = true;/*
         if (password.value() !== password_confirmation.value()) {
             password_confirmation.errors.add(new app.ui.inputError({ message : 'as senhas não conferem' }));
             validate = false;
@@ -15,18 +15,15 @@ app.routes.dialog('/cadastro', function (params, data) {
         if (login.value() !== login_confirmation.value()) {
             login_confirmation.errors.add(new app.ui.inputError({ message : 'os emails não conferem' }));
             validate = false;
-        }
+        }*/
         return validate;
     }
 
     var name_tracked = false,
-        surname_tracked = false,
         phone_tracked = false,
         login_tracked = false,
-        login_confirmation_tracked = false,
-        password_tracked = false,
-        password_confirmation_tracked = false,
-        why_tracked = false,
+        companyName_tracked = false,
+        password_tracked = false;
 
     name = new app.ui.inputText({
         legend : 'Nome',
@@ -39,35 +36,6 @@ app.routes.dialog('/cadastro', function (params, data) {
             if (!name_tracked) {
                 name_tracked = true;
                 app.tracker.event('cadastrar: nome');
-            }
-        }
-    });
-
-    surname = new app.ui.inputText({
-        legend : 'Sobrenome',
-        name : 'login',
-        rules : [
-            {rule : /.{3,}/, message : 'campo obrigatório'},
-            {rule : /^[a-zàáâãäåçèéêëìíîïñðóòôõöøùúûüýÿ\s]*$/i, message : 'apenas caracteres alfanuméricos'},
-        ],
-        change : function () {
-            if (!surname_tracked) {
-                surname_tracked = true;
-                app.tracker.event('cadastrar: sobrenome');
-            }
-        }
-    });
-
-    phone = new app.ui.inputText({
-        legend : 'Telefone com DDD',
-        name : 'phone',
-        rules : [
-            {rule : /.{3,}/, message : 'campo obrigatório'}
-        ],
-        change : function () {
-            if (!phone_tracked) {
-                phone_tracked = true;
-                app.tracker.event('cadastrar: telefone');
             }
         }
     });
@@ -87,17 +55,6 @@ app.routes.dialog('/cadastro', function (params, data) {
         }
     });
 
-    login_confirmation = new app.ui.inputText({
-        legend : 'Confirmar email',
-        name : 'login',
-        change : function () {
-            if (!login_confirmation_tracked) {
-                login_confirmation_tracked = true;
-                app.tracker.event('cadastrar: email-2');
-            }
-        }
-    });
-
     password = new app.ui.inputPassword({
         legend : 'Senha',
         name : 'password',
@@ -112,42 +69,46 @@ app.routes.dialog('/cadastro', function (params, data) {
         }
     });
 
-    password_confirmation = new app.ui.inputPassword({
-        legend : 'Confirmar senha',
-        name : 'password',
-        change : function () {
-            if (!password_confirmation_tracked) {
-                password_confirmation_tracked = true;
-                app.tracker.event('cadastrar: senha-2');
-            }
-        }
-    });
-
-    why = new app.ui.inputText({
-        legend : 'O que você espera do EmpreendeKit?',
-        name : 'why',
+    company = new app.ui.inputText({
+        legend : 'Nome da Empresa',
+        name : 'company',
         rules : [
-            {rule : /.{3,}/, message : 'campo obrigatório'},
+            {rule : /.{3,}/, message : 'campo obrigatório'}
         ],
         change : function () {
-            if (!why_tracked) {
-                why_tracked = true;
-                app.tracker.event('cadastrar: expectativa');
+            if (!companyName_tracked) {
+                companyName_tracked = true;
+                app.tracker.event('cadastrar: nome da empresa');
             }
         }
     });
 
-    fieldsets.profile = new app.ui.fieldset({
-        legend : 'Dados pessoais',
-        fields : [name, surname, phone, login, login_confirmation, password, password_confirmation]
+    phone = new app.ui.inputText({
+        legend : 'Telefone com DDD',
+        name : 'phone',
+        rules : [
+            {rule : /.{3,}/, message : 'campo obrigatório'}
+        ],
+        change : function () {
+            if (!phone_tracked) {
+                phone_tracked = true;
+                app.tracker.event('cadastrar: telefone');
+            }
+        }
     });
 
-    fieldsets.aditional = new app.ui.fieldset({
-        legend : 'Informações da empresa',
-        fields : [why]
+
+    fieldsets.user = new app.ui.fieldset({
+        legend : 'Dados de cadastro',
+        fields : [name, login, password]
     });
 
-    app.ui.form.fieldsets.add([fieldsets.profile, fieldsets.user, fieldsets.aditional]);
+    fieldsets.company = new app.ui.fieldset({
+        legend : 'Dados da Empresa',
+        fields : [company, phone]
+    });
+
+    app.ui.form.fieldsets.add([fieldsets.user, fieldsets.company]);
     app.ui.form.action('cadastrar!');
 
     name.focus();
@@ -155,11 +116,17 @@ app.routes.dialog('/cadastro', function (params, data) {
     app.ui.form.submit(function () {
         if (validate()) {
             app.ajax.post({
-                url : 'http://' + app.config.services.auth.host + ':' + app.config.services.auth.port + '/user',
+                url : 'http://' + app.config.services.auth.host + ':' + app.config.services.auth.port + '/company',
                 data : {
-                    username : login.value(),
-                    password : password.value(),
-                    password_confirmation : password_confirmation.value()
+                    name : company.value(),
+                    admin : {
+                        username : login.value(),
+                        password : password.value(),
+                        name : name.value(),
+                        informations : {
+                            phone : phone.value()
+                        }
+                    }
                 }
             }, function (response) {
                 if (!response || response.error) {
@@ -172,12 +139,11 @@ app.routes.dialog('/cadastro', function (params, data) {
                     app.tracker.event('cadastrar');
                     app.close({
                         token : token,
-                        profile : {
+                        user : {
                             name : name.value(),
-                            surname : surname.value(),
-                            phone : phone.value(),
-                            why : why.value(),
-                            token : token
+                            informations : {
+                                phone : phone.value()
+                            }
                         }
                     });
                 }

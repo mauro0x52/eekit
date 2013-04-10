@@ -7,6 +7,50 @@
  */
 var config = require('./config.js');
 
+/** Tokens
+ * @author : Rafael Erthal
+ * @since : 2013-04
+ *
+ * @description : retorna os tokens de um usuário
+ * @param token : token do usuário
+ * @param cb : callback a ser chamado
+ */
+exports.tokens = function (token, cb) {
+    "use strict";
+
+    require('restler').post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/tracker/authorize', {
+        data: {
+            token  : token,
+            secret : config.security.secret
+        }
+    }).on('success', function(data) {
+        if (data.token) {
+            require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
+                data: {
+                    token  : data.token,
+                    secret : config.security.secret
+                }
+            }).on('success', function(data) {
+                if (data.tokens) {
+                    cb(null, data);
+                } else if (data.error) {
+                    cb(data.error, null);
+                } else {
+                    cb(null, null);
+                }
+            }).on('error', function(error) {
+                cb(error, null);
+            });
+        } else if (data.error) {
+            cb(data.error, null);
+        } else {
+            cb(null, null);
+        }
+    }).on('error', function(error) {
+        cb(error, null);
+    });    
+};
+
 /** Auth
  * @author : Rafael Erthal
  * @since : 2012-07
@@ -71,13 +115,18 @@ exports.bind = function (token, name, method, callback) {
  */
 exports.trigger = function (token, name, data) {
     "use strict";
-    
-    require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/tigger', {
-        data: {
-            token : token,
-            secret : config.security.secret,
-            label : name,
-            data : data
-        }
+
+    var post = {
+        token : token,
+        secret : config.security.secret,
+        label : name
+    }
+
+    for (var prop in data) {
+        post['data[' + prop + ']'] = data[prop]
+    }
+
+    require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/trigger', {
+        data: post
     }).on('success', function() {}).on('error', function() {});
 };

@@ -1,13 +1,17 @@
 module.exports = {
+    environment : 'development',
     host : {
         port : 8010,
-        url  : 'localhost',
-        debuglevel : 1 // 0 sem erros, 1 com erros
+        url  : 'localhost'
     },
     emails : {
         contact : {
             name : 'Contato EmpreendeKit',
             address : 'testes+contato@empreendemia.com.br'
+        },
+        noreply : {
+            name : 'No-reply EmpreendeKit',
+            address : 'testes+noreply@empreendemia.com.br'
         }
     },
     sendgrid : {

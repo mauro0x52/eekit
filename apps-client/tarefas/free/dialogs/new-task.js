@@ -63,6 +63,11 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
         reminderOptions = [],
 
         /**
+         * Lista de ui.option de usuários
+         */
+        userOptions = [],
+
+        /**
          * Fieldset
          */
         fieldset,
@@ -100,6 +105,17 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
         reminderOptions.push(new app.ui.inputOption({legend : '1 dia antes', value : '1'}));
         reminderOptions.push(new app.ui.inputOption({legend : '2 dias antes', value : '2'}));
         reminderOptions.push(new app.ui.inputOption({legend : '1 semana antes', value : '7'}));
+
+        /* Input com os usuários */
+        for (var i in app.config.users) {
+            if (app.config.users.hasOwnProperty(i)) {
+                userOptions.push(new app.ui.inputOption({
+                    legend  : app.config.users[i].name,
+                    value   : app.config.users[i]._id,
+                    clicked : app.config.user._id === app.config.users[i]._id
+                }));
+            }
+        }
 
         /* Inputs do formulário */
         /* título da tarefa */
@@ -172,6 +188,15 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
             name : 'description'
         });
 
+        /* responsavel */
+        fields.user = new app.ui.inputSelector({
+            name : 'user',
+            type : 'single',
+            legend  : 'Responsável',
+            options : userOptions,
+            filterable : true
+        });
+
         /* fieldset */
         fieldset = new app.ui.fieldset({
             legend : 'Tarefa'
@@ -186,6 +211,7 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
         fieldset.fields.add(fields.important);
         fieldset.fields.add(fields.reminder);
         fieldset.fields.add(fields.recurrence);
+        fieldset.fields.add(fields.user);
         fieldset.fields.add(fields.description);
         app.ui.form.fieldsets.add(fieldset);
 
@@ -198,7 +224,8 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
                 dateDeadline : fields.date.value() ? fields.date.date() : null,
                 important : fields.important.value()[0] === 'important',
                 recurrence : fields.recurrence.value()[0],
-                description : fields.description.value()
+                description : fields.description.value(),
+                user : fields.user.value()[0]
             };
             if (fields.reminder.value()[0] !== 'null') {
                 data.reminder = fields.reminder.value()[0];

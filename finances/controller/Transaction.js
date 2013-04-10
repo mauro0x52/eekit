@@ -10,8 +10,8 @@ module.exports = function (app) {
         config = require('./../config.js'),
         auth = require('../Utils.js').auth,
         bind = require('../Utils.js').bind,
-        User = Model.User,
-        Transaction = Model.Transaction;
+        Transaction = Model.Transaction,
+        Company = Model.Company;
 
     /** POST /transaction
      *
@@ -30,51 +30,45 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            transaction = new Transaction({
-                                user        : user._id,
-                                category    : request.param('category', null),
-                                account     : request.param('account', null),
-                                name        : request.param('name', null),
-                                subtitle    : request.param('subtitle', null),
-                                value       : request.param('value', null),
-                                date        : request.param('date', null),
-                                recurrence  : request.param('recurrence', null),
-                                embeddeds   : request.param('embeddeds', null),
-                                noteNumber  : request.param('noteNumber', null),
-                                situation   : request.param('situation', null),
-                                type        : request.param('type', null),
-                                isTransfer  : request.param('isTransfer', null)
-                            });
-                            transaction.save(function (error) {
-                                if (error) {
-                                    response.send({error : error});
-                                } else {
-                                    if (transaction.embeddeds) {
-                                        for (var i = 0; i < transaction.embeddeds.length; i++) {
-                                            bind(request.param('token', null), 'update embed ' + transaction.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/transaction/' + transaction._id + '/update');
-                                            bind(request.param('token', null), 'delete embed ' + transaction.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/transaction/' + transaction._id + '/delete');
-                                        }   
-                                    }
-                                    if (request.param('reminder', null)) {
-                                        response.send({transaction : transaction});
-                                    } else {
-                                        response.send({transaction : transaction});
-                                    }
-
+                        transaction = new Transaction({
+                            company     : company._id,
+                            author      : data.user._id,
+                            category    : request.param('category', null),
+                            account     : request.param('account', null),
+                            name        : request.param('name', null),
+                            subtitle    : request.param('subtitle', null),
+                            value       : request.param('value', null),
+                            date        : request.param('date', null),
+                            recurrence  : request.param('recurrence', null),
+                            embeddeds   : request.param('embeddeds', null),
+                            noteNumber  : request.param('noteNumber', null),
+                            situation   : request.param('situation', null),
+                            type        : request.param('type', null),
+                            isTransfer  : request.param('isTransfer', null)
+                        });
+                        transaction.save(function (error) {
+                            if (error) {
+                                response.send({error : error});
+                            } else {
+                                if (transaction.embeddeds) {
+                                    for (var i = 0; i < transaction.embeddeds.length; i++) {
+                                        bind(request.param('token', null), 'update embed ' + transaction.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/transaction/' + transaction._id + '/update');
+                                        bind(request.param('token', null), 'delete embed ' + transaction.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/transaction/' + transaction._id + '/delete');
+                                    }   
                                 }
-                            });
-                        }
+                                response.send({transaction : transaction});
+                            }
+                        });
                     }
                 });
             }
@@ -95,44 +89,42 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     var query = {}
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            query.user = user._id;
-                            if (request.param('filterByCategories')) {
-                                if (typeof request.param('filterByCategories') === 'string') {
-                                    query.category = request.param('filterByCategories');
-                                } else {
-                                    query.category = {$in : request.param('filterByCategories')};
-                                }
+                        query.company = company._id;
+                        if (request.param('filterByCategories')) {
+                            if (typeof request.param('filterByCategories') === 'string') {
+                                query.category = request.param('filterByCategories');
+                            } else {
+                                query.category = {$in : request.param('filterByCategories')};
                             }
-                            if (request.param('filterByAccounts')) {
-                                if (typeof request.param('filterByAccounts') === 'string') {
-                                    query.account = request.param('filterByAccounts');
-                                } else {
-                                    query.account = {$in : request.param('filterByAccounts')};
-                                }
-                            }
-                            if (request.param('filterByEmbeddeds')) {
-                                query.embeddeds = {$in : request.param('filterByEmbeddeds')};
-                            }
-                            Transaction.find(query, function (error, transactions) {
-                                if (error) {
-                                    response.send({error : error});
-                                } else {
-                                    response.send({transactions : transactions});
-                                }
-                            });
                         }
+                        if (request.param('filterByAccounts')) {
+                            if (typeof request.param('filterByAccounts') === 'string') {
+                                query.account = request.param('filterByAccounts');
+                            } else {
+                                query.account = {$in : request.param('filterByAccounts')};
+                            }
+                        }
+                        if (request.param('filterByEmbeddeds')) {
+                            query.embeddeds = {$in : request.param('filterByEmbeddeds')};
+                        }
+                        Transaction.find(query, function (error, transactions) {
+                            if (error) {
+                                response.send({error : error});
+                            } else {
+                                response.send({transactions : transactions});
+                            }
+                        });
                     }
                 });
             }
@@ -155,29 +147,25 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            Transaction.findOne({user : user._id, _id : request.params.id}, function (error, transaction) {
-                                if (error) {
-                                    response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
-                                } else {
-                                    if (transaction === null) {
-                                        response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
-                                    } else {
-                                        response.send({transaction : transaction});
-                                    }
-                                }
-                            });
-                        }
+                        Transaction.findOne({company : company._id, _id : request.params.id}, function (error, transaction) {
+                            if (error) {
+                                response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
+                            } else if (transaction === null) {
+                                response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
+                            } else {
+                                response.send({transaction : transaction});
+                            }
+                        });
                     }
                 });
             }
@@ -200,51 +188,43 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            Transaction.findOne({user : user._id, _id : request.params.id}, function (error, transaction) {
-                                var task,
-                                    url;
-                                if (error) {
-                                    response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
-                                } else {
-                                    if (transaction === null) {
-                                        response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
+                        Transaction.findOne({company : company._id, _id : request.params.id}, function (error, transaction) {
+                            if (error) {
+                                response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
+                            } else if (transaction === null) {
+                                response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
+                            } else if (
+                                request.param('source',null) === 'contacts' &&
+                                new Date(transaction.date) < new Date()
+                            ) {
+                                transaction.subtitle = null;
+                                transaction.save(function (error) {
+                                    if (error) {
+                                        response.send({error : error});
                                     } else {
-                                        if (
-                                            request.param('source',null) === 'contacts' &&
-                                            new Date(transaction.date) < new Date()
-                                        ) {
-                                            transaction.subtitle = null;
-                                            transaction.save(function (error) {
-                                                if (error) {
-                                                    response.send({error : error});
-                                                } else {
-                                                    response.send(null);
-                                                }
-                                            });
-                                        } else {
-                                            transaction.remove(function (error) {
-                                                if (error) {
-                                                    response.send({error : error});
-                                                } else {
-                                                    response.send(null);
-                                                }
-                                            });
-                                        }
+                                        response.send(null);
                                     }
-                                }
-                            });
-                        }
+                                });
+                            } else {
+                                transaction.remove(function (error) {
+                                    if (error) {
+                                        response.send({error : error});
+                                    } else {
+                                        response.send(null);
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
             }
@@ -267,51 +247,42 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            Transaction.findOne({user : user._id, _id : request.params.id}, function (error, transaction) {
-                                var url;
-                                if (error) {
-                                    response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
-                                } else {
-                                    if (transaction === null) {
-                                        response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
+                        Transaction.findOne({company : company._id, _id : request.params.id}, function (error, transaction) {
+                            var url;
+                            if (error) {
+                                response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
+                            } else if (transaction === null) {
+                                response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
+                            } else {
+                                transaction.category    = request.param('category', transaction.category);
+                                transaction.account     = request.param('account', transaction.account);
+                                transaction.name        = request.param('name', transaction.name);
+                                transaction.subtitle    = request.param('subtitle', transaction.subtitle);
+                                transaction.value       = request.param('value', transaction.value);
+                                transaction.date        = request.param('date', transaction.date);
+                                transaction.recurrence  = request.param('recurrence', transaction.recurrence);
+                                transaction.embeddeds   = request.param('embeddeds', transaction.embeddeds);
+                                transaction.noteNumber  = request.param('noteNumber', transaction.noteNumber);
+                                transaction.situation   = request.param('situation', transaction.situation);
+                                transaction.save(function (error) {
+                                    if (error) {
+                                        response.send({error : error});
                                     } else {
-                                        transaction.category    = request.param('category', transaction.category);
-                                        transaction.account     = request.param('account', transaction.account);
-                                        transaction.name        = request.param('name', transaction.name);
-                                        transaction.subtitle    = request.param('subtitle', transaction.subtitle);
-                                        transaction.value       = request.param('value', transaction.value);
-                                        transaction.date        = request.param('date', transaction.date);
-                                        transaction.recurrence  = request.param('recurrence', transaction.recurrence);
-                                        transaction.embeddeds   = request.param('embeddeds', transaction.embeddeds);
-                                        transaction.noteNumber  = request.param('noteNumber', transaction.noteNumber);
-                                        transaction.situation   = request.param('situation', transaction.situation);
-                                        transaction.save(function (error) {
-                                            if (error) {
-                                                response.send({error : error});
-                                            } else {
-                                                if (transaction.task) {
-                                                    /* @TODO: COLOCAR BARREAMENTO*/
-                                                    response.send({transaction : transaction});
-                                                } else {
-                                                    response.send({transaction : transaction});
-                                                }
-                                            }
-                                        });
+                                        response.send({transaction : transaction});
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
+                        });
                     }
                 });
             }

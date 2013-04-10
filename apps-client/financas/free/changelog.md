@@ -1,6 +1,16 @@
 Changelog
 =========
 
+## 2.0 (2013-04-04)
+
+Features
+- Adaptação para o novo Auth
+
+## 1.0.3 (2013-03-26)
+
+Correções
+- Não adicionar transações sem categoria do tipo de transação
+
 ## 1.0.2 (2013-03-21)
 - Orientador
 

@@ -1,8 +1,8 @@
 /**
- * @author : Rafael Erthal
- * @since : 2013-01
+ * Model dos serviços
  *
- * @description : Serviço autorizados a conversar com familia da APIs da empreendemia
+ * @author : Mauro Ribeiro
+ * @since : 2012-10
  */
 
 var mongoose = require('mongoose'),
@@ -11,15 +11,9 @@ var mongoose = require('mongoose'),
     serviceSchema;
 
 serviceSchema = new Schema({
-    slug        : {type : String, trim : true, unique : true},
-    secret      : {type : String, trim : true, required : true},
-    url         : {type : String, trim : true, required : true},
-    permissions : {
-        users     : {type : Boolean, required : true, default : false},
-        username  : {type : Boolean, required : true, default : false},
-        tokens    : {type : Boolean, required : true, default : false}
-    }
+    service : {type : String, required : true},
+    apps : [{type : objectId}]
 });
 
 /*  Exportando o pacote  */
-exports.Service = mongoose.model('Services', serviceSchema);
+exports.Service = serviceSchema;

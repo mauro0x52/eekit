@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 2.0 (2013-04-04)
+
+Features
+- Adaptação para o novo Auth
+
 ## 1.0.5 (2013-03-21)
 - Orientador
 

@@ -88,7 +88,7 @@ app.models.category = function (params) {
  */
 app.models.category.list = function (cb) {
     /* Carregar etapas de negociação */
-    app.ajax.post({url : 'http://' + app.config.services.contacts.host + ':' + app.config.services.contacts.port + '/user'}, function (response) {
+    app.ajax.post({url : 'http://' + app.config.services.contacts.host + ':' + app.config.services.contacts.port + '/company'}, function (response) {
         var categories = [],
             i;
 

@@ -171,6 +171,13 @@ app.routes.list('/feitas', function (params, data) {
 
         /* Botões do item */
         actions = {
+            edit         : new app.ui.action({
+                tip : 'editar esta tarefa',
+                image  : 'pencil',
+                click  : function() {
+                    app.apps.open({app : app.slug, route : '/editar-tarefa/' + task._id});
+                }
+            }),
             remove       : new app.ui.action({
                 tip : 'remover esta tarefa',
                 image  : 'trash',
@@ -179,7 +186,7 @@ app.routes.list('/feitas', function (params, data) {
                 }
             })
         };
-        this.item.actions.add([actions.remove]);
+        this.item.actions.add([actions.edit, actions.remove]);
 
         /* Exibe o titulo da tarefa */
         this.title = function (value) {
@@ -270,14 +277,41 @@ app.routes.list('/feitas', function (params, data) {
             }
         }
 
+        /* Pegando a edição da tarefa */
+        app.events.bind('update task ' + task._id, function (data) {
+            var oldGroup = fitGroup(task);
+
+            task = new app.models.task(data);
+
+            if (oldGroup !== fitGroup(task)) {
+                that.item.detach();
+                fitGroup(task).items.add(that.item);
+            }
+
+            if (task) {
+                that.title(task.title + (task.subtitle ? ' (' + task.subtitle + ')' : ''));
+                that.description(task.description);
+                that.important(task.important);
+                that.recurrence(task.recurrence);
+                that.reminder(task.reminder);
+                that.dateUpdated(task.dateUpdated);
+                that.category(task.category);
+            }
+        });
+
         /* Pegando a exclusão da tarefa */
         app.events.bind('remove task ' + task._id, this.item.detach);
 
         /* Pegando quando o filtro é acionado */
         app.events.bind('filter task', function (fields) {
-            var important = fields.important.value()[0] || fields.important.value()[0] === 'true';
+            var important = fields.important.value()[0] || fields.important.value()[0] === 'true',
+                users = fields.user.value();
 
             if (
+                (
+                    task.user &&
+                    users.indexOf(task.user) == -1
+                ) ||
                 (
                     fields.categories.general.value().indexOf(that.item.label.legend()) === -1 &&
                     fields.categories.meetings.value().indexOf(that.item.label.legend()) === -1 &&
@@ -297,7 +331,7 @@ app.routes.list('/feitas', function (params, data) {
 
         /* Montando o item */
         if (task) {
-            this.title(task.title);
+            this.title(task.title + (task.subtitle ? ' (' + task.subtitle + ')' : ''));
             this.description(task.description);
             this.important(task.important);
             this.recurrence(task.recurrence);
@@ -413,10 +447,29 @@ app.routes.list('/feitas', function (params, data) {
             options : [new app.ui.inputOption({legend : 'Importante', name : 'important', value : 'true', image : 'alert'})],
             change : app.ui.filter.submit
         });
+        /* filtro de usuário responsável */
+        fields.user = new app.ui.inputSelector({
+            name : 'user',
+            type : 'multiple',
+            legend  : 'Responsável',
+            options : (function () {
+                var result = [];
+                for (var i in app.config.users) {
+                    result.push(new app.ui.inputOption({
+                        legend  : app.config.users[i].name,
+                        value   : app.config.users[i]._id,
+                        clicked : app.config.user._id === app.config.users[i]._id
+                    }));
+                }
+                return result;
+            })(),
+            change : app.ui.filter.submit,
+            actions : true
+        });
         /* fieldset principal */
         app.ui.filter.fieldsets.add(new app.ui.fieldset({
             legend : 'Filtrar tarefas',
-            fields : [fields.query, fields.categories.general, fields.categories.meetings, fields.categories.finances, fields.categories.sales, fields.categories.projects, fields.categories.personals, fields.important]
+            fields : [fields.query, fields.user, fields.categories.general, fields.categories.meetings, fields.categories.finances, fields.categories.sales, fields.categories.projects, fields.categories.personals, fields.important]
         }));
         /* dispara o evento de filtro */
         app.ui.filter.submit(function () {
@@ -431,8 +484,8 @@ app.routes.list('/feitas', function (params, data) {
                 var a_priority = a.dateUpdated || new Date();
                 var b_priority = b.dateUpdated || new Date();
 
-                if (a_priority < b_priority)  return -1;
-                if (a_priority > b_priority)  return  1;
+                if (a_priority > b_priority)  return -1;
+                if (a_priority < b_priority)  return  1;
                 return 0;
             });
 
@@ -440,6 +493,8 @@ app.routes.list('/feitas', function (params, data) {
             for (i in tasks) {
                 fitGroup(tasks[i]).items.add((new Item(tasks[i])).item);
             }
+
+            app.ui.filter.submit();
         });
     });
 

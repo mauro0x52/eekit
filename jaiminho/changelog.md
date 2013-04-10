@@ -1,7 +1,13 @@
 Changelog
 =========
 
-## 0.1
+## 1.0 (2013-04-04)
 
 Features
-- Mandar email
+- Adaptação para novo Auth
+
+## 0.1 (2013-03-26)
+
+Features
+- Mandar email para o próprio usuário
+- Mandar email para admins

@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.0 (2013-04-04)
+
+Features
+- Adaptação para o novo Auth
+- Adição de usuário responsável para tarefa
+
 ## 0.3 (2013-03-19)
 - Autenticação de serviço
 - Comunicação com barramento de eventos

@@ -12,8 +12,7 @@ module.exports = function (app) {
         auth = require('../Utils.js').auth,
         trigger = require('../Utils.js').trigger,
         Category = Model.Category,
-        Contact = Model.Contact,
-        User = Model.User;
+        Company = Model.Company;
 
     /**
      * POST /category
@@ -32,31 +31,28 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (Company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (User === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            user.categories.push({
-                                name  : request.param('name', null),
-                                type  : request.param('type', null),
-                                color : request.param('color', null)
-                            });
-                            user.save(function (error) {
-                                var category = user.categories.pop();
-                                if (error) {
-                                    response.send({error : error});
-                                } else {
-                                    response.send({category : category});
-                                }
-                            });
-                        }
+                        company.categories.push({
+                            name  : request.param('name', null),
+                            type  : request.param('type', null),
+                            color : request.param('color', null)
+                        });
+                        company.save(function (error) {;
+                            if (error) {
+                                response.send({error : error});
+                            } else {
+                                response.send({category : company.categories.pop()});
+                            }
+                        });
                     }
                 });
             }
@@ -77,19 +73,17 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (Company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (User === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            response.send({categories : user.categories});
-                        }
+                        response.send({categories : company.categories});
                     }
                 });
             }
@@ -110,29 +104,25 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (user === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            user.findCategory(request.params.id, function (error, category) {
-                                if (error) {
-                                    response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
-                                } else {
-                                    if (category === null) {
-                                        response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
-                                    } else {
-                                        response.send({category : category});
-                                    }
-                                }
-                            });
-                        }
+                        company.findCategory(request.params.id, function (error, category) {
+                            if (error) {
+                                response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
+                            } else if (category === null) {
+                                response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
+                            } else {
+                                response.send({category : category});
+                            }
+                        });
                     }
                 });
             }
@@ -154,38 +144,34 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (Company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (User === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            user.findCategory(request.params.id, function (error, category) {
-                                if (error) {
-                                    response.send({error : { message : 'category not found', name : 'NotFoundError', id : request.params.id, path : 'category'}});
-                                } else {
-                                    if (category === null) {
-                                        response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
+                        company.findCategory(request.params.id, function (error, category) {
+                            if (error) {
+                                response.send({error : { message : 'category not found', name : 'NotFoundError', id : request.params.id, path : 'category'}});
+                            } else if (category === null) {
+                                response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
+                            } else {
+                                category.name = request.param('name', category.name);
+                                category.type = request.param('type', category.type);
+                                category.color = request.param('color', category.color);
+                                company.save(function (error) {
+                                    if (error) {
+                                        response.send({error : error});
                                     } else {
-                                        category.name = request.param('name', category.name);
-                                        category.type = request.param('type', category.type);
-                                        category.color = request.param('color', category.color);
-                                        user.save(function (error) {
-                                            if (error) {
-                                                response.send({error : error});
-                                            } else {
-                                                response.send({category : category});
-                                            }
-                                        });
+                                        response.send({category : category});
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
+                        });
                     }
                 });
             }
@@ -207,48 +193,32 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                User.findOne({user : user._id}, function (error, user) {
+                Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
-                        response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (Company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        if (User === null) {
-                            response.send({error : { message : 'user not found', name : 'NotFoundError', token : request.params.token, path : 'user'}});
-                        } else {
-                            user.findCategory(request.params.id, function (error, category) {
-                                if (error) {
-                                    response.send({error : { message : 'category not found', name : 'NotFoundError', id : request.params.id, path : 'category'}});
-                                } else {
-                                    if (category === null) {
-                                        response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
+                        company.findCategory(request.params.id, function (error, category) {
+                            if (error) {
+                                response.send({error : { message : 'category not found', name : 'NotFoundError', id : request.params.id, path : 'category'}});
+                            } else if (category === null) {
+                                response.send({error : { message : 'category not found', name : 'NotFoundError', token : request.params.id, path : 'category'}});
+                            } else {
+                                category.remove();
+                                company.save(function (error) {
+                                    if (error) {
+                                        response.send({error : error});
                                     } else {
-                                        var category_id = category._id;
-
-                                        category.remove();
-                                        user.save(function (error) {
-                                            if (error) {
-                                                response.send({error : error});
-                                            } else {
-                                                response.send(null);
-                                            }
-                                        });
-
-                                        /* arranca fora as categorias dos contatos daquela categoria */
-                                        Contact.find({category : category_id}, function (error, contacts) {
-                                            if (!error) {
-                                                for (var i in contacts) {
-                                                    contacts[i].category = null;
-                                                    contacts[i].save();
-                                                }
-                                            }
-                                        });
+                                        response.send(null);
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
+                        });
                     }
                 });
             }

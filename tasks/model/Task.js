@@ -11,7 +11,9 @@ var mongoose = require('mongoose'),
     taskSchema;
 
 taskSchema = new schema({
-    user        : {type : objectId, required : true},
+    company     : {type : objectId, required : true},
+    user        : {type : objectId},
+    author      : {type : objectId},
     category    : {type : objectId, required : true},
     title       : {type : String, trim : true, required : true},
     subtitle    : {type : String},

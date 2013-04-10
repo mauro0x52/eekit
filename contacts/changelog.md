@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0 (2013-04-04)
+
+Features
+- Adaptação para o novo auth
+
 ## 0.4 (2013-03-19)
 - Autenticação de serviço
 - Comunicação com barramento de eventos

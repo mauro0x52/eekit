@@ -16,3 +16,5 @@ if (config.mongodb.username && config.mongodb.password) {
 
 /*  Exportar name-space  */
 exports.User = require('./User.js').User;
+exports.Company = require('./Company.js').Company;
+exports.Token = require('./Token.js').Token;

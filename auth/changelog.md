@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.0 (2013-04-04)
+
+Features
+- Usuários pertencem a empresas
+- Informações do perfil ficam guardadas aqui agora
+
 ## 0.3 (2013-03-19)
 
 Features

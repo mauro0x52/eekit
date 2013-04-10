@@ -19,18 +19,28 @@ var empreendemia = {
         empreendemia.ui.content.roll.sheets.apps.remove();
         empreendemia.ui.content.roll.menu.remove();
         /* Exibindo user section */
-        empreendemia.user.profile(function (profile) {
+        empreendemia.user.profile(function (user) {
             var routes,
                 slug,
                 route;
 
             empreendemia.ui.header.user.options.remove();
-            if (profile) {
+            if (user) {
                 /* Usuário logado */
                 empreendemia.ui.header.user.login();
                 empreendemia.ui.header.user.options.add(new empreendemia.ui.userOption({
-                    legend : profile.name,
-                    style  : 'name'
+                    legend : user.name + ' - configurações',
+                    style  : 'name',
+                    click  : function () {
+                        empreendemia.apps.open({
+                            app   : 'ee',
+                            route : '/usuarios',
+                            open  : function (tool) {
+                                tool.open();
+                                empreendemia.apps.render(tool);
+                            }
+                        });
+                    }
                 }));
                 empreendemia.ui.header.user.options.add(new empreendemia.ui.userOption({
                     legend : 'sair',

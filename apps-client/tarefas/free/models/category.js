@@ -88,7 +88,7 @@ app.models.category = function (params) {
  */
 app.models.category.list = function (cb) {
     app.ajax.post({
-        url : 'http://' + app.config.services.tasks.host + ':' + app.config.services.tasks.port + '/user'
+        url : 'http://' + app.config.services.tasks.host + ':' + app.config.services.tasks.port + '/company'
     }, function (response) {
         if (response) {
             if (response.error) {

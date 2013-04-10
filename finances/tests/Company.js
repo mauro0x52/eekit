@@ -1,33 +1,28 @@
-/** Tests Contacts.User
+/** Tests Finances.User
  *
  * @autor : Rafael Almeida Erthal Hermano
- * @since : 2012-09
+ * @since : 2012-10
  *
- * @description : Kit de testes do controller user do serviço contacts
+ * @description : Kit de testes do controller user do serviço finances
  */
 
 var should = require("should"),
     api = require("./utils.js").api,
-    db = require("./utils.js").db,
-    rand = require("./utils.js").rand;
-
-describe('POST /user', function () {
+    rand = require("./utils.js").rand,
+    auth = require("./utils.js").auth;
+    
+describe('POST /company', function () {
     var token;
 
     before(function (done) {
-        // cria usuario
-        api.post('auth', '/user', {
-            username : 'testes+' + rand() + '@empreendemia.com.br',
-            password : 'testando',
-            password_confirmation : 'testando'
-        }, function (error, data) {
-            token = data.user.token;
+        auth('finances', function (newToken) {
+            token = newToken;
             done();
         });
     });
 
     it('url tem que existir', function (done) {
-        api.post('contacts', '/user', {}, function (error, data, response) {
+        api.post('finances', '/company', {}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
@@ -39,7 +34,7 @@ describe('POST /user', function () {
     });
 
     it('token inválido', function (done) {
-        api.post('contacts', '/user', {token : 'invalido'}, function (error, data, response) {
+        api.post('finances', '/company', {token : 'invalido'}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
@@ -50,7 +45,7 @@ describe('POST /user', function () {
     });
 
     it('registra usuário', function (done) {
-        api.post('contacts', '/user', {token : token}, function (error, data, response) {
+        api.post('finances', '/company', {token : token}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
@@ -59,5 +54,4 @@ describe('POST /user', function () {
             }
         });
     });
-
 })

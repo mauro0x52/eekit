@@ -13,6 +13,6 @@ mongoose.connect('mongodb://' + config.mongodb.username + ':' + config.mongodb.p
 /*  Exportar name-space  */
 exports.Contact = require('./Contact.js').Contact;
 exports.Category = require('./Category.js').Category;
-exports.User = require('./User.js').User;
-exports.Field = require('./User.js').Field;
-exports.FieldValue = require('./User.js').FieldValue;
+exports.Company = require('./Company.js').Company;
+exports.Field = require('./Field.js').Field;
+exports.FieldValue = require('./FieldValue.js').FieldValue;

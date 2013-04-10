@@ -349,7 +349,11 @@ app.routes.list('/', function (params, data) {
             query += ' ' + contact.notes;
 
             for (var i in contact.fieldValues) {
-                query += ' ' + contact.fieldValues[i].value;
+                for (var j in userfields) {
+                    if (contact.fieldValues[i].field === userfields[j]._id) {
+                        query += ' ' + contact.fieldValues[i].value;
+                    }
+                }
             }
 
             if (
@@ -362,7 +366,11 @@ app.routes.list('/', function (params, data) {
 
                 var fields = '';
                 for (var i in contact.fieldValues) {
-                    fields += ' %2C' + escape(contact.fieldValues[i].value);
+                    for (var j in userfields) {
+                        if (contact.fieldValues[i].field === userfields[j]._id) {
+                            fields += ' %2C' + escape(contact.fieldValues[i].value);
+                        }
+                    }
                 }
 
                 app.ui.actions.get()[0].href(
