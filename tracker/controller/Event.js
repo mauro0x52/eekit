@@ -72,9 +72,9 @@ module.exports = function (app) {
                             }
                         }
                         
-                        if (user.ocurrences('tarefas', ['adicionar tarefa']) >= 2) {
+                        if (user.ocurrences('tarefas', ['marcar tarefa como feita']) >= 1) {
                             user.apps.tarefas.status = 'Ativado';
-                            if (user.ocurrences('tarefas', ['adicionar tarefa'], sunday, saturday) >= 5) {
+                            if (user.ocurrences('tarefas', ['marcar tarefa como feita'], sunday, saturday) >= 3) {
                                 user.apps.tarefas.status = 'Engajado';
                             }
                         } else {
