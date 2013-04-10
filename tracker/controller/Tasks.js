@@ -73,6 +73,12 @@ module.exports = function (app) {
                             users : cohort[i].filter([],1,utm)
                         }],
                         activation : [{
+                            name  : 'Começaram a adicionar tarefa',
+                            users : cohort[i].filter(['clicar: adicionar tarefa'],1, utm)
+                        },{
+                            name  : 'Adicionaram 1 tarefa',
+                            users : cohort[i].filter(['adicionar tarefa'],1, utm)
+                        },{
                             name  : 'Marcaram 1 tarefa como feita',
                             users : cohort[i].filter(['marcar tarefa como feita'],1, utm)
                         }],
