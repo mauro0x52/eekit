@@ -63,7 +63,7 @@ module.exports = function (app) {
                     var date = new Date(cohort[i].date);
                     var monitoring = [];
                     while (date <= new Date) {
-                        monitoring.push(cohort[i].filter(['editar transação', 'adicionar transação'],2, utm, date))
+                        monitoring.push(cohort[i].filter(['editar transação', 'adicionar transação'],3, utm, date))
                         date.setDate(date.getDate() + 14);
                     }
                     result.push({
