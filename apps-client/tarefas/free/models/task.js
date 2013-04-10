@@ -106,9 +106,20 @@ app.models.task = function (params) {
     this.changePriority = function (priority, date) {
         this.priority = priority;
         this.dateDeadline = date;
-        this.save();
-
-        app.events.trigger('drop task ' + this._id, this);
+        this.save(function () {
+            app.ajax.post({
+                url : 'http://' + app.config.services.tasks.host + ':' + app.config.services.tasks.port + '/task/' + that._id + '/sort',
+                data : {priority : that.priority}
+            }, function (response) {
+                if (response) {
+                    if (response.error) {
+                        console.log(error);
+                    } else {
+                        app.events.trigger('drop task ' + that._id, that);
+                    }
+                }
+            });
+        });
     };
 
 

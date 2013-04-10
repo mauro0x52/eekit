@@ -273,6 +273,7 @@ module.exports = function (app) {
                                         newTask = new Model.Task({
                                             company     : task.company,
                                             user        : task.user,
+                                            author      : task.author,
                                             category    : task.category,
                                             title       : task.title,
                                             subtitle    : task.subtitle,
@@ -316,7 +317,7 @@ module.exports = function (app) {
      *
      * @description : Edita tarefa
      *
-     * @request : {category, title, subtitle, description, important, recurrence, dateDealine, priority, embeddeds, reminder, token}
+     * @request : {category, title, subtitle, description, important, recurrence, dateDealine, embeddeds, reminder, token}
      * @response : {task}
      */
     app.post('/task/:id/update', function (request,response) {
@@ -347,10 +348,54 @@ module.exports = function (app) {
                                 task.important    = request.param('important', task.important) === 'true' || request.param('important', task.important) === true;
                                 task.recurrence   = request.param('recurrence', task.recurrence);
                                 task.dateDeadline = request.param('dateDeadline', task.dateDeadline);
-                                task.dateUpdated  = request.param('dateUpdated', task.dateUpdated);
-                                task.priority     = request.param('priority', task.priority);
                                 task.embeddeds    = request.param('embeddeds', task.embeddeds);
                                 task.reminder     = request.param('reminder', task.reminder);
+                                task.save(function (error) {
+                                    if (error) {
+                                        response.send({error : error});
+                                    } else {
+                                        response.send({task : task});
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    /** POST /task/:id/sort
+     *
+     * @autor : Rafael Erthal
+     * @since : 2013-04
+     *
+     * @description : Modifica a ordem de uma tarefa
+     *
+     * @request : {priority, token}
+     * @response : {task}
+     */
+    app.post('/task/:id/sort', function (request,response) {
+        response.contentType('json');
+        response.header('Access-Control-Allow-Origin', '*');
+
+        auth(request.param('token', null), function (error, data) {
+            if (error) {
+                response.send({error : error});
+            } else {
+                Company.findOne({company : data.company._id}, function (error, company) {
+                    if (error) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else if (company === null) {
+                        response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                    } else {
+                        Task.findById(request.params.id, function (error, task) {
+                            if (error) {
+                                response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
+                            } else if (task === null) {
+                                response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
+                            } else {
+                                task.priority     = request.param('priority', task.priority);
                                 task.save(function (error) {
                                     if (error) {
                                         response.send({error : error});
