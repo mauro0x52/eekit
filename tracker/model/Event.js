@@ -149,25 +149,25 @@ eventSchema.statics.cohort = function (app, frequency, cb) {
 	                    var dateFrom = new Date(date || this.date),
 		                    dateTo   = new Date(date || this.date),
 		                    result   = [];
-		                    dateTo.setDate(dateTo.getDate() + frequency),
-		                    hasUtm = false;
-
-		                for (var i in utm) {
-		                	hasUtm = true;
-		                }
+		                    dateTo.setDate(dateTo.getDate() + frequency);
 
 	                    for (var i in this.users) {
 	                    	if (
-	                    		(
-		                    		(!hasUtm) || (
-	                                	this.users[i].utm.source === utm.source &&
-	                                	this.users[i].utm.medium === utm.medium &&
-	                                	this.users[i].utm.content === utm.content &&
-	                                	this.users[i].utm.campaign === utm.campaign
-	                            	)
+                    			(
+                                	this.users[i].utm.source === utm.source ||
+                                	!utm.source
                             	) && (
-                            		this.users[i].ocurrences(app, labels, dateFrom, dateTo) >= minimum
-                            	)
+                                	this.users[i].utm.medium === utm.medium ||
+                                	!utm.medium
+                            	) && (
+                                	this.users[i].utm.content === utm.content ||
+                                	!utm.content
+                            	) && (
+                                	this.users[i].utm.campaign === utm.campaign ||
+                                	!utm.campaign
+                            	) && (
+                        			this.users[i].ocurrences(app, labels, dateFrom, dateTo) >= minimum
+                        		)
                     		) {
 	                    		result.push(this.users[i]);
                         	}
