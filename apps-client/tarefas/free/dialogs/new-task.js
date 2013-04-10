@@ -211,8 +211,8 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
         fieldset.fields.add(fields.important);
         fieldset.fields.add(fields.reminder);
         fieldset.fields.add(fields.recurrence);
-        fieldset.fields.add(fields.user);
         fieldset.fields.add(fields.description);
+        fieldset.fields.add(fields.user);
         app.ui.form.fieldsets.add(fieldset);
 
         fields.title.focus();
