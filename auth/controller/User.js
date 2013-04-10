@@ -90,6 +90,9 @@ module.exports = function (app) {
                     if (service.permissions.tokens) {
                         result.tokens = user.tokens;
                     }
+                    if (service.permissions.informations) {
+                        result.informations = user.informations;
+                    }
                     response.send({user : result});
                 }
             });

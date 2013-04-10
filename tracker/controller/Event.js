@@ -26,96 +26,84 @@ module.exports = function (app) {
      */
     app.get('/user/:id/events', function (request,response) {
         response.contentType('text/html');
-        Event.find({user : request.params.id}, function (error, events) {
-            if (error) {
-                response.send({error : error});
-            } else {
-                require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/services').on('success', function (data) {
-                    require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/'+request.params.id, {
-                        data: {
-                            secret : config.security.secret
-                        }
-                    }).on('success', function (data) {
 
+        var now = new Date(),
+            sunday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay(), 0),
+            saturday = new Date(sunday);
+
+        saturday.setDate(saturday.getDate() + 7);
+
+        require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/services').on('success', function (data) {
+            require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/'+request.params.id, {data: {secret : config.security.secret}}).on('success', function (data) {
+                Event.user(request.params.id, function (error, user) {
+                    if (error) {
+                        response.send({error : error});
+                    } else {
                         function format (date) {
-                            if (date) {
-                                return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
-                            }
+                            return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
                         }
 
-                        var j,
-                            user,
-                            utm = {}
-                            appDays = {};
+                        var i,
+                            uses = {};
 
-                        user = data.user
+                        user.name = data.user.name;
+                        user.phone = data.user.informations.phone;
+                        user.apps = {
+                            contatos : {days : 0, status : '&nbsp;'},
+                            tarefas  : {days : 0, status : '&nbsp;'},
+                            financas : {days : 0, status : '&nbsp;'},
+                            ee       : {days : 0, status : '&nbsp;'}
+                        };
 
-                        for (i in events) {
-                            if (!appDays[events[i].app]) {
-                                appDays[events[i].app] = {};
+                        for (i in user.events) {
+                            if (!uses[user.events[i].app]) {
+                                uses[user.events[i].app] = {};
                             }
-                            if (!appDays[events[i].app][format(events[i].date)]) {
-                                appDays[events[i].app][format(events[i].date)] = true;
-                            }
-                            if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
-                                utm = events[i].utm;
+                            if (!uses[user.events[i].app][format(user.events[i].date)]) {
+                                uses[user.events[i].app][format(user.events[i].date)] = true;
                             }
                         }
-
-                        for (i in user.auths) {
-                            if (user.auths[i].service === 'profiles') {
-                                for (j in user.auths[i].tokens) {
-                                    if ((new Date() - new Date(user.auths[i].tokens[j].dateUpdated))/(1000*60*60*24) < 30) {
-                                        token = user.auths[i].tokens[j].token
-                                    }
+                        for (i in uses) {
+                            var days = 0;
+                            for (var prop in uses[i]) {
+                                if (uses[i].hasOwnProperty(prop)) {
+                                    user.apps[i].days++;
                                 }
                             }
                         }
-
-                        response.write(user.username + '</br></br>');
-
-                        response.write('nome : ' + (user.name ? user.name : '') + '</br>');
-                        response.write('telefone : ' + (user.informations && user.informations.phone ? user.informations.phone : '') + '</br>');
-
-                        response.write('utm_source : ' + utm.source + '</br>');
-                        response.write('utm_medium : ' + utm.medium + '</br>');
-                        response.write('utm_content : ' + utm.content + '</br>');
-                        response.write('utm_campaign : ' + utm.campaign + '</br></br>');
-
-                        response.write('<table border="1">');
-                        response.write('<tr>');
-                        response.write('<td>App</td>');
-                        response.write('<td>Dias com acesso</td>');
-                        response.write('</tr>');
-                        for (i in appDays) {
-                            var total = 0;
-                            for (var prop in appDays[i]) if (appDays[i].hasOwnProperty(prop)) total++;
-                            response.write('<tr>');
-                            response.write('<td>' + i + '</td>');
-                            response.write('<td>' + total + '</td>');
-                            response.write('</tr>');
+                        
+                        if (user.ocurrences('tarefas', ['adicionar tarefa']) >= 2) {
+                            user.apps.tarefas.status = 'Ativado';
+                            if (user.ocurrences('tarefas', ['adicionar tarefa'], sunday, saturday) >= 5) {
+                                user.apps.tarefas.status = 'Engajado';
+                            }
+                        } else {
+                            user.apps.tarefas.status = 'Nao Ativado';
                         }
-                        response.write('</table><br />');
-
-                        response.write('<table border="1">');
-                        response.write('<tr>');
-                        response.write('<td>Data</td>');
-                        response.write('<td>App</td>');
-                        response.write('<td>Evento</td>');
-                        response.write('</tr>');
-                        for (i in events) {
-                            response.write('<tr>');
-                            response.write('<td>' + events[i].date.getDate() + '/' + (events[i].date.getMonth() + 1) + '/' + events[i].date.getFullYear() + '</td>');
-                            response.write('<td>' + events[i].app + '</td>');
-                            response.write('<td>' + events[i].label + '</td>');
-                            response.write('</tr>');
+                        
+                        if (user.ocurrences('financas', ['adicionar transação']) >= 2) {
+                            user.apps.financas.status = 'Ativado';
+                            if (user.ocurrences('financas', ['editar transação', 'adicionar transação'], sunday, saturday) >= 3) {
+                                user.apps.financas.status = 'Engajado';
+                            }
+                        } else {
+                            user.apps.financas.status = 'Nao Ativado';
                         }
-                        response.write('</table>');
-                        response.end();
-                    }).on('error', function () {response.end()});
+                        
+                        if (user.ocurrences('contatos', ['adicionar tarefa', 'adicionar transação']) >= 1) {
+                            user.apps.contatos.status = 'Ativado';
+                            if (user.ocurrences('contatos', ['marcar tarefa como feita', 'adicionar transação'], sunday, saturday) >= 2) {
+                                user.apps.contatos.status = 'Engajado';
+                            }
+                        } else {
+                            user.apps.contatos.status = 'Nao Ativado';
+                        }
 
+                        response.render('../view/user', {user : user});
+                    }
                 });
-            }
+            }).on('error', function () {response.end()});
+
         });
     });
 

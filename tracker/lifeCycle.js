@@ -3,14 +3,15 @@ var Event = require('./model/Model').Event,
 	restler = require('restler');
 
 /* Lifecycle do contatos */
-Event.filterByNotActivated(
-	null,
+Event.lifeCycle(
 	{
 		labels : ['marcar: contatos'],
-		minimum : 1
+		minimum : 1,
+        app : 'ee'
 	},{
 		labels : ['adicionar tarefa', 'adicionar transação'],
-		minimum : 2
+		minimum : 1,
+        app : 'contatos'
 	},
 	function (error, users) {
 		if (error) {
@@ -56,14 +57,15 @@ Event.filterByNotActivated(
 );
 
 /* Lifecycle do tarefas */
-Event.filterByNotActivated(
-	null,
+Event.lifeCycle(
 	{
 		labels : ['marcar: tarefas'],
-		minimum : 1
+		minimum : 1,
+        app : 'ee'
 	},{
 		labels : ['adicionar tarefa'],
-		minimum : 2
+		minimum : 2,
+        app : 'tarefas'
 	},
 	function (error, users) {
 		if (error) {
@@ -109,14 +111,15 @@ Event.filterByNotActivated(
 );
 
 /* Lifecycle do finanças */
-Event.filterByNotActivated(
-	null,
+Event.lifeCycle(
 	{
 		labels : ['marcar: financas'],
-		minimum : 1
+		minimum : 1,
+        app : 'ee'
 	},{
 		labels : ['adicionar transação'],
-		minimum : 2
+		minimum : 2,
+        app : 'financas'
 	},
 	function (error, users) {
 		if (error) {
@@ -162,44 +165,41 @@ Event.filterByNotActivated(
 );
 
 /* Lifecycle de pagamento */
-Event.groupByUser(
-    null,
-    function (error, users) {
-        if (error) {
-            console.log(error);
-        } else {
-            for (var i in users) {
-                var date = (new Date() - new Date(users[i].firstEvent)) / (1000 * 60 * 60 * 24);
-                if (date > 10 && date < 11) {
-                    restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i]._id, {
-                        data: {
-                            secret : config.security.secret
-                        }
-                    }).on('success', function(data) {
-                        if (data && data.user && data.user.tokens) {
-                            restler.post('http://'+config.services.jaiminho.url+':'+config.services.jaiminho.port+'/mail/self' , {
-                                data : {
-                                    token : data.user.tokens[0].token,
-                                    from : 'lucas@empreendemia.com.br',
-                                    subject : 'O último passo para sair da planilha',
-                                    html :  '' +
-                                            'Olá |FNAME|, tudo bom?<br />' +
-                                            'Estou mandando este e-mail porque o seu período de testes do EmpreendeKit está terminando. <br />' +
-                                            'Existe alguma forma que posso te ajudar, ou sanar alguma dúvida?<br /><br />' +
-                                            'Abraços<br />' +
-                                            'Lucas',
-                                    name : 'lifecycle fim do test drive',
-                                    service : 'tracker'
-                                }
-                            }).on('success', function(data) {
-                                console.log(data);
-                            }).on('error', function(error) {
-                                console.log(error);
-                            });
-                        }
-                    });
-                }
+Event.groupByUser(function (error, users) {
+    if (error) {
+        console.log(error);
+    } else {
+        for (var i in users) {
+            var date = (new Date() - new Date(users[i].firstEvent)) / (1000 * 60 * 60 * 24);
+            if (date > 10 && date < 11) {
+                restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i]._id, {
+                    data: {
+                        secret : config.security.secret
+                    }
+                }).on('success', function(data) {
+                    if (data && data.user && data.user.tokens) {
+                        restler.post('http://'+config.services.jaiminho.url+':'+config.services.jaiminho.port+'/mail/self' , {
+                            data : {
+                                token : data.user.tokens[0].token,
+                                from : 'lucas@empreendemia.com.br',
+                                subject : 'O último passo para sair da planilha',
+                                html :  '' +
+                                        'Olá |FNAME|, tudo bom?<br />' +
+                                        'Estou mandando este e-mail porque o seu período de testes do EmpreendeKit está terminando. <br />' +
+                                        'Existe alguma forma que posso te ajudar, ou sanar alguma dúvida?<br /><br />' +
+                                        'Abraços<br />' +
+                                        'Lucas',
+                                name : 'lifecycle fim do test drive',
+                                service : 'tracker'
+                            }
+                        }).on('success', function(data) {
+                            console.log(data);
+                        }).on('error', function(error) {
+                            console.log(error);
+                        });
+                    }
+                });
             }
         }
     }
-);
+});
