@@ -53,7 +53,7 @@ module.exports = function (app) {
         
         response.header('Access-Control-Allow-Origin', '*');
 
-        Event.cohort('financas', 14, function (error, cohort) {
+        Event.cohort('finanças', 14, function (error, cohort) {
             if (error) {
                 response.send({error : error});
             } else {
