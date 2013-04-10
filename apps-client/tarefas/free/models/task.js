@@ -104,21 +104,24 @@ app.models.task = function (params) {
     * @param  cb : callback a ser chamado após a edição
     */
     this.changePriority = function (priority, date) {
-        this.priority = priority;
-        this.dateDeadline = date;
-        this.save(function () {
-            app.ajax.post({
-                url : 'http://' + app.config.services.tasks.host + ':' + app.config.services.tasks.port + '/task/' + that._id + '/sort',
-                data : {priority : that.priority}
-            }, function (response) {
-                if (response) {
-                    if (response.error) {
-                        console.log(error);
-                    } else {
-                        app.events.trigger('drop task ' + that._id, that);
-                    }
-                }
-            });
+        app.models.task.find(that._id, function (task) {
+            if (new Date(task.dateDeadline).toString() === new Date(that.dateDeadline).toString()) {
+                console.log('entrei')
+                that.priority = priority;
+                that.dateDeadline = date;
+
+                app.ajax.post({
+                    url : 'http://' + app.config.services.tasks.host + ':' + app.config.services.tasks.port + '/task/' + that._id + '/sort',
+                    data : {priority : that.priority}
+                }, function () {});
+
+                app.ajax.post({
+                    url : 'http://' + app.config.services.tasks.host + ':' + app.config.services.tasks.port + '/task/' + that._id + '/update',
+                    data : {dateDeadline : that.dateDeadline}
+                }, function () {});
+
+                app.events.trigger('drop task ' + that._id, that);
+            }
         });
     };
 
