@@ -205,7 +205,9 @@ sdk.modules.ui.item = function (app) {
                     value.items.add(that);
                     document.stopDrag();
                     element.setAttribute('style', '');
-                    if (click_cb) {
+                    if (that.visibility() === ' hide') {
+                        element.setAttribute('class', 'item hide');
+                    } else if (click_cb) {
                         element.setAttribute('class', 'item clickable');
                     } else {
                         element.setAttribute('class', 'item');
