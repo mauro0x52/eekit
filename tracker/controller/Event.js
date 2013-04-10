@@ -66,7 +66,7 @@ module.exports = function (app) {
                         for (i in uses) {
                             var days = 0;
                             for (var prop in uses[i]) {
-                                if (uses[i].hasOwnProperty(prop)) {
+                                if (user.apps[i]) {
                                     user.apps[i].days++;
                                 }
                             }
