@@ -47,7 +47,7 @@ module.exports = function (app) {
                             uses = {};
 
                         user.name = data.user.name;
-                        user.phone = data.user.informations.phone;
+                        if (data.user.informations) user.phone = data.user.informations.phone;
                         user.apps = {
                             contatos : {days : 0, status : '&nbsp;'},
                             tarefas  : {days : 0, status : '&nbsp;'},
