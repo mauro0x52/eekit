@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.1
+
+Features
+- Flash success e alert
+- Actions em diálogo
+
 ## 1.0 (2013-04-04)
 
 Features
