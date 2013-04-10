@@ -73,18 +73,12 @@ module.exports = function (app) {
                             users : cohort[i].filter([],1,utm)
                         }],
                         activation : [{
-                            name  : 'Adicionaram 1 tarefa',
-                            users : cohort[i].filter(['adicionar tarefa'],2, utm)
-                        },{
                             name  : 'Marcaram 1 tarefa como feita',
                             users : cohort[i].filter(['marcar tarefa como feita'],1, utm)
-                        },{
-                            name  : 'Marcaram 3 tarefas como feitas',
-                            users : cohort[i].filter(['marcar tarefa como feita'],3, utm)
                         }],
                         engagement : [{
-                            name  : 'Marcaram 5 tarefas como feitas',
-                            users : cohort[i].filter(['marcar tarefa como feita'], 5, utm)
+                            name  : 'Marcaram 3 tarefas como feitas',
+                            users : cohort[i].filter(['marcar tarefa como feita'],3, utm)
                         }],
                         monitoring : monitoring
                     });

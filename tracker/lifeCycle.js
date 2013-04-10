@@ -63,8 +63,8 @@ Event.lifeCycle(
 		minimum : 1,
         app : 'ee'
 	},{
-		labels : ['adicionar tarefa'],
-		minimum : 2,
+		labels : ['marcar tarefa como feita'],
+		minimum : 1,
         app : 'tarefas'
 	},
 	function (error, users) {
