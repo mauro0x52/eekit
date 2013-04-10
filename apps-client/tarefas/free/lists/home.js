@@ -229,7 +229,6 @@ app.routes.list('/', function (params, data) {
                 groups.noDeadline
             ],
             drop : function (group, order) {
-                console.log(group.date)
                 task.changePriority(order, group.date);
             },
             click : function () {
