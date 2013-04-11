@@ -16,7 +16,7 @@ sdk.modules.ui.dialog = function (app, container) {
         close_div = document.createElement('div'),
         close_image_div = document.createElement('div'),
         close_legend_div = document.createElement('div'),
-        error_div = document.createElement('div'),
+        flash_div = document.createElement('div'),
         description_div = document.createElement('div'),
         description_p = document.createElement('p'),
         footer_div = document.createElement('div'),
@@ -24,6 +24,7 @@ sdk.modules.ui.dialog = function (app, container) {
         fieldsets_div = document.createElement('div'),
         submit_div = document.createElement('div'),
         submit_input = document.createElement('input'),
+        actions_menu = document.createElement('menu'),
         cb,
         that = this;
 
@@ -38,7 +39,7 @@ sdk.modules.ui.dialog = function (app, container) {
     close_image_div.setAttribute('class', 'image');
     close_legend_div.setAttribute('class', 'legend');
     close_legend_div.innerHTML = 'fechar';
-    error_div.setAttribute('class', 'hide');
+    flash_div.setAttribute('class', 'hide');
     description_div.setAttribute('class', 'hide');
     footer_div.setAttribute('class', 'hide');
     form_form.setAttribute('class', 'form');
@@ -46,6 +47,7 @@ sdk.modules.ui.dialog = function (app, container) {
     submit_div.setAttribute('class', 'submit');
     submit_input.setAttribute('type', 'submit');
     submit_input.setAttribute('class', 'input');
+    actions_menu.setAttribute('class', 'actions');
 
     /* Hierarquia */
     element.appendChild(background_div);
@@ -56,10 +58,11 @@ sdk.modules.ui.dialog = function (app, container) {
     modal_div.appendChild(close_div);
     close_div.appendChild(close_image_div);
     close_div.appendChild(close_legend_div);
-    modal_div.appendChild(error_div);
+    modal_div.appendChild(flash_div);
     modal_div.appendChild(description_div);
     description_div.appendChild(description_p);
     modal_div.appendChild(form_form);
+    modal_div.appendChild(actions_menu);
     form_form.appendChild(fieldsets_div);
     form_form.appendChild(submit_div);
     submit_div.appendChild(submit_input);
@@ -87,6 +90,7 @@ sdk.modules.ui.dialog = function (app, container) {
     this.inputDate = new sdk.modules.ui.inputDate(app);
     this.inputSelector = new sdk.modules.ui.inputSelector(app);
     this.inputOption = new sdk.modules.ui.inputOption(app);
+    this.action = new sdk.modules.ui.action(app);
 
     /* Métodos protegidos */
     this.attach = function (HTMLobject) {
@@ -128,13 +132,35 @@ sdk.modules.ui.dialog = function (app, container) {
     };
     this.error = function (value) {
         if (value === '') {
-            error_div.setAttribute('class', 'hide');
+            flash_div.setAttribute('class', 'hide');
         }
         if (value) {
-            error_div.setAttribute('class', 'flash error');
-            error_div.innerHTML = value;
+            flash_div.setAttribute('class', 'flash error');
+            flash_div.innerHTML = value;
         } else {
-            return error_div.innerHTML;
+            return flash_div.innerHTML;
+        }
+    };
+    this.success = function (value) {
+        if (value === '') {
+            flash_div.setAttribute('class', 'hide');
+        }
+        if (value) {
+            flash_div.setAttribute('class', 'flash success');
+            flash_div.innerHTML = value;
+        } else {
+            return flash_div.innerHTML;
+        }
+    };
+    this.alert = function (value) {
+        if (value === '') {
+            flash_div.setAttribute('class', 'hide');
+        }
+        if (value) {
+            flash_div.setAttribute('class', 'flash alert');
+            flash_div.innerHTML = value;
+        } else {
+            return flash_div.innerHTML;
         }
     };
     this.footer = function (value) {
@@ -179,4 +205,5 @@ sdk.modules.ui.dialog = function (app, container) {
         },
         fieldsets : new Collection(fieldsets_div, [this.fieldset])
     };
+    this.actions = new Collection(actions_menu, [this.action]);
 }

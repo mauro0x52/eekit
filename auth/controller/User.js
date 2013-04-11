@@ -328,24 +328,22 @@ module.exports = function (app) {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
             User.findOne({username : request.param('username', null)}, function (error, user) {
-                if (error) {
-                    response.send({error : { message : 'invalid username or password', name : 'InvalidLoginError'}});
-                } else if (user === null) {
-                    response.send({error : { message : 'invalid username or password', name : 'InvalidLoginError'}});
+                if (error || user === null) {
+                    response.send({error : { message : 'user not found', name : 'NotFoundError'}});
                 } else {
-                    user.login(function (error, token) {
+                    user.login('www', function (error, token) {
                         if (error) {
                             response.send({error : error});
                         } else {
-                            require('restler').post('http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail', {
+                            require('restler').post('http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail/self', {
                                 data: {
                                     token      : token,
                                     subject    : 'Recuperação de senha',
-                                    html       : 'Para criar uma nova senha no empreendekit, entre no link <a href="http://www.empreendekit.com.br/?token=' + token + '#!/ee/mudar-senha">http://www.empreendekit.com.br/?token=' + token + '#!/ee/mudar-senha</a>',
-                                    categories : 'password recovery',
+                                    html       : '<p>Olá '+user.name+'</p><p>Foi solicitada a recuperação de senha da sua conta no Empreendekit. Caso você não tenha feito a solicitação, favor desconsidere este email.</p><p>Para criar uma nova senha no empreendekit <a href="http://www.empreendekit.com.br/?token=' + token + '#!/ee/usuarios">clique aqui</a>.</p><br /><br />',
+                                    name : 'recuperar senha',
                                     service    : 'auth'
                                 }
-                            }).on('success', function(data) {response.send(null);}).on('error', function() {});
+                            }).on('success', function(data) {}).on('error', function(data) {console.log(data)});
                             response.send(null);
                         }
                     });
@@ -364,8 +362,8 @@ module.exports = function (app) {
      * @request : {token, secret, password}
      * @response : null
      */
-    app.post('/user/change-password', function (request, response) {
-        var service = null;
+    app.post('/user/:id/change-password', function (request, response) {
+        var service = null, found;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
@@ -384,12 +382,18 @@ module.exports = function (app) {
                 if (error || !user) {
                     response.send({error : { message : 'invalid token', name : 'InvalidTokenError', id : request.param('token', null), path : 'token'}});
                 } else {
-                    user.password = User.encryptPassword(request.param('password', null));
-                    user.save(function (error) {
-                        if (error) {
-                            response.send({error : error});
+                    User.findOne({_id : request.params.id, company : user.company}, function (error, user) {
+                        if (error || !user) {
+                            response.send({error : { message : 'user not found', name : 'NotFoundError', id : request.params.id, path : 'user'}});
                         } else {
-                            response.send(null);
+                            user.password = User.encryptPassword(request.param('password', null));
+                            user.save(function (error) {
+                                if (error) {
+                                    response.send({error : error});
+                                } else {
+                                    response.send(null);
+                                }
+                            });
                         }
                     });
                 }

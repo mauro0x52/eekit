@@ -1,4 +1,4 @@
-app.routes.dialog('/mudar-senha', function (params, data) {
+app.routes.dialog('/alterar-senha/:id', function (params, data) {
     app.ui.title('Alterar senha');
 
     var password, password_confirmation,
@@ -39,13 +39,22 @@ app.routes.dialog('/mudar-senha', function (params, data) {
     app.ui.form.submit(function () {
         if (validate()) {
             app.ajax.post({
-                url : 'http://' + app.config.services.auth.host + ':' + app.config.services.auth.port + '/user/change-password',
+                url : 'http://' + app.config.services.auth.host + ':' + app.config.services.auth.port + '/user/'+params.id+'/change-password',
                 data : {
                     password : password.value(),
                     password_confirmation : password_confirmation.value()
                 }
             }, function (response) {
-                app.close();
+                if (response && response.error) {
+                    app.ui.error('Erro ao alterar senha');
+                } else {
+                    app.ui.success('Senha alterada com sucesso!');
+                    app.ui.form.action('fechar');
+                    fieldsets.fieldset.visibility('hide');
+                    app.ui.form.submit(function () {
+                        app.close();
+                    })
+                }
             });
         }
     });

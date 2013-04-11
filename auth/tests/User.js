@@ -10,7 +10,7 @@ var should = require("should"),
     db = require("./utils.js").db,
     rand = require("./utils.js").rand,
     services = require('../config.js').services,
-    user, company, token;
+    user, company, token, user2, outUser;
 
 describe('before all', function() {
     it('before', function (done) {
@@ -32,7 +32,21 @@ describe('before all', function() {
                 user = data.user;
                 company = data.company;
                 token = data.token;
-                done();
+                api.post('auth', '/company', {
+                    name : 'Nome da Empresa 2',
+                    admin : {
+                        name     : 'Nome do Camarada 2',
+                        username : 'testes+' + rand() + '@empreendemia.com.br',
+                        password : 'testando'
+                    },
+                    secret : services.www.secret
+                }, function(error, data, response) {
+                    if (error) done(error);
+                    else {
+                        outUser = data.user;
+                        done();
+                    }
+                });
             }
         });
     });
@@ -187,6 +201,7 @@ describe('POST /user', function () {
                 data.should.not.have.property('error');
                 data.should.have.property('company');
                 data.should.have.property('user');
+                user2 = data.user;
                 done();
             }
         });
@@ -401,9 +416,9 @@ describe('POST /user/login', function() {
     });
 });
 
-describe('POST /user/change-password', function () {
+describe('POST /user/id/change-password', function () {
     it('sem secret', function(done) {
-        api.post('auth', '/user/change-password', {
+        api.post('auth', '/user/'+user._id+'/change-password', {
             token : token,
             password : 'testando'
         }, function(error, data, response) {
@@ -416,7 +431,7 @@ describe('POST /user/change-password', function () {
         });
     });
     it('secret errado', function(done) {
-        api.post('auth', '/user/change-password', {
+        api.post('auth', '/user/'+user._id+'/change-password', {
             token : token,
             password : 'testando',
             secret : 'aeuiaehieauheaihae'
@@ -430,7 +445,7 @@ describe('POST /user/change-password', function () {
         });
     });
     it('token em branco', function(done) {
-        api.post('auth', '/user/change-password', {
+        api.post('auth', '/user/'+user._id+'/change-password', {
             password : 'testando',
             secret : services.www.secret
         }, function(error, data, response) {
@@ -443,7 +458,7 @@ describe('POST /user/change-password', function () {
         });
     });
     it('sem token', function(done) {
-        api.post('auth', '/user/change-password', {
+        api.post('auth', '/user/'+user._id+'/change-password', {
             password : 'testando',
             secret : services.www.secret
         }, function(error, data, response) {
@@ -456,7 +471,7 @@ describe('POST /user/change-password', function () {
         });
     });
     it('token errado', function(done) {
-        api.post('auth', '/user/change-password', {
+        api.post('auth', '/user/'+user._id+'/change-password', {
             password : 'testando',
             token : token+"asdad123123asd",
             secret : services.www.secret
@@ -470,7 +485,7 @@ describe('POST /user/change-password', function () {
         });
     });
     it('Senha em branco', function(done) {
-        api.post('auth', '/user/change-password', {
+        api.post('auth', '/user/'+user._id+'/change-password', {
             token : token,
             secret : services.www.secret
         }, function(error, data, response) {
@@ -481,8 +496,50 @@ describe('POST /user/change-password', function () {
             }
         });
     });
+    it('usuário que não existe', function(done) {
+        api.post('auth', '/user/'+outUser._id+'/change-password', {
+            password : 'testando2',
+            token : token,
+            secret : services.www.secret
+        }, function(error, data, response) {
+            if (error) {
+                done(error);
+            } else {
+                data.should.have.property('error').property('name', 'NotFoundError');
+                done();
+            }
+        });
+    });
+    it('usuário de outra empresa', function(done) {
+        api.post('auth', '/user/'+outUser._id+'/change-password', {
+            password : 'testando2',
+            token : token,
+            secret : services.www.secret
+        }, function(error, data, response) {
+            if (error) {
+                done(error);
+            } else {
+                data.should.have.property('error').property('name', 'NotFoundError');
+                done();
+            }
+        });
+    });
+    it('trocar senha de outro usuário da empresa', function(done) {
+        api.post('auth', '/user/'+user2._id+'/change-password', {
+            password : 'testando2',
+            token : token,
+            secret : services.www.secret
+        }, function(error, data, response) {
+            if (error) {
+                done(error);
+            } else {
+                should.not.exist(data);
+                done();
+            }
+        });
+    });
     it('trocar de senha com sucesso', function(done) {
-        api.post('auth', '/user/change-password', {
+        api.post('auth', '/user/'+user._id+'/change-password', {
             password : 'testando2',
             token : token,
             secret : services.www.secret
