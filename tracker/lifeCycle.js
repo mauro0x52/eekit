@@ -73,7 +73,7 @@ Event.lifeCycle(
 		} else {
             for (var i in users) {
                 if ((new Date() - new Date(users[i].firstEvent)) / (1000 * 60 * 60 * 24) < 1) {
-                    restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i]._id, {
+                    restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i].id, {
                         data: {
                             secret : config.security.secret
                         }
@@ -127,7 +127,7 @@ Event.lifeCycle(
 		} else {
             for (var i in users) {
                 if ((new Date() - new Date(users[i].firstEvent)) / (1000 * 60 * 60 * 24) < 1) {
-                    restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i]._id, {
+                    restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i].id, {
                         data: {
                             secret : config.security.secret
                         }
@@ -139,7 +139,7 @@ Event.lifeCycle(
                                     from : 'gabriel@empreendemia.com.br',
                                     subject : 'O último passo para sair da planilha',
                                     html :  '' +
-                                            'Olá |FNAME|, tudo bom?<br />' +
+                                            'Olá ' + data.user.name + ', tudo bom?<br />' +
                                             'Legal que está usando o Empreendekit. <br />' +
                                             'Agora para te ajudar a sair da planilha de excel, separei 2 dicas:<br /><br />' +
                                             '1) Adicione as movimentações dessa próxima semana<br />' +
@@ -172,7 +172,7 @@ Event.groupByUser(function (error, users) {
         for (var i in users) {
             var date = (new Date() - new Date(users[i].firstEvent)) / (1000 * 60 * 60 * 24);
             if (date > 10 && date < 11) {
-                restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i]._id, {
+                restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i].id, {
                     data: {
                         secret : config.security.secret
                     }
