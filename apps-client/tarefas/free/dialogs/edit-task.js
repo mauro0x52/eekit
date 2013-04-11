@@ -51,9 +51,7 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
          */
         date;
 
-        if (task.done) {
-            date = task.dateUpdated ? new Date(task.dateUpdated) : null;
-        } else {
+        if (!task.done) {
             date = task.dateDeadline ? new Date(task.dateDeadline) : null;
         }
 
@@ -78,7 +76,6 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
         recurrenceOptions.push(new app.ui.inputOption({legend : 'mensalmente', value : '30', clicked : task.recurrence.toString() === '30'}));
 
         /* Input com os lembretes */
-        console.log(task.reminder);
         reminderOptions.push(new app.ui.inputOption({legend : 'sem lembrete', value : 'null', clicked : !task.reminder && task.reminder !== 0}));
         reminderOptions.push(new app.ui.inputOption({legend : 'no dia', value : '0', clicked : (task.reminder === 0) ? true : false}));
         reminderOptions.push(new app.ui.inputOption({legend : '1 dia antes', value : '1', clicked : (task.reminder === 1) ? true : false}));
@@ -166,7 +163,10 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
         /* adiciona os campos no fieldset */
         fieldset.fields.add(fields.title);
         fieldset.fields.add(fields.category);
-        fieldset.fields.add(fields.date);
+        console.log(task.done)
+        if (!task.done) {
+            fieldset.fields.add(fields.date);
+        }
         fieldset.fields.add(fields.important);
         fieldset.fields.add(fields.reminder);
         fieldset.fields.add(fields.recurrence);
@@ -187,7 +187,7 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
             };
 
             if (task.done) {
-                data.dateUpdated  = fields.date.value() ? fields.date.date() : null;
+                data.dateUpdated  = task.dateUpdated;
             } else {
                 data.dateDeadline = fields.date.value() ? fields.date.date() : null;
             }

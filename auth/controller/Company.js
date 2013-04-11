@@ -88,7 +88,7 @@ module.exports = function (app) {
                                     require('restler').post('http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail/self', {
                                         data : {
                                             token : token,
-                                            service : 'profiles',
+                                            service : 'auth',
                                             subject : 'Presente de boas vindas do Empreendekit',
                                             name : 'novo usuario',
                                             from : 'lucas@empreendemia.com.br',
@@ -99,7 +99,7 @@ module.exports = function (app) {
                                     require('restler').post('http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail/admin', {
                                         data : {
                                             token : token,
-                                            service : 'profiles',
+                                            service : 'auth',
                                             subject : 'Novo usuario cadastrado',
                                             name : 'novo usuário',
                                             to : 'lucas@empreendemia.com.br',

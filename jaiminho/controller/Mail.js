@@ -249,12 +249,11 @@ module.exports = function (app) {
                             }
 
                             mail = {
-                                from    : '"'+config.emails.noreply.name+'"<'+config.emails.noreply.address+'>',
-                                replyTo : '"'+config.emails.noreply.name+'"<'+config.emails.noreply.address+'>',
+                                from    : userEmail,
+                                replyTo : userEmail,
                                 to      : to,
                                 subject : subject,
-                                html    : html,
-                                categories : categoriesArray
+                                html    : html
                             }
 
                             sgEmail = new Sendgrid.Email(mail);

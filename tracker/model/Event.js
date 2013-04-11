@@ -39,7 +39,7 @@ eventSchema.pre('init', function (next, doc) {
 	}
 })
 
-eventSchema.statics.groupByUser = function (app, cb) {
+eventSchema.statics.groupByUser = function (cb) {
 	Event.find(function (error, events) {
 	    var users = {};
 
@@ -59,7 +59,7 @@ eventSchema.statics.groupByUser = function (app, cb) {
                         firstEvent : events[i].date,
                         events : [events[i]] ,
                         utm : {},
-                        filter : function (labels, minimum, from, to) {
+                        ocurrences : function (app, labels, from, to) {
 		                    var dateFrom = new Date(from),
 			                    dateTo   = new Date(to),
 			                    ocurrences = 0;
@@ -78,13 +78,14 @@ eventSchema.statics.groupByUser = function (app, cb) {
 	                                	!app
                                 	) && (
 	                                	labels.indexOf(this.events[i].label) >= 0 ||
+	                                	!labels ||
 	                                	labels.length === 0
                                 	)
 	                            ) {
 	                                ocurrences += 1;
 	                            }
 		                    }
-		                    return ocurrences >= minimum;
+		                    return ocurrences;
 		                }
                     };
                 }
@@ -95,55 +96,51 @@ eventSchema.statics.groupByUser = function (app, cb) {
 	        cb(null, users);
 	    }
 	});
-}
+};
 
-eventSchema.statics.filterByNotActivated = function (app, required, forbidden, cb) {
-	Event.groupByUser(app, function(error, users) {
+eventSchema.statics.user = function (user, cb) {
+	Event.groupByUser(function (error, users) {
 		if (error) {
 			cb(error, null);
 		} else {
-			var result = [];
+			var obj;
 			for (var i in users) {
-				var selected = users[i].filter(required.labels, required.minimum);
-				var activated = users[i].filter(forbidden.labels, forbidden.minimum);
-				if (!activated && selected) {
+				if (users[i].id === user) {
+					obj = users[i];
+				}
+			}
+			cb(null, obj);	
+		}
+	})
+};
+
+eventSchema.statics.lifeCycle = function (required, forbidden, cb) {
+	Event.groupByUser(function (error, users) {
+		if (error) {
+			cb(error, null);
+		} else {
+			result = [];
+			for (var i in users) {
+				if (
+					users[i].ocurrences(required.app, required.labels) >= required.minimum &&
+					users[i].ocurrences(forbidden.app, forbidden.labels) < forbidden.minimum
+				) {
 					result.push(users[i]);
 				}
 			}
 			cb(null, result);
 		}
 	});
-}
+};
 
 eventSchema.statics.cohort = function (app, frequency, cb) {
-	Event.find(function (error, events) {
+	Event.groupByUser(function (error, users) {
         var cohorts = [],
-	        date = new Date(2013,0,20,0),
-	        users = {};
+	        date = new Date(2013,0,20,0);
 
         if (error) {
         	cb(error, null)
         } else {
-	        for (var i = 0; i < events.length; i += 1) {
-            	var id = events[i].user ? events[i].user.toString() : events[i].ip.toString();
-                if (users[id]) {
-                    users[id].events.push(events[i]);
-                    if (users[id].date < events[i].date) {
-                        users[id].firstEvent = events[i].date;
-                    }
-                } else {
-                    users[id] = {
-                    	id : id,
-                        firstEvent : events[i].date,
-                        events : [events[i]] ,
-                        utm : {}
-                    };
-                }
-                if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
-                	users[id].utm = events[i].utm;
-                }
-	        }
-
 	        while (date < new Date()) {
 	            var cohort = {
 	                date   : new Date(date),
@@ -152,43 +149,27 @@ eventSchema.statics.cohort = function (app, frequency, cb) {
 	                    var dateFrom = new Date(date || this.date),
 		                    dateTo   = new Date(date || this.date),
 		                    result   = [];
-		                    dateTo.setDate(dateTo.getDate() + frequency),
-		                    hasUtm = false;
-
-		                for (var i in utm) {
-		                	hasUtm = true;
-		                }
+		                    dateTo.setDate(dateTo.getDate() + frequency);
 
 	                    for (var i in this.users) {
-	                        var ocurrences = 0;
-	                        if (
-	                        	(!hasUtm) ||
-                        		(
-                                	this.users[i].utm.source === utm.source &&
-                                	this.users[i].utm.medium === utm.medium &&
-                                	this.users[i].utm.content === utm.content &&
-                                	this.users[i].utm.campaign === utm.campaign
-                            	)
-                        	) {
-								for (var j in this.users[i].events) {
-		                            if (
-		                                this.users[i].events[j].date <= dateTo   &&
-		                                this.users[i].events[j].date >= dateFrom &&
-		                                (
-		                                	this.users[i].events[j].app === app ||
-		                                	this.users[i].events[j].source === app
-	                                	) &&
-		                                (
-		                                	labels.indexOf(this.users[i].events[j].label) >= 0 ||
-		                                	labels.length === 0
-	                                	)
-		                            ) {
-		                                ocurrences += 1;
-		                            }
-		                        }
-		                        if (ocurrences >= minimum) {
-		                            result.push(this.users[i]);
-		                        }
+	                    	if (
+                    			(
+                                	this.users[i].utm.source === utm.source ||
+                                	!utm.source
+                            	) && (
+                                	this.users[i].utm.medium === utm.medium ||
+                                	!utm.medium
+                            	) && (
+                                	this.users[i].utm.content === utm.content ||
+                                	!utm.content
+                            	) && (
+                                	this.users[i].utm.campaign === utm.campaign ||
+                                	!utm.campaign
+                            	) && (
+                        			this.users[i].ocurrences(app, labels, dateFrom, dateTo) >= minimum
+                        		)
+                    		) {
+	                    		result.push(this.users[i]);
                         	}
 	                    }
 	                    return result;

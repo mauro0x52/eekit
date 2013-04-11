@@ -229,7 +229,6 @@ app.routes.list('/', function (params, data) {
                 groups.noDeadline
             ],
             drop : function (group, order) {
-                console.log(group.date)
                 task.changePriority(order, group.date);
             },
             click : function () {
@@ -593,6 +592,7 @@ app.routes.list('/', function (params, data) {
         }));
         /* dispara o evento de filtro */
         app.ui.filter.submit(function () {
+            console.log(fields.user.value())
             app.events.trigger('filter task', fields);
         });
 
