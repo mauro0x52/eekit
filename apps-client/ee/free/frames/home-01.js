@@ -266,7 +266,7 @@ app.routes.frame('/', function (params, data) {
                                     },
                                     {
                                         tag : 'span',
-                                        html : '!'
+                                        html : ' por 15 dias!'
                                     }
                                 ],
                                 events : {
