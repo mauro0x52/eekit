@@ -97,12 +97,9 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
             }
 
             for (var i in walletsOptions) {
-                console.log(banks[bank]+'-'+i)
                 if (i.indexOf(banks[bank]) === -1) {
-                    console.log(i+'hide')
                     walletsOptions[i].visibility('hide');
                 } else {
-                    console.log(i+'show')
                     walletsOptions[i].visibility('show');
                 }
             }
@@ -300,7 +297,11 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
             } else if (!data.wallet) {
                 app.ui.error('Escolha uma carteira');
             } else {
-                app.routes.redirect('http://' + app.config.services.billets.host + ':' + app.config.services.billets.port + '/billet', data);
+                var billet = new app.models.billet(data);
+                billet.save(function() {
+                    app.events.trigger('create billet', billet);
+                    app.close();
+                });
             }
         });
 

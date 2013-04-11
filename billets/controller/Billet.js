@@ -68,6 +68,31 @@ module.exports = function (app) {
     });
 
     /**
+     * Lista boletos
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-04
+     */
+    app.get('/billets', function (request, response) {
+        response.contentType('json');
+        response.header('Access-Control-Allow-Origin', '*');
+
+        auth(request.param('token', null), function (error, user) {
+            if (error) {
+                response.send({error : error});
+            } else {
+                Billet.find({ user : user._id }, function (error, billets) {
+                    if (error) {
+                        response.send({error : error});
+                    } else {
+                        response.send({billets : billets});
+                    }
+                });
+            }
+        });
+    });
+
+    /**
      * Pega informações de um boleto
      *
      * @author Mauro Ribeiro

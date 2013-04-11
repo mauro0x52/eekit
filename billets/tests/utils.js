@@ -125,23 +125,25 @@ var newUser = function(service, cb) {
         user = {};
 
     // cria um usuario
-    api.post('auth', '/user', {
-        username : username,
-        password : password,
-        password_confirmation : password,
-        status : 'active',
+    api.post('auth', '/company', {
+        name : 'Empresa',
+        admin : {
+            username : username,
+            password : password,
+            name : 'Admin'
+        },
         secret : 'www'
     }, function(error, data) {
         if (error) {
             cb(error);
         } else if (!data) {
-            cb({message : 'data is empty'});
+            cb(new Error({message : 'data is empty'}));
         } else if (data.error) {
-            cb(data.error);
+            cb(new Error(data.error));
         } else {
             user.tokens = { www : data.token };
             api.post(
-                'auth', '/service/'+service+'/auth', {
+                'auth', '/service/'+service+'/authorize', {
                     token : user.tokens.www,
                     secret : 'www'
                 },
