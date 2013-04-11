@@ -25,7 +25,7 @@ Event.groupByUser(function (error, users) {
                         if (users[i].ocurrences('ee', ['marcar: finanças']) >= 1 && users[i].ocurrences('financas', ['adicionar transação']) < 2) {
                             message.subject = 'O último passo para sair da planilha';
                             message.name = 'lifecycle fim do test drive'
-                            message.html :  'Olá ' + data.user.name + ', tudo bom?<br />' +
+                            message.html =  'Olá ' + data.user.name + ', tudo bom?<br />' +
                                             'Legal que está usando o Empreendekit. <br />' +
                                             'Agora para te ajudar a sair da planilha de excel, separei 2 dicas:<br /><br />' +
                                             '1) Adicione as movimentações dessa próxima semana<br />' +
@@ -39,7 +39,7 @@ Event.groupByUser(function (error, users) {
                         if (users[i].ocurrences('ee', ['marcar: tarefas']) >= 1 && users[i].ocurrences('tarefas', ['marcar tarefa como feita']) < 1) {
                             message.subject = 'Dica para organizar melhor todas as suas tarefas';
                             message.name = 'lifecycle fim do test drive'
-                            message.html :  'Olá ' + data.user.name + ', tudo bom?<br />' +
+                            message.html =  'Olá ' + data.user.name + ', tudo bom?<br />' +
                                             'Legal que está usando o Empreendekit. <br />' +
                                             'Agora para te ajudar organizar melhor suas tarefas, separei 2 dicas:<br /><br />' +
                                             '1) Adicione suas principais tarefas dessa próxima semana<br />' +
@@ -53,7 +53,7 @@ Event.groupByUser(function (error, users) {
                         if (users[i].ocurrences('ee', ['marcar: contatos']) >= 1 && users[i].ocurrences('contatos', ['adicionar tarefa', 'adicionar transação']) < 1) {
                             message.subject = 'Dicas para organizar o prazo dos seus clientes';
                             message.name = 'lifecycle fim do test drive'
-                            message.html :  'Olá ' + data.user.name + ', tudo bom?<br />' +
+                            message.html =  'Olá ' + data.user.name + ', tudo bom?<br />' +
                                             'Legal que está usando o Empreendekit. <br />' +
                                             'Agora para te ajudar a continuar organizando o prazo dos seus clientes, separei 2 dicas: <br /><br />' +
                                             '1) Adicione um contato<br />' +
@@ -67,7 +67,7 @@ Event.groupByUser(function (error, users) {
                         if (date > 10 && date < 11) {
                             message.subject = 'Seu período de testes do EmpreendeKit acaba em 5 dias';
                             message.name = 'lifecycle fim do test drive'
-                            message.html :  'Olá ' + data.user.name + ', tudo bom?<br />' +
+                            message.html =  'Olá ' + data.user.name + ', tudo bom?<br />' +
                                             'Estou mandando este e-mail porque o seu período de testes do EmpreendeKit está terminando. <br />' +
                                             'Existe alguma forma que posso te ajudar, ou sanar alguma dúvida?<br /><br />' +
                                             'Abraços<br />' +
