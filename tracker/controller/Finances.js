@@ -57,9 +57,15 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                var result = [];
+                var result = [],
+                    utms = [];
 
                 for (var i in cohort) {
+                    
+                    for (var j in cohort[i].utms) {
+                        utms.push(cohort[i].utms[j]);
+                    }
+
                     var date = new Date(cohort[i].date);
                     var monitoring = [];
                     while (date <= new Date) {
@@ -84,7 +90,7 @@ module.exports = function (app) {
                     });
                 }
 
-                response.render('../view/cohort', {cohort : result});
+                response.render('../view/cohort', {cohort : result, utms : utms, anchor : 'finances'});
             }
         });
     });

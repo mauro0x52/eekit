@@ -58,10 +58,16 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                var result = [];
+                var result = [],
+                    utms = [];
 
                 for (var i in cohort) {
                     var activated = [];
+                    
+                    for (var j in cohort[i].utms) {
+                        utms.push(cohort[i].utms[j]);
+                    }
+
                     for (var j in cohort[i].users) {
                         if (
                             cohort[i].users[j].ocurrences('tarefas', ['marcar tarefa como feita']) >= 1 ||
@@ -110,7 +116,7 @@ module.exports = function (app) {
                     });
                 }
                 
-                response.render('../view/cohort', {cohort : result});
+                response.render('../view/cohort', {cohort : result, utms : utms, anchor : 'www'});
             }
         });
     });

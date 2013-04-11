@@ -143,38 +143,40 @@ eventSchema.statics.cohort = function (app, frequency, cb) {
         } else {
 	        while (date < new Date()) {
 	            var cohort = {
-	                date   : new Date(date),
-	                users  : [],
-	                filter : function (labels, minimum, utm, date) {
-	                    var dateFrom = new Date(date || this.date),
-		                    dateTo   = new Date(date || this.date),
-		                    result   = [];
-		                    dateTo.setDate(dateTo.getDate() + frequency);
+		                date   : new Date(date),
+		                users  : [],
+		                utms   : [],
+		                filter : function (labels, minimum, utm, date) {
+		                    var dateFrom = new Date(date || this.date),
+			                    dateTo   = new Date(date || this.date),
+			                    result   = [];
+			                    dateTo.setDate(dateTo.getDate() + frequency);
 
-	                    for (var i in this.users) {
-	                    	if (
-                    			(
-                                	this.users[i].utm.source === utm.source ||
-                                	!utm.source
-                            	) && (
-                                	this.users[i].utm.medium === utm.medium ||
-                                	!utm.medium
-                            	) && (
-                                	this.users[i].utm.content === utm.content ||
-                                	!utm.content
-                            	) && (
-                                	this.users[i].utm.campaign === utm.campaign ||
-                                	!utm.campaign
-                            	) && (
-                        			this.users[i].ocurrences(app, labels, dateFrom, dateTo) >= minimum
-                        		)
-                    		) {
-	                    		result.push(this.users[i]);
-                        	}
-	                    }
-	                    return result;
-	                }
-	            };
+		                    for (var i in this.users) {
+		                    	if (
+	                    			(
+	                                	this.users[i].utm.source === utm.source ||
+	                                	!utm.source
+	                            	) && (
+	                                	this.users[i].utm.medium === utm.medium ||
+	                                	!utm.medium
+	                            	) && (
+	                                	this.users[i].utm.content === utm.content ||
+	                                	!utm.content
+	                            	) && (
+	                                	this.users[i].utm.campaign === utm.campaign ||
+	                                	!utm.campaign
+	                            	) && (
+	                        			this.users[i].ocurrences(app, labels, dateFrom, dateTo) >= minimum
+	                        		)
+	                    		) {
+		                    		result.push(this.users[i]);
+	                        	}
+		                    }
+		                    return result;
+		                }
+		            },
+	            	utms = {};
 
 	            var dateFrom = new Date(date),
 	            dateTo   = new Date(date),
@@ -187,7 +189,13 @@ eventSchema.statics.cohort = function (app, frequency, cb) {
 	                    users[i].firstEvent < dateTo
 	                ) {
 	                    cohort.users.push(users[i]);
+	                	if (users[i].utm.source || users[i].utm.medium || users[i].utm.content || users[i].utm.campaign) {
+	                		utms[users[i].utm.source + '-' + users[i].utm.medium + '-' + users[i].utm.content + '-' + users[i].utm.campaign + '-'] = users[i].utm;
+	                	}
 	                }
+	            }
+	            for (var i in utms) {
+	            	cohort.utms.push(utms[i]);
 	            }
 	            cohorts.push(cohort);
 	            date = new Date(dateTo);
