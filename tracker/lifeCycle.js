@@ -31,7 +31,7 @@ Event.lifeCycle(
 									from : 'lucas@empreendemia.com.br',
 									subject : 'Dicas para organizar o prazo dos seus clientes',
 									html :  '' +
-                                            'Olá |FNAME|, tudo bom?<br />' +
+                                            'Olá ' + data.user.name + ', tudo bom?<br />' +
                                             'Legal que está usando o Empreendekit. <br />' +
                                             'Agora para te ajudar a continuar organizando o prazo dos seus clientes, separei 2 dicas: <br /><br />' +
                                             '1) Adicione um contato<br />' +
@@ -73,7 +73,7 @@ Event.lifeCycle(
 		} else {
             for (var i in users) {
                 if ((new Date() - new Date(users[i].firstEvent)) / (1000 * 60 * 60 * 24) < 1) {
-                    restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i]._id, {
+                    restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i].id, {
                         data: {
                             secret : config.security.secret
                         }
@@ -85,7 +85,7 @@ Event.lifeCycle(
                                     from : 'lucas@empreendemia.com.br',
                                     subject : 'Dica para organizar melhor todas as suas tarefas',
                                     html :  '' +
-                                            'Olá |FNAME|, tudo bom?<br />' +
+                                            'Olá ' + data.user.name + ', tudo bom?<br />' +
                                             'Legal que está usando o Empreendekit. <br />' +
                                             'Agora para te ajudar organizar melhor suas tarefas, separei 2 dicas:<br /><br />' +
                                             '1) Adicione suas principais tarefas dessa próxima semana<br />' +
@@ -113,13 +113,13 @@ Event.lifeCycle(
 /* Lifecycle do finanças */
 Event.lifeCycle(
 	{
-		labels : ['marcar: financas'],
+		labels : ['marcar: finanças'],
 		minimum : 1,
         app : 'ee'
 	},{
 		labels : ['adicionar transação'],
 		minimum : 2,
-        app : 'financas'
+        app : 'finanças'
 	},
 	function (error, users) {
 		if (error) {
@@ -127,7 +127,7 @@ Event.lifeCycle(
 		} else {
             for (var i in users) {
                 if ((new Date() - new Date(users[i].firstEvent)) / (1000 * 60 * 60 * 24) < 1) {
-                    restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i]._id, {
+                    restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i].id, {
                         data: {
                             secret : config.security.secret
                         }
@@ -139,7 +139,7 @@ Event.lifeCycle(
                                     from : 'gabriel@empreendemia.com.br',
                                     subject : 'O último passo para sair da planilha',
                                     html :  '' +
-                                            'Olá |FNAME|, tudo bom?<br />' +
+                                            'Olá ' + data.user.name + ', tudo bom?<br />' +
                                             'Legal que está usando o Empreendekit. <br />' +
                                             'Agora para te ajudar a sair da planilha de excel, separei 2 dicas:<br /><br />' +
                                             '1) Adicione as movimentações dessa próxima semana<br />' +
@@ -172,7 +172,7 @@ Event.groupByUser(function (error, users) {
         for (var i in users) {
             var date = (new Date() - new Date(users[i].firstEvent)) / (1000 * 60 * 60 * 24);
             if (date > 10 && date < 11) {
-                restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i]._id, {
+                restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + users[i].id, {
                     data: {
                         secret : config.security.secret
                     }
@@ -182,9 +182,9 @@ Event.groupByUser(function (error, users) {
                             data : {
                                 token : data.user.tokens[0].token,
                                 from : 'lucas@empreendemia.com.br',
-                                subject : 'O último passo para sair da planilha',
+                                subject : 'Seu período de testes do EmpreendeKit acaba em 5 dias',
                                 html :  '' +
-                                        'Olá |FNAME|, tudo bom?<br />' +
+                                        'Olá ' + data.user.name + ', tudo bom?<br />' +
                                         'Estou mandando este e-mail porque o seu período de testes do EmpreendeKit está terminando. <br />' +
                                         'Existe alguma forma que posso te ajudar, ou sanar alguma dúvida?<br /><br />' +
                                         'Abraços<br />' +
