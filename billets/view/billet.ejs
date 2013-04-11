@@ -10,6 +10,11 @@ function dateFormat(string) {
     year = date.getFullYear();
     return day + '/' + month + '/' + year;
 }
+
+function printDefined(variable) {
+    if (typeof variable !== 'undefined' && variable) return variable;
+    return '&nbsp;';
+}
 %>
 
 <!DOCTYPE html>
@@ -232,7 +237,7 @@ dl.direita dd {
         <div class="campos">
             <dl>
                 <dt>Cedente</dt>
-                <dd><%= receiver ? receiver : '&nbsp;' %></dd>
+                <dd><%= printDefined(receiver) %></dd>
             </dl>
             <dl>
                 <dt>Agência/Código do Cedente</dt>
@@ -255,9 +260,9 @@ dl.direita dd {
         <div class="campos">
             <dl>
                 <dt>Número do documento</dt>
-                <dd><%= documentNumber ? documentNumber : '&nbsp;' %></dd>
+                <dd><%= printDefined(documentNumber) %></dd>
             </dl>
-            <% if (contract) { %>
+            <% if (typeof contract !== 'undefined' && contract) { %>
             <dl>
                 <dt>Contract</dt>
                 <dd><%= contract %></dd>
@@ -265,7 +270,7 @@ dl.direita dd {
             <% } %>
             <dl>
                 <dt>CPF/CNPJ</dt>
-                <dd><%= cpfCnpj ? cpfCnpj : '&nbsp;' %></dd>
+                <dd><%= printDefined(cpfCnpj) %></dd>
             </dl>
             <dl>
                 <dt>Vencimento</dt>
@@ -303,14 +308,14 @@ dl.direita dd {
         <div class="campos">
             <dl>
                 <dt>Sacado</dt>
-                <dd><%= clientName ? clientName : '&nbsp;' %></dd>
+                <dd><%= printDefined(clientName) %></dd>
             </dl>
         </div>
     </div>
 
     <div class="demonstrativo">
         <h1 class="titulo">Demonstrativo</h1>
-        <%= demonstrative ? demonstrative : '&nbsp;' %>
+        <%= printDefined(demonstrative) %>
     </div>
 
     <div class="autenticacao-mecanica">
@@ -331,7 +336,7 @@ dl.direita dd {
         <div class="campos">
             <dl>
                 <dt>Local de pagamento</dt>
-                <dd><%= local ? local : '&nbsp;' %></dd>
+                <dd><%= printDefined(local) %></dd>
             </dl>
             <dl class="direita">
                 <dt>Vencimento</dt>
@@ -342,7 +347,7 @@ dl.direita dd {
         <div class="campos">
             <dl>
                 <dt>Cedente</dt>
-                <dd><%= receiver ? receiver : '&nbsp;' %></dd>
+                <dd><%= printDefined(receiver) %></dd>
             </dl>
             <dl class="direita">
                 <dt>Agência/Código cedente</dt>
@@ -357,7 +362,7 @@ dl.direita dd {
             </dl>
             <dl>
                 <dt>Número do documento</dt>
-                <dd><%= documentNumber ? documentNumber : '&nbsp;' %></dd>
+                <dd><%= printDefined(documentNumber) %></dd>
             </dl>
             <dl>
                 <dt>Espécie doc.</dt>
@@ -442,7 +447,7 @@ dl.direita dd {
 
         <div class="instrucoes">
             <h1 class="titulo">Instruções (Texto de responsabilidade do cedente)</h1>
-            <p><%= instructions ? instructions : '&nbsp;' %></p>
+            <p><%= printDefined(instructions) %></p>
         </div>
 
 
@@ -450,9 +455,9 @@ dl.direita dd {
         <div class="campos ultima">
             <dl class="sacado">
                 <dt>Sacado</dt>
-                <dd><%= clientName ? clientName : '' %></dd>
-                <dd><%= clientAddress ? clientAddress : '' %></dd>
-                <dd><%= clientCity && clientState ? clientCity+' - '+clientState : '' %> <%= clientZipCode ? clientZipCode : '' %></dd>
+                <dd><%= printDefined(clientName) %></dd>
+                <dd><%= printDefined(clientAddress) %></dd>
+                <dd><%= typeof clientCity !== 'undefined' && clientState !== 'undefined' ? clientCity+' - '+clientState : '' %> <%= clientZipCode ? clientZipCode : '' %></dd>
             </dl>
             <dl class="cod-baixa direita">
                 <dt>Cód. baixa</dt>

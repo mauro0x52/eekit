@@ -49,6 +49,23 @@ sdk.modules.ui.fieldset = function (app) {
                 }
             }
         };
+        this.visibility = function (value) {
+            if (value) {
+                switch (value) {
+                    case 'hide' :
+                        element.setAttribute('class', 'field-set hide');
+                        break;
+                    case 'show' :
+                        element.setAttribute('class', 'field-set');
+                        break;
+                    case 'fade' :
+                        element.setAttribute('class', 'field-set fade');
+                        break;
+                }
+            } else {
+                return element.getAttribute('class').replace('field-set', '');
+            }
+        };
         /* Métodos públicos */
         this.legend = function (value) {
             if (value === '') {

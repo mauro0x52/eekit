@@ -38,6 +38,18 @@ app.routes.dialog('/login', function (params, data) {
 
     login.focus();
 
+    app.ui.actions.add(new app.ui.action({
+        legend : 'esqueci minha senha',
+        tip : 'enviar nova senha para seu email',
+        click : function () {
+            app.apps.open({
+                app : app.slug,
+                route : '/esqueci-minha-senha'
+            });
+            app.close();
+        }
+    }));
+
     app.ui.form.submit(function () {
         app.ajax.post({
             url : 'http://' + app.config.services.auth.host + ':' + app.config.services.auth.port + '/user/login',

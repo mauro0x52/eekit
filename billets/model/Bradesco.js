@@ -62,6 +62,7 @@ Billet.validate = function (billet, cb) {
         } else if (/^\d{8}$/.test(billet.ourNumber) === false) {
             valid = false;
         }
+        billet.bank = this.bank;
     } else {
         error = {
             message : 'Validation failed',
@@ -113,7 +114,7 @@ Billet.print = function (billet, cb) {
                     '0';
 
             for (var i in billet) {
-                if (typeof billet[i] !== 'function' && billet.hasOwnProperty(i)) {
+                if (typeof billet[i] !== 'function' && i[0] !== '_') {
                     print[i] = billet[i];
                 }
             }
