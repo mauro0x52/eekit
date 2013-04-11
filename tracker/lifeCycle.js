@@ -113,7 +113,7 @@ Event.lifeCycle(
 /* Lifecycle do finanças */
 Event.lifeCycle(
 	{
-		labels : ['marcar: financas'],
+		labels : ['marcar: finanças'],
 		minimum : 1,
         app : 'ee'
 	},{
