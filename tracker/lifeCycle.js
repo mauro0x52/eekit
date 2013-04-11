@@ -119,7 +119,7 @@ Event.lifeCycle(
 	},{
 		labels : ['adicionar transação'],
 		minimum : 2,
-        app : 'financas'
+        app : 'finanças'
 	},
 	function (error, users) {
 		if (error) {
