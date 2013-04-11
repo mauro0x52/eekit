@@ -74,13 +74,15 @@ Event.groupByUser(function (error, users) {
                                             'Lucas';
                         }
 
-                        restler.post('http://'+config.services.jaiminho.url+':'+config.services.jaiminho.port+'/mail/self' , {
-                            data : message
-                        }).on('success', function(data) {
-                            console.log(data);
-                        }).on('error', function(error) {
-                            console.log(error);
-                        });
+                        if (data.subject) {
+                            restler.post('http://'+config.services.jaiminho.url+':'+config.services.jaiminho.port+'/mail/self' , {
+                                data : message
+                            }).on('success', function(data) {
+                                console.log(data);
+                            }).on('error', function(error) {
+                                console.log(error);
+                            });
+                        }
                     }
                 });
             }
