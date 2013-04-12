@@ -83,12 +83,12 @@ module.exports = function (app) {
                         }
                         
                         if (user.ocurrences('finanças', ['adicionar transação']) >= 2) {
-                            user.apps.financas.status = 'Ativado';
+                            user.apps['finanças'].status = 'Ativado';
                             if (user.ocurrences('finanças', ['editar transação', 'adicionar transação'], sunday, saturday) >= 3) {
-                                user.apps.financas.status = 'Engajado';
+                                user.apps['finanças'].status = 'Engajado';
                             }
                         } else {
-                            user.apps.financas.status = 'Nao Ativado';
+                            user.apps['finanças'].status = 'Nao Ativado';
                         }
                         
                         if (user.ocurrences('contatos', ['adicionar tarefa', 'adicionar transação']) >= 1) {
