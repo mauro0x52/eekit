@@ -28,7 +28,8 @@ module.exports = {
                 users     : false,
                 username  : false,
                 tokens    : true,
-                auth      : true
+                auth      : true,
+                informations : false
             }
         },
         profiles : {
@@ -39,7 +40,8 @@ module.exports = {
                 users     : false,
                 username  : false,
                 tokens    : false,
-                auth      : false
+                auth      : false,
+                informations : false
             }
         },
         tasks : {
@@ -50,7 +52,8 @@ module.exports = {
                 users     : false,
                 username  : true,
                 tokens    : false,
-                auth      : false
+                auth      : false,
+                informations : false
             }
         },
         contacts : {
@@ -61,7 +64,8 @@ module.exports = {
                 users     : false,
                 username  : false,
                 tokens    : false,
-                auth      : false
+                auth      : false,
+                informations : false
             }
         },
         tracker : {
@@ -72,7 +76,8 @@ module.exports = {
                 users     : true,
                 username  : true,
                 tokens    : true,
-                auth      : false
+                auth      : false,
+                informations : true
             }
         },
         finances : {
@@ -83,7 +88,8 @@ module.exports = {
                 users     : false,
                 username  : false,
                 tokens    : false,
-                auth      : false
+                auth      : false,
+                informations : false
             }
         },
         kamisama : {
@@ -94,7 +100,8 @@ module.exports = {
                 users     : true,
                 username  : false,
                 tokens    : true,
-                auth      : true
+                auth      : true,
+                informations : false
             }
         },
         billets : {
@@ -105,7 +112,8 @@ module.exports = {
                 users     : false,
                 username  : false,
                 tokens    : false,
-                auth      : false
+                auth      : false,
+                informations : false
             }
         },
         jaiminho : {
@@ -116,7 +124,8 @@ module.exports = {
                 users     : false,
                 username  : true,
                 tokens    : false,
-                auth      : true
+                auth      : true,
+                informations : false
             }
         }
     },

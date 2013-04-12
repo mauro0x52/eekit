@@ -4,6 +4,13 @@ module.exports = {
         port : 8010,
         url  : 'localhost'
     },
+    mongodb : {
+        port : 27017,
+        url : 'localhost',
+        username : undefined,
+        password : undefined,
+        db : 'jaiminho'
+    },
     emails : {
         contact : {
             name : 'Contato EmpreendeKit',

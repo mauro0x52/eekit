@@ -100,6 +100,12 @@
 
         <script type="text/javascript">
             (function () {
+                var query = queryToJson(location.search);
+                if (query.token) {
+                    setCookie('token', query.token, 30);
+                    delete query.token;
+                    location.search = jsonToQuery(query);
+                }
                 if (navigator.userAgent.indexOf('MSIE') === -1) {
                     "use strict";
                     document.addEventListener('click', function (e) {

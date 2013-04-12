@@ -1,0 +1,170 @@
+<style>
+    table {
+        font-size: 9px;
+    }
+    td {
+        border-bottom: solid 1px black;
+        padding: 4px;
+        margin: 0px;
+    }
+    td.title {
+        background-color: #A86;
+        border-bottom: 0px;
+    }
+    td.spacer {
+        background-color: black;
+        padding: 1px;
+    }
+    td h1 {
+        margin : 5px;
+    }
+</style>
+<a href="/events/tasks">Tarefas</a> 
+<a href="/events/contacts">Contatos</a> 
+<a href="/events/finances">Financas</a><br /><br />
+<table cellspacing="0">
+    <tr>
+        <td colspan="5">
+            <h1>
+                Usuario
+            </h1>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            Nome
+        </td>
+        <td colspan="3">
+            <%= user.name%>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            Email
+        </td>
+        <td colspan="3">
+            <%= user.email%>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            Telefone
+        </td>
+        <td colspan="3">
+            <%= user.phone%>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5">
+            <h1>
+                UTM
+            </h1>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            Source
+        </td>
+        <td colspan="3">
+            <%= user.utm.source%>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            Medium
+        </td>
+        <td colspan="3">
+            <%= user.utm.medium%>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            Content
+        </td>
+        <td colspan="3">
+            <%= user.utm.content%>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            Campaign
+        </td>
+        <td colspan="3">
+            <%= user.utm.campaign%>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5">
+            <h1>
+                Dias com acesso
+            </h1>
+        </td>
+    </tr>
+    <tr>
+        <td class="title">
+            App
+        </td>
+        <td class="title" colspan="2">
+            Dias com acesso
+        </td>
+        <td class="title" colspan="2">
+            Status
+        </td>
+    </tr>
+    <% for (var i in user.apps) { %>
+        <tr>
+            <td>
+                <%= i %>
+            </td>
+            <td colspan="2">
+                <%= user.apps[i].days %>
+            </td>
+            <td colspan="2">
+                <%= user.apps[i].status %>
+            </td>
+        </tr>
+    <% } %>
+    <tr>
+        <td colspan="5">
+            <h1>
+                Eventos
+            </h1>
+        </td>
+    </tr>
+    <tr>
+        <td class="title">
+            Data
+        </td>
+        <td class="title">
+            Hora
+        </td>
+        <td class="title">
+            App
+        </td>
+        <td class="title">
+            Integracao
+        </td>
+        <td class="title">
+            Evento
+        </td>
+    </tr>
+    <% for (var i in user.events) { %>
+        <tr>
+            <td>
+                <%= user.events[i].date.getDate() + '/' + (user.events[i].date.getMonth() + 1) + '/' + user.events[i].date.getFullYear()%>
+            </td>
+            <td>
+                <%= user.events[i].date.getHours() + ':' + user.events[i].date.getMinutes()%>
+            </td>
+            <td>
+                <%= user.events[i].app%>
+            </td>
+            <td>
+                <%= user.events[i].source%>
+            </td>
+            <td>
+                <%= user.events[i].label%>
+            </td>
+        </tr>
+    <% } %>
+</table>

@@ -236,7 +236,7 @@ app.routes.frame('/', function (params, data) {
                                     },
                                     {
                                         tag : 'span',
-                                        html : 'R$ 39,90',
+                                        html : 'R$ 59,90',
                                         attributes : {
                                             style : 'color:#f38305; font-weight:bold; font-size:18px;'
                                         }
@@ -266,7 +266,7 @@ app.routes.frame('/', function (params, data) {
                                     },
                                     {
                                         tag : 'span',
-                                        html : '!'
+                                        html : ' por 15 dias!'
                                     }
                                 ],
                                 events : {

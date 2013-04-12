@@ -57,95 +57,46 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                response.write('<table border="1">');
-                response.write('<tr>');
-                response.write('<td colspan="1"></td>');
-                response.write('<td colspan="2">Aquisicao</td>');
-                response.write('<td colspan="6">Ativacao</td>');
-                response.write('<td colspan="1">Engajamento</td>');
-                response.write('</tr>');
-                response.write('<tr>');
-                response.write('<td>Semana</td>');
-                response.write('<td colspan="2">Novos usuarios do app</td>');
-                response.write('<td colspan="2">Adicionaram 1 tarefa</td>');
-                response.write('<td colspan="2">Marcaram 1 tarefa como feita</td>');
-                response.write('<td colspan="2">Marcaram 3 tarefas como feitas</td>');
-                response.write('<td>Marcaram 5 tarefas como feitas</td>');
-                response.write('<td>Ativacao Total</td>');
-                response.write('<td>Engajamento Total</td>');
-                response.write('</tr>');
-                for (var i in cohort) {
-                    var users = cohort[i].filter([],1,utm),
-		                taskAdder = cohort[i].filter(['adicionar tarefa'],1,utm),
-			            taskMarker1 = cohort[i].filter(['marcar tarefa como feita'],1,utm),
-			            taskMarker3 = cohort[i].filter(['marcar tarefa como feita'],3,utm),
-                        taskMarker5 = cohort[i].filter(['marcar tarefa como feita'],5,utm) 
+                var result = [],
+                    utms = [];
 
-                    response.write('<tr>');
-                    response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
-                    response.write('<td onclick="console.log(\'' + ids(users) + '\')">' + users.length + '</td>');
-                    response.write('<td>' + (taskAdder.length / users.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td onclick="console.log(\'' + ids(taskAdder) + '\')">' + (taskAdder.length) + '</td>');                    
-                    response.write('<td>' + (taskMarker1.length / taskAdder.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td onclick="console.log(\'' + ids(taskMarker1) + '\')">' + (taskMarker1.length) + '</td>');                   
-                    response.write('<td>' + (taskMarker3.length / taskMarker1.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td onclick="console.log(\'' + ids(taskMarker3) + '\')">' + (taskMarker3.length) + '</td>');                   
-                    response.write('<td>' + (taskMarker5.length / taskMarker3.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td onclick="console.log(\'' + ids(taskMarker5) + '\')">' + (taskMarker5.length) + '</td>');
-                    response.write('<td>' + (taskMarker3.length / users.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td>' + (taskMarker5.length / users.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('</tr>');
-                }
-                response.write('</table><br />');
-
-                response.write('<table border="1">');
-                response.write('<tr>');
-                response.write('<td colspan="' + (cohort.length + 1) + '">Retencao</td>');
-                response.write('</tr>');
-                response.write('<tr>');
-                response.write('<td>Semana</td>');
-        		for (var i = 0; i < cohort.length; i += 1) {
-        		    response.write('<td>' + i + '</td>');
-        		}
-                response.write('</tr>');
                 for (var i in cohort) {
+                    
+                    for (var j in cohort[i].utms) {
+                        utms.push(cohort[i].utms[j]);
+                    }
+
                     var date = new Date(cohort[i].date);
-                    response.write('<tr>');
-                    response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
-                    while (date < new Date) {
-                        response.write('<td>' + cohort[i].filter(['marcar tarefa como feita'], 5, utm, date).length + '</td>')
+                    var monitoring = [];
+                    while (date <= new Date) {
+                        monitoring.push(cohort[i].filter(['marcar tarefa como feita'], 3, utm, date))
                         date.setDate(date.getDate() + 7);
                     }
-                    response.write('</tr>');
+                    result.push({
+                        date : cohort[i].date,
+                        acquisition : [{
+                            name  : 'Novos usuarios do app',
+                            users : cohort[i].filter([],1,utm)
+                        }],
+                        activation : [{
+                            name  : 'Começaram a adicionar tarefa',
+                            users : cohort[i].filter(['clicar: adicionar tarefa'],1, utm)
+                        },{
+                            name  : 'Adicionaram 1 tarefa',
+                            users : cohort[i].filter(['adicionar tarefa'],1, utm)
+                        },{
+                            name  : 'Marcaram 1 tarefa como feita',
+                            users : cohort[i].filter(['marcar tarefa como feita'],1, utm)
+                        }],
+                        engagement : [{
+                            name  : 'Marcaram 3 tarefas como feitas',
+                            users : cohort[i].filter(['marcar tarefa como feita'],3, utm)
+                        }],
+                        monitoring : monitoring
+                    });
                 }
-                response.write('</table><br />');
 
-                response.write('<table border="1">');
-                response.write('<tr>');
-                response.write('<td colspan="4">Resultado acumulado</td>');
-                response.write('</tr>');
-                response.write('<tr>');
-                response.write('<td>Semana</td>');
-                response.write('<td>Usuario cadastrados</td>');
-                response.write('<td>Usuarios que continuam engajados</td>');
-                response.write('<td>% de engajados</td>');
-                response.write('</tr>');
-                var users = 0;
-                for (var i in cohort) {
-                    var engaged = 0;
-                    for (var j = 0; j <= i; j += 1) {
-                        engaged += cohort[j].filter(['marcar tarefa como feita'], 5, utm, cohort[i].date).length;
-                    }
-                    users += cohort[i].filter([],1,utm).length;
-                    response.write('<tr>');
-                    response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
-                    response.write('<td>' + users + '</td>');
-                    response.write('<td>' + engaged + '</td>');
-                    response.write('<td>' + (engaged / users * 100).toFixed(2) + '%</td>');
-                    response.write('</tr>');
-                }
-                response.write('</table><br />');
-                response.end();
+                response.render('../view/cohort', {cohort : result, utms : utms, anchor : 'tasks'});
             }
         });
     });

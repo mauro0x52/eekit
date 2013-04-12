@@ -1,6 +1,6 @@
 /** Model
  * @author : Rafael Erthal
- * @since : 2013-01
+ * @since : 2012-10
  *
  * @description : Montagem da model
  */
@@ -13,5 +13,6 @@ if (config.mongodb.username && config.mongodb.password) {
 } else {
     mongoose.connect('mongodb://' + config.mongodb.url + ':' + config.mongodb.port + '/' + config.mongodb.db);
 }
+
 /*  Exportar name-space  */
-exports.Billet= require('./Billet.js').Billet;
+exports.Schedule = require('./Schedule.js').Schedule;

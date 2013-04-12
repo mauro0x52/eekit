@@ -57,87 +57,40 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                response.write('<table border="1">');
-                response.write('<tr>');
-                response.write('<td colspan="1"></td>');
-                response.write('<td colspan="2">Aquisicao</td>');
-                response.write('<td colspan="2">Ativacao</td>');
-                response.write('<td colspan="1">Engajamento</td>');
-                response.write('</tr>');
-                response.write('<tr>');
-                response.write('<td>Semana</td>');
-                response.write('<td colspan="2">Novos usuarios do app</td>');
-                response.write('<td colspan="2">Adicionaram 2 transações</td>');
-                response.write('<td colspan="1">Adicionaram ou editaram 3 transações</td>');
-                response.write('<td>Ativacao Total</td>');
-                response.write('<td>Engajamento Total</td>');
-                response.write('</tr>');
-                for (var i in cohort) {
-                    var users = cohort[i].filter([],1,utm),
-		                activated = cohort[i].filter(['adicionar transação'],2, utm),
-			            engaged = cohort[i].filter(['editar transação', 'adicionar transação'],3, utm);
+                var result = [],
+                    utms = [];
 
-                    response.write('<tr>');
-                    response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
-                    response.write('<td onclick="console.log(\'' + ids(users) + '\')">' + users.length + '</td>');
-                    response.write('<td>' + (activated.length / users.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td onclick="console.log(\'' + ids(activated) + '\')">' + (activated.length) + '</td>');                    
-                    response.write('<td>' + (engaged.length / activated.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td onclick="console.log(\'' + ids(engaged) + '\')">' + (engaged.length) + '</td>');    
-                    response.write('<td>' + (activated.length / users.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('<td>' + (engaged.length / users.length * 100).toFixed(2).toString().replace('NaN', '') + '%</td>');
-                    response.write('</tr>');
-                }
-                response.write('</table><br />');
-
-                response.write('<table border="1">');
-                response.write('<tr>');
-                response.write('<td colspan="' + (cohort.length + 1) + '">Retencao</td>');
-                response.write('</tr>');
-                response.write('<tr>');
-                response.write('<td>Semana</td>');
-        		for (var i = 0; i < cohort.length; i += 1) {
-        		    response.write('<td>' + i + '</td>');
-        		}
-                response.write('</tr>');
                 for (var i in cohort) {
+                    
+                    for (var j in cohort[i].utms) {
+                        utms.push(cohort[i].utms[j]);
+                    }
+
                     var date = new Date(cohort[i].date);
-                    response.write('<tr>');
-                    response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
-                    while (date < new Date) {
-                        response.write('<td>' + cohort[i].filter(['editar transação', 'adicionar transação'],3, utm, date).length + '</td>')
+                    var monitoring = [];
+                    while (date <= new Date) {
+                        monitoring.push(cohort[i].filter(['editar transação', 'adicionar transação'],3, utm, date))
                         date.setDate(date.getDate() + 14);
                     }
-                    response.write('</tr>');
+                    result.push({
+                        date : cohort[i].date,
+                        acquisition : [{
+                            name  : 'Novos usuarios do app',
+                            users : cohort[i].filter([],1,utm)
+                        }],
+                        activation : [{
+                            name  : 'Adicionaram 2 transações',
+                            users : cohort[i].filter(['adicionar transação'],2, utm)
+                        }],
+                        engagement : [{
+                            name  : 'Adicionaram ou editaram 3 transações',
+                            users : cohort[i].filter(['editar transação', 'adicionar transação'],3, utm)
+                        }],
+                        monitoring : monitoring
+                    });
                 }
-                response.write('</table><br />');
 
-                response.write('<table border="1">');
-                response.write('<tr>');
-                response.write('<td colspan="4">Resultado acumulado</td>');
-                response.write('</tr>');
-                response.write('<tr>');
-                response.write('<td>Semana</td>');
-                response.write('<td>Usuario cadastrados</td>');
-                response.write('<td>Usuarios que continuam engajados</td>');
-                response.write('<td>% de engajados</td>');
-                response.write('</tr>');
-                var users = 0;
-                for (var i in cohort) {
-                    var engaged = 0;
-                    for (var j = 0; j <= i; j += 1) {
-                        engaged += cohort[j].filter(['editar transação', 'adicionar transação'],3, utm, cohort[i].date).length;
-                    }
-                    users += cohort[i].filter([],1,utm).length;
-                    response.write('<tr>');
-                    response.write('<td>' + cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() + '</td>');
-                    response.write('<td>' + users + '</td>');
-                    response.write('<td>' + engaged + '</td>');
-                    response.write('<td>' + (engaged / users * 100).toFixed(2) + '%</td>');
-                    response.write('</tr>');
-                }
-                response.write('</table><br />');
-                response.end();
+                response.render('../view/cohort', {cohort : result, utms : utms, anchor : 'finances'});
             }
         });
     });

@@ -1,6 +1,15 @@
 Changelog
 =========
 
+## 1.1 (2013-04-12)
+
+Features
+- Flash success e alert
+- Actions em diálogo
+
+Ajustes
+- Alterando o valor de 39,90 para 59,90
+
 ## 1.0 (2013-04-04)
 
 Features

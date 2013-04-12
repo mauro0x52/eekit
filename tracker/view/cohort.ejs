@@ -1,0 +1,215 @@
+<style>
+    table {
+        font-size: 9px;
+    }
+    td {
+        border-bottom: solid 1px black;
+        padding: 4px;
+        margin: 0px;
+    }
+    td.title {
+        background-color: #A86;
+        border-bottom: 0px;
+    }
+    td.spacer {
+        background-color: black;
+        padding: 1px;
+    }
+    td h1 {
+        margin : 5px;
+    }
+</style>
+<a href="/events/tasks">Tarefas</a> 
+<a href="/events/contacts">Contatos</a> 
+<a href="/events/finances">Financas</a><br /><br />
+<table cellspacing="0">
+    <tr>
+        <td colspan="<%= (cohort[0].acquisition.length + cohort[0].activation.length + cohort[0].engagement.length) * 2 + cohort.length + 2 %>">
+            <h1>
+                Cohort Totalizado
+            </h1>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="1">
+            &nbsp;
+        </td>
+        <td colspan="<%= cohort[0].acquisition.length * 2 %>">
+            Aquisicao
+        </td>
+        <td colspan="<%= cohort[0].activation.length * 2 %>">
+            Ativacao
+        </td>
+        <td colspan="<%= cohort[0].engagement.length * 2 %>">
+            Engajamento
+        </td>
+        <td class="spacer"></td>
+        <td colspan="<%= cohort.length %>">
+            Acompanhamento Semanal
+        </td>
+    </tr>
+    <tr>
+        <td class="title">
+            Semana
+        </td>
+        <% for (var i in cohort[0].acquisition) { %>
+            <td colspan="2" class="title">
+                <%= cohort[0].acquisition[i].name %>
+            </td>
+        <% } %>
+        <% for (var i in cohort[0].activation) { %>
+            <td colspan="2" class="title">
+                <%= cohort[0].activation[i].name %>
+            </td>
+        <% } %>
+        <% for (var i in cohort[0].engagement) { %>
+            <td colspan="2" class="title">
+                <%= cohort[0].engagement[i].name %>
+            </td>
+        <% } %>
+        <td class="spacer"></td>
+        <% for (var i in cohort) { %>
+            <td class="title">
+                <%= cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() %>
+            </td>
+        <% } %>
+    </tr>
+    <% var previous = 0; %>
+    <% for (var i in cohort) { %>
+        <tr>
+            <td>
+                <%= cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() %>
+            </td>
+            <% for (var j in cohort[i].acquisition) { %>
+                <% var users = cohort[i].acquisition[j].users.length %>
+                <td style="width:50px;">
+                    <%= previous > 0 ? (users*100 / previous).toFixed(2) + '%' : '0.00%' %> 
+                </td>
+                <td>
+                    <%= users %>
+                </td>
+                <% previous = users %>
+            <% } %>
+            <% for (var j in cohort[i].activation) { %>
+                <% var users = cohort[i].activation[j].users.length %>
+                <td style="width:50px;">
+                    <%= previous > 0 ? (users*100 / previous).toFixed(2) + '%' : '0.00%' %> 
+                </td>
+                <td>
+                    <%= users %>
+                </td>
+                <% previous = users %>
+            <% } %>
+            <% for (var j in cohort[i].engagement) { %>
+                <% var users = cohort[i].engagement[j].users.length %>
+                <td style="width:50px;">
+                    <%= previous > 0 ? (users*100 / previous).toFixed(2) + '%' : '0.00%' %> 
+                </td>
+                <td>
+                    <%= users %>
+                </td>
+                <% previous = users %>
+            <% } %>
+            <td class="spacer"></td>
+            <% for (var j in cohort[i].monitoring) { %>
+                <td>
+                    <%= cohort[i].monitoring[j].length %>
+                </td>
+            <% } %>
+        </tr>
+    <% } %>
+
+    <tr>
+        <td colspan="<%= (cohort[0].acquisition.length + cohort[0].activation.length + cohort[0].engagement.length) * 2 + cohort.length + 2 %>">
+            <h1>
+                Cohort Detalhado
+            </h1>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="1">
+            &nbsp;
+        </td>
+        <td colspan="<%= cohort[0].acquisition.length * 2 %>">
+            Aquisicao
+        </td>
+        <td colspan="<%= cohort[0].activation.length * 2 %>">
+            Ativacao
+        </td>
+        <td colspan="<%= cohort[0].engagement.length * 2 %>">
+            Engajamento
+        </td>
+        <td class="spacer"></td>
+        <td colspan="<%= cohort.length %>">
+            Acompanhamento Semanal
+        </td>
+    </tr>
+    <tr>
+        <td class="title">
+            Semana
+        </td>
+        <% for (var i in cohort[0].acquisition) { %>
+            <td colspan="2" class="title">
+                <%= cohort[0].acquisition[i].name %>
+            </td>
+        <% } %>
+        <% for (var i in cohort[0].activation) { %>
+            <td colspan="2" class="title">
+                <%= cohort[0].activation[i].name %>
+            </td>
+        <% } %>
+        <% for (var i in cohort[0].engagement) { %>
+            <td colspan="2" class="title">
+                <%= cohort[0].engagement[i].name %>
+            </td>
+        <% } %>
+        <td class="spacer"></td>
+        <% for (var i in cohort) { %>
+            <td class="title">
+                <%= cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() %>
+            </td>
+        <% } %>
+    </tr>
+    <% for (var i in cohort) { %>
+        <tr>
+            <td>
+                <%= cohort[i].date.getDate() + '/' + (cohort[i].date.getMonth() + 1) + '/' + cohort[i].date.getFullYear() %>
+            </td>
+            <% for (var j in cohort[i].acquisition) { %>
+                <td colspan="2">
+                    <% for (var k in cohort[i].acquisition[j].users) { %>
+                        <a href="/user/<%= cohort[i].acquisition[j].users[k].id %>/events"><%= cohort[i].acquisition[j].users[k].id %></a><br />
+                    <% } %>&nbsp;
+                </td>
+            <% } %>
+            <% for (var j in cohort[i].activation) { %>
+                <td colspan="2">
+                    <% for (var k in cohort[i].activation[j].users) { %>
+                        <a href="/user/<%= cohort[i].activation[j].users[k].id %>/events"><%= cohort[i].activation[j].users[k].id %></a><br />
+                    <% } %>&nbsp;
+                </td>
+            <% } %>
+            <% for (var j in cohort[i].engagement) { %>
+                <td colspan="2">
+                    <% for (var k in cohort[i].engagement[j].users) { %>
+                        <a href="/user/<%= cohort[i].engagement[j].users[k].id %>/events"><%= cohort[i].engagement[j].users[k].id %></a><br />
+                    <% } %>&nbsp;
+                </td>
+            <% } %>
+            <td class="spacer"></td>
+            <% for (var j in cohort[i].monitoring) { %>
+                <td>
+                    <% for (var k in cohort[i].monitoring[j]) { %>
+                        <a href="/user/<%= cohort[i].monitoring[j][k].id %>/events"><%= cohort[i].monitoring[j][k].id %></a><br />
+                    <% } %>&nbsp;
+                </td>
+            <% } %>
+        </tr>
+    <% } %>
+</table>
+<% for (var i in utms) { %>
+    <a href="/events/<%= anchor%>?utm_source=<%= utms[i].source ? utms[i].source : ''%>&utm_medium=<%= utms[i].medium ? utms[i].medium : ''%>&utm_content=<%= utms[i].content ? utms[i].content :''%>&utm_campaign=<%= utms[i].campaign ? utms[i].campaign : ''%>">
+        <%= utms[i].source%>, <%= utms[i].medium%>, <%= utms[i].content%>, <%= utms[i].campaign%>
+    </a></br>
+<% } %>
+<br />

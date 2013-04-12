@@ -8,59 +8,86 @@
 
 var Itau = require('./Itau.js').Itau,
     Bradesco = require('./Bradesco.js').Bradesco,
-    Bb = require('./Bb.js').Bb;
+    Bb = require('./Bb.js').Bb,
+    mongoose = require('mongoose'),
+    schema   = mongoose.Schema,
+    objectId = schema.ObjectId,
+    billetSchema;
 
-var Billet = function (params) {
-        /* banco */
-        this.bank = params.bank;
-        this.bankId = params.bankId;
-        this.wallet = params.wallet;
-        this.currency = '9';
-        /* recebedor */
-        this.receiver = params.receiver;
-        this.cpfCnpj = params.cpfCnpj;
-        this.agency = params.agency;
-        this.account = params.account;
-        this.accountVD = params.accountVD;
-        /* documento */
-        this.local = params.local || 'Pagável em qualquer Banco até o vencimento';
-        this.ourNumber = params.ourNumber;
-        this.ourNumberVD = '';
-        this.documentNumber = params.documentNumber;
-        this.dueDate = new Date(params.dueDate);
-        this.creationDate = params.creationDate;
-        this.value = params.value.replace('.', ',');
-        this.instructions = params.instructions;
-        /* cliente */
-        this.clientName = params.clientName;
-        this.clientAddress = params.clientAddress;
-        this.clientCity = params.clientCity;
-        this.clientState = params.clientState;
-        this.clientZipCode = params.clientZipCode;
-        this.demonstrative = params.demonstrative;
-        /* banco do brasil */
-        this.agreement = params.agreement;
-        this.contract = params.contract;
-        this.walletVariation = params.walletVariation;
+billetSchema = new schema({
+    /* usuário */
+    user            : { type : objectId, required : true },
+    /* banco */
+    bank            : { type : String},
+    bankId          : { type : String, required : true, 'enum' : ['001', '237', '341']},
+    wallet          : { type : String },
+    currency        : { type : String, required : true, 'default' : '9'},
+    /* recebedor */
+    receiver        : { type : String },
+    cpfCnpj         : { type : String },
+    agency          : { type : String },
+    account         : { type : String },
+    accountVD       : { type : String },
+    /* documento */
+    local           : { type : String, 'default' : 'Pagável em qualquer Banco até o vencimento' },
+    ourNumber       : { type : String },
+    documentNumber  : { type : String },
+    dueDate         : { type : Date },
+    creationDate    : { type : Date, required : true, 'default' : Date.now },
+    value           : { type : Number },
+    instructions    : { type : String },
+    /* cliente */
+    clientName      : { type : String },
+    clientAddress   : { type : String },
+    clientCity      : { type : String },
+    clientState     : { type : String },
+    clientZipCode   : { type : String },
+    demonstrative   : { type : String },
+    /* particularidades banco do brasil */
+    agreement       : { type : String }
+});
 
+/**
+ * Seta alguns dados padrões
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-03-25
+ */
+billetSchema.pre('save', function (next) {
+    if (this.bankId === '001') {
+        Bb.validate(this, function (error) {
+            next(error);
+        });
+    } else if (this.bankId === '237') {
+        Bradesco.validate(this, function (error) {
+            next(error);
+        });
+    } else if (this.bankId === '341') {
+        Itau.validate(this, function (error) {
+            next(error);
+        });
+    } else {
+        next();
+    }
+});
 
-
-    this.print = function (cb) {
-        if (this.bankId === '001') {
-            Bb.print(this, function (error, print) {
-                cb (error, print);
-            });
-        } else if (this.bankId === '341') {
-            Itau.print(this, function (error, print) {
-                cb (error, print);
-            });
-        } else if (this.bankId === '237') {
-            Bradesco.print(this, function (error, print) {
-                cb (error, print);
-            });
-        }
-    };
+billetSchema.methods.print = function (cb) {
+    if (this.bankId === '001') {
+        Bb.print(this, function (error, print) {
+            cb(error, print);
+        });
+    } else if (this.bankId === '237') {
+        Bradesco.print(this, function (error, print) {
+            cb(error, print);
+        });
+    } else if (this.bankId === '341') {
+        Itau.print(this, function (error, print) {
+            cb(error, print);
+        });
+    } else {
+        cb(null, null);
+    }
 }
 
 /*  Exportando o pacote  */
-exports.Billet = Billet;
+exports.Billet = mongoose.model('Billets', billetSchema);

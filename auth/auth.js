@@ -34,6 +34,7 @@ require('./controller/Auth.js')(app);
 
 /*  Métodos para dev e teste */
 app.get('/ping', function (request, response) {
+    require('./model/Model.js');
     "use strict";
 
     response.contentType('json');
