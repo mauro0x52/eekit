@@ -53,6 +53,7 @@ module.exports = function (app) {
                                 user = data.users[i];
                             }
                         }
+                        delete data;
 
                         for (i in events) {
                             if (!appDays[events[i].app]) {
