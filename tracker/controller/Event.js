@@ -47,12 +47,13 @@ module.exports = function (app) {
                             uses = {};
 
                         user.name = data.user.name;
+                        user.email = data.user.username;
                         if (data.user.informations) user.phone = data.user.informations.phone;
                         user.apps = {
-                            contatos : {days : 0, status : '&nbsp;'},
-                            tarefas  : {days : 0, status : '&nbsp;'},
-                            financas : {days : 0, status : '&nbsp;'},
-                            ee       : {days : 0, status : '&nbsp;'}
+                            'contatos' : {days : 0, status : '&nbsp;'},
+                            'tarefas'  : {days : 0, status : '&nbsp;'},
+                            'finanças' : {days : 0, status : '&nbsp;'},
+                            'ee'       : {days : 0, status : '&nbsp;'}
                         };
 
                         for (i in user.events) {
@@ -81,13 +82,13 @@ module.exports = function (app) {
                             user.apps.tarefas.status = 'Nao Ativado';
                         }
                         
-                        if (user.ocurrences('financas', ['adicionar transação']) >= 2) {
-                            user.apps.financas.status = 'Ativado';
-                            if (user.ocurrences('financas', ['editar transação', 'adicionar transação'], sunday, saturday) >= 3) {
-                                user.apps.financas.status = 'Engajado';
+                        if (user.ocurrences('finanças', ['adicionar transação']) >= 2) {
+                            user.apps['finanças'].status = 'Ativado';
+                            if (user.ocurrences('finanças', ['editar transação', 'adicionar transação'], sunday, saturday) >= 3) {
+                                user.apps['finanças'].status = 'Engajado';
                             }
                         } else {
-                            user.apps.financas.status = 'Nao Ativado';
+                            user.apps['finanças'].status = 'Nao Ativado';
                         }
                         
                         if (user.ocurrences('contatos', ['adicionar tarefa', 'adicionar transação']) >= 1) {
