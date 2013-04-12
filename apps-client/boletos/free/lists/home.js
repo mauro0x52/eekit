@@ -19,7 +19,11 @@ app.routes.list('/', function (params, data) {
             icons,
             actions;
 
-        this.item = new app.ui.item({});
+        this.item = new app.ui.item({
+            click : function () {
+                app.apps.open({app : app.slug, route : '/boleto/' + billet._id})
+            }
+        });
 
         /* Botões do item */
         actions = {
@@ -91,6 +95,6 @@ app.routes.list('/', function (params, data) {
 
     /* Pegando usuários que são cadastradas ao longo do uso do app */
     app.events.bind('create billet', function (billet) {
-        groups.billets.items.add(new app.models.billet(billet).item);
+        groups.billets.items.add(new Item(billet).item);
     });
 });

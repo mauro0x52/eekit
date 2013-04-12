@@ -1790,6 +1790,7 @@ form {
     line-height: 1.4em;
     width: 280px;
     padding: 5px 10px;
+    min-height: 1.4em;
 }
 
 .sheets > .entity >  .body > .data-sets > .data-set  > .fields > .field  > .values > .value > .actions {

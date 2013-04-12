@@ -118,7 +118,9 @@ app.models.billet = function (params) {
                 if (data.error) {
                     console.log(data.error);
                 } else {
-                    that._id = data.billet._id;
+                    for (var i in data.billet) {
+                        that[i] = data.billet[i];
+                    }
                     if (cb) {
                         cb.apply(app);
                     }

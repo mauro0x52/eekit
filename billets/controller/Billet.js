@@ -24,12 +24,13 @@ module.exports = function (app) {
 
         var billet;
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, auth) {
             if (error) {
                 response.send({error : error});
             } else {
                 var billet = new Billet({
-                    user : user._id,
+                    user : auth.user._id,
+                    company : auth.company._id,
                     bankId : request.param('bankId', null),
                     bank : request.param('bank', null),
                     value : request.param('value', null),
@@ -77,11 +78,11 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, auth) {
             if (error) {
                 response.send({error : error});
             } else {
-                Billet.find({ user : user._id }, function (error, billets) {
+                Billet.find({ company : auth.company._id }, function (error, billets) {
                     if (error) {
                         response.send({error : error});
                     } else {
@@ -102,11 +103,11 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, auth) {
             if (error) {
                 response.send({error : error});
             } else {
-                Billet.findOne({ _id : request.params.id, user : user._id }, function (error, billet) {
+                Billet.findOne({ _id : request.params.id, company : auth.company._id }, function (error, billet) {
                     if (error) {
                         response.send({error : error});
                     } else {
@@ -127,11 +128,11 @@ module.exports = function (app) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, user) {
+        auth(request.param('token', null), function (error, auth) {
             if (error) {
                 response.send({error : error});
             } else {
-                Billet.findOne({ _id : request.params.id, user : user._id }, function (error, billet) {
+                Billet.findOne({ _id : request.params.id, user : auth.user._id }, function (error, billet) {
                     if (error) {
                         response.send({error : error});
                     } else {

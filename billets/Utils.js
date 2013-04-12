@@ -18,7 +18,7 @@ var config = require('./config.js');
  */
 exports.auth = function (token, cb) {
     "use strict";
-    
+
     require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
         data: {
             token  : token,
@@ -26,7 +26,7 @@ exports.auth = function (token, cb) {
         }
     }).on('success', function(data) {
         if (data.user) {
-            cb(null, data.user);
+            cb(null, data);
         } else if (data.error) {
             cb(data.error, null);
         } else {
@@ -48,7 +48,7 @@ exports.auth = function (token, cb) {
  */
 exports.bind = function (token, name, method, callback) {
     "use strict";
-    
+
     require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/bind', {
         data: {
             token : token,
@@ -71,7 +71,7 @@ exports.bind = function (token, name, method, callback) {
  */
 exports.trigger = function (token, name, data) {
     "use strict";
-    
+
     require('restler').post('http://' + config.services.kamisama.url + ':' + config.services.kamisama.port + '/tigger', {
         data: {
             token : token,

@@ -17,6 +17,7 @@ var Itau = require('./Itau.js').Itau,
 billetSchema = new schema({
     /* usuário */
     user            : { type : objectId, required : true },
+    company         : { type : objectId, required : true },
     /* banco */
     bank            : { type : String},
     bankId          : { type : String, required : true, 'enum' : ['001', '237', '341']},
