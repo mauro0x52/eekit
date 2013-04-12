@@ -208,8 +208,8 @@
     <% } %>
 </table>
 <% for (var i in utms) { %>
-    <a href="/events/<%= anchor%>?utm_source=<%= utms[i].source ? utms[i].source : ''%>&utm_medium=<%= utms[i].medium ? utms[i].medium : ''%>&utm_content=<%= utms[i].content ? utms[i].content :''%>&utm_campaing=<%= utms[i].campaing ? utms[i].campaing : ''%>">
-        <%= utms[i].source%>, <%= utms[i].medium%>, <%= utms[i].content%>, <%= utms[i].campaing%>
+    <a href="/events/<%= anchor%>?utm_source=<%= utms[i].source ? utms[i].source : ''%>&utm_medium=<%= utms[i].medium ? utms[i].medium : ''%>&utm_content=<%= utms[i].content ? utms[i].content :''%>&utm_campaign=<%= utms[i].campaign ? utms[i].campaign : ''%>">
+        <%= utms[i].source%>, <%= utms[i].medium%>, <%= utms[i].content%>, <%= utms[i].campaign%>
     </a></br>
 <% } %>
 <br />
