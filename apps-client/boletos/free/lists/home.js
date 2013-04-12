@@ -27,22 +27,29 @@ app.routes.list('/', function (params, data) {
 
         /* Botões do item */
         actions = {
-            edit : new app.ui.action({
-                tip    : 'editar dados do boleto',
-                image  : 'pencil',
-                click  : function() {
-                    app.apps.open({app : app.slug, route : '/alterar-boleto/' + billet._id});
-                }
-            }),
             print : new app.ui.action({
                 tip    : 'imprimir boleto',
                 image  : 'download',
                 click  : function() {
-                    app.routes.redirect('http://' + app.config.services.billets.host + ':' + app.config.services.billets.port + '/billet/'+billet._id+'/print/'+billet.ourNumber, data);
+                    app.routes.redirect('http://' + app.config.services.billets.host + ':' + app.config.services.billets.port + '/billet/'+billet._id+'/print/'+billet.ourNumber);
+                }
+            }),
+            edit : new app.ui.action({
+                tip    : 'editar dados do boleto',
+                image  : 'pencil',
+                click  : function() {
+                    app.apps.open({app : app.slug, route : '/editar-boleto/' + billet._id});
+                }
+            }),
+            remove : new app.ui.action({
+                tip    : 'remover boleto',
+                image  : 'trash',
+                click  : function() {
+                    app.apps.open({app : app.slug, route : '/remover-boleto/' + billet._id});
                 }
             })
         };
-        this.item.actions.add([actions.print, actions.edit]);
+        this.item.actions.add([actions.print, actions.edit, actions.remove]);
 
         /* Exibe o nome do boleto */
         this.title = function (value) {
@@ -53,6 +60,11 @@ app.routes.list('/', function (params, data) {
             this.item.label.legend(value);
             this.item.label.color('blue');
         }
+
+        /* Pegando a exclusão do boleto */
+        app.events.bind('remove billet ' + billet._id, function () {
+            that.item.detach();
+        });
 
         if (billet) {
             this.title(billet.ourNumber);

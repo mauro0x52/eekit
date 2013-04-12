@@ -61,7 +61,7 @@ app.models.billet = function (params) {
      */
     this.remove = function (cb) {
         app.ajax.post({
-            url  : 'http://' + app.config.billets.billets.host + ':' + app.config.billets.billets.port + '/billet/' + this._id + '/delete'
+            url  : 'http://' + app.config.services.billets.host + ':' + app.config.services.billets.port + '/billet/' + this._id + '/delete'
         }, cb);
     };
 

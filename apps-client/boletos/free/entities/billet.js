@@ -65,7 +65,7 @@ app.routes.entity('/boleto/:id', function (params, data) {
                 tip    : 'exibir versão impressa deste boleto',
                 image  : 'download',
                 click  : function() {
-                    app.routes.redirect('http://' + app.config.services.billets.host + ':' + app.config.services.billets.port + '/billet/'+billet._id+'/print/'+billet.ourNumber, data);
+                    app.routes.redirect('http://' + app.config.services.billets.host + ':' + app.config.services.billets.port + '/billet/'+billet._id+'/print/'+billet.ourNumber);
                 }
             }),
             edit         : new app.ui.action({
