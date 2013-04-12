@@ -50,10 +50,10 @@ module.exports = function (app) {
                         user.email = data.user.username;
                         if (data.user.informations) user.phone = data.user.informations.phone;
                         user.apps = {
-                            contatos : {days : 0, status : '&nbsp;'},
-                            tarefas  : {days : 0, status : '&nbsp;'},
-                            financas : {days : 0, status : '&nbsp;'},
-                            ee       : {days : 0, status : '&nbsp;'}
+                            'contatos' : {days : 0, status : '&nbsp;'},
+                            'tarefas'  : {days : 0, status : '&nbsp;'},
+                            'finanças' : {days : 0, status : '&nbsp;'},
+                            'ee'       : {days : 0, status : '&nbsp;'}
                         };
 
                         for (i in user.events) {
