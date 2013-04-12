@@ -56,7 +56,7 @@ app.routes.entity('/boleto/:id', function (params, data) {
         fieldsets.company.fields.add([fields.receiver, fields.cpfCnpj]);
         fieldsets.bank.fields.add([fields.bank, fields.wallet, fields.agency, fields.account, fields.ourNumber, fields.value]);
         fieldsets.date.fields.add([fields.creationDate, fields.dueDate]);
-        fieldsets.client.fields.add([fields.local, fields.demonstrative, fields.instructions, fields.clientName, fields.clientAddress, fields.clientCity, fields.clientState]);
+        fieldsets.client.fields.add([fields.local, fields.demonstrative, fields.instructions, fields.clientName]);
 
         /* Botões do item */
         actions = {

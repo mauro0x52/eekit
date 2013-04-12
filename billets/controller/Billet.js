@@ -67,6 +67,61 @@ module.exports = function (app) {
             }
         });
     });
+    /**
+     * Edita um novo boleto
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-04
+     */
+    app.post('/billet/:id/update', function (request, response) {
+        response.contentType('json');
+        response.header('Access-Control-Allow-Origin', '*');
+
+        auth(request.param('token', null), function (error, auth) {
+            if (error) {
+                response.send({error : error});
+            } else {
+                Billet.findById(request.params.id, function (error, billet) {
+                    if (error || !billet) {
+                        response.send({error : { message : 'billet not found', name : 'NotFoundError'}});
+                    } else {
+                        billet.bankId = request.param('bankId', billet.bankId);
+                        billet.bank = request.param('bank', billet.bank);
+                        billet.value = request.param('value', billet.value);
+                        billet.receiver = request.param('receiver', billet.receiver);
+                        billet.agency = request.param('agency', billet.agency);
+                        billet.account = request.param('account', billet.account);
+                        billet.accountVD = request.param('accountVD', billet.accountVD);
+                        billet.wallet = request.param('wallet', billet.wallet);
+                        billet.ourNumber = request.param('ourNumber', billet.ourNumber);
+                        billet.documentNumber = request.param('documentNumber', billet.documentNumber);
+                        billet.cpfCnpj = request.param('cpfCnpj', billet.cpfCnpj);
+                        billet.dueDate = request.param('dueDate', billet.dueDate);
+                        billet.creationDate = request.param('creationDate', billet.creationDate);
+                        billet.payer = request.param('payer', billet.payer);
+                        billet.demonstrative = request.param('demonstrative', billet.demonstrative);
+                        billet.local = request.param('local', billet.local);
+                        billet.instructions = request.param('instructions', billet.instructions);
+                        billet.clientName = request.param('clientName', billet.clientName);
+                        billet.clientAddress = request.param('clientAddress', billet.clientAddress);
+                        billet.clientCity = request.param('clientCity', billet.clientCity);
+                        billet.clientState = request.param('clientState', billet.clientState);
+                        billet.clientZipCode = request.param('clientZipCode', billet.clientZipCode);
+                        /* banco do brasil */
+                        billet.agreement = request.param('agreement', billet.agreement);
+
+                        billet.save(function (error) {
+                            if (error) {
+                                response.send({ error : error });
+                            } else {
+                                response.send({ billet : billet });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
 
     /**
      * Lista boletos
