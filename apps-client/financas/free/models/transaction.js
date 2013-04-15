@@ -13,6 +13,11 @@ app.models.transaction = function (params) {
     this._id = params._id;
 
     /**
+     * Criador de uma transação
+     */
+    this.author = params.author;
+
+    /**
      * Nome da transação
      */
     this.name = params.name;
