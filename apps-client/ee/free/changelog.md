@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 2.1
+## 2.1 (2013-04-12)
 
 Features
 - Alterar senha de usuários

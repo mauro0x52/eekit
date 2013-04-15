@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.0.3
+## 1.0.3 (2013-04-12)
 
 Melhorias
 - Interface dos cohorts de contatos, finanças e tarefas

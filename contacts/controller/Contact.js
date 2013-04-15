@@ -43,6 +43,7 @@ module.exports = function (app) {
                         contact = new Contact({
                             company     : company._id,
                             author      : data.user._id,
+                            user        : request.param('user', null),
                             category    : request.param('category', null),
                             name        : request.param('name', null),
                             email       : request.param('email', null),
@@ -180,6 +181,7 @@ module.exports = function (app) {
                             } else if (contact === null) {
                                 response.send({error : { message : 'contact not found', name : 'NotFoundError', id : request.params.id, path : 'contact'}});
                             } else {
+                                contact.user = request.param('user', contact.user);
                                 contact.category = request.param('category', null);
                                 contact.name = request.param('name', contact.name);
                                 contact.email = request.param('email', contact.email);
