@@ -303,6 +303,7 @@ app.routes.list('/', function (params, data) {
         /* Pegando a edição do contato */
         app.events.bind('update contact ' + contact._id, function (data) {
             var oldGroup = fitGroup(contact);
+            console.log(data)
 
             contact = new app.models.contact(data);
 
@@ -341,7 +342,8 @@ app.routes.list('/', function (params, data) {
         /* Pegando quando o filtro é acionado */
         app.events.bind('filter contact', function (fields) {
             var query,
-                queryField = fields.query.value();
+                queryField = fields.query.value(),
+                users = fields.user.value();
 
             query  = contact.name;
             query += ' ' + contact.email;
@@ -357,6 +359,10 @@ app.routes.list('/', function (params, data) {
             }
 
             if (
+                (
+                    contact.user &&
+                    users.indexOf(contact.user) == -1
+                ) ||
                 (queryField.length > 1) &&
                 query.toLowerCase().indexOf(queryField.toLowerCase()) === -1
             ) {
@@ -493,10 +499,29 @@ app.routes.list('/', function (params, data) {
                         actions : true
                     })
                 };
+                /* filtro de usuário responsável */
+                fields.user = new app.ui.inputSelector({
+                    name : 'user',
+                    type : 'multiple',
+                    legend  : 'Responsável',
+                    options : (function () {
+                        var result = [];
+                        for (var i in app.config.users) {
+                            result.push(new app.ui.inputOption({
+                                legend  : app.config.users[i].name,
+                                value   : app.config.users[i]._id,
+                                clicked : app.config.user._id === app.config.users[i]._id
+                            }));
+                        }
+                        return result;
+                    })(),
+                    change : app.ui.filter.submit,
+                    actions : true
+                });
                 /* fieldset principal */
                 app.ui.filter.fieldsets.add(new app.ui.fieldset({
                     legend : 'Filtrar contatos',
-                    fields : [fields.query, fields.categories.clients, fields.categories.suppliers, fields.categories.partners, fields.categories.personals]
+                    fields : [fields.query, fields.user, fields.categories.clients, fields.categories.suppliers, fields.categories.partners, fields.categories.personals]
                 }));
                 /* dispara o evento de filtro */
                 app.ui.filter.submit(function () {

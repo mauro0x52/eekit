@@ -43,7 +43,9 @@ app.routes.entity('/contato/:id', function (params, data) {
         fields = {
             category : new app.ui.data({legend : 'categoria'}),
             email    : new app.ui.data({legend : 'email'}),
-            phone    : new app.ui.data({legend : 'telefone'})
+            phone    : new app.ui.data({legend : 'telefone'}),
+            user     : new app.ui.data({legend : 'responsável'}),
+            author   : new app.ui.data({legend : 'criado por'})
         };
 
         /* Botões do item */
@@ -117,6 +119,36 @@ app.routes.entity('/contato/:id', function (params, data) {
             }
         };
 
+        /* Exibe o autor do contato */
+        this.author = function (value) {
+            fields.author.values.remove();
+            if (value) {
+                for (var i in app.config.users) {
+                    if (app.config.users[i]._id === value) {
+                        fields.author.values.add(new app.ui.value({value : app.config.users[i].name}));
+                        fieldsets.details.fields.add(fields.author);
+                    }
+                }
+            } else {
+                fieldsets.details.fields.remove(fields.author);
+            }
+        };
+
+        /* Exibe o responsável do contato */
+        this.user = function (value) {
+            fields.user.values.remove();
+            if (value) {
+                for (var i in app.config.users) {
+                    if (app.config.users[i]._id === value) {
+                        fields.user.values.add(new app.ui.value({value : app.config.users[i].name}));
+                        fieldsets.details.fields.add(fields.user);
+                    }
+                }
+            } else {
+                fieldsets.details.fields.remove(fields.user);
+            }
+        };
+
         /* Exibe campos personalizados do contato */
         this.fields = function (value) {
             var i, j,
@@ -152,6 +184,8 @@ app.routes.entity('/contato/:id', function (params, data) {
                 that.email(contact.email);
                 that.phone(contact.phone);
                 that.fields(contact.fieldValues);
+                that.fields(contact.author);
+                that.fields(contact.user);
             }
         });
 
@@ -174,6 +208,8 @@ app.routes.entity('/contato/:id', function (params, data) {
             this.email(contact.email);
             this.phone(contact.phone);
             this.fields(contact.fieldValues);
+            this.author(contact.author);
+            this.user(contact.user);
         }
     };
 

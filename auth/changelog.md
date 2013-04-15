@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-## 1.2
+## 1.2 (2013-04-12)
 
 Features
 - Usuário pode trocar senha de qualquer um na empresa

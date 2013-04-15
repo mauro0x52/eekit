@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.1
+## 1.1 (2013-04-12)
 
 Features
 - Flash success e alert
