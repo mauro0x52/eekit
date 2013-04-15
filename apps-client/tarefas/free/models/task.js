@@ -11,6 +11,10 @@ app.models.task = function (params) {
      */
     this.user = params.user;
     /**
+     * Id do usuário criador da tarefa
+     */
+    this.author = params.author;
+    /**
      * Id da categoria da tarefa
      */
     this.category = params.category;

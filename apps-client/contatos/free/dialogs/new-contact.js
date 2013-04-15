@@ -17,7 +17,7 @@ app.routes.dialog('/adicionar-contato', function (params, data) {
      * @param  userfields : lista de campos configuraveis
      */
     function form (categories, userfields) {
-        var fields = {}, categoriesOptions = [], fieldset, i;
+        var fields = {}, categoriesOptions = [], fieldset, i, userOptions = [];
 
         /* Input com as fases */
         for (var i in categories) {
@@ -27,6 +27,17 @@ app.routes.dialog('/adicionar-contato', function (params, data) {
                     value : categories[i]._id,
                     label : categories[i].color,
                     clicked : request.category ? categories[i]._id === request.category : parseInt(i) === 0
+                }));
+            }
+        }
+
+        /* Input com os usuários */
+        for (var i in app.config.users) {
+            if (app.config.users.hasOwnProperty(i)) {
+                userOptions.push(new app.ui.inputOption({
+                    legend  : app.config.users[i].name,
+                    value   : app.config.users[i]._id,
+                    clicked : app.config.user._id === app.config.users[i]._id
                 }));
             }
         }
@@ -56,6 +67,13 @@ app.routes.dialog('/adicionar-contato', function (params, data) {
             legend : 'Notas',
             name : 'notes'
         });
+        fields.user = new app.ui.inputSelector({
+            name : 'user',
+            type : 'single',
+            legend  : 'Responsável',
+            options : userOptions,
+            filterable : true
+        });
         fields.userfields = [];
         for (i in userfields) {
             fields.userfields.push(new app.ui.inputText({
@@ -75,6 +93,7 @@ app.routes.dialog('/adicionar-contato', function (params, data) {
             fieldset.fields.add(fields.userfields[i]);
         }
         fieldset.fields.add(fields.notes);
+        fieldset.fields.add(fields.user);
 
         app.ui.form.fieldsets.add(fieldset);
 
@@ -88,6 +107,7 @@ app.routes.dialog('/adicionar-contato', function (params, data) {
                 category : fields.category.value()[0],
                 phone : fields.phone.value(),
                 notes: fields.notes.value(),
+                user: fields.user.value()[0],
                 fieldValues : []
             };
             for (var i in fields.userfields) {

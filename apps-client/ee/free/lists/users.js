@@ -47,6 +47,18 @@ app.routes.list('/usuarios', function (params, data) {
             this.item.label.color('blue');
         }
 
+        /* Pegando quando o filtro é acionado */
+        app.events.bind('filter user', function (fields) {
+            var queryField = fields.query.value();
+            if (
+                queryField.length > 1 && user.name.toLowerCase().indexOf(queryField.toLowerCase()) === -1
+            ) {
+                that.item.visibility('hide');
+            } else {
+                that.item.visibility('show');
+            }
+        });
+
         if (user) {
             this.name(user.name);
             this.category('usuário');
@@ -70,6 +82,23 @@ app.routes.list('/usuarios', function (params, data) {
     }));
 
     /* Monta o filtro */
+    app.ui.filter.action('filtrar');
+    /* filtro por texto */
+    fields.query = new app.ui.inputText({
+        legend : 'Buscar',
+        type : 'text',
+        name : 'query',
+        change : app.ui.filter.submit
+    });
+    /* fieldset principal */
+    app.ui.filter.fieldsets.add(new app.ui.fieldset({
+        legend : 'Filtrar usuários',
+        fields : [fields.query]
+    }));
+    /* dispara o evento de filtro */
+    app.ui.filter.submit(function () {
+        app.events.trigger('filter user', fields);
+    });
 
     /* montando os grupos */
     groups = {

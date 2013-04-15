@@ -70,9 +70,23 @@ module.exports = function (app) {
 
                     for (var j in cohort[i].users) {
                         if (
-                            cohort[i].users[j].ocurrences('tarefas', ['marcar tarefa como feita']) >= 1 ||
-                            cohort[i].users[j].ocurrences('financas', ['adicionar transação']) >= 2 ||
-                            cohort[i].users[j].ocurrences('contatos', ['adicionar tarefa', 'adicionar transação']) >= 1
+                            (
+                                cohort[i].users[j].utm.source === utm.source ||
+                                !utm.source
+                            ) && (
+                                cohort[i].users[j].utm.medium === utm.medium ||
+                                !utm.medium
+                            ) && (
+                                cohort[i].users[j].utm.content === utm.content ||
+                                !utm.content
+                            ) && (
+                                cohort[i].users[j].utm.campaign === utm.campaign ||
+                                !utm.campaign
+                            ) && (
+                                cohort[i].users[j].ocurrences('tarefas', ['marcar tarefa como feita']) >= 1 ||
+                                cohort[i].users[j].ocurrences('finanças', ['adicionar transação']) >= 2 ||
+                                cohort[i].users[j].ocurrences('contatos', ['adicionar tarefa', 'adicionar transação']) >= 1
+                            )
                         ) {
                             activated.push(cohort[i].users[j])
                         }
