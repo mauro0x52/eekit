@@ -42,6 +42,7 @@ module.exports = function (app) {
                         function format (date) {
                             return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
                         }
+                        delete data;
 
                         var i,
                             uses = {};

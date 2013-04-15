@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.1
+## 1.1 (2013-04-15)
 
 Features
 - Adição de usuário responsável nos contatos

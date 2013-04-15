@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 2.2
+## 2.2 (2013-04-15)
 
 Features
 - Filtragem de usuário no painel de controle
