@@ -24,6 +24,11 @@ module.exports = function (app) {
      * @response : {events}
      */
     app.get('/events/finances', function (request,response) {
+        if (request.param('secret', null) != 'tr4ck3r') {
+            response.end();
+            return;
+        }
+
         var utm = {};
 
         if (request.param('utm_source', null)) {

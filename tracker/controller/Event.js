@@ -25,6 +25,11 @@ module.exports = function (app) {
      * @response : {events}
      */
     app.get('/user/:id/events', function (request,response) {
+        if (request.param('secret', null) != 'tr4ck3r') {
+            response.end();
+            return;
+        }
+
         response.contentType('text/html');
 
         var now = new Date(),
@@ -123,6 +128,11 @@ module.exports = function (app) {
      * @response : {events}
      */
     app.get('/users', function (request,response) {
+        if (request.param('secret', null) != 'tr4ck3r') {
+            response.end();
+            return;
+        }
+
         require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
             data: {
                 secret : config.security.secret
@@ -154,6 +164,11 @@ module.exports = function (app) {
      * @response : {events}
      */
     app.get('/events', function (request,response) {
+        if (request.param('secret', null) != 'tr4ck3r') {
+            response.end();
+            return;
+        }
+
         var query = {};
 
         response.contentType('txt');
