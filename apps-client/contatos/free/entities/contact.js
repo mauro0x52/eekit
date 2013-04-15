@@ -184,8 +184,8 @@ app.routes.entity('/contato/:id', function (params, data) {
                 that.email(contact.email);
                 that.phone(contact.phone);
                 that.fields(contact.fieldValues);
-                that.fields(contact.author);
-                that.fields(contact.user);
+                that.author(contact.author);
+                that.user(contact.user);
             }
         });
 
