@@ -26,15 +26,6 @@ module.exports = function (app) {
     app.get('/events/tasks', function (request,response) {
         var utm = {};
 
-        function ids (obj) {
-            res = ''
-            for (var i in obj) {
-                if (obj[i].events[0])
-                res += obj[i].events[0].user + ', ';
-            }
-            return res;
-        }
-
         if (request.param('utm_source', null)) {
             utm.source = request.param('utm_source', null);
         }
@@ -57,14 +48,9 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                var result = [],
-                    utms = [];
+                var result = [];
 
                 for (var i in cohort) {
-                    
-                    for (var j in cohort[i].utms) {
-                        utms.push(cohort[i].utms[j]);
-                    }
 
                     var date = new Date(cohort[i].date);
                     var monitoring = [];
@@ -96,7 +82,7 @@ module.exports = function (app) {
                     });
                 }
 
-                response.render('../view/cohort', {cohort : result, utms : utms, anchor : 'tasks'});
+                response.render('../view/cohort', {cohort : result});
             }
         });
     });

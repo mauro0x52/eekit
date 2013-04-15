@@ -48,14 +48,9 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                var result = [],
-                    utms = [];
+                var result = [];
 
                 for (var i in cohort) {
-                    
-                    for (var j in cohort[i].utms) {
-                        utms.push(cohort[i].utms[j]);
-                    }
 
                     var date = new Date(cohort[i].date);
                     var monitoring = [];
@@ -81,7 +76,7 @@ module.exports = function (app) {
                     });
                 }
 
-                response.render('../view/cohort', {cohort : result, utms : utms, anchor : 'contacts'});
+                response.render('../view/cohort', {cohort : result});
             }
         });
     });

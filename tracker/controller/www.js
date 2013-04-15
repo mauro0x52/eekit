@@ -26,15 +26,6 @@ module.exports = function (app) {
     app.get('/events/www', function (request,response) {
         var utm = {};
 
-        function ids (obj) {
-            res = ''
-            for (var i in obj) {
-                if (obj[i].events[0])
-                res += obj[i].events[0].user + ', ';
-            }
-            return res;
-        }
-
         if (request.param('utm_source', null)) {
             utm.source = request.param('utm_source', null);
         }
@@ -58,15 +49,10 @@ module.exports = function (app) {
             if (error) {
                 response.send({error : error});
             } else {
-                var result = [],
-                    utms = [];
+                var result = [];
 
                 for (var i in cohort) {
                     var activated = [];
-                    
-                    for (var j in cohort[i].utms) {
-                        utms.push(cohort[i].utms[j]);
-                    }
 
                     for (var j in cohort[i].users) {
                         if (
@@ -112,6 +98,9 @@ module.exports = function (app) {
                         },{
                             name  : 'Telefone',
                             users : cohort[i].filter(['cadastrar: telefone'],1, utm)
+                        },,{
+                            name  : 'Cadastrar',
+                            users : cohort[i].filter(['cadastrar'],1, utm)
                         },{
                             name  : 'Marcar',
                             users : cohort[i].filter(['marcar: contatos', 'marcar: finanças', 'marcar: tarefas'],1,utm)
@@ -130,7 +119,7 @@ module.exports = function (app) {
                     });
                 }
                 
-                response.render('../view/cohort', {cohort : result, utms : utms, anchor : 'www'});
+                response.render('../view/cohort', {cohort : result});
             }
         });
     });
