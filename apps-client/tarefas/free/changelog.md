@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 2.1
+## 2.1 (2013-04-15)
 
 Features
 - Edição de usuário responsável
