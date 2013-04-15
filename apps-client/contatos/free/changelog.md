@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 2.1
+
+Features
+- Edição, criação e exibição de usuário responsável
+- Exibição de usuário criador
+
 ## 2.0 (2013-04-04)
 
 Features
