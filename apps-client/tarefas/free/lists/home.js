@@ -391,6 +391,7 @@ app.routes.list('/', function (params, data) {
                 that.dateDeadline(task.dateDeadline);
                 that.category(task.category);
             }
+            app.ui.filter.submit();
         });
 
         /* Pegando o drop da tarefa */
