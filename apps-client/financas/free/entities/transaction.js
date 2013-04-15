@@ -43,7 +43,8 @@ app.routes.entity('/transacao/:id', function (params, data) {
             category : new app.ui.data({legend : 'categoria'}),
             account  : new app.ui.data({legend : 'conta'}),
             value    : new app.ui.data({legend : 'valor'}),
-            date     : new app.ui.data({legend : 'data'})
+            date     : new app.ui.data({legend : 'data'}),
+            author   : new app.ui.data({legend : 'criado por'})
         };
 
         /* Botões do item */
@@ -157,6 +158,21 @@ app.routes.entity('/transacao/:id', function (params, data) {
             }
         };
 
+        /* Exibe o autor da transação */
+        this.author = function (value) {
+            fields.author.values.remove();
+            if (value) {
+                for (var i in app.config.users) {
+                    if (app.config.users[i]._id === value) {
+                        fields.author.values.add(new app.ui.value({value : app.config.users[i].name}));
+                        fieldsets.details.fields.add(fields.author);
+                    }
+                }
+            } else {
+                fieldsets.details.fields.remove(fields.author);
+            }
+        };
+
         /* Pegando a edição do contato */
         app.events.bind('update transaction ' + transaction._id, function (data) {
             transaction = new app.models.transaction(data);
@@ -167,6 +183,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
                 that.account(transaction.account);
                 that.date(transaction.date);
                 that.value((transaction.type === 'debt' ? -1 : 1) * transaction.value);
+                that.author(transaction.author);
             }
         });
 
@@ -179,6 +196,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
             this.account(transaction.account);
             this.date(transaction.date);
             this.value((transaction.type === 'debt' ? -1 : 1) * transaction.value);
+            this.author(transaction.author);
         }
     };
 
