@@ -109,8 +109,8 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
             name : 'phone',
             value : contact.phone
         });
-        fields.notes = new app.ui.inputText({
-            legend : 'Notas',
+        fields.notes = new app.ui.inputTextarea({
+            legend : 'Observações',
             type : 'text',
             name : 'notes',
             value : contact.notes

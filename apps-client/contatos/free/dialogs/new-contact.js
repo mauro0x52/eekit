@@ -63,8 +63,8 @@ app.routes.dialog('/adicionar-contato', function (params, data) {
             legend : 'Telefone',
             name : 'phone'
         });
-        fields.notes = new app.ui.inputText({
-            legend : 'Notas',
+        fields.notes = new app.ui.inputTextarea({
+            legend : 'Observações',
             name : 'notes'
         });
         fields.user = new app.ui.inputSelector({
