@@ -13,7 +13,8 @@ sdk.modules.ui.fieldset = function (app) {
             arrow_div = document.createElement('div'),
             arrow_fill_div = document.createElement('div'),
             legend_legend = document.createElement('legend'),
-            fields_ul = document.createElement('ul');
+            fields_ul = document.createElement('ul'),
+            that = this;
 
         /* CSS */
         element.setAttribute('class', 'field-set');
@@ -23,10 +24,15 @@ sdk.modules.ui.fieldset = function (app) {
         fields_ul.setAttribute('class', 'fields');
 
         /* Hierarquia */
+        arrow_div.appendChild(arrow_fill_div);
+        element.appendChild(arrow_div);
         element.appendChild(legend_legend);
         element.appendChild(fields_ul);
-        arrow_div.appendChild(arrow_fill_div);
-        legend_legend.appendChild(arrow_div);
+
+        /* Eventos */
+        legend_legend.addEventListener('click', function () {
+            that.collapsed(!that.collapsed());
+        });
 
         /* Métodos protegidos */
         this.validate = function () {
@@ -73,6 +79,19 @@ sdk.modules.ui.fieldset = function (app) {
             }
         };
         /* Métodos públicos */
+        this.collapsed = function (value) {
+            var css = element.getAttribute('class');
+            if (value === true || value === false) {
+                if (value) {
+                    css += ' collapsed';
+                } else {
+                    css = css.replace('collapsed', ' ');
+                }
+                element.setAttribute('class', css);
+            } else {
+                return css.indexOf('collapsed') > -1;
+            }
+        }
         this.legend = function (value) {
             if (value === '') {
                 legend_legend.setAttribute('class', 'hide');
@@ -89,6 +108,7 @@ sdk.modules.ui.fieldset = function (app) {
         if (params) {
             this.legend(params.legend);
             this.fields.add(params.fields);
+            this.collapsed(params.collapsed);
         }
     };
 }
