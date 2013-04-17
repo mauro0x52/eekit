@@ -7,6 +7,7 @@ Features
 - Remover campo número da nota
 - Inserir campo observações
 - Remover número de parcelas de transferencia
+- Modal de nova transação expansível
 
 ## 2.1 (2013-04-15)
 
