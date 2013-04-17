@@ -531,7 +531,7 @@ app.routes.list('/', function (params, data) {
                         header += '%2C' + escape(userfields[i].name) + ' ';
                     }
 
-                    app.ui.actions.get()[0].href('data:application/octet-stream,' + header + '%0A');
+                    app.ui.actions.get()[0].href('data:csv,' + header + '%0A');
 
                     app.events.trigger('filter contact', fields);
                 });

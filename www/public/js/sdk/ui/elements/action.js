@@ -19,6 +19,7 @@ sdk.modules.ui.action = function (app) {
         /* CSS */
         element.setAttribute('class', 'action');
         anchor.setAttribute('class', 'anchor');
+        anchor.setAttribute('target', 'blank');
         anchor.setAttribute('href', '#');
         image.setAttribute('class', 'hide');
         legend.setAttribute('class', 'hide');

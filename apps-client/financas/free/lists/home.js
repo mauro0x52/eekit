@@ -598,7 +598,7 @@ app.routes.list('/', function (params, data) {
                     }));
                     /* dispara o evento de filtro */
                     app.ui.filter.submit(function () {
-                        app.ui.actions.get()[0].href('data:application/octet-stream,');
+                        app.ui.actions.get()[0].href('data:csv,');
 
                         /* dispara o evento */
                         app.events.trigger('filter transaction', fields);
