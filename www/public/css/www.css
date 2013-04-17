@@ -1221,7 +1221,7 @@ form {
 
 .field.select > .data > .input  {
     position: absolute;
-    width: 200px;
+    width: 300px;
     padding: 2px 20px 2px 2px;
     border-radius: 2px;
     border: 1px solid #ddd;
@@ -1236,7 +1236,7 @@ form {
 .field.select > .data   > .arrow {
     position: absolute;
     top: 8px;
-    left: 182px;
+    left: 282px;
     border-right: 6px solid transparent;
     border-left: 6px solid transparent;
     border-top: 6px solid #b9ac9f;
@@ -1305,7 +1305,7 @@ form {
 }
 
 .field.select .data > .options.filterable {
-    width: 190px;
+    width: 290px;
     max-height: 140px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -1991,7 +1991,7 @@ form {
 .modal-wrapper .modal {
     position: relative;
     display: block;
-    width: 400px;
+    width: 600px;
     margin: auto;
     border: 4px solid #2b4f67;
     border-radius: 5px;
@@ -2004,11 +2004,11 @@ form {
 /* -------------------------------------------------------------------------- */
 
 .modal-wrapper .modal.width-400 {
-    width: 400px;
+    /*width: 400px;*/
 }
 
 .modal-wrapper .modal.width-800 {
-    width: 800px;
+    /*width: 800px;*/
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2168,7 +2168,7 @@ form {
 .field.text > .data > .input,
 .field.password > .data > .input,
 .field.date > .data > .input {
-    width: 200px;
+    width: 300px;
     padding: 2px;
     border: 1px solid #ddd;
     border-radius: 2px;
@@ -2177,6 +2177,22 @@ form {
     -moz-transition: all 0.2s linear;
     -o-transition: all 0.2s linear;
     margin: 0;
+}
+
+.field.textarea > .data > .input {
+    width: 300px;
+    height: 50px;
+    line-height: 1.4em;
+    padding: 2px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    margin: 0;
+    font-family: Verdana, Helvetia, sans-serif;
+    font-size: 12px;
 }
 
 .field.select> .data > .input:hover,
@@ -2199,13 +2215,18 @@ form {
 }
 
 .modal > .form > .field-sets > .field-set {
-    padding: 0;
-    margin: 30px 0;
+    padding: 10px;
+    margin: 10px 0;
     border: none;
+    border-top: 1px solid #ccc;
+    color: #B9AC9F;
 }
 
 .modal > .form > .field-sets > .field-set > .legend {
-    display: none;
+    padding: 5px;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
 }
 
 .modal > .form > .field-sets > .field-set > .fields > .field {
@@ -2229,7 +2250,7 @@ form {
     position: relative;
     padding: 5px 10px 5px 20px;
     display: table-cell;
-    width: 140px;
+    width: 240px;
     text-align: right;
     font-size: 12px;
     color: #332f2f;
@@ -2291,6 +2312,20 @@ form {
     border: 1px solid #123;
     border-radius: 8px;
     cursor: pointer;
+}
+
+/* fieldset colapsado */
+.modal > .form > .field-sets > .field-set.collapsed {
+
+}
+
+.modal > .form > .field-sets > .field-set.collapsed > .arrow {
+    position: absolute;
+    left: 40px;
+    top: -10px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #bbb;
 }
 
 

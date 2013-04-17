@@ -9,18 +9,24 @@
 sdk.modules.ui.fieldset = function (app) {
     return function (params) {
         var parent,
-            element = document.createElement('div'),
+            element = document.createElement('fieldset'),
+            arrow_div = document.createElement('div'),
+            arrow_fill_div = document.createElement('div'),
             legend_legend = document.createElement('legend'),
             fields_ul = document.createElement('ul');
 
         /* CSS */
         element.setAttribute('class', 'field-set');
+        arrow_div.setAttribute('class', 'arrow');
+        arrow_fill_div.setAttribute('class', 'fill');
         legend_legend.setAttribute('class', 'hide');
         fields_ul.setAttribute('class', 'fields');
 
         /* Hierarquia */
         element.appendChild(legend_legend);
         element.appendChild(fields_ul);
+        arrow_div.appendChild(arrow_fill_div);
+        legend_legend.appendChild(arrow_div);
 
         /* Métodos protegidos */
         this.validate = function () {
