@@ -1,6 +1,14 @@
 Changelog
 =========
 
+## 1.0.3 (2013-04-17)
+
+Melhorias
+- Coluna cadastro
+- Listagem de UTMs por semana
+- Filtro de usuário ativos no www
+- Autenticação
+
 ## 1.0.3 (2013-04-12)
 
 Melhorias
