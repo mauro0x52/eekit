@@ -625,6 +625,10 @@ form {
     padding: 0 0 0 20px;
 }
 
+.sheet.list:first-child > .header > .close{
+    display: none;
+}
+
 /* grupo */
 
 .sheets .body > .groups > .group {
