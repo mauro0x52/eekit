@@ -183,8 +183,8 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
         }
 
         /* descrição */
-        fields.description = new app.ui.inputText({
-            legend : 'Notas',
+        fields.description = new app.ui.inputTextarea({
+            legend : 'Observações',
             name : 'description'
         });
 
