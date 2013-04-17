@@ -111,26 +111,6 @@ app.routes.dialog('/adicionar-transferencia', function (params, data) {
             name : 'date',
             value : parseInt(date.getDate()) + '/' + parseInt(date.getMonth() + 1) + '/' + date.getFullYear()
         });
-        fields.recurrence = new app.ui.inputSelector({
-            type : 'single',
-            name : 'recurrence',
-            legend : 'Recorrência',
-            options : recurrenceOptions
-        });
-        fields.recurrence.visibility('hide');
-        fields.repetitions = new app.ui.inputText({
-            legend : 'No. de parcelas',
-            type : 'text',
-            name : 'repetitions',
-            rules : [{rule:/[0-9]*/, message : 'número inválido'}],
-            change : function () {
-                if (fields.repetitions.value() > 1) {
-                    fields.recurrence.visibility('show');
-                } else {
-                    fields.recurrence.visibility('hide');
-                }
-            }
-        });
         fields.observation = new app.ui.inputTextarea({
             legend : 'Observações',
             type : 'text',
@@ -144,8 +124,6 @@ app.routes.dialog('/adicionar-transferencia', function (params, data) {
         fieldset.fields.add(fields.sourceAccount);
         fieldset.fields.add(fields.destinyAccount);
         fieldset.fields.add(fields.date);
-        fieldset.fields.add(fields.repetitions);
-        fieldset.fields.add(fields.recurrence);
         fieldset.fields.add(fields.observation);
 
         app.ui.form.fieldsets.add(fieldset);
@@ -154,63 +132,32 @@ app.routes.dialog('/adicionar-transferencia', function (params, data) {
 
         /* Controle de envio do form */
         app.ui.form.submit(function() {
-            var sources = [], destinies = [],
-                repetitions = parseInt(fields.repetitions.value()),
-                recurrence = repetitions > 1 ? parseInt(fields.recurrence.value()[0]) : 0,
-                saveTransactions;
+            var source = new app.models.transaction({
+                name : 'Transferência',
+                value : fields.value.value().replace(',', '.'),
+                account : fields.sourceAccount.value()[0],
+                date : fields.date.value() ? fields.date.date() : null,
+                observation : fields.observation.value(),
+                type : 'debt',
+                isTransfer : true
+            });
+            var destiny = new app.models.transaction({
+                name : 'Transferência',
+                value : fields.value.value().replace(',', '.'),
+                account : fields.destinyAccount.value()[0],
+                date : fields.date.value() ? fields.date.date() : null,
+                observation : fields.observation.value(),
+                type : 'credit',
+                isTransfer : true
+            });
 
-            /**
-             * Salva a transação e, se salvou todas, fecha
-             */
-            saveTransactions = function (i, repetitions) {
-                sources[i].save(function () {
-                    destinies[i].save(function () {
-                        app.events.trigger('create transaction', sources[i]);
-                        app.events.trigger('create transaction', destinies[i]);
-                        app.close({ source : sources[i], destiny : destinies[i]});
-                    });
+            source.save(function () {
+                destiny.save(function () {
+                    app.events.trigger('create transaction', source);
+                    app.events.trigger('create transaction', destiny);
+                    app.close({ source : source, destiny : destiny});
                 });
-            }
-
-            if (recurrence == 0 || !repetitions) {
-                repetitions = 1;
-            }
-            for (var i = 0; i < repetitions; i++) {
-                var sourceData = {
-                    name : 'Transferência',
-                    value : fields.value.value().replace(',', '.'),
-                    account : fields.sourceAccount.value()[0],
-                    date : fields.date.value() ? fields.date.date() : null,
-                    repetitions: fields.repetitions.value()[0],
-                    observation : fields.observation.value(),
-                    type : 'debt',
-                    isTransfer : true
-                };
-                var destinyData = {
-                    name : 'Transferência',
-                    value : fields.value.value().replace(',', '.'),
-                    account : fields.destinyAccount.value()[0],
-                    date : fields.date.value() ? fields.date.date() : null,
-                    repetitions: fields.repetitions.value()[0],
-                    observation : fields.observation.value(),
-                    type : 'credit',
-                    isTransfer : true
-                };
-                date = new Date(sourceData.date);
-                sourceData.name = repetitions > 1 ? sourceData.name + ' ('+(i+1)+'/'+repetitions+')' : sourceData.name;
-                destinyData.name = repetitions > 1 ? destinyData.name + ' ('+(i+1)+'/'+repetitions+')' : destinyData.name;
-
-                if (recurrence == 30) {
-                    sourceData.date = new Date(date.getFullYear(), date.getMonth() + i, date.getDate());
-                    destinyData.date = new Date(date.getFullYear(), date.getMonth() + i, date.getDate());
-                } else {
-                    sourceData.date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + (i*recurrence));
-                    destinyData.date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + (i*recurrence));
-                }
-                sources[i] = new app.models.transaction(sourceData);
-                destinies[i] = new app.models.transaction(destinyData);
-                saveTransactions(i, repetitions);
-            }
+            });
         });
 
     } // end form()
