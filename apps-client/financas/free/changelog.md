@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## 2.2
+
+Features
+- Remover campo número da nota
+- Inserir campo observações
+- Remover número de parcelas de transferencia
+
 ## 2.1 (2013-04-15)
 
 Features

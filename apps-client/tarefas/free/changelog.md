@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 2.2
+
+Features
+- Mudar de notas para observações em textarea
+- Modal de nova tarefa expansível
+
 ## 2.1 (2013-04-15)
 
 Features

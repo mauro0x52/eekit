@@ -154,10 +154,10 @@ app.routes.dialog('/adicionar-despesa', function (params, data) {
                 }
             }
         });
-        fields.noteNumber = new app.ui.inputText({
-            legend : 'Número da nota',
+        fields.observation = new app.ui.inputTextarea({
+            legend : 'Observações',
             type : 'text',
-            name : 'noteNumber'
+            name : 'observation'
         });
 
         fieldset = new app.ui.fieldset({
@@ -171,7 +171,7 @@ app.routes.dialog('/adicionar-despesa', function (params, data) {
         fieldset.fields.add(fields.reminder);
         fieldset.fields.add(fields.repetitions);
         fieldset.fields.add(fields.recurrence);
-        fieldset.fields.add(fields.noteNumber);
+        fieldset.fields.add(fields.observation);
 
         app.ui.form.fieldsets.add(fieldset);
 
@@ -206,7 +206,7 @@ app.routes.dialog('/adicionar-despesa', function (params, data) {
                     category : fields.category.value()[0],
                     account : fields.account.value()[0],
                     date : fields.date.value() ? fields.date.date() : null,
-                    noteNumber : fields.noteNumber.value(),
+                    observation : fields.observation.value(),
                     type : 'debt'
                 },
                 date = new Date(data.date);

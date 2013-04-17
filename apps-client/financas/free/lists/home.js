@@ -386,7 +386,7 @@ app.routes.list('/', function (params, data) {
                         transaction.name + ' ' +
                         transaction.subtitle + ' ' +
                         transaction.value + ' ' +
-                        transaction.noteNumber
+                        transaction.observation
                     ).toLowerCase().indexOf(query.toLowerCase()) > -1
                 )
             ) {
@@ -400,7 +400,7 @@ app.routes.list('/', function (params, data) {
                         (transaction.type === 'credit' ? '+' : '-') + transaction.value + ' %2C' +
                         escape(that.item.label.legend())  + ' %2C' +
                         escape(icons.account.legend()) + ' %2C' +
-                        escape(transaction.noteNumber) + '%0A'
+                        escape(transaction.observation) + '%0A'
                     );   
                 } else {
                     that.item.visibility('hide');
