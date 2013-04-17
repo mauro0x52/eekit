@@ -1,6 +1,15 @@
 Changelog
 =========
 
+## 1.2
+
+Features
+- Modal expansível
+
+Ajustes
+- Fechar ficha
+- Ícone de fechar helper
+
 ## 1.1 (2013-04-12)
 
 Features
