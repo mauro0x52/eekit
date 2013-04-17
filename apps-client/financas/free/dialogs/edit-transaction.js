@@ -115,14 +115,12 @@ app.routes.dialog('/editar-transacao/:id', function (params, data) {
             name : 'date',
             value : parseInt(date.getDate()) + '/' + parseInt(date.getMonth() + 1) + '/' + date.getFullYear()
         });
-        if (!transaction.isTransfer) {
-            fields.noteNumber = new app.ui.inputText({
-                legend : 'Número da nota',
-                type : 'text',
-                value : transaction.noteNumber,
-                name : 'noteNumber'
-            });
-        }
+        fields.observation = new app.ui.inputTextarea({
+            legend : 'Observações',
+            type : 'text',
+            value : transaction.observation,
+            name : 'observation'
+        });
 
         fieldset = new app.ui.fieldset({
             legend : 'Transação'
@@ -132,7 +130,7 @@ app.routes.dialog('/editar-transacao/:id', function (params, data) {
         fieldset.fields.add(fields.category);
         fieldset.fields.add(fields.account);
         fieldset.fields.add(fields.date);
-        fieldset.fields.add(fields.noteNumber);
+        fieldset.fields.add(fields.observation);
 
         app.ui.form.fieldsets.add(fieldset);
 
@@ -147,11 +145,11 @@ app.routes.dialog('/editar-transacao/:id', function (params, data) {
             transaction.value = fields.value.value().replace(',', '.');
             transaction.account = fields.account.value()[0];
             transaction.date = fields.date.value() ? fields.date.date() : null;
+            transaction.observation = fields.observation.value();
 
             if (!transaction.isTransfer) {
                 transaction.name = fields.name.value();
                 transaction.category = fields.category.value()[0];
-                transaction.noteNumber = fields.noteNumber.value();
             } else {
                 transaction.category = undefined;
             }

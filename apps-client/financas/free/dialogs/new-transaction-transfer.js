@@ -131,6 +131,11 @@ app.routes.dialog('/adicionar-transferencia', function (params, data) {
                 }
             }
         });
+        fields.observation = new app.ui.inputTextarea({
+            legend : 'Observações',
+            type : 'text',
+            name : 'observation'
+        });
 
         fieldset = new app.ui.fieldset({
             legend : 'Transação'
@@ -141,6 +146,7 @@ app.routes.dialog('/adicionar-transferencia', function (params, data) {
         fieldset.fields.add(fields.date);
         fieldset.fields.add(fields.repetitions);
         fieldset.fields.add(fields.recurrence);
+        fieldset.fields.add(fields.observation);
 
         app.ui.form.fieldsets.add(fieldset);
 
@@ -176,6 +182,7 @@ app.routes.dialog('/adicionar-transferencia', function (params, data) {
                     account : fields.sourceAccount.value()[0],
                     date : fields.date.value() ? fields.date.date() : null,
                     repetitions: fields.repetitions.value()[0],
+                    observation : fields.observation.value(),
                     type : 'debt',
                     isTransfer : true
                 };
@@ -185,6 +192,7 @@ app.routes.dialog('/adicionar-transferencia', function (params, data) {
                     account : fields.destinyAccount.value()[0],
                     date : fields.date.value() ? fields.date.date() : null,
                     repetitions: fields.repetitions.value()[0],
+                    observation : fields.observation.value(),
                     type : 'credit',
                     isTransfer : true
                 };

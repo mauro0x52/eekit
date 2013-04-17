@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 2.2
+
+Features
+- Remover campo número da nota
+- Inserir campo observações
+
 ## 2.1 (2013-04-15)
 
 Features

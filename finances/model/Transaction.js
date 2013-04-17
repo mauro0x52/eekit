@@ -22,7 +22,7 @@ transactionSchema = new schema({
     value       : {type : Number, required : true},
     date        : {type : Date, required : true},
     recurrence  : {type : Number},
-    noteNumber  : {type : String},
+    observation : {type : String},
     situation   : {type : String, enum : ['automatic','paid','unpaid']},
     type        : {type : String, enum : ['debt','credit']},
     isTransfer  : {type : Boolean}

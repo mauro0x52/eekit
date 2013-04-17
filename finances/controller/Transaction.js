@@ -20,7 +20,7 @@ module.exports = function (app) {
      *
      * @description : Cadastra uma transação
      *
-     * @request : {category, account, name, subtitle, value, date, recurrence, embeddeds, noteNumber, situation, type, isTransfer, token}
+     * @request : {category, account, name, subtitle, value, date, recurrence, embeddeds, observation, situation, type, isTransfer, token}
      * @response : {transaction}
      */
     app.post('/transaction', function (request,response) {
@@ -51,7 +51,7 @@ module.exports = function (app) {
                             date        : request.param('date', null),
                             recurrence  : request.param('recurrence', null),
                             embeddeds   : request.param('embeddeds', null),
-                            noteNumber  : request.param('noteNumber', null),
+                            observation : request.param('observation', null),
                             situation   : request.param('situation', null),
                             type        : request.param('type', null),
                             isTransfer  : request.param('isTransfer', null)
@@ -238,7 +238,7 @@ module.exports = function (app) {
      *
      * @description : Editar uma transação
      *
-     * @request : {category, account, name, subtitle, value, date, recurrence, embeddeds, noteNumber, situation, token}
+     * @request : {category, account, name, subtitle, value, date, recurrence, embeddeds, observation, situation, token}
      * @response : {transaction}
      */
     app.post('/transaction/:id/update', function (request,response) {
@@ -272,7 +272,7 @@ module.exports = function (app) {
                                 transaction.date        = request.param('date', transaction.date);
                                 transaction.recurrence  = request.param('recurrence', transaction.recurrence);
                                 transaction.embeddeds   = request.param('embeddeds', transaction.embeddeds);
-                                transaction.noteNumber  = request.param('noteNumber', transaction.noteNumber);
+                                transaction.observation = request.param('observation', transaction.observation);
                                 transaction.situation   = request.param('situation', transaction.situation);
                                 transaction.save(function (error) {
                                     if (error) {
