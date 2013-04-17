@@ -107,13 +107,17 @@ deploy() {
                 then
                     # atualiza pacotes
                     echo "-- Instalando e atualizando pacotes"
-                    npm install &>/dev/null
-                    npm update &>/dev/null
+                    npm install >/dev/null
+                    echo "--- Pacotes instalados"
+                    npm upd-ate >/dev/null
+                    echo "-- Pacotes atualizados"
                 fi
 
                 echo "-- Reiniciando serviço..."
                 forever stop $SERVICE.js
+                echo "--- Serviço $SERVICE parado"
                 forever start $SERVICE.js
+                echo "--- Serviço $SERVICE reiniciado"
             fi
 
             echo
