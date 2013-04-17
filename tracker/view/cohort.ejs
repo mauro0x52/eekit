@@ -19,9 +19,9 @@
         margin : 5px;
     }
 </style>
-<a href="/events/tasks">Tarefas</a> 
-<a href="/events/contacts">Contatos</a> 
-<a href="/events/finances">Financas</a><br /><br />
+<a href="/events/tasks?secret=tr4ck3r">Tarefas</a> 
+<a href="/events/contacts?secret=tr4ck3r">Contatos</a> 
+<a href="/events/finances?secret=tr4ck3r">Financas</a><br /><br />
 <table cellspacing="0">
     <tr>
         <td colspan="<%= (cohort[0].acquisition.length + cohort[0].activation.length + cohort[0].engagement.length) * 2 + cohort.length + 2 %>">
@@ -178,21 +178,21 @@
             <% for (var j in cohort[i].acquisition) { %>
                 <td colspan="2">
                     <% for (var k in cohort[i].acquisition[j].users) { %>
-                        <a href="/user/<%= cohort[i].acquisition[j].users[k].id %>/events"><%= cohort[i].acquisition[j].users[k].id %></a><br />
+                        <a href="/user/<%= cohort[i].acquisition[j].users[k].id %>/events?secret=tr4ck3r"><%= cohort[i].acquisition[j].users[k].id %></a><br />
                     <% } %>&nbsp;
                 </td>
             <% } %>
             <% for (var j in cohort[i].activation) { %>
                 <td colspan="2">
                     <% for (var k in cohort[i].activation[j].users) { %>
-                        <a href="/user/<%= cohort[i].activation[j].users[k].id %>/events"><%= cohort[i].activation[j].users[k].id %></a><br />
+                        <a href="/user/<%= cohort[i].activation[j].users[k].id %>/events?secret=tr4ck3r"><%= cohort[i].activation[j].users[k].id %></a><br />
                     <% } %>&nbsp;
                 </td>
             <% } %>
             <% for (var j in cohort[i].engagement) { %>
                 <td colspan="2">
                     <% for (var k in cohort[i].engagement[j].users) { %>
-                        <a href="/user/<%= cohort[i].engagement[j].users[k].id %>/events"><%= cohort[i].engagement[j].users[k].id %></a><br />
+                        <a href="/user/<%= cohort[i].engagement[j].users[k].id %>/events?secret=tr4ck3r"><%= cohort[i].engagement[j].users[k].id %></a><br />
                     <% } %>&nbsp;
                 </td>
             <% } %>
@@ -200,7 +200,7 @@
             <% for (var j in cohort[i].monitoring) { %>
                 <td>
                     <% for (var k in cohort[i].monitoring[j]) { %>
-                        <a href="/user/<%= cohort[i].monitoring[j][k].id %>/events"><%= cohort[i].monitoring[j][k].id %></a><br />
+                        <a href="/user/<%= cohort[i].monitoring[j][k].id %>/events?secret=tr4ck3r"><%= cohort[i].monitoring[j][k].id %></a><br />
                     <% } %>&nbsp;
                 </td>
             <% } %>
