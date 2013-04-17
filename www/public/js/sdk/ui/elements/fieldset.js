@@ -78,7 +78,7 @@ sdk.modules.ui.fieldset = function (app) {
                 return legend_legend.innerHTML;
             }
         };
-        this.fields = new Collection(fields_ul, [app.ui.inputText,app.ui.inputPassword,app.ui.inputDate,app.ui.inputSelector]);
+        this.fields = new Collection(fields_ul, [app.ui.inputText,app.ui.inputTextarea,app.ui.inputPassword,app.ui.inputDate,app.ui.inputSelector]);
         /* Setando valores iniciais */
         if (params) {
             this.legend(params.legend);

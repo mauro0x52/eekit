@@ -117,6 +117,7 @@ sdk.modules.ui.list = function (app) {
     this.item = new sdk.modules.ui.item(app);
     this.fieldset = new sdk.modules.ui.fieldset(app);
     this.inputText = new sdk.modules.ui.inputText(app);
+    this.inputTextarea = new sdk.modules.ui.inputTextarea(app);
     this.inputPassword = new sdk.modules.ui.inputPassword(app);
     this.inputDate = new sdk.modules.ui.inputDate(app);
     this.inputSelector = new sdk.modules.ui.inputSelector(app);
