@@ -118,7 +118,7 @@ app.routes.dialog('/adicionar-transferencia', function (params, data) {
         });
 
         fieldset = new app.ui.fieldset({
-            legend : 'Transação'
+            legend : 'Transferência'
         });
         fieldset.fields.add(fields.value);
         fieldset.fields.add(fields.sourceAccount);
