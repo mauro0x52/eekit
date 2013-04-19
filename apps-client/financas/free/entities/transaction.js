@@ -99,6 +99,11 @@ app.routes.entity('/transacao/:id', function (params, data) {
             app.ui.subtitle(value);
         }
 
+        /* Exibe as notas da transação */
+        this.observation = function (value) {
+            app.ui.description(value.replace(/\n/g, '<br />'));
+        }
+
         /* Exibe o valor da transação */
         this.value = function (value) {
             fields.value.values.remove();
@@ -179,6 +184,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
 
             if (transaction) {
                 that.name(transaction.name + (transaction.subtitle ? ' (' + transaction.subtitle + ')' : ''));
+                that.observation(transaction.observation);
                 that.category(transaction.category);
                 that.account(transaction.account);
                 that.date(transaction.date);
@@ -192,6 +198,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
 
         if (transaction) {
             this.name(transaction.name + (transaction.subtitle ? ' (' + transaction.subtitle + ')' : ''));
+            this.observation(transaction.observation);
             this.category(transaction.category);
             this.account(transaction.account);
             this.date(transaction.date);
@@ -212,7 +219,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
             accounts = data;
             app.models.transaction.find(params.id, function (transaction) {
                 new Entity(transaction);
-                
+
                 if (transaction.embeddeds) {
                     var appa = transaction.embeddeds[0].split('/')[1],
                         route = transaction.embeddeds[0].replace('/' + appa, '');
