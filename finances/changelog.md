@@ -1,9 +1,9 @@
 Changelog
 =========
 
-## 1.1
+## 1.0.1
 
-Features
+Melhorias
 - Remover campo número da nota
 - Inserir campo observações
 

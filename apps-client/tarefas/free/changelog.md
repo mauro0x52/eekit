@@ -1,9 +1,9 @@
 Changelog
 =========
 
-## 2.2
+## 2.1.1
 
-Features
+Melhorias
 - Mudar de notas para observações em textarea
 - Modal de nova tarefa expansível
 
