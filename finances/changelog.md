@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.0.1
+## 1.0.1 (2013-04-19)
 
 Melhorias
 - Remover campo número da nota
