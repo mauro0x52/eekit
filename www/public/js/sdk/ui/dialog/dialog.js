@@ -85,6 +85,7 @@ sdk.modules.ui.dialog = function (app, container) {
     /* Elementos específicos de ferramenta */
     this.fieldset = new sdk.modules.ui.fieldset(app);
     this.inputText = new sdk.modules.ui.inputText(app);
+    this.inputTextarea = new sdk.modules.ui.inputTextarea(app);
     this.inputError = new sdk.modules.ui.inputError(app);
     this.inputPassword = new sdk.modules.ui.inputPassword(app);
     this.inputDate = new sdk.modules.ui.inputDate(app);
