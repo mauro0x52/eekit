@@ -5,11 +5,8 @@
  * @description : Módulo que implementa as funcionalidades de evento
  */
 
-module.exports = function (app) {
-    var Model = require('./../model/Model.js'),
-        auth = require('../Utils.js').auth,
-        config = require('../config'),
-        Event = Model.Event;
+module.exports = function (params) {
+    "use strict";
 
     /** GET /user/:id/events
      *
@@ -24,7 +21,7 @@ module.exports = function (app) {
      * @request : {}
      * @response : {events}
      */
-    app.get('/user/:id/events', function (request,response) {
+    params.app.get('/user/:id/events', function (request,response) {
         if (request.param('secret', null) != 'tr4ck3r') {
             response.end();
             return;
@@ -38,16 +35,16 @@ module.exports = function (app) {
 
         saturday.setDate(saturday.getDate() + 7);
 
-        require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/services').on('success', function (data) {
-            require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/'+request.params.id, {data: {secret : config.security.secret}}).on('success', function (data) {
-                Event.user(request.params.id, function (error, user) {
+        require('restler').get('http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/services').on('success', function (data) {
+            require('restler').get('http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/user/'+request.params.id, {data: {secret : params.config.security.secret}}).on('success', function (data) {
+                params.model.Event.user(request.params.id, function (error, user) {
                     if (error) {
                         response.send({error : error});
                     } else {
-                        function format (date) {
+                        
+                        var format = function (date) {
                             return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
                         }
-                        delete data;
 
                         var i,
                             uses = {};
@@ -127,15 +124,15 @@ module.exports = function (app) {
      * @request : {}
      * @response : {events}
      */
-    app.get('/users', function (request,response) {
+    params.app.get('/users', function (request,response) {
         if (request.param('secret', null) != 'tr4ck3r') {
             response.end();
             return;
         }
 
-        require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/users', {
+        require('restler').get('http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/users', {
             data: {
-                secret : config.security.secret
+                secret : params.config.security.secret
             }
         }).on('success', function (data) {
             var date;
@@ -163,7 +160,7 @@ module.exports = function (app) {
      * @request : {}
      * @response : {events}
      */
-    app.get('/events', function (request,response) {
+    params.app.get('/events', function (request,response) {
         if (request.param('secret', null) != 'tr4ck3r') {
             response.end();
             return;
@@ -186,7 +183,7 @@ module.exports = function (app) {
             }
         }
 
-        Event.find(query, function (error, events) {
+        params.model.Event.find(query, function (error, events) {
 
             events.sort(function(a,b) {
                 if (a.date > b.date) return  1;
@@ -219,8 +216,8 @@ module.exports = function (app) {
      * @request : {}
      * @response : {event}
      */
-    app.post('/event', function (request,response) {
-        var newevent = new Event({
+    params.app.post('/event', function (request,response) {
+        var newevent = new params.model.Event({
                 ip : request.connection.remoteAddress,
                 date : new Date(),
                 app : request.param('app', null),
@@ -252,7 +249,7 @@ module.exports = function (app) {
             newevent.utm = utm;
         }
 
-        auth(request.param('token', null), function (error, user) {
+        params.auth(request.param('token', null), function (error, user) {
             if (!error) {
                 newevent.user = user._id
             }

@@ -17,7 +17,6 @@ app.routes.dialog('/remover-transacao/:id', function (params, data) {
 
         app.ui.form.submit(function() {
             transaction.remove();
-            app.events.trigger('remove transaction ' + params.id);
             app.close();
         });
     });

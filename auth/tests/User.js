@@ -66,7 +66,7 @@ describe('GET /user/:id', function() {
         });
     });
     it('id que não existe', function (done) {
-        api.post('auth', '/user/'+user._id, {
+        api.get('auth', '/user/inexistente', {
             secret : 'contacts'
         },
         function (error, data, response) {
@@ -79,7 +79,7 @@ describe('GET /user/:id', function() {
         });
     });
     it('sem permissão de ver todas as informações', function (done) {
-        api.post('auth', '/user/'+user._id, {
+        api.get('auth', '/user/'+user._id, {
             secret : 'contacts'
         },
         function (error, data, response) {
@@ -93,7 +93,7 @@ describe('GET /user/:id', function() {
         });
     });
     it('com permissão de ver todas as informações', function (done) {
-        api.post('auth', '/user/'+user._id, {
+        api.get('auth', '/user/'+user._id, {
             secret : 'contacts'
         },
         function (error, data, response) {
@@ -102,8 +102,6 @@ describe('GET /user/:id', function() {
             } else {
                 data.should.have.property('user').property('_id');
                 data.should.have.property('user').property('name');
-                data.should.have.property('user').property('username');
-                data.should.have.property('user').property('dateCreated');
                 data.should.have.property('user').property('company');
                 done();
             }

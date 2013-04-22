@@ -173,9 +173,9 @@ app.routes.list('/', function (params, data) {
         groups = groupsets.groupset.groups.get();
         for (i in groups) {
             if (
-                groups[i].date.getFullYear() === transaction.date.getFullYear() &&
-                groups[i].date.getMonth() === transaction.date.getMonth() &&
-                groups[i].date.getDate() === transaction.date.getDate()
+                groups[i].date.getFullYear() === new Date(transaction.date).getFullYear() &&
+                groups[i].date.getMonth() === new Date(transaction.date).getMonth() &&
+                groups[i].date.getDate() === new Date(transaction.date).getDate()
             ) {
                 return groups[i];
             }

@@ -5,13 +5,8 @@
  * @description : Módulo que implementa as funcionalidades de conta de usuário
  */
 
-module.exports = function (app) {
+module.exports = function (params) {
     "use strict";
-
-    var Model = require('./../model/Model.js'),
-        User  = Model.User,
-        config = require('../config.js'),
-        Service  = Model.Service;
 
     /**
      * Lista todos os usuários do banco
@@ -22,15 +17,15 @@ module.exports = function (app) {
      * @request     {secret}
      * @response    {users[]}
      */
-    app.get('/users', function (request, response) {
+    params.app.get('/users', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
         var service = null;
 
-        for (var i in config.services) {
-            if (config.services[i].secret === request.param('secret', '')) {
-                service = config.services[i]
+        for (var i in params.config.services) {
+            if (params.config.services[i].secret === request.param('secret', '')) {
+                service = params.config.services[i]
                 service.slug = i;
             }
         }
@@ -41,7 +36,7 @@ module.exports = function (app) {
             if (!service.permissions.users) {
                 response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
             } else {
-                User.find({}, '_id name username company info dateCreated', function (error, users) {
+                params.model.User.find({}, '_id name username company info dateCreated', function (error, users) {
                     if (error) {
                         response.send({error : error});
                     } else {
@@ -61,15 +56,15 @@ module.exports = function (app) {
      * @request     {id,secret}
      * @response    {users[]}
      */
-    app.get('/user/:id', function (request, response) {
+    params.app.get('/user/:id', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
         var service = null, result = {};
 
-        for (var i in config.services) {
-            if (config.services[i].secret === request.param('secret', '')) {
-                service = config.services[i]
+        for (var i in params.config.services) {
+            if (params.config.services[i].secret === request.param('secret', '')) {
+                service = params.config.services[i]
                 service.slug = i;
             }
         }
@@ -77,7 +72,7 @@ module.exports = function (app) {
         if (service === null) {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
-            User.findOne({_id:request.params.id}, '_id name username company informations dateCreated tokens', function (error, user) {
+            params.model.User.findOne({_id:request.params.id}, '_id name username company informations dateCreated tokens', function (error, user) {
                 if (error || !user) {
                     response.send({error : { message : 'user not found', name : 'NotFoundError', path : 'id', id : request.params.id}});
                 } else {
@@ -108,16 +103,16 @@ module.exports = function (app) {
      * @request     {name, username, password, secret}
      * @response    {user}
      */
-    app.post('/user', function (request, response) {
+    params.app.post('/user', function (request, response) {
         var newUser,
             service = null;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        for (var i in config.services) {
-            if (config.services[i].secret === request.param('secret', '')) {
-                service = config.services[i]
+        for (var i in params.config.services) {
+            if (params.config.services[i].secret === request.param('secret', '')) {
+                service = params.config.services[i]
                 service.slug = i;
             }
         }
@@ -129,7 +124,7 @@ module.exports = function (app) {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
             // procura token
-            User.findByToken(request.param('token', null), function(error, user) {
+            params.model.User.findByToken(request.param('token', null), function(error, user) {
                 if (error || !user) {
                     response.send({error : { message : 'invalid token', name : 'InvalidTokenError', id : request.param('token', null), path : 'token'}});
                 } else {
@@ -139,7 +134,7 @@ module.exports = function (app) {
                             response.send({error : { message : 'invalid token', name : 'InvalidTokenError', id : request.param('token', null), path : 'token'}});
                         } else {
                             // cria novo usuário
-                            newUser = new User({
+                            newUser = new params.model.User({
                                 name     : request.param('name', null),
                                 username : request.param('username', null),
                                 password : request.param('password', null),
@@ -186,17 +181,16 @@ module.exports = function (app) {
      * @request     {token}
      * @response    {users}
      */
-    app.get('/company/users', function (request, response) {
-
+    params.app.get('/company/users', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
         // procura token
-        User.findByToken(request.param('token', null), function(error, user) {
+        params.model.User.findByToken(request.param('token', null), function(error, user) {
             if (error || !user) {
                 response.send({error : { message : 'invalid token', name : 'InvalidTokenError', id : request.param('token', null), path : 'token'}});
             } else {
-                User.find({company : user.company}, function (error, users) {
+                params.model.User.find({company : user.company}, function (error, users) {
                     var result = [];
                     if (error) {
                         response.send({error : error});
@@ -223,15 +217,15 @@ module.exports = function (app) {
      * @request : {login, password, secret}
      * @response : {token}
      */
-    app.post('/user/login', function (request, response) {
+    params.app.post('/user/login', function (request, response) {
         var service = null;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        for (var i in config.services) {
-            if (config.services[i].secret === request.param('secret', '')) {
-                service = config.services[i]
+        for (var i in params.config.services) {
+            if (params.config.services[i].secret === request.param('secret', '')) {
+                service = params.config.services[i]
                 service.slug = i;
             }
         }
@@ -239,7 +233,7 @@ module.exports = function (app) {
         if (service === null || service.slug !== 'www') {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
-            User.findOne({username : request.param('username', null), password : User.encryptPassword(request.param('password', null))}, function (error, user) {
+            params.model.User.findOne({username : request.param('username', null), password : params.model.User.encryptPassword(request.param('password', null))}, function (error, user) {
                 if (error) {
                     response.send({error : { message : 'invalid username or password', name : 'InvalidLoginError'}});
                 } else if (user === null) {
@@ -270,15 +264,15 @@ module.exports = function (app) {
      * @request : {token, secret}
      * @response : null
      */
-    app.post('/user/logout', function (request, response) {
+    params.app.post('/user/logout', function (request, response) {
         var service = null;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        for (var i in config.services) {
-            if (config.services[i].secret === request.param('secret', '')) {
-                service = config.services[i]
+        for (var i in params.config.services) {
+            if (params.config.services[i].secret === request.param('secret', '')) {
+                service = params.config.services[i]
                 service.slug = i;
             }
         }
@@ -286,7 +280,7 @@ module.exports = function (app) {
         if (service === null || service.slug !== 'www') {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
-            User.findByToken(request.param('token', null), function(error, user) {
+            params.model.User.findByToken(request.param('token', null), function(error, user) {
                 if (error || !user) {
                     response.send({error : { message : 'invalid token', name : 'InvalidTokenError', id : request.param('token', null), path : 'token'}});
                 } else {
@@ -311,15 +305,15 @@ module.exports = function (app) {
      * @request  {login}
      * @response {}
      */
-    app.post('/user/forgot-password', function (request, response) {
+    params.app.post('/user/forgot-password', function (request, response) {
         var service = null;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        for (var i in config.services) {
-            if (config.services[i].secret === request.param('secret', '')) {
-                service = config.services[i]
+        for (var i in params.config.services) {
+            if (params.config.services[i].secret === request.param('secret', '')) {
+                service = params.config.services[i]
                 service.slug = i;
             }
         }
@@ -327,7 +321,7 @@ module.exports = function (app) {
         if (service === null || service.slug !== 'www') {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
-            User.findOne({username : request.param('username', null)}, function (error, user) {
+            params.model.User.findOne({username : request.param('username', null)}, function (error, user) {
                 if (error || user === null) {
                     response.send({error : { message : 'user not found', name : 'NotFoundError'}});
                 } else {
@@ -335,7 +329,7 @@ module.exports = function (app) {
                         if (error) {
                             response.send({error : error});
                         } else {
-                            require('restler').post('http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail/self', {
+                            require('restler').post('http://' + params.config.services.jaiminho.url + ':' + params.config.services.jaiminho.port + '/mail/self', {
                                 data: {
                                     token      : token,
                                     subject    : 'Recuperação de senha',
@@ -362,15 +356,15 @@ module.exports = function (app) {
      * @request : {token, secret, password}
      * @response : null
      */
-    app.post('/user/:id/change-password', function (request, response) {
+    params.app.post('/user/:id/change-password', function (request, response) {
         var service = null, found;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        for (var i in config.services) {
-            if (config.services[i].secret === request.param('secret', '')) {
-                service = config.services[i]
+        for (var i in params.config.services) {
+            if (params.config.services[i].secret === request.param('secret', '')) {
+                service = params.config.services[i]
                 service.slug = i;
             }
         }
@@ -378,15 +372,15 @@ module.exports = function (app) {
         if (service === null || service.slug !== 'www') {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
-            User.findByToken(request.param('token', null), function(error, user) {
+            params.model.User.findByToken(request.param('token', null), function(error, user) {
                 if (error || !user) {
                     response.send({error : { message : 'invalid token', name : 'InvalidTokenError', id : request.param('token', null), path : 'token'}});
                 } else {
-                    User.findOne({_id : request.params.id, company : user.company}, function (error, user) {
+                    params.model.User.findOne({_id : request.params.id, company : user.company}, function (error, user) {
                         if (error || !user) {
                             response.send({error : { message : 'user not found', name : 'NotFoundError', id : request.params.id, path : 'user'}});
                         } else {
-                            user.password = User.encryptPassword(request.param('password', null));
+                            user.password = params.model.User.encryptPassword(request.param('password', null));
                             user.save(function (error) {
                                 if (error) {
                                     response.send({error : error});

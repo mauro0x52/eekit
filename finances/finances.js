@@ -26,11 +26,39 @@ app.configure(function () {
     app.use(app.router);
 });
 
-/*  Chamando controllers */
-require('./controller/Company.js')(app);
-require('./controller/Category.js')(app);
-require('./controller/Account.js')(app);
-require('./controller/Transaction.js')(app);
+require('./utils/kamisama')(function (kamisama) {
+    var model = require('./model/Model'),
+        auth = require('./utils/auth');
+    /*  Chamando controllers */
+    require('./controller/Company.js')({
+        app      : app,
+        model    : model,
+        kamisama : kamisama,
+        auth     : auth,
+        config   : config
+    });
+    require('./controller/Category.js')({
+        app      : app,
+        model    : model,
+        kamisama : kamisama,
+        auth     : auth,
+        config   : config
+    });
+    require('./controller/Account.js')({
+        app      : app,
+        model    : model,
+        kamisama : kamisama,
+        auth     : auth,
+        config   : config
+    });
+    require('./controller/Transaction.js')({
+        app      : app,
+        model    : model,
+        kamisama : kamisama,
+        auth     : auth,
+        config   : config
+    });
+});
 
 /*  Métodos para dev e teste */
 app.get('/ping', function (request,response) {

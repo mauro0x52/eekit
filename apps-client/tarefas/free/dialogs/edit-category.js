@@ -98,7 +98,6 @@ app.routes.dialog('/editar-categoria/:id', function (params, data) {
             category.type = fields.types.value()[0];
             category.color = fields.colors.value()[0];
             category.save(function () {
-                app.events.trigger('update category ' + params.id, category);
                 app.close(category);
             });
         });

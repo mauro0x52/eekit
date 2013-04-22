@@ -89,12 +89,6 @@ app.models.task = function (params) {
             if (cb) {
                 cb();
             }
-
-            if (data.task) {
-                app.events.trigger('create task', data.task);
-            }
-
-            app.events.trigger('do task ' + that._id, that);
             app.tracker.event('marcar tarefa como feita');    
         });
     };
@@ -123,8 +117,6 @@ app.models.task = function (params) {
                     url : 'http://' + app.config.services.tasks.host + ':' + app.config.services.tasks.port + '/task/' + that._id + '/update',
                     data : {dateDeadline : that.dateDeadline}
                 }, function () {});
-
-                app.events.trigger('drop task ' + that._id, that);
             }
         });
     };

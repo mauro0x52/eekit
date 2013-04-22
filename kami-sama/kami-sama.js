@@ -6,46 +6,66 @@
  * @description : Server do barreamento de eventos da empreendemia
  */
 
-var express = require('express'),
-    config  = require('./config.js');
+var config = require('./config.js'),
+    xmpp = require('node-xmpp'),
+    io = require('socket.io').listen(8010),
+    serversEvents = [],
+    sockets = [];
 
-var app = module.exports = express();
-
-/*  Configurando o server */
-app.configure(function () {
-    "use strict";
-
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-
-    /* caso seja ambiente de produção, esconder erros */
-    if (config.host.debuglevel === 0) {
-        app.use(express.errorHandler({ dumpExceptions: true }));
-    }
-
-    app.use(app.router);
+var server = new xmpp.C2SServer({
+    port: config.host.port,
+    domain: config.host.url
 });
 
-/*  Chamando controllers */
-require('./controller/Event.js')(app);
-
-/*  Métodos para dev e teste */
-app.get('/ping', function (request,response) {
-    "use strict";
-
-    response.contentType('json');
-    response.header('Access-Control-Allow-Origin', '*');
-
-    var fs = require('fs'), regexm;
-
-    fs.readFile('changelog.md', 'utf8', function(error, data) {
-        if (error) response.send({error : error});
-        else {
-            regexm = data.match(/\#{2}\s*([0-9]+\.[0-9]+\.?[0-9]?)\s*(\((.*)\))?/);
-            response.send({ version : regexm[1], date : regexm[3] });
+var triggerXMPP = function (event, token, postdata) {
+    require('restler').post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/' + event.client.jid.user + '/authorize', {
+        data: {
+            secret : config.security.secret,
+            token  : token
         }
+    }).on('success', function(data) {
+        event.client.send(
+            new xmpp.Element('event')
+                .c('label').t(event.label).up()
+                .c('token').t(data.token).up()
+                .c('data').t(postdata)
+        );
+    }).on('error', function(error) {});
+};
+
+server.on('connect', function(client) {
+    server.on("register", function(opts, cb) {
+        cb(true);
     });
+
+    client.on('authenticate', function(opts, cb) {
+        cb(null);
+    });
+
+    client.on('stanza', function(stanza) {
+    	if (stanza.name === 'bind') {
+    		serversEvents.push({
+    			label   : stanza.children[0].children[0],
+    			client  : client
+    		});
+    	}
+    	if (stanza.name === 'trigger') {
+            for (var i in serversEvents) {
+                if (serversEvents[i].label === stanza.children[0].children[0]) {
+                    triggerXMPP(serversEvents[i], stanza.children[1].children[0], stanza.children[2].children[0]);
+                }
+            }
+            for (var i in sockets) {
+                sockets[i].emit('trigger',{
+                    label : stanza.children[0].children[0],
+                    data  : stanza.children[2].children[0]
+                });
+            }
+    	}
+    });
+
 });
 
-/*  Ativando o server */
-app.listen(config.host.port);
+io.sockets.on('connection', function (socket) {
+    sockets.push(socket);
+});

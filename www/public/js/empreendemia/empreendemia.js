@@ -109,7 +109,13 @@ var empreendemia = {
         empreendemia.user.auth(function () {
             empreendemia.ui = new empreendemia.ui();
             window.addEventListener('resize', empreendemia.ui.content.roll.sheets.fitHeight, true);
-            empreendemia.load()
+            empreendemia.load();
+
+            var socket = io.connect('http://localhost:8010');
+            socket.on('trigger', function (data) {
+                console.log(data.label);
+                empreendemia.events.trigger(data.label, eval('(' + data.data + ')'));
+            });
         });
     }
 };

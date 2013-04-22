@@ -155,7 +155,6 @@ app.routes.dialog('/editar-transacao/:id', function (params, data) {
             }
 
             transaction.save(function () {
-                app.events.trigger('update transaction ' + params.id, transaction);
                 app.close(transaction);
             });
         });

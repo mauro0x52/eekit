@@ -12,7 +12,8 @@ module.exports = {
         db : 'finances'
     },
     security : {
-        secret : 'finances'
+        secret : 'finances',
+        name   : 'finances'
     },
     services : {
         auth : {

@@ -26,8 +26,18 @@ app.configure(function () {
     app.use(app.router);
 });
 
-/*  Chamando controllers */
-require('./controller/App.js')(app);
+require('./utils/kamisama')(function (kamisama) {
+    var model = require('./model/Model'),
+        auth = require('./utils/auth');
+    /*  Chamando controllers */
+    require('./controller/App.js')({
+        app      : app,
+        model    : model,
+        kamisama : kamisama,
+        auth     : auth,
+        config   : config
+    });
+});
 
 /*  Métodos para dev e teste */
 app.get('/ping', function (request, response) {
