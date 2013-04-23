@@ -88,10 +88,17 @@
                 }
                 if (navigator.userAgent.indexOf('MSIE') === -1) {
                     "use strict";
+
+                    empreendemia.socket = io.connect('http://localhost:8010');
+                    empreendemia.socket.on('trigger', function (data) {
+                        empreendemia.events.trigger(data.label, eval('(' + data.data + ')'));
+                    });
+
                     document.addEventListener('click', function (e) {
                         document.lastclick = e;
                         return true;
                     }, true);
+
                     empreendemia.ajax.get({url : 'http://'+location.hostname+':8001/services'}, function (data) {
                         empreendemia.config = data;
                         sdk.config = data;

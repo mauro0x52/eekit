@@ -55,17 +55,29 @@ server.on('connect', function(client) {
                     triggerXMPP(serversEvents[i], stanza.children[1].children[0], stanza.children[2].children[0]);
                 }
             }
-            for (var i in sockets) {
-                sockets[i].emit('trigger',{
-                    label : stanza.children[0].children[0],
-                    data  : stanza.children[2].children[0]
-                });
-            }
+            require('restler').post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/www/authorize', {
+                data: {
+                    secret : config.security.secret,
+                    token  : stanza.children[1].children[0]
+                }
+            }).on('success', function(data) {
+                for (var i in sockets) {
+                    if (sockets[i].user._id === data.user._id) {
+                        sockets[i].emit('trigger',{
+                            label : stanza.children[0].children[0],
+                            data  : stanza.children[2].children[0]
+                        });
+                    }
+                }
+            }).on('error', function(error) {});
     	}
     });
-
 });
 
 io.sockets.on('connection', function (socket) {
+    socket.user = socket.handshake.address.address;
     sockets.push(socket);
+    socket.on('auth', function (data) {
+        socket.user = data.user;
+    });
 });
