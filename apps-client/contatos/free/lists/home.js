@@ -303,7 +303,6 @@ app.routes.list('/', function (params, data) {
         /* Pegando a edição do contato */
         app.events.bind('update contact ' + contact._id, function (data) {
             var oldGroup = fitGroup(contact);
-            console.log(data)
 
             contact = new app.models.contact(data);
 

@@ -188,7 +188,6 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
         /* adiciona os campos no fieldset */
         fieldset.fields.add(fields.title);
         fieldset.fields.add(fields.category);
-        console.log(task.done)
         if (!task.done) {
             fieldset.fields.add(fields.date);
         }
