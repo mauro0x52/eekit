@@ -211,7 +211,7 @@ module.exports = function (params) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
-                                        params.kamisama.trigger(request.param('token'), 'delete category ' + category._id, category);
+                                        params.kamisama.trigger(request.param('token'), 'remove category ' + category._id, category);
                                         response.send(null);
                                     }
                                 });
