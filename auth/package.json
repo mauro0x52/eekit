@@ -6,6 +6,7 @@
     "mongoose": "3.6.0",
     "restler": "2.0.1",
     "mocha": "1.8.1",
-    "should": "1.2.2"
+    "should": "1.2.2",
+    "socket.io-client": "0.9.11"
   }
 }
