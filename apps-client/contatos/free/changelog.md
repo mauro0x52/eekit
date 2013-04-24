@@ -1,9 +1,9 @@
 Changelog
 =========
 
-## 2.2
+## 2.1.1 (2013-04-19)
 
-Features
+Melhorias
 - Mudar de notas para observações em textarea
 
 ## 2.1 (2013-04-15)

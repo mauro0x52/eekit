@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.2
+## 1.2 (2013-04-19)
 
 Features
 - Modal expansível
