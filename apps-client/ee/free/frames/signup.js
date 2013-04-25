@@ -6,7 +6,11 @@
  */
 
 app.routes.frame('/cadastrar', function (params, data) {
-    var styles, header, content_header, content_form, form, topics, inputs = {}, error_message;
+    app.tracker.event('visualizar: cadastro');
+
+    var styles, header, content_header, content_form, form, topics,
+        inputs = {}, error_message,
+        event_name = false, event_company = false, event_phone = false, event_email = false, event_password = false;
 
 
 /*
@@ -78,7 +82,7 @@ styles = {
                                 },
                                 events : {
                                     click : function () {
-                                        app.apps.open({app : app.slug, route : '/planos'});
+                                        app.apps.open({app : app.slug, route : '/precos-e-planos'});
                                         app.close();
                                     }
                                 }
@@ -118,7 +122,7 @@ styles = {
                                 },
                                 events : {
                                     click : function () {
-                                        app.apps.open({app : app.slug, route : '/duvidas'});
+                                        app.apps.open({app : app.slug, route : '/suporte'});
                                         app.close();
                                     }
                                 }
@@ -230,16 +234,24 @@ styles = {
     styles.html += '.input:invalid {color: #cc0000;}';
     styles.html += '.input:focus {background-color:#fff; box-shadow:0 0 15px rgba(255,255,230,0.9); color:#333030;}';
 
-    inputs.name = new app.ui.tag({
-       tag : 'input',
-       attributes : {
-           'type' : 'text',
-           'class' : 'input',
-           'required' : 'true',
-           'pattern' : '^[a-zA-Z0-9][a-zA-Z0-9 ]+$',
-           'placeholder' : 'ex.: Fulano de Tal'
-       }
-    });
+inputs.name = new app.ui.tag({
+    tag : 'input',
+    attributes : {
+        'type' : 'text',
+        'class' : 'input',
+        'required' : 'true',
+        'pattern' : '^[a-zA-Z0-9][a-zA-Z0-9 ]+$',
+        'placeholder' : 'ex.: Fulano de Tal'
+    },
+    events : {
+        keydown : function () {
+            if (event_name === false) {
+                app.tracker.event('cadastrar: nome');
+                event_name = true;
+            }
+        }
+    }
+});
 
     inputs.company = new app.ui.tag({
        tag : 'input',
@@ -250,7 +262,15 @@ styles = {
            'required' : 'true',
            'pattern' : '^[a-zA-Z0-9].+$',
            'placeholder' : 'ex.: Fulano e Cia.'
-       }
+       },
+        events : {
+            keydown : function () {
+                if (event_company === false) {
+                    app.tracker.event('cadastrar: empresa');
+                    event_company = true;
+                }
+            }
+        }
     });
 
     inputs.phone = new app.ui.tag({
@@ -261,7 +281,15 @@ styles = {
            'required' : 'true',
            'pattern' : '^((\\(\\d{0,3}\\))|(\\d{0,3}))\\s9?\\s?\\d{4}[\\s\\-]?\\d{4}$',
            'placeholder' : 'ex.: (11) 3230-9233'
-       }
+       },
+        events : {
+            keydown : function () {
+                if (event_phone === false) {
+                    app.tracker.event('cadastrar: telefone');
+                    event_phone = true;
+                }
+            }
+        }
     });
 
     inputs.email = new app.ui.tag({
@@ -271,7 +299,15 @@ styles = {
            'class' : 'input',
            'required' : 'true',
            'placeholder' : 'ex.: fulano@fulanoecia.com.br'
-       }
+       },
+        events : {
+            keydown : function () {
+                if (event_email === false) {
+                    app.tracker.event('cadastrar: email');
+                    event_email = true;
+                }
+            }
+        }
     });
 
     inputs.password = new app.ui.tag({
@@ -283,7 +319,15 @@ styles = {
            'required' : 'true',
            'pattern' : '^.{6,}$',
            'placeholder' : 'ex.: ful4n0d3t4l (pelo menos 6 caracteres)'
-       }
+       },
+        events : {
+            keydown : function () {
+                if (event_password === false) {
+                    app.tracker.event('cadastrar: password');
+                    event_password = true;
+                }
+            }
+        }
     });
 
 

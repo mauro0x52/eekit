@@ -6,7 +6,7 @@
  */
 
 app.routes.frame('/como-funciona', function (params, data) {
-    app.tracker.event('visualizar como funciona');
+    app.tracker.event('visualizar: como-funciona');
 
     var header, title, printscreen, text, features, feature_item, footer_signup;
 
@@ -65,7 +65,7 @@ app.routes.frame('/como-funciona', function (params, data) {
                                 },
                                 events : {
                                     click : function () {
-                                        app.apps.open({app : app.slug, route : '/planos'});
+                                        app.apps.open({app : app.slug, route : '/precos-e-planos'});
                                         app.close();
                                     }
                                 }
@@ -99,7 +99,7 @@ app.routes.frame('/como-funciona', function (params, data) {
                                 },
                                 events : {
                                     click : function () {
-                                        app.apps.open({app : app.slug, route : '/duvidas'});
+                                        app.apps.open({app : app.slug, route : '/suporte'});
                                         app.close();
                                     }
                                 }

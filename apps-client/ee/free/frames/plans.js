@@ -5,8 +5,9 @@
  * @since  2013-04
  */
 
-app.routes.frame('/planos', function (params, data) {
-    app.tracker.event('visualizar planos');
+app.routes.frame('/precos-e-planos', function (params, data) {
+    app.tracker.event('visualizar: precos-e-planos');
+
 
     var header, prices, footer_signup, table_header, plan, table_plan_1, table_plan_2, table_plan_3;
 
@@ -99,7 +100,7 @@ app.routes.frame('/planos', function (params, data) {
                                 },
                                 events : {
                                     click : function () {
-                                        app.apps.open({app : app.slug, route : '/duvidas'});
+                                        app.apps.open({app : app.slug, route : '/suporte'});
                                         app.close();
                                     }
                                 }

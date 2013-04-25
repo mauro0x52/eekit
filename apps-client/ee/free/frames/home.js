@@ -6,7 +6,7 @@
  */
 
 app.routes.frame('/', function (params, data) {
-    app.tracker.event('visualizar home');
+    app.tracker.event('visualizar: principal');
 
     var header, content_header, content_signup, content_title, content_apps, footer_signup, app_contacts, app_finances, app_tasks, app_scroller, scroll_animation_style, contacts_button, tasks_button, finances_button, app_button_style, selected_app_button_style;
 
@@ -64,7 +64,7 @@ app.routes.frame('/', function (params, data) {
                                 },
                                 events : {
                                     click : function () {
-                                        app.apps.open({app : app.slug, route : '/planos'});
+                                        app.apps.open({app : app.slug, route : '/precos-e-planos'});
                                         app.close();
                                     }
                                 }
@@ -104,7 +104,7 @@ app.routes.frame('/', function (params, data) {
                                 },
                                 events : {
                                     click : function () {
-                                        app.apps.open({app : app.slug, route : '/duvidas'});
+                                        app.apps.open({app : app.slug, route : '/suporte'});
                                         app.close();
                                     }
                                 }
