@@ -5,10 +5,8 @@
  * @description : Módulo que implementa as funcionalidades de company de finances
  */
 
-module.exports = function (app) {
-    var Model = require('./../model/Model.js'),
-        auth = require('../Utils.js').auth,
-        Company = Model.Company;
+module.exports = function (params) {
+    "use strict";
 
     /** POST /company
      *
@@ -20,21 +18,21 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {categories[], accounts[]}
      */
-    app.post('/company', function (request,response) {
+    params.app.post('/company', function (request,response) {
         var newcompany;
         
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
         
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, oldcompany) {
+                params.model.Company.findOne({company : data.company._id}, function (error, oldcompany) {
                     if (error) {
                         response.send({error : error});
                     } else if (oldcompany === null) {
-                        newcompany = new Company({
+                        newcompany = new params.model.Company({
                             company : data.company._id,
                             categories : [
                                 {name : 'Produto 1', type : 'credit'},

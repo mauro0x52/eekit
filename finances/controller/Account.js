@@ -5,10 +5,8 @@
  * @description : Módulo que implementa as funcionalidades account
  */
 
-module.exports = function (app) {
-    var Model = require('./../model/Model.js'),
-        auth = require('../Utils.js').auth,
-        Company = Model.Company;
+module.exports = function (params) {
+    "use strict";
 
     /** POST /account
      *
@@ -20,15 +18,15 @@ module.exports = function (app) {
      * @request : {name, bank, account, agency, initialBalance, token}
      * @response : {account}
      */
-    app.post('/account', function (request,response) {
+    params.app.post('/account', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
@@ -42,10 +40,12 @@ module.exports = function (app) {
                             initialBalance : request.param('initialBalance', null)
                         });
                         company.save(function (error) {
+                            var account = company.accounts.pop();
                             if (error) {
                                 response.send({error : error});
                             } else {
-                                response.send({account : company.accounts.pop()});
+                                params.kamisama.trigger(request.param('token'), 'create account', account);
+                                response.send({account : account});
                             }
                         });
                     }
@@ -64,15 +64,15 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {accounts[]}
      */
-    app.get('/accounts', function (request,response) {
+    params.app.get('/accounts', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
@@ -95,17 +95,17 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {account}
      */
-    app.get('/account/:id', function (request,response) {
+    params.app.get('/account/:id', function (request,response) {
         var account;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
@@ -136,17 +136,17 @@ module.exports = function (app) {
      * @request : {name, bank, account, agency, initialBalance, token}
      * @response : {account}
      */
-    app.post('/account/:id/update', function (request,response) {
+    params.app.post('/account/:id/update', function (request,response) {
         var account;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
@@ -167,6 +167,7 @@ module.exports = function (app) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
+                                        params.kamisama.trigger(request.param('token'), 'update account ' + account._id, account);
                                         response.send({account : account});
                                     }
                                 });
@@ -188,17 +189,17 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {}
      */
-    app.post('/account/:id/delete', function (request,response) {
+    params.app.post('/account/:id/delete', function (request,response) {
         var account;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
@@ -215,6 +216,7 @@ module.exports = function (app) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
+                                params.kamisama.trigger(request.param('token'), 'remove account ' + account._id, account);
                                         response.send(null);
                                     }
                                 });

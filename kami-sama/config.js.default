@@ -1,18 +1,12 @@
 module.exports = {
     host : {
-        port : 8008,
+        port : 5222,
         url  : 'localhost',
         debuglevel : 1 // 0 sem erros, 1 com erros
     },
-    mongodb : {
-        port : 27017,
-        url : 'localhost',
-        username : undefined,
-        password : undefined,
-        db : 'kamisama'
-    },
     security : {
-        secret : 'kamisama'
+        secret : 'kamisama',
+        name   : 'kamisama'
     },
     services : {
         auth : {

@@ -6,6 +6,10 @@ Changelog
 Correções
 - app.ui.tag
 
+Ajustes
+- Comunicação via socket com barramento de eventos
+- Remover header em frames
+
 ## 1.2 (2013-04-19)
 
 Features

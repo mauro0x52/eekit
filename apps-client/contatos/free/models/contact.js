@@ -76,8 +76,6 @@ app.models.contact = function (params) {
         this.priority = priority;
         this.category = category;
         this.save();
-
-        app.events.trigger('drop contact ' + this._id, this);
     };
 
     /**

@@ -165,7 +165,6 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
                 })
             }
             contact.save(function () {
-                app.events.trigger('update contact ' + params.id, contact);
                 app.close(contact);
             });
         });

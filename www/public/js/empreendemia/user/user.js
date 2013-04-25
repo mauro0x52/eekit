@@ -20,7 +20,10 @@ empreendemia.user = {
                 var i;
                 if (data && data.tokens) {
                     for (i in data.tokens) {
-                        if (new Date() < new Date(data.tokens[i].dateExpiration)) {
+                        if (
+                            new Date() < new Date(data.tokens[i].dateExpiration) &&
+                            empreendemia.config.services[data.tokens[i].service]
+                        ) {
                             empreendemia.config.services[data.tokens[i].service].token = data.tokens[i].token;
                         }
                     }

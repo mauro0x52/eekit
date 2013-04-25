@@ -153,8 +153,6 @@ app.routes.dialog('/adicionar-transferencia', function (params, data) {
 
             source.save(function () {
                 destiny.save(function () {
-                    app.events.trigger('create transaction', source);
-                    app.events.trigger('create transaction', destiny);
                     app.close({ source : source, destiny : destiny});
                 });
             });

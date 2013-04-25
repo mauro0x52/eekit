@@ -7,12 +7,8 @@
  * Módulo que implementa as funcionalidades de email
  */
 
-module.exports = function (app) {
-    var auth = require('../Utils.js').auth,
-        restler = require('restler'),
-        config = require('../config.js'),
-        Model = require('./../model/Model.js'),
-        Schedule = Model.Schedule;
+module.exports = function (params) {
+    var restler = require('restler');
 
     /** POST /mail/schedule
      *
@@ -24,7 +20,7 @@ module.exports = function (app) {
      * @request : {token, request:{service,name}, mail:{from, to, subject, html}, dateCreated, date}
      * @response : {account}
      */
-    app.post('/mail/schedule', function (request, response) {
+    params.app.post('/mail/schedule', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
@@ -51,22 +47,22 @@ module.exports = function (app) {
         } else if (to && /^.*\@empreendemia\.com\.br$/.test(to) === false) {
             response.send({error : { message : 'Must be a valid email address', name : 'ValidatorError', path : 'to', type : 'format'}});
         } else {
-            restler.post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/jaiminho/authorize', {
+            restler.post('http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/service/jaiminho/authorize', {
                 data: {
                     token  : token,
-                    secret : config.security.secret
+                    secret : params.config.security.secret
                 }
             }).on('success', function(data) {
                 if (data.token) {
                     token = data.token;
-                    restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
+                    restler.get('http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/validate', {
                         data: {
                             token  : token,
-                            secret : config.security.secret
+                            secret : params.config.security.secret
                         }
                     }).on('success', function(data) {
                         if (data.user) {
-                            schedule = new Schedule({
+                            schedule = new params.model.Schedule({
                                 user        : data.user._id,
                                 request     : {
                                     service : service,
@@ -104,12 +100,12 @@ module.exports = function (app) {
         }
     });
 
-    app.post('/mail/self', function (request, response) {
+    params.app.post('/mail/self', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
         var Sendgrid = require('sendgrid'),
-            sendgrid = new Sendgrid.SendGrid(config.sendgrid.username, config.sendgrid.password),
+            sendgrid = new Sendgrid.SendGrid(params.config.sendgrid.username, params.config.sendgrid.password),
             token = request.param('token', null),
             from = request.param('from', null),
             subject = request.param('subject', null),
@@ -129,25 +125,25 @@ module.exports = function (app) {
             } else if (from && /^.*\@empreendemia\.com\.br$/.test(from) === false) {
             response.send({error : { message : 'Must be a valid email address', name : 'ValidatorError', path : 'from', type : 'format'}});
             } else {
-                restler.post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/jaiminho/authorize', {
+                restler.post('http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/service/jaiminho/authorize', {
                     data: {
                         token  : token,
-                        secret : config.security.secret
+                        secret : params.config.security.secret
                     }
                 }).on('success', function(data) {
                     if (data.token) {
                         token = data.token;
-                        restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
+                        restler.get('http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/validate', {
                             data: {
                                 token  : token,
-                                secret : config.security.secret
+                                secret : params.config.security.secret
                             }
                         }).on('success', function(data) {
                             if (data.user) {
                                 userId = data.user._id;
                                 userEmail = data.user.username;
 
-                                if (config.environment === 'development' || config.environment === 'testing') {
+                                if (params.config.environment === 'development' || params.config.environment === 'testing') {
                                     categoriesArray.push('eekit test');
                                     categoriesArray.push('eekit test '+service+': '+name);
                                 } else {
@@ -156,8 +152,8 @@ module.exports = function (app) {
                                 }
 
                                 mail = {
-                                    from    : from ? from : '"'+config.emails.contact.name+'"<'+config.emails.contact.address+'>',
-                                    replyTo : from ? from : '"'+config.emails.contact.name+'"<'+config.emails.contact.address+'>',
+                                    from    : from ? from : '"'+params.config.emails.contact.name+'"<'+params.config.emails.contact.address+'>',
+                                    replyTo : from ? from : '"'+params.config.emails.contact.name+'"<'+params.config.emails.contact.address+'>',
                                     to      : userEmail,
                                     subject : subject,
                                     html    : html
@@ -190,12 +186,12 @@ module.exports = function (app) {
             }
     });
 
-    app.post('/mail/admin', function (request, response) {
+    params.app.post('/mail/admin', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
         var Sendgrid = require('sendgrid'),
-            sendgrid = new Sendgrid.SendGrid(config.sendgrid.username, config.sendgrid.password),
+            sendgrid = new Sendgrid.SendGrid(params.config.sendgrid.username, params.config.sendgrid.password),
         to = request.param('to', null),
         token = request.param('token', null),
         subject = request.param('subject', null),
@@ -215,26 +211,26 @@ module.exports = function (app) {
         } else if (to && /^.*\@empreendemia\.com\.br$/.test(to) === false) {
             response.send({error : { message : 'Must be a valid email address', name : 'ValidatorError', path : 'to', type : 'format'}});
         } else {
-            restler.post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/jaiminho/authorize', {
+            restler.post('http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/service/jaiminho/authorize', {
                 data: {
                     token  : token,
-                    secret : config.security.secret
+                    secret : params.config.security.secret
                 }
             }).on('success', function(data) {
                 if (data.token) {
                     token = data.token;
 
-                    restler.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
+                    restler.get('http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/validate', {
                         data: {
                             token  : token,
-                            secret : config.security.secret
+                            secret : params.config.security.secret
                         }
                     }).on('success', function(data) {
                         if (data.user) {
                             userId = data.user._id;
                             userEmail = data.user.username;
 
-                            if (config.environment === 'development' || config.environment === 'testing') {
+                            if (params.config.environment === 'development' || params.config.environment === 'testing') {
                                 categoriesArray.push('eekit test');
                                 categoriesArray.push('eekit test admin '+service+': '+name);
                             } else {
@@ -245,7 +241,7 @@ module.exports = function (app) {
                             html = '<p>Id: '+userId+'</p><p>Email: '+userEmail+'</p><br /><br />' + html;
 
                             if (!to) {
-                                to = config.emails.contact.address;
+                                to = params.config.emails.contact.address;
                             }
 
                             mail = {

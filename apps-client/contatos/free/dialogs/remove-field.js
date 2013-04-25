@@ -18,7 +18,6 @@ app.routes.dialog('/remover-campo-personalizado/:id', function (params, data) {
 
         app.ui.form.submit(function() {
             field.remove(function () {});
-            app.events.trigger('remove field ' + params.id);
             app.close(true);
         });
     });

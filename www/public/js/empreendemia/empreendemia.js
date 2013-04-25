@@ -15,6 +15,10 @@ var empreendemia = {
      * @description : carrega a seção do usuário na empreendemia
      */
     load : function () {
+        empreendemia.socket.emit('auth', {
+            user : sdk.config.user
+        });
+            
         empreendemia.ui.content.navigation.navigables.remove();
         empreendemia.ui.content.roll.sheets.apps.remove();
         empreendemia.ui.content.roll.menu.remove();
@@ -106,10 +110,15 @@ var empreendemia = {
      * @description : inicia a empreendemia
      */
     start : function () {
+        empreendemia.socket = io.connect('http://' + empreendemia.config.services.kamisama.host + ':' + empreendemia.config.services.kamisama.port);
+        empreendemia.socket.on('trigger', function (data) {
+            empreendemia.events.trigger(data.label, data.data);
+        });
+
         empreendemia.user.auth(function () {
             empreendemia.ui = new empreendemia.ui();
             window.addEventListener('resize', empreendemia.ui.content.roll.sheets.fitHeight, true);
-            empreendemia.load()
+            empreendemia.load();
         });
     }
 };

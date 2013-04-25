@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.5
+- comunicação via socket com barramento de eventos
+
 ## 0.4 (2013-04-04)
 
 Melhorias

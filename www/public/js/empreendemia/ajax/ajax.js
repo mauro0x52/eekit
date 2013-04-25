@@ -52,7 +52,6 @@ empreendemia.ajax = {
                     empreendemia.config.services[i].port.toString() === port
                 ) {
                     if (i === 'auth') {
-                        console.log(empreendemia.config.services.www.token)
                         path.data.secret = empreendemia.config.services.www.secret;
                         path.data.token = empreendemia.config.services.www.token;
                         cb(path);

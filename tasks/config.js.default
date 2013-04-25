@@ -16,7 +16,8 @@ module.exports = {
         password : undefined,
     },
     security : {
-        secret : 'tasks'
+        secret : 'tasks',
+        name   : 'tasks'
     },
     services : {
         auth : {

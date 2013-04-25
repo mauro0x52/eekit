@@ -29,9 +29,6 @@ app.configure(function () {
     app.use(app.router);
 });
 
-/*  Chamando controllers */
-require('./controller/Feedback.js')(app);
-
 /*  Métodos para dev e teste */
 app.get('/ping', function (request, response) {
     "use strict";

@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "3.1.0",
-    "mongoose": "3.6.0",
+    "mongoose": "3.6.x",
     "restler": "2.0.1",
     "mocha": "1.8.1",
-    "should": "1.2.2"
+    "should": "1.2.2",
+    "socket.io-client": "0.9.11"
   }
 }

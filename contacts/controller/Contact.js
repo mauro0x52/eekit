@@ -7,12 +7,8 @@
  * @description : Módulo que implementa as funcionalidades contacts
  */
 
-module.exports = function (app) {
-    var Model = require('./../model/Model.js'),
-        auth = require('../Utils.js').auth,
-        trigger = require('../Utils.js').trigger,
-        Contact = Model.Contact,
-        Company = Model.Company;
+module.exports = function (params) {
+    "use strict";
 
     /** POST /contact
      *
@@ -24,23 +20,23 @@ module.exports = function (app) {
      * @request : {token,category,name,email,phone,priority,notes,fieldValues[]}
      * @response : {contact}
      */
-    app.post('/contact', function (request,response) {
+    params.app.post('/contact', function (request,response) {
         var contact;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        contact = new Contact({
+                        contact = new params.model.Contact({
                             company     : company._id,
                             author      : data.user._id,
                             user        : request.param('user', null),
@@ -57,6 +53,7 @@ module.exports = function (app) {
                             if (error) {
                                 response.send({error : error});
                             } else {
+                                params.kamisama.trigger(request.param('token'), 'create contact', contact);
                                 response.send({contact : contact});
                             }
                         });
@@ -76,15 +73,15 @@ module.exports = function (app) {
      * @request : {token, filterByCategory}
      * @response : {contacts[]}
      */
-    app.get('/contacts', function (request,response) {
+    params.app.get('/contacts', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     var query = {};
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
@@ -99,7 +96,7 @@ module.exports = function (app) {
                                 query.category = {$in : request.param('filterByCategory')};
                             }
                         }
-                        Contact.find(query, function (error, contacts) {
+                        params.model.Contact.find(query, function (error, contacts) {
                             if (error) {
                                 response.send({error : error});
                             } else {
@@ -122,21 +119,21 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {contact}
      */
-    app.get('/contact/:id', function (request,response) {
+    params.app.get('/contact/:id', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                             response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        Contact.findById(request.params.id, function (error, contact) {
+                        params.model.Contact.findById(request.params.id, function (error, contact) {
                             if (error) {
                                 response.send({error : { message : 'contact not found', name : 'NotFoundError', id : request.params.id, path : 'contact'}});
                             } else if (contact === null) {
@@ -161,21 +158,21 @@ module.exports = function (app) {
      * @request : {token,category,name,email,phone,priority,notes,fieldValues[]}
      * @response : {contact}
      */
-    app.post('/contact/:id/update', function (request,response) {
+    params.app.post('/contact/:id/update', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        Contact.findById(request.params.id, function (error, contact) {
+                        params.model.Contact.findById(request.params.id, function (error, contact) {
                             if (error) {
                                 response.send({error : { message : 'contact not found', name : 'NotFoundError', id : request.params.id, path : 'contact'}});
                             } else if (contact === null) {
@@ -193,7 +190,8 @@ module.exports = function (app) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
-                                        trigger(request.param('token', null), 'update embed /contatos/contato-relacionado/' + contact._id ,{subtitle : contact.name, source : 'contacts'});
+                                        params.kamisama.trigger(request.param('token'), 'update contact ' + contact._id, contact);
+                                        params.kamisama.trigger(request.param('token'), 'update embed', {embed : '/contatos/contato-relacionado/' + contact._id, subtitle : contact.name});
                                         response.send({contact : contact});
                                     }
                                 });
@@ -215,21 +213,21 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {}
      */
-    app.post('/contact/:id/delete', function (request,response) {
+    params.app.post('/contact/:id/delete', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        Contact.findById(request.params.id, function (error, contact) {
+                        params.model.Contact.findById(request.params.id, function (error, contact) {
                             if (error) {
                                 response.send({error : { message : 'contact not found', name : 'NotFoundError', id : request.params.id, path : 'contact'}});
                             } else if (contact === null) {
@@ -240,7 +238,8 @@ module.exports = function (app) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
-                                        trigger(request.param('token', null), 'delete embed /contatos/contato-relacionado/' + contact_id ,{source : 'contacts'});
+                                        params.kamisama.trigger(request.param('token'), 'remove contact ' + contact._id, contact);
+                                        params.kamisama.trigger(request.param('token'), 'delete embed', {embed : '/contatos/contato-relacionado/' + contact._id});
                                         response.send(null);
                                     }
                                 });

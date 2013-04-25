@@ -11,14 +11,36 @@ module.exports = {
         password : undefined,
         db : 'auth'
     },
+    security : {
+        secret : 'auth',
+        name   : 'auth',
+        token    : 'Digite qualquer hash aleatória',
+        password : 'Digite qualquer hash aleatória'
+    },
     services : {
         auth : {
             port : 8001,
-            url  : 'localhost'
+            url  : 'localhost',
+            secret : 'auth',
+            permissions : {
+                users     : true,
+                username  : true,
+                tokens    : true,
+                auth      : true,
+                informations : true
+            }
         },
         apps : {
             port : 8002,
-            url  : 'localhost'
+            url  : 'localhost',
+            secret : 'apps',
+            permissions : {
+                users     : true,
+                username  : true,
+                tokens    : true,
+                auth      : true,
+                informations : true
+            }
         },
         www : {
             url  : 'localhost',
@@ -128,9 +150,5 @@ module.exports = {
                 informations : false
             }
         }
-    },
-    security : {
-        token    : 'Digite qualquer hash aleatória',
-        password : 'Digite qualquer hash aleatória'
     }
 };

@@ -116,10 +116,8 @@ app.routes.dialog('/adicionar-contato', function (params, data) {
                     value : fields.userfields[i].value()
                 })
             }
-            console.log(data);
             var contact = new app.models.contact(data);
             contact.save(function () {
-                app.events.trigger('create contact', contact);
                 app.close(contact);
             });
         });

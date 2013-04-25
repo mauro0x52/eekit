@@ -5,10 +5,8 @@
  * @description : Módulo que implementa o painel do tracker referente ao gerenciamento de UTMs
  */
 
-module.exports = function (app) {
-    var Model = require('./../model/Model.js'),
-        auth = require('../Utils.js').auth,
-        Event = Model.Event;
+module.exports = function (params) {
+    "use strict";
 
     /** GET /events/utm
      *
@@ -20,7 +18,7 @@ module.exports = function (app) {
      * @request : {}
      * @response : {events}
      */
-    app.get('/events/utm', function (request,response) {
+    params.app.get('/events/utm', function (request,response) {
         if (request.param('secret', null) != 'tr4ck3r') {
             response.end();
             return;
@@ -28,7 +26,7 @@ module.exports = function (app) {
         
         response.header('Access-Control-Allow-Origin', '*');
 
-        Event.cohort('ee', 7, function (error, cohort) {
+        params.model.Event.cohort('ee', 7, function (error, cohort) {
             if (error) {
                 response.send({error : error});
             } else {
