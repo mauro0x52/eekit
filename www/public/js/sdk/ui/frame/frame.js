@@ -59,7 +59,7 @@ sdk.modules.ui.frame = function (app) {
             width  = window.innerWidth;
         }
 
-        body_div.style.height = height-120;
+        body_div.style.height = '100%';
         body_div.style.width = width;
     };
     this.loading = function (value) {
@@ -76,9 +76,15 @@ sdk.modules.ui.frame = function (app) {
         body_div.innerHTML = '';
         if (value.constructor === Array) {
             for (i in value) {
-                content = new app.ui.tag(value[i]);
-                content.attach(body_div, ['temp']);
+                if (value[i].attach) {
+                    value[i].attach(body_div, ['temp']);
+                } else {
+                    content = new app.ui.tag(value[i]);
+                    content.attach(body_div, ['temp']);
+                }
             }
+        } else if (value.attach) {
+            value.attach(body_div, ['temp']);
         } else {
             content = new app.ui.tag(value);
             content.attach(body_div, ['temp']);

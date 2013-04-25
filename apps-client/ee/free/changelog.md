@@ -1,6 +1,14 @@
 Changelog
 =========
 
+## 2.3
+
+Features
+- Home Page
+- Página dos planos
+- Página do como funfa
+- Página de dúvidas
+
 ## 2.2 (2013-04-15)
 
 Features

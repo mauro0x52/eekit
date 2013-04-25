@@ -5,7 +5,7 @@
  * @since  2013-02
  */
 
-app.routes.frame('/', function (params, data) {
+app.routes.frame('/lp-01', function (params, data) {
     app.tracker.event('visualizar home');
 
     app.ui.html([

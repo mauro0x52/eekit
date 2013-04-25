@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.3
+
+Correções
+- app.ui.tag
+
 ## 1.2 (2013-04-19)
 
 Features

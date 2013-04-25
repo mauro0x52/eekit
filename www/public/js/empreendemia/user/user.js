@@ -87,27 +87,11 @@ empreendemia.user = {
         });
     },
 
-    signup : function () {
-        empreendemia.apps.open({
-            app   : 'ee',
-            route : '/cadastro',
-            open  : function (tool) {
-                tool.open();
-                empreendemia.apps.render(tool);
-            },
-            close : function (params) {
-                if (params && params.token) {
-                    if (params.remindme) {
-                        setCookie('token', params.token, 30);
-                    } else {
-                        setCookie('token', params.token, 1);
-                    }
-                    empreendemia.user.auth(function () {
-                        empreendemia.routes.set('ee/usuario-cadastrado');
-                        empreendemia.load();
-                    });
-                }
-            }
+    signup : function (token) {
+        setCookie('token', token, 1);
+        empreendemia.user.auth(function () {
+            empreendemia.routes.set('ee/usuario-cadastrado');
+            empreendemia.load();
         });
     },
 

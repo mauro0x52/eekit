@@ -11,7 +11,7 @@ empreendemia.ui.navigation = function () {
         sheets_menu = document.createElement('menu');
 
     /* CSS */
-    element.setAttribute('class', 'navigation');
+    element.setAttribute('class', 'navigation hide');
     sheets_menu.setAttribute('class', 'sheets');
 
     /* Hierarquia */
@@ -53,5 +53,22 @@ empreendemia.ui.navigation = function () {
     }
 
     /* Métodos públicos */
+    this.visibility = function (value) {
+        if (value) {
+            switch (value) {
+                case 'hide' :
+                    element.setAttribute('class', 'navigation hide');
+                    break;
+                case 'show' :
+                    element.setAttribute('class', 'navigation');
+                    break;
+                case 'fade' :
+                    element.setAttribute('class', 'navigation fade');
+                    break;
+            }
+        } else {
+            return element.getAttribute('class').replace('navigation ', '');
+        }
+    };
     this.navigables = new Collection(sheets_menu, [empreendemia.ui.appNavigable]);
 }

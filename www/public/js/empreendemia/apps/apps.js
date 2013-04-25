@@ -72,7 +72,7 @@ empreendemia.apps = {
         }
     },
 
-    /** list
+    /** render
      *
      * @autor : Rafael Erthal
      * @since : 2012-11
@@ -106,6 +106,14 @@ empreendemia.apps = {
                     }
                 }
             } else {
+                if(tool.ui.type() === 'frame') {
+                    empreendemia.ui.header.visibility('hide');
+                    empreendemia.ui.content.navigation.visibility('hide');
+                } else {
+                    empreendemia.ui.header.visibility('show');
+                    empreendemia.ui.content.navigation.visibility('show');
+                }
+
                 empreendemia.ui.content.roll.menu.remove();
                 empreendemia.ui.content.roll.sheets.apps.remove();
                 empreendemia.ui.content.navigation.navigables.remove();
