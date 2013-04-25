@@ -18,7 +18,7 @@ var empreendemia = {
         empreendemia.socket.emit('auth', {
             user : sdk.config.user
         });
-            
+
         empreendemia.ui.content.navigation.navigables.remove();
         empreendemia.ui.content.roll.sheets.apps.remove();
         empreendemia.ui.content.roll.menu.remove();
@@ -26,7 +26,7 @@ var empreendemia = {
         empreendemia.user.profile(function (user) {
             var routes,
                 slug,
-                route;
+                route, old_route;
 
             empreendemia.ui.header.user.options.remove();
             if (user) {
@@ -52,7 +52,12 @@ var empreendemia = {
                     click  : empreendemia.user.logout
                 }));
                 /* Monta a rota */
-                routes = empreendemia.routes.get() || 'tarefas/';
+                old_route = empreendemia.routes.get();
+                if (old_route === 'ee/' || old_route === 'ee/planos' || old_route === 'ee/como-funciona' || old_route === 'ee/duvidas' || old_route === 'ee/cadastrar' ) {
+                    routes = 'tarefas/';
+                } else {
+                    routes = old_route;
+                }
                 slug = routes.split('/')[0];
                 route = routes.replace(slug, '') || '/';
             } else {

@@ -68,24 +68,44 @@ empreendemia.user = {
     },
 
     login : function () {
-        empreendemia.apps.open({
-            app   : 'ee',
-            route : '/login',
-            open  : function (tool) {
-                tool.open();
-                empreendemia.apps.render(tool);
-            },
-            close : function (params) {
-                if (params && params.token) {
-                    if (params.remindme) {
-                        setCookie('token', params.token, 30);
-                    } else {
-                        setCookie('token', params.token, 1);
-                    }
-                    empreendemia.user.auth(function () {
-                        empreendemia.load();
-                    });
+        var www_token = getCookie('token');
+        empreendemia.ajax.get({
+            url : 'http://' + empreendemia.config.services.auth.host + ':' + empreendemia.config.services.auth.port + '/validate',
+            data : {
+                secret : empreendemia.config.services.www.secret,
+                token : www_token
+            }
+        }, function (response) {
+            if (response && !response.error) {
+                if (getCookie('remindme')) {
+                    setCookie('token', getCookie('token'), 30);
+                } else {
+                    setCookie('token', getCookie('token'), 1);
                 }
+                empreendemia.user.auth(function () {
+                    empreendemia.load();
+                });
+            } else {
+                empreendemia.apps.open({
+                    app   : 'ee',
+                    route : '/login',
+                    open  : function (tool) {
+                        tool.open();
+                        empreendemia.apps.render(tool);
+                    },
+                    close : function (params) {
+                        if (params && params.token) {
+                            if (params.remindme) {
+                                setCookie('token', params.token, 30);
+                            } else {
+                                setCookie('token', params.token, 1);
+                            }
+                            empreendemia.user.auth(function () {
+                                empreendemia.load();
+                            });
+                        }
+                    }
+                });
             }
         });
     },
@@ -138,6 +158,14 @@ empreendemia.user = {
                 cb(null);
             }
         });
+    },
+
+    check : function () {
+        var www_token = getCookie('token');
+        if (www_token) {
+            return true;
+        }
+        return false;
     },
 
     apps : function (cb) {

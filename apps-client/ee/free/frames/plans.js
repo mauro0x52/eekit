@@ -133,7 +133,7 @@ app.routes.frame('/planos', function (params, data) {
                             },
                             html : {
                                 tag : 'a',
-                                html : 'Login',
+                                html : 'Entrar',
                                 attributes : {
                                     style : 'cursor:pointer; color:#fdfdeb; font-weight:bold;'
                                 },
