@@ -572,20 +572,6 @@ app.routes.frame('/', function (params, data) {
                             }
                         ]
                     },
-                    /* botão */
-                    {
-                        tag : 'div',
-                        attributes : {
-                            style : 'position: absolute; top: 230px; right:20px; text-align: right;'
-                        },
-                        html : {
-                            tag : 'a',
-                            html : 'saiba mais',
-                            attributes : {
-                                style : 'display: block; text-align:center; background-color:#332f2f; color:#cdc5be; padding:20px; font-family:Arial,Helvetica,sans-serif; font-size: 20px; width:200px; cursor:pointer;'
-                            }
-                        }
-                    },
                     /* apps */
                     {
                         tag : 'div',
@@ -596,6 +582,26 @@ app.routes.frame('/', function (params, data) {
                         html : [
                             app_scroller
                         ]
+                    },
+                    /* botão */
+                    {
+                        tag : 'div',
+                        attributes : {
+                            style : 'position: absolute; top: 230px; right:20px; text-align: right;'
+                        },
+                        html : {
+                            tag : 'a',
+                            html : 'saiba mais',
+                            attributes : {
+                                style : 'display: block; text-align:center; background-color:#332f2f; color:#cdc5be; padding:20px; font-family:Arial,Helvetica,sans-serif; font-size: 20px; width:200px; cursor:pointer; z-index:10000;'
+                            },
+                            events : {
+                                click : function () {
+                                    app.apps.open({app : app.slug, route : '/suporte'});
+                                    app.close();
+                                }
+                            }
+                        }
                     }
                 ]
             }
