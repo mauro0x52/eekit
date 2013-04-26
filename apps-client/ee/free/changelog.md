@@ -8,6 +8,7 @@ Features
 - Página dos planos
 - Página do como funfa
 - Página de dúvidas
+- Página de cadastro
 
 ## 2.2 (2013-04-15)
 

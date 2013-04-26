@@ -19,7 +19,9 @@ app.configure(function () {
     app.use(express.methodOverride());
 
     /* Serve a pasta public */
-    app.use('/', express.static('public'));
+    app.use('/js', express.static('public/js'));
+    app.use('/css', express.static('public/css'));
+    app.use('/images', express.static('public/images'));
 
     /* caso seja ambiente de produção, esconder erros */
     if (config.host.debuglevel === 0) {
@@ -28,6 +30,13 @@ app.configure(function () {
 
     app.use(app.router);
 });
+
+/*  index.ejs */
+app.get('/', function (request, response) {
+    "use strict";
+    response.render('../view/index.ejs', {config : config});
+});
+
 
 /*  Métodos para dev e teste */
 app.get('/ping', function (request, response) {

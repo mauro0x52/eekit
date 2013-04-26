@@ -1,0 +1,109 @@
+<html>
+    <head>
+        <title>EmpreendeKit</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/www.css" />
+        <link rel="stylesheet" type="text/css" href="css/images.css" />
+        <link rel="stylesheet" type="text/css" href="css/colors.css" />
+        <script type="text/javascript" src="/js/globals.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/empreendemia.js"></script>
+        <script type="text/javascript" src="/js/sdk/sdk.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ajax/ajax.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/apps/apps.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/events/events.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/routes/routes.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/tracker/tracker.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/user/user.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/ui.js"></script>
+        <script type="text/javascript" src="/js/sdk/ajax/ajax.js"></script>
+        <script type="text/javascript" src="/js/sdk/apps/apps.js"></script>
+        <script type="text/javascript" src="/js/sdk/events/events.js"></script>
+        <script type="text/javascript" src="/js/sdk/routes/routes.js"></script>
+        <script type="text/javascript" src="/js/sdk/tracker/tracker.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/ui.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/feedback/feedback.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/content/content.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/content/navigation/navigation.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/content/navigation/appNavigable.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/content/roll/roll.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/content/roll/sheets.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/content/roll/appMenu.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/header/header.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/header/logo/logo.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/header/menu/menu.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/header/menu/appIcon.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/header/user/user.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/header/user/userOption.js"></script>
+        <script type="text/javascript" src="/js/empreendemia/ui/elements/helper.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/embedded-entity/embedded-entity.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/embedded-list/embedded-list.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/frame/frame.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/entity/entity.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/list/list.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/dialog/dialog.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/action.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/value.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/data.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/dataset.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/group.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/groupset.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/icon.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/item.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/fieldset.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/inputText.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/inputTextarea.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/inputError.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/inputPassword.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/inputSelector.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/inputDate.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/inputOption.js"></script>
+        <script type="text/javascript" src="/js/sdk/ui/elements/tag.js"></script>
+        <script src="http://<%=config.services.kamisama.url%>:<%=config.services.kamisama.port%>/socket.io/socket.io.js"></script>
+
+        <!-- begin google analytics -->
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-7274902-7']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                if (window.location.href.indexOf('empreendekit.com.br')) {
+                    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                }
+            })();
+      </script>
+        <!-- end google analytics -->
+    </head>
+    <body>
+
+        <script type="text/javascript">
+            (function () {
+                var query = queryToJson(location.search);
+                if (query.token) {
+                    setCookie('token', query.token, 30);
+                    delete query.token;
+                    location.search = jsonToQuery(query);
+                }
+                if (navigator.userAgent.indexOf('MSIE') === -1) {
+                    "use strict";
+
+                    document.addEventListener('click', function (e) {
+                        document.lastclick = e;
+                        return true;
+                    }, true);
+
+                    empreendemia.ajax.get({url : 'http://<%=config.services.auth.url%>:<%=config.services.auth.port%>/services'}, function (data) {
+                        empreendemia.config = data;
+                        sdk.config = data;
+                        empreendemia.start();
+                    });
+                } else {
+                    document.body.innerHTML='<div style="margin:160px auto 0 auto;width:600px;"><h1 style="margin:40px 0;">Navegador incompatível =(</h1><p style="line-height:1.6em;">Infelizmente o Internet Explorer é incompatível com nosso sistema.</p><p style="line-height:1.6em;">Sugerimos que você utilize um navegador compatível,<br />além de mais seguro e estável para seu uso pessoal,<br />como o <a href="http://www.mozilla.org/pt-BR/firefox/fx/">Firefox</a>.</p></div>';
+                }
+            }) ();
+        </script>
+
+    </body>
+</html>

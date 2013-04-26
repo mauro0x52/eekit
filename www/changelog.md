@@ -9,6 +9,7 @@ Correções
 Ajustes
 - Comunicação via socket com barramento de eventos
 - Remover header em frames
+- Colocando o index.html em ejs
 
 ## 1.2 (2013-04-19)
 
