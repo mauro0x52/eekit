@@ -279,7 +279,7 @@ inputs.name = new app.ui.tag({
            'type' : 'text',
            'class' : 'input',
            'required' : 'true',
-           'pattern' : '^((\\(\\d{0,3}\\))|(\\d{0,3}))\\s?9?\\s?\\d{4}[\\s\\-]?\\d{4}$',
+           'pattern' : '^((\\(0?[1-9][01-9]\\))|(0?[1-9][1-9])|(0?[1-9][1-9]))\\s?9?\\s?\\d{4}[\\s\\-]?\\d{4}$',
            'placeholder' : 'ex.: (11) 3230-9233'
        },
         events : {
