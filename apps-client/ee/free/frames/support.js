@@ -492,7 +492,7 @@ styles = {
     faq = {
         tag : 'div',
         attributes : {
-            style : 'background-color:#fdfdeb; position:relative;'
+            style : 'background-color:#fdfdeb; position:relative; padding: 1px 0;'
         },
         html : [
             /* borda superior branco */
