@@ -88,7 +88,7 @@ module.exports = function (params) {
                         }],
                         activation : [{
                             name  : 'Inicio',
-                            users : cohort[i].filter(['visualizar: cadastro '],1, utm)
+                            users : cohort[i].filter(['visualizar: cadastro'],1, utm)
                         },{
                             name  : 'Nome',
                             users : cohort[i].filter(['cadastrar: nome'],1, utm)

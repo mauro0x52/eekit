@@ -250,9 +250,9 @@ module.exports = function (params) {
             newevent.utm = utm;
         }
 
-        params.auth(request.param('token', null), function (error, user) {
+        params.auth(request.param('token', null), function (error, data) {
             if (!error) {
-                newevent.user = user._id
+                newevent.user = data.user._id
             }
             newevent.save(function (error) {
                 if (error) {
