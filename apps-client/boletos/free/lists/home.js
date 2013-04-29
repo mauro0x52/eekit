@@ -9,7 +9,11 @@ app.routes.list('/', function (params, data) {
     /**
      * Classe que representa um item
      */
-    Item;
+    Item,
+    /**
+     * Campos da busca
+     */
+    fields = {};
 
 
     /* montando os items */
@@ -66,6 +70,18 @@ app.routes.list('/', function (params, data) {
             that.item.detach();
         });
 
+        /* Pegando quando o filtro é acionado */
+        app.events.bind('filter billet', function (fields) {
+            var queryField = fields.query.value();
+            if (
+                queryField.length > 1 && billet.ourNumber.toLowerCase().indexOf(queryField.toLowerCase()) === -1
+            ) {
+                that.item.visibility('hide');
+            } else {
+                that.item.visibility('show');
+            }
+        });
+
         if (billet) {
             this.title(billet.ourNumber);
             this.category('boleto');
@@ -89,6 +105,23 @@ app.routes.list('/', function (params, data) {
     }));
 
     /* Monta o filtro */
+    app.ui.filter.action('filtrar');
+    /* filtro por texto */
+    fields.query = new app.ui.inputText({
+        legend : 'Nosso número',
+        type : 'text',
+        name : 'query',
+        change : app.ui.filter.submit
+    });
+    /* fieldset principal */
+    app.ui.filter.fieldsets.add(new app.ui.fieldset({
+        legend : 'Filtrar boletos',
+        fields : [fields.query]
+    }));
+    /* dispara o evento de filtro */
+    app.ui.filter.submit(function () {
+        app.events.trigger('filter billet', fields);
+    });
 
     /* montando os grupos */
     groups = {

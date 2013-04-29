@@ -289,9 +289,6 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
                 demonstrative : fields.demonstrative.value(),
                 instructions : fields.instructions.value()
             }
-            if (data.value.indexOf('.') === -1) {
-                data.value += '.00';
-            }
             if (!data.bankId) {
                 app.ui.error('Escolha um banco');
             } else if (!data.wallet) {

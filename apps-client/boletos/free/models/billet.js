@@ -154,10 +154,8 @@ app.models.billet.list = function (data, cb) {
                 console.error(response.error)
             } else {
                 /* Coloca os boletos no objeto */
-                        console.log(response)
                 for (var i in response.billets) {
                     if (response.billets.hasOwnProperty(i)) {
-                        console.log(response.billets[i])
                         billets.push(new app.models.billet(response.billets[i]));
                     }
                 }

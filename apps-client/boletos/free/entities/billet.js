@@ -133,7 +133,7 @@ app.routes.entity('/boleto/:id', function (params, data) {
             fields.instructions.values.add(new app.ui.value({value : billet.instructions}));
 
             fields.value.values.remove();
-            fields.value.values.add(new app.ui.value({value : billet.value}));
+            fields.value.values.add(new app.ui.value({value : '$ '+ billet.value.toFixed(2).toString().replace('.',',')}));
 
             fields.clientName.values.remove();
             fields.clientName.values.add(new app.ui.value({value : billet.clientName}));

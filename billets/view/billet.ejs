@@ -278,7 +278,7 @@ dl.direita dd {
             </dl>
             <dl class="direita">
                 <dt>Valor documento</dt>
-                <dd><%= value %></dd>
+                <dd><%= value.toFixed(2).toString().replace('.',',') %></dd>
             </dl>
         </div>
 
@@ -406,7 +406,7 @@ dl.direita dd {
             </dl>
             <dl class="direita">
                 <dt>(=) Valor documento</dt>
-                <dd><%= value %></dd>
+                <dd><%= value.toFixed(2).toString().replace('.',',') %></dd>
             </dl>
         </div>
 

@@ -11,7 +11,7 @@ app.routes.list('/usuarios', function (params, data) {
      */
     Item,
     /**
-     * ?
+     * Campos da busca
      */
     fields = {};
 

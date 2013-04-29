@@ -79,7 +79,7 @@ module.exports = function (params) {
             if (error) {
                 response.send({error : error});
             } else {
-                Billet.findById(request.params.id, function (error, billet) {
+                params.model.Billet.findById(request.params.id, function (error, billet) {
                     if (error || !billet) {
                         response.send({error : { message : 'billet not found', name : 'NotFoundError'}});
                     } else {
@@ -135,7 +135,7 @@ module.exports = function (params) {
             if (error) {
                 response.send({error : error});
             } else {
-                Billet.find({ company : auth.company._id }, function (error, billets) {
+                params.model.Billet.find({ company : auth.company._id }, function (error, billets) {
                     if (error) {
                         response.send({error : error});
                     } else {
