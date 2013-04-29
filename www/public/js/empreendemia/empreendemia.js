@@ -58,7 +58,7 @@ var empreendemia = {
                 } else {
                     routes = old_route;
                 }
-                slug = routes.split('/')[0];
+                slug = routes.split('/')[0] || 'ee';
                 route = routes.replace(slug, '') || '/';
             } else {
                 /* Usuário deslogado */
