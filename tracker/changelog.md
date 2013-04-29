@@ -6,6 +6,7 @@ Changelog
 Melhorias
 - Reformatação das colunas do cohort do tracker
 - Exibindo novos eventos da nova tela de cadastro
+- Refinando regras de ativação, engajamento e retenção do finanças, contatos e tarefas
 
 ## 1.0.4 (2013-04-29)
 
