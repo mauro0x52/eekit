@@ -71,11 +71,11 @@ module.exports = function (params) {
      * @author Mauro Ribeiro
      * @since  2013-04
      */
-    app.post('/billet/:id/update', function (request, response) {
+    params.app.post('/billet/:id/update', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, auth) {
+        params.auth(request.param('token', null), function (error, auth) {
             if (error) {
                 response.send({error : error});
             } else {
@@ -127,11 +127,11 @@ module.exports = function (params) {
      * @author Mauro Ribeiro
      * @since  2013-04
      */
-    app.get('/billets', function (request, response) {
+    params.app.get('/billets', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, auth) {
+        params.auth(request.param('token', null), function (error, auth) {
             if (error) {
                 response.send({error : error});
             } else {
