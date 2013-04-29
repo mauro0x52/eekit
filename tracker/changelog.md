@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.0.5
+
+Melhorias
+- Reformatação das colunas do cohort do tracker
+- Exibindo novos eventos da nova tela de cadastro
+
 ## 1.0.4 (2013-04-29)
 
 Ajustes

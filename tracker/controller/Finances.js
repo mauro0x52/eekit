@@ -44,7 +44,7 @@ module.exports = function (params) {
         if (request.param('utm_campaign', null)) {
             utm.campaign = request.param('utm_campaign', null);
         }
-        
+
         response.header('Access-Control-Allow-Origin', '*');
 
         params.model.Event.cohort('finanças', 7, function (error, cohort) {
@@ -58,7 +58,7 @@ module.exports = function (params) {
                     var date = new Date(cohort[i].date);
                     var monitoring = [];
                     while (date <= new Date) {
-                        monitoring.push(cohort[i].filter(['editar transação', 'adicionar transação'],3, utm, date))
+                        monitoring.push(cohort[i].filter(['adicionar transação'],5, utm, date))
                         date.setDate(date.getDate() + 7);
                     }
                     result.push({
@@ -68,12 +68,12 @@ module.exports = function (params) {
                             users : cohort[i].filter([],1,utm)
                         }],
                         activation : [{
-                            name  : 'Adicionaram 2 transações',
-                            users : cohort[i].filter(['adicionar transação'],2, utm)
+                            name  : 'Adicionaram 1 transação',
+                            users : cohort[i].filter(['adicionar transação'],1, utm)
                         }],
                         engagement : [{
-                            name  : 'Adicionaram ou editaram 3 transações',
-                            users : cohort[i].filter(['editar transação', 'adicionar transação'],3, utm)
+                            name  : 'Adicionaram 5 transações',
+                            users : cohort[i].filter(['adicionar transação'],5, utm)
                         }],
                         monitoring : monitoring
                     });

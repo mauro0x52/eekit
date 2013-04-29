@@ -77,18 +77,18 @@ module.exports = function (params) {
                             }
                         }
 
-                        if (user.ocurrences('tarefas', ['marcar tarefa como feita']) >= 1) {
+                        if (user.ocurrences('tarefas', ['adicionar tarefa']) >= 1) {
                             user.apps.tarefas.status = 'Ativado';
-                            if (user.ocurrences('tarefas', ['marcar tarefa como feita'], sunday, saturday) >= 3) {
+                            if (user.ocurrences('tarefas', ['adicionar tarefa'], sunday, saturday) >= 3) {
                                 user.apps.tarefas.status = 'Engajado';
                             }
                         } else {
                             user.apps.tarefas.status = 'Nao Ativado';
                         }
 
-                        if (user.ocurrences('finanças', ['adicionar transação']) >= 2) {
+                        if (user.ocurrences('finanças', ['adicionar transação']) >= 1) {
                             user.apps['finanças'].status = 'Ativado';
-                            if (user.ocurrences('finanças', ['editar transação', 'adicionar transação'], sunday, saturday) >= 3) {
+                            if (user.ocurrences('finanças', ['editar transação'], sunday, saturday) >= 5) {
                                 user.apps['finanças'].status = 'Engajado';
                             }
                         } else {
