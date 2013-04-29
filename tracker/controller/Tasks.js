@@ -26,7 +26,7 @@ module.exports = function (params) {
             response.end();
             return;
         }
-        
+
         var utm = {};
 
         if (request.param('utm_source', null)) {

@@ -41,13 +41,14 @@ module.exports = function (params) {
                     if (error) {
                         response.send({error : error});
                     } else {
-                        
+
                         var format = function (date) {
                             return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
                         }
 
                         var i,
-                            uses = {};
+                            uses = {},
+                            user = user;
 
                         user.name = data.user.name;
                         user.email = data.user.username;
@@ -75,7 +76,7 @@ module.exports = function (params) {
                                 }
                             }
                         }
-                        
+
                         if (user.ocurrences('tarefas', ['marcar tarefa como feita']) >= 1) {
                             user.apps.tarefas.status = 'Ativado';
                             if (user.ocurrences('tarefas', ['marcar tarefa como feita'], sunday, saturday) >= 3) {
@@ -84,7 +85,7 @@ module.exports = function (params) {
                         } else {
                             user.apps.tarefas.status = 'Nao Ativado';
                         }
-                        
+
                         if (user.ocurrences('finanças', ['adicionar transação']) >= 2) {
                             user.apps['finanças'].status = 'Ativado';
                             if (user.ocurrences('finanças', ['editar transação', 'adicionar transação'], sunday, saturday) >= 3) {
@@ -93,7 +94,7 @@ module.exports = function (params) {
                         } else {
                             user.apps['finanças'].status = 'Nao Ativado';
                         }
-                        
+
                         if (user.ocurrences('contatos', ['adicionar tarefa', 'adicionar transação']) >= 1) {
                             user.apps.contatos.status = 'Ativado';
                             if (user.ocurrences('contatos', ['marcar tarefa como feita', 'adicionar transação'], sunday, saturday) >= 2) {

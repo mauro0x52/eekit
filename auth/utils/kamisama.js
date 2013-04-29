@@ -44,7 +44,6 @@ var trigger = function (token, label, data) {
 
 module.exports = function (cb) {
 	socket.on('connect', function(){
-
 		/* Autentica no kami-sama */
 		socket.emit('auth', {
 			service : config.security.name,
