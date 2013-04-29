@@ -1,8 +1,10 @@
 Changelog
 =========
 
-## 0.4
-- comunicação via socket com barramento de eventos
+## 0.3.1 (2013-04-29)
+
+Ajustes
+- Comunicação via socket com barramento de eventos
 
 ## 0.3 (2013-03-19)
 - Autenticação de serviço

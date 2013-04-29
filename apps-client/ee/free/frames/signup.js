@@ -323,7 +323,7 @@ inputs.name = new app.ui.tag({
         events : {
             keydown : function () {
                 if (event_password === false) {
-                    app.tracker.event('cadastrar: password');
+                    app.tracker.event('cadastrar: senha');
                     event_password = true;
                 }
             }
@@ -432,7 +432,8 @@ inputs.name = new app.ui.tag({
             }
         ],
         events : {
-            submit : function () {
+            submit : function (evt) {
+                evt.preventDefault();
                 var data = {
                     name : inputs.company.value(),
                     admin : {
@@ -461,7 +462,6 @@ inputs.name = new app.ui.tag({
                         app.close();
                     }
                 });
-
             }
         }
     }
