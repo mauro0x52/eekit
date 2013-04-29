@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.3
+## 1.3 (2013-04-29)
 
 Correções
 - app.ui.tag

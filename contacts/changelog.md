@@ -1,8 +1,10 @@
 Changelog
 =========
 
-## 1.2
-- comunicação via socket com barramento de eventos
+## 1.2 (2013-04-29)
+
+Ajustes
+- Comunicação via socket com barramento de eventos
 
 ## 1.1 (2013-04-15)
 

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 2.3
+## 2.3 (2013-04-29)
 
 Features
 - Home Page
