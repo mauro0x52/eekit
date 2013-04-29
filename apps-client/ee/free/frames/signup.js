@@ -323,7 +323,7 @@ inputs.name = new app.ui.tag({
         events : {
             keydown : function () {
                 if (event_password === false) {
-                    app.tracker.event('cadastrar: password');
+                    app.tracker.event('cadastrar: senha');
                     event_password = true;
                 }
             }
