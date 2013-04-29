@@ -9,7 +9,7 @@ Event.lifeCycle(
 		minimum : 1,
         app : 'ee'
 	},{
-		labels : ['adicionar tarefa', 'adicionar transação'],
+		labels : ['adicionar contato'],
 		minimum : 1,
         app : 'contatos'
 	},

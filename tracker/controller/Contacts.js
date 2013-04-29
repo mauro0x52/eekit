@@ -26,7 +26,7 @@ module.exports = function (params) {
             response.end();
             return;
         }
-        
+
         var utm = {};
 
         if (request.param('utm_source', null)) {
@@ -58,9 +58,32 @@ module.exports = function (params) {
                     var date = new Date(cohort[i].date);
                     var monitoring = [];
                     while (date <= new Date) {
-                        monitoring.push(cohort[i].filter(['marcar tarefa como feita', 'adicionar transação'],2, utm, date))
+                        monitoring.push(cohort[i].filter(['visualizar: contatos'],1, utm, date))
                         date.setDate(date.getDate() + 7);
                     }
+
+                    var engagement_1 = cohort[i].filter(['adicionar contato'], 3, utm),
+                        engagement_2 = cohort[i].filter(['adicionar tarefa'], 1, utm),
+                        engagement_3 = cohort[i].filter(['adicionar transação'], 1, utm),
+                        engagement_4 = cohort[i].filter(['editar contato'], 1, utm),
+                        engagement_result = [];
+
+                    for (var j in engagement_1) {
+                        engagement_result.push(engagement_1[j]);
+                    }
+
+                    for (var j in engagement_2) {
+                        engagement_result.push(engagement_2[j]);
+                    }
+
+                    for (var j in engagement_3) {
+                        engagement_result.push(engagement_3[j]);
+                    }
+
+                    for (var j in engagement_4) {
+                        engagement_result.push(engagement_4[j]);
+                    }
+
                     result.push({
                         date : cohort[i].date,
                         acquisition : [{
@@ -68,12 +91,15 @@ module.exports = function (params) {
                             users : cohort[i].filter([],1,utm)
                         }],
                         activation : [{
-                            name  : 'Adicionaram 1 tarefa ou transação',
-                            users : cohort[i].filter(['adicionar tarefa', 'adicionar transação'],1, utm)
+                            name  : 'Começaram a adicionar contato',
+                            users : cohort[i].filter(['clicar: adicionar contato'],1, utm)
+                        },{
+                            name  : 'Adicionaram 1 contato',
+                            users : cohort[i].filter(['adicionar contato'],1, utm)
                         }],
                         engagement : [{
-                            name  : 'Marcaram 2 tarefas como feitas ou adicionaram 2 transações',
-                            users : cohort[i].filter(['marcar tarefa como feita', 'adicionar transação'],2, utm)
+                            name  : 'Adicionaram 3 contatos ou adicionaram 1 tarefa ou adicionaram 1 transação ou editaram 1 contato',
+                            users : engagement_result
                         }],
                         monitoring : monitoring
                     });

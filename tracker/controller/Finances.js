@@ -68,6 +68,9 @@ module.exports = function (params) {
                             users : cohort[i].filter([],1,utm)
                         }],
                         activation : [{
+                            name  : 'Começaram a adicionar transação',
+                            users : cohort[i].filter(['clicar: adicionar transação'],1, utm)
+                        },{
                             name  : 'Adicionaram 1 transação',
                             users : cohort[i].filter(['adicionar transação'],1, utm)
                         }],

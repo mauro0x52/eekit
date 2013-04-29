@@ -95,9 +95,14 @@ module.exports = function (params) {
                             user.apps['finanças'].status = 'Nao Ativado';
                         }
 
-                        if (user.ocurrences('contatos', ['adicionar tarefa', 'adicionar transação']) >= 1) {
+                        if (user.ocurrences('contatos', ['adicionar contato']) >= 1) {
                             user.apps.contatos.status = 'Ativado';
-                            if (user.ocurrences('contatos', ['marcar tarefa como feita', 'adicionar transação'], sunday, saturday) >= 2) {
+                            if (
+                                user.ocurrences('contatos', ['adicionar contato'], sunday, saturday) >= 3 ||
+                                user.ocurrences('contatos', ['adicionar tarefa'], sunday, saturday) >= 1 ||
+                                user.ocurrences('contatos', ['adicionar transação'], sunday, saturday) >= 1 ||
+                                user.ocurrences('contatos', ['editar contato'], sunday, saturday) >= 1
+                            ) {
                                 user.apps.contatos.status = 'Engajado';
                             }
                         } else {
