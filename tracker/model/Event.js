@@ -143,42 +143,48 @@ eventSchema.statics.cohort = function (app, frequency, cb) {
         } else {
 	        while (date < new Date()) {
 	            var cohort = {
-	                date   : new Date(date),
-	                users  : [],
-	                filter : function (labels, minimum, utm, date) {
-	                    var dateFrom = new Date(date || this.date),
-		                    dateTo   = new Date(date || this.date),
-		                    result   = [];
-		                    dateTo.setDate(dateTo.getDate() + frequency);
+		                date   : new Date(date),
+		                users  : [],
+		                filter : function (labels, minimum, utm, date) {
+		                    var dateFrom = new Date(date || this.date),
+			                    dateTo   = new Date(date || this.date),
+			                    result   = [];
+			                    dateTo.setDate(dateTo.getDate() + frequency);
 
-	                    for (var i in this.users) {
-	                    	if (
-                    			(
-                                	this.users[i].utm.source === utm.source ||
-                                	!utm.source
-                            	) && (
-                                	this.users[i].utm.medium === utm.medium ||
-                                	!utm.medium
-                            	) && (
-                                	this.users[i].utm.content === utm.content ||
-                                	!utm.content
-                            	) && (
-                                	this.users[i].utm.campaign === utm.campaign ||
-                                	!utm.campaign
-                            	) && (
-                        			this.users[i].ocurrences(app, labels, dateFrom, dateTo) >= minimum
-                        		)
-                    		) {
-	                    		result.push(this.users[i]);
-                        	}
-	                    }
-	                    return result;
-	                }
-	            };
+		                    utm = utm || {};
+
+		                    for (var i in this.users) {
+		                    	if (
+	                    			(
+	                    				!this.users[i].utm ||
+	                                	this.users[i].utm.source === utm.source ||
+	                                	!utm.source
+	                            	) && (
+	                    				!this.users[i].utm ||
+	                                	this.users[i].utm.medium === utm.medium ||
+	                                	!utm.medium
+	                            	) && (
+	                    				!this.users[i].utm ||
+	                                	this.users[i].utm.content === utm.content ||
+	                                	!utm.content
+	                            	) && (
+	                    				!this.users[i].utm ||
+	                                	this.users[i].utm.campaign === utm.campaign ||
+	                                	!utm.campaign
+	                            	) && (
+	                        			this.users[i].ocurrences(app, labels, dateFrom, dateTo) >= minimum
+	                        		)
+	                    		) {
+		                    		result.push(this.users[i]);
+	                        	}
+		                    }
+		                    return result;
+		                }
+		            };
 
 	            var dateFrom = new Date(date),
-	            dateTo   = new Date(date),
-	            count    = 0;
+		            dateTo   = new Date(date),
+		            count    = 0;
 	            dateTo.setDate(dateTo.getDate() + frequency);
 
 	            for (var i in users) {

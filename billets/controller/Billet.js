@@ -7,10 +7,8 @@
  * Módulo que implementa as funcionalidades de boleto
  */
 
-module.exports = function (app) {
-    var Model = require('./../model/Model.js'),
-        auth = require('../Utils.js').auth,
-        Billet = Model.Billet;
+module.exports = function (params) {
+    "use strict";
 
     /**
      * Cria um novo boleto
@@ -18,17 +16,17 @@ module.exports = function (app) {
      * @author Mauro Ribeiro
      * @since  2013-03
      */
-    app.post('/billet', function (request, response) {
+    params.app.post('/billet', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
         var billet;
 
-        auth(request.param('token', null), function (error, auth) {
+        params.auth(request.param('token', null), function (error, auth) {
             if (error) {
                 response.send({error : error});
             } else {
-                var billet = new Billet({
+                var billet = new params.model.Billet({
                     user : auth.user._id,
                     company : auth.company._id,
                     bankId : request.param('bankId', null),
@@ -154,15 +152,15 @@ module.exports = function (app) {
      * @author Mauro Ribeiro
      * @since  2013-03
      */
-    app.get('/billet/:id', function (request, response) {
+    params.app.get('/billet/:id', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, auth) {
+        params.auth(request.param('token', null), function (error, auth) {
             if (error) {
                 response.send({error : error});
             } else {
-                Billet.findOne({ _id : request.params.id, company : auth.company._id }, function (error, billet) {
+                params.model.Billet.findOne({ _id : request.params.id, company : auth.company._id }, function (error, billet) {
                     if (error) {
                         response.send({error : error});
                     } else {
@@ -179,15 +177,15 @@ module.exports = function (app) {
      * @author Mauro Ribeiro
      * @since  2013-03
      */
-    app.post('/billet/:id/delete', function (request, response) {
+    params.app.post('/billet/:id/delete', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, auth) {
+        params.auth(request.param('token', null), function (error, auth) {
             if (error) {
                 response.send({error : error});
             } else {
-                Billet.findOne({ _id : request.params.id, user : auth.user._id }, function (error, billet) {
+                params.model.Billet.findOne({ _id : request.params.id, user : auth.user._id }, function (error, billet) {
                     if (error) {
                         response.send({error : error});
                     } else {
@@ -213,8 +211,8 @@ module.exports = function (app) {
      * @param id        identificador do boleto
      * @param barCode   código numérico do boleto
      */
-    app.get('/billet/:id/print/:ourNumber', function (request, response) {
-        Billet.findOne({ _id : request.params.id, ourNumber : request.params.ourNumber }, function (error, billet) {
+    params.app.get('/billet/:id/print/:ourNumber', function (request, response) {
+        params.model.Billet.findOne({ _id : request.params.id, ourNumber : request.params.ourNumber }, function (error, billet) {
             if (error) {
                 response.send({error : error});
             } else {

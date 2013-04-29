@@ -183,8 +183,8 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
         }
 
         /* descrição */
-        fields.description = new app.ui.inputText({
-            legend : 'Notas',
+        fields.description = new app.ui.inputTextarea({
+            legend : 'Observações',
             name : 'description'
         });
 
@@ -198,22 +198,31 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
         });
 
         /* fieldset */
-        fieldset = new app.ui.fieldset({
-            legend : 'Tarefa'
-        });
+        fieldsets = {
+            task : new app.ui.fieldset({
+                legend : 'Tarefa',
+                collapsed : false
+            }),
+            adittional : new app.ui.fieldset({
+                legend : 'Mais informações',
+                collapsed : true
+            }),
+        };
 
         /* adiciona os campos no fieldset */
-        fieldset.fields.add(fields.title);
+        fieldsets.task.fields.add(fields.title);
+        fieldsets.task.fields.add(fields.date);
+
         if (!request.category) {
-            fieldset.fields.add(fields.category);
+            fieldsets.adittional.fields.add(fields.category);
         }
-        fieldset.fields.add(fields.date);
-        fieldset.fields.add(fields.important);
-        fieldset.fields.add(fields.reminder);
-        fieldset.fields.add(fields.recurrence);
-        fieldset.fields.add(fields.description);
-        fieldset.fields.add(fields.user);
-        app.ui.form.fieldsets.add(fieldset);
+        fieldsets.adittional.fields.add(fields.important);
+        fieldsets.adittional.fields.add(fields.reminder);
+        fieldsets.adittional.fields.add(fields.recurrence);
+        fieldsets.adittional.fields.add(fields.description);
+        fieldsets.adittional.fields.add(fields.user);
+        app.ui.form.fieldsets.add(fieldsets.task);
+        app.ui.form.fieldsets.add(fieldsets.adittional);
 
         fields.title.focus();
 
@@ -241,7 +250,6 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
             var task = new app.models.task(data);
             if (request.embeddeds) task.embeddeds = request.embeddeds;
             task.save(function (task) {
-                app.events.trigger('create task', task);
                 app.close(task);
             });
         });

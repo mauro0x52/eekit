@@ -1,7 +1,18 @@
 Changelog
 =========
 
-## 1.0.3
+## 1.0.4
+- comunicação via socket com barramento de eventos
+
+## 1.0.3 (2013-04-17)
+
+Melhorias
+- Coluna cadastro
+- Listagem de UTMs por semana
+- Filtro de usuário ativos no www
+- Autenticação
+
+## 1.0.3 (2013-04-12)
 
 Melhorias
 - Interface dos cohorts de contatos, finanças e tarefas

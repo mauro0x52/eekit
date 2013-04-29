@@ -13,6 +13,11 @@ app.models.transaction = function (params) {
     this._id = params._id;
 
     /**
+     * Criador de uma transação
+     */
+    this.author = params.author;
+
+    /**
      * Nome da transação
      */
     this.name = params.name;
@@ -68,9 +73,9 @@ app.models.transaction = function (params) {
     this.recurrence = params.recurrence;
 
     /**
-     * Número da nota
+     * Observações
      */
-    this.noteNumber = params.noteNumber;
+    this.observation = params.observation;
 
     /**
      * Situação do pagamento ("paid", "unpaid" ou "automatic"
@@ -131,7 +136,7 @@ app.models.transaction = function (params) {
                 embeddeds : this.embeddeds,
                 date : new Date(this.date),
                 recurrence : this.recurrence,
-                noteNumber : this.noteNumber,
+                observation : this.observation,
                 situation : 'automatic',
                 reminder : this.reminder,
                 type : this.type,

@@ -6,13 +6,8 @@
  * @since  2013-03
  */
 
-module.exports = function (app) {
+module.exports = function (params) {
     "use strict";
-
-    var Model = require('./../model/Model.js'),
-        User  = Model.User,
-        Company  = Model.Company,
-        config = require('../config.js');
 
     /**
      * Cadastra nova company (conjunto de pessoas)
@@ -23,16 +18,16 @@ module.exports = function (app) {
      * @request     {name, admin : {username, password, secret, info}}
      * @response    {company, user, token}
      */
-    app.post('/company', function (request, response) {
+    params.app.post('/company', function (request, response) {
         var userData, user, company,
             service = null;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        for (var i in config.services) {
-            if (config.services[i].secret === request.param('secret', '')) {
-                service = config.services[i]
+        for (var i in params.config.services) {
+            if (params.config.services[i].secret === request.param('secret', '')) {
+                service = params.config.services[i]
                 service.slug = i;
             }
         }
@@ -44,12 +39,12 @@ module.exports = function (app) {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
             // cria a empresa
-            company = new Company({
+            company = new params.model.Company({
                 name : request.param('name', null)
             });
             // cria o usuário
             userData = request.param('admin', {});
-            user = new User({
+            user = new params.model.User({
                 name     : userData.name,
                 username : userData.username,
                 password : userData.password,
@@ -85,7 +80,7 @@ module.exports = function (app) {
                                         token : token
                                     });
                                     /* manda email para o usuário */
-                                    require('restler').post('http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail/self', {
+                                    require('restler').post('http://' + params.config.services.jaiminho.url + ':' + params.config.services.jaiminho.port + '/mail/self', {
                                         data : {
                                             token : token,
                                             service : 'auth',
@@ -96,7 +91,7 @@ module.exports = function (app) {
                                         }
                                     }).on('success', function(data) {}).on('error', function(data) {console.log(data)});
                                     /* manda email para o admin */
-                                    require('restler').post('http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail/admin', {
+                                    require('restler').post('http://' + params.config.services.jaiminho.url + ':' + params.config.services.jaiminho.port + '/mail/admin', {
                                         data : {
                                             token : token,
                                             service : 'auth',

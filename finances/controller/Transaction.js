@@ -5,13 +5,24 @@
  * @description : Módulo que implementa as funcionalidades transaction
  */
 
-module.exports = function (app) {
-    var Model = require('./../model/Model.js'),
-        config = require('./../config.js'),
-        auth = require('../Utils.js').auth,
-        bind = require('../Utils.js').bind,
-        Transaction = Model.Transaction,
-        Company = Model.Company;
+module.exports = function (params) {
+    "use strict";
+
+    params.kamisama.bind('update embed', function (data) {
+        params.model.Transaction.find({'embeddeds' : [data.embed]}, function (error, transactions) {
+            for (var i in transactions) {
+                transactions[i].subtitle = data.subtitle;
+                transactions[i].save();
+            }
+        });
+    });
+    params.kamisama.bind('delete embed', function (data) {
+        params.model.Transaction.find({'embeddeds' : [data.embed]}, function (error, transactions) {
+            for (var i in transactions) {
+                transactions[i].remove();
+            }
+        });
+    });
 
     /** POST /transaction
      *
@@ -20,27 +31,27 @@ module.exports = function (app) {
      *
      * @description : Cadastra uma transação
      *
-     * @request : {category, account, name, subtitle, value, date, recurrence, embeddeds, noteNumber, situation, type, isTransfer, token}
+     * @request : {category, account, name, subtitle, value, date, recurrence, embeddeds, observation, situation, type, isTransfer, token}
      * @response : {transaction}
      */
-    app.post('/transaction', function (request,response) {
+    params.app.post('/transaction', function (request,response) {
         var transaction,
             i, category;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        transaction = new Transaction({
+                        transaction = new params.model.Transaction({
                             company     : company._id,
                             author      : data.user._id,
                             category    : request.param('category', null),
@@ -51,7 +62,7 @@ module.exports = function (app) {
                             date        : request.param('date', null),
                             recurrence  : request.param('recurrence', null),
                             embeddeds   : request.param('embeddeds', null),
-                            noteNumber  : request.param('noteNumber', null),
+                            observation : request.param('observation', null),
                             situation   : request.param('situation', null),
                             type        : request.param('type', null),
                             isTransfer  : request.param('isTransfer', null)
@@ -60,12 +71,7 @@ module.exports = function (app) {
                             if (error) {
                                 response.send({error : error});
                             } else {
-                                if (transaction.embeddeds) {
-                                    for (var i = 0; i < transaction.embeddeds.length; i++) {
-                                        bind(request.param('token', null), 'update embed ' + transaction.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/transaction/' + transaction._id + '/update');
-                                        bind(request.param('token', null), 'delete embed ' + transaction.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/transaction/' + transaction._id + '/delete');
-                                    }   
-                                }
+                                params.kamisama.trigger(request.param('token'), 'create transaction', transaction);
                                 response.send({transaction : transaction});
                             }
                         });
@@ -85,15 +91,15 @@ module.exports = function (app) {
      * @request : {token, filterByCategories, filterByAccounts, filterByEmbeddeds}
      * @response : {transactions[]}
      */
-    app.get('/transactions', function (request,response) {
+    params.app.get('/transactions', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     var query = {}
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
@@ -118,7 +124,7 @@ module.exports = function (app) {
                         if (request.param('filterByEmbeddeds')) {
                             query.embeddeds = {$in : request.param('filterByEmbeddeds')};
                         }
-                        Transaction.find(query, function (error, transactions) {
+                        params.model.Transaction.find(query, function (error, transactions) {
                             if (error) {
                                 response.send({error : error});
                             } else {
@@ -141,23 +147,23 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {transaction}
      */
-    app.get('/transaction/:id', function (request,response) {
+    params.app.get('/transaction/:id', function (request,response) {
         var transaction;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        Transaction.findOne({company : company._id, _id : request.params.id}, function (error, transaction) {
+                        params.model.Transaction.findOne({company : company._id, _id : request.params.id}, function (error, transaction) {
                             if (error) {
                                 response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
                             } else if (transaction === null) {
@@ -182,23 +188,23 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {}
      */
-    app.post('/transaction/:id/delete', function (request,response) {
+    params.app.post('/transaction/:id/delete', function (request,response) {
         var transaction;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        Transaction.findOne({company : company._id, _id : request.params.id}, function (error, transaction) {
+                        params.model.Transaction.findOne({company : company._id, _id : request.params.id}, function (error, transaction) {
                             if (error) {
                                 response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
                             } else if (transaction === null) {
@@ -220,6 +226,7 @@ module.exports = function (app) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
+                                        params.kamisama.trigger(request.param('token'), 'remove transaction ' + transaction._id, transaction);
                                         response.send(null);
                                     }
                                 });
@@ -238,26 +245,26 @@ module.exports = function (app) {
      *
      * @description : Editar uma transação
      *
-     * @request : {category, account, name, subtitle, value, date, recurrence, embeddeds, noteNumber, situation, token}
+     * @request : {category, account, name, subtitle, value, date, recurrence, embeddeds, observation, situation, token}
      * @response : {transaction}
      */
-    app.post('/transaction/:id/update', function (request,response) {
+    params.app.post('/transaction/:id/update', function (request,response) {
         var transaction;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        Transaction.findOne({company : company._id, _id : request.params.id}, function (error, transaction) {
+                        params.model.Transaction.findOne({company : company._id, _id : request.params.id}, function (error, transaction) {
                             var url;
                             if (error) {
                                 response.send({error : { message : 'transaction not found', name : 'NotFoundError', id : request.params.id, path : 'transaction'}});
@@ -272,12 +279,13 @@ module.exports = function (app) {
                                 transaction.date        = request.param('date', transaction.date);
                                 transaction.recurrence  = request.param('recurrence', transaction.recurrence);
                                 transaction.embeddeds   = request.param('embeddeds', transaction.embeddeds);
-                                transaction.noteNumber  = request.param('noteNumber', transaction.noteNumber);
+                                transaction.observation = request.param('observation', transaction.observation);
                                 transaction.situation   = request.param('situation', transaction.situation);
                                 transaction.save(function (error) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
+                                        params.kamisama.trigger(request.param('token'), 'update transaction '  + transaction._id, transaction);
                                         response.send({transaction : transaction});
                                     }
                                 });

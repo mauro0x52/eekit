@@ -1,6 +1,15 @@
 Changelog
 =========
 
+## 1.0.2
+- comunicação via socket com barramento de eventos
+
+## 1.0.1 (2013-04-19)
+
+Melhorias
+- Remover campo número da nota
+- Inserir campo observações
+
 ## 1.0 (2013-04-04)
 
 Features

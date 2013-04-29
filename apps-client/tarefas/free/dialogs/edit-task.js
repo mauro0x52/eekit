@@ -42,6 +42,11 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
         reminderOptions = [],
 
         /**
+         * Lista de ui.option de usuários
+         */
+        userOptions = [],
+
+        /**
          * Fieldset
          */
         fieldset,
@@ -63,6 +68,17 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
                     value : categories[i]._id,
                     label : categories[i].color || 'blue',
                     clicked : categories[i]._id === task.category
+                }));
+            }
+        }
+
+        /* Input com os usuários */
+        for (var i in app.config.users) {
+            if (app.config.users.hasOwnProperty(i)) {
+                userOptions.push(new app.ui.inputOption({
+                    legend  : app.config.users[i].name,
+                    value   : app.config.users[i]._id,
+                    clicked : task.user === app.config.users[i]._id
                 }));
             }
         }
@@ -149,10 +165,19 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
         }
 
         /* descrição */
-        fields.description = new app.ui.inputText({
-            legend : 'Notas',
+        fields.description = new app.ui.inputTextarea({
+            legend : 'Observações',
             name : 'description',
             value : task.description
+        });
+
+        /* responsável */
+        fields.user = new app.ui.inputSelector({
+            name : 'user',
+            type : 'single',
+            legend  : 'Responsável',
+            options : userOptions,
+            filterable : true
         });
 
         /* fieldset */
@@ -163,7 +188,6 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
         /* adiciona os campos no fieldset */
         fieldset.fields.add(fields.title);
         fieldset.fields.add(fields.category);
-        console.log(task.done)
         if (!task.done) {
             fieldset.fields.add(fields.date);
         }
@@ -171,6 +195,7 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
         fieldset.fields.add(fields.reminder);
         fieldset.fields.add(fields.recurrence);
         fieldset.fields.add(fields.description);
+        fieldset.fields.add(fields.user);
         app.ui.form.fieldsets.add(fieldset);
 
         fields.title.focus();
@@ -183,7 +208,8 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
                 category : fields.category.value()[0],
                 important : fields.important.value()[0] === 'important',
                 recurrence : fields.recurrence.value()[0],
-                description : fields.description.value()
+                description : fields.description.value(),
+                user : fields.user.value()[0]
             };
 
             if (task.done) {
@@ -201,7 +227,6 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
             if (request.embedded) task.embeddeds = [request.embedded];
             editTask._id = task._id;
             editTask.save(function (task) {
-                app.events.trigger('update task ' + params.id, editTask);
                 app.close(task);
             });
         });

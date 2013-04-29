@@ -1,6 +1,18 @@
 Changelog
 =========
 
+## 2.1.1 (2013-04-19)
+
+Melhorias
+- Mudar de notas para observações em textarea
+- Modal de nova tarefa expansível
+
+## 2.1 (2013-04-15)
+
+Features
+- Edição de usuário responsável
+- Exibição de usuário responsável e criador
+
 ## 2.0 (2013-04-04)
 
 Features

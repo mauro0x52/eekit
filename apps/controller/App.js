@@ -5,14 +5,8 @@
  * @description : Módulo que implementa as funcionalidades de aplicativos
  */
 
-module.exports = function (app) {
+module.exports = function (params) {
     "use strict";
-
-    var Model = require('./../model/Model.js'),
-        auth = require('../Utils.js').auth,
-        App = Model.App,
-        Source = Model.Source,
-        Company = Model.Company;
 
     /** GET /apps
      *
@@ -24,12 +18,12 @@ module.exports = function (app) {
      * @request : {}
      * @response : {apps[]}
      */
-    app.get('/apps', function (request, response) {
+    params.app.get('/apps', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
         //busca todos os apps
-        App.find(function (error, apps) {
+        params.model.App.find(function (error, apps) {
             if (error) {
                 response.send({error : error});
             } else {
@@ -48,12 +42,12 @@ module.exports = function (app) {
      * @request : {}
      * @response : {app}
      */
-    app.get('/app/:slug', function (request, response) {
+    params.app.get('/app/:slug', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
         //busca todos os apps
-        App.findByIdentity(request.params.slug, function (error, app) {
+        params.model.App.findByIdentity(request.params.slug, function (error, app) {
             if (error) {
                 response.send({error : error});
             } else if (app === null) {
@@ -75,12 +69,12 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {source, name, slug}
      */
-    app.get('/app/:app_slug/source', function (request, response) {
+    params.app.get('/app/:app_slug/source', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
         function getSource (app, type) {
-            Source.findOne({app : app, type : type}, function (error, source) {
+            params.model.Source.findOne({app : app, type : type}, function (error, source) {
                 if (error) {
                     response.send({error : error});
                 } else if (source === null) {
@@ -92,17 +86,17 @@ module.exports = function (app) {
         }
 
         //busca o app
-        App.findByIdentity(request.params.app_slug, function (error, app) {
+        params.model.App.findByIdentity(request.params.app_slug, function (error, app) {
             if (error) {
                 response.send({error : error});
             } else if (app === null) {
                 response.send({error : { message : 'app not found', name : 'NotFoundError', id : request.params.app_slug, path : 'app'}});
             } else {
-                auth(request.param('token', null), function (error, company) {
+                params.auth(request.param('token', null), function (error, company) {
                     if (error) {
                         getSource(app, 'free');
                     } else {
-                        Company.findOne({company : company._id, app : app._id, expiration : {"$lt": new Date()}}, function (error, company) {
+                        params.model.Company.findOne({company : company._id, app : app._id, expiration : {"$lt": new Date()}}, function (error, company) {
                             if (error) {
                                 getSource(app, 'free');
                             } else if (company === null) {
@@ -127,23 +121,23 @@ module.exports = function (app) {
      * @request : {token, expiration}
      * @response : {company}
      */
-    app.get('/app/:slug/pay', function (request, response) {
+    params.app.get('/app/:slug/pay', function (request, response) {
         var newcompany;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, company) {
+        params.auth(request.param('token', null), function (error, company) {
             if (error) {
                 response.send({error : error});
             } else {
-                App.findByIdentity(request.params.slug, function (error, app) {
+                params.model.App.findByIdentity(request.params.slug, function (error, app) {
                     if (error) {
                         response.send({error : error});
                     } else if (app === null) {
                         response.send({error : { message : 'app not found', name : 'NotFoundError', id : request.params.slug, path : 'app'}});
                     } else {
-                        newcompany = new Company({
+                        newcompany = new params.model.Company({
                             company : company._id,
                             app  : app._id,
                             expiration : request.param('expiration', null)

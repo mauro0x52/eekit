@@ -14,6 +14,7 @@ var mongoose = require('mongoose'),
 
 contactSchema = new schema({
     company     : {type : objectId, required : true},
+    user        : {type : objectId},
     author      : {type : objectId},
     category    : {type : objectId},
     name        : {type : String, trim : true, required : true},

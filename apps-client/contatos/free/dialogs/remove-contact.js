@@ -18,7 +18,6 @@ app.routes.dialog('/remover-contato/:id', function (params, data) {
 
         app.ui.form.submit(function() {
             contact.remove();
-            app.events.trigger('remove contact ' + params.id);
             app.close(true);
         });
     });

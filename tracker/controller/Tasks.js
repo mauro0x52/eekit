@@ -5,10 +5,8 @@
  * @description : Módulo que implementa o painel do tracker referente ao serviço tasks
  */
 
-module.exports = function (app) {
-    var Model = require('./../model/Model.js'),
-        auth = require('../Utils.js').auth,
-        Event = Model.Event;
+module.exports = function (params) {
+    "use strict";
 
     /** GET /events/tasks
      *
@@ -23,17 +21,13 @@ module.exports = function (app) {
      * @request : {}
      * @response : {events}
      */
-    app.get('/events/tasks', function (request,response) {
-        var utm = {};
-
-        function ids (obj) {
-            res = ''
-            for (var i in obj) {
-                if (obj[i].events[0])
-                res += obj[i].events[0].user + ', ';
-            }
-            return res;
+    params.app.get('/events/tasks', function (request,response) {
+        if (request.param('secret', null) != 'tr4ck3r') {
+            response.end();
+            return;
         }
+        
+        var utm = {};
 
         if (request.param('utm_source', null)) {
             utm.source = request.param('utm_source', null);
@@ -53,13 +47,14 @@ module.exports = function (app) {
 
         response.header('Access-Control-Allow-Origin', '*');
 
-        Event.cohort('tarefas', 7, function (error, cohort) {
+        params.model.Event.cohort('tarefas', 7, function (error, cohort) {
             if (error) {
                 response.send({error : error});
             } else {
                 var result = [];
 
                 for (var i in cohort) {
+
                     var date = new Date(cohort[i].date);
                     var monitoring = [];
                     while (date <= new Date) {

@@ -5,13 +5,24 @@
  * @description : Módulo que implementa as funcionalidades tasks
  */
 
-module.exports = function (app) {
-    var Model = require('./../model/Model.js'),
-        auth = require('../Utils.js').auth,
-        bind = require('../Utils.js').bind,
-        config = require('../config.js'),
-        Task = Model.Task,
-        Company = Model.Company;
+module.exports = function (params) {
+    "use strict";
+
+    params.kamisama.bind('update embed', function (data) {
+        params.model.Task.find({'embeddeds' : [data.embed]}, function (error, tasks) {
+            for (var i in tasks) {
+                tasks[i].subtitle = data.subtitle;
+                tasks[i].save();
+            }
+        });
+    });
+    params.kamisama.bind('delete embed', function (data) {
+        params.model.Task.find({'embeddeds' : [data.embed]}, function (error, tasks) {
+            for (var i in tasks) {
+                tasks[i].remove();
+            }
+        });
+    });
 
     /** POST /task
      *
@@ -23,23 +34,23 @@ module.exports = function (app) {
      * @request : {category,title,subtitle,description,important,recurrence,priority,embeddes,reminder,dateDeadline,token}
      * @response : {task}
      */
-    app.post('/task', function (request,response) {
+    params.app.post('/task', function (request,response) {
         var task;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        task = new Task({
+                        task = new params.model.Task({
                             company     : company._id,
                             author      : data.user._id,
                             user        : request.param('user', null),
@@ -61,12 +72,7 @@ module.exports = function (app) {
                             if (error) {
                                 response.send({error : error});
                             } else {
-                                if (task.embeddeds) {
-                                    for (var i = 0; i < task.embeddeds.length; i++) {
-                                        bind(request.param('token', null), 'update embed ' + task.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/task/' + task._id + '/update');
-                                        bind(request.param('token', null), 'delete embed ' + task.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/task/' + task._id + '/delete');
-                                    }
-                                }
+                                params.kamisama.trigger(request.param('token'), 'create task', task);
                                 response.send({task : task});
                             }
                         });
@@ -86,15 +92,15 @@ module.exports = function (app) {
      * @request : {token, filterByCategory, filterByDone, filterByEmbeddeds}
      * @response : {tasks[]}
      */
-    app.get('/tasks', function (request,response) {
+    params.app.get('/tasks', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     var query = {};
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
@@ -119,7 +125,7 @@ module.exports = function (app) {
                         ) {
                             query.done = false;
                         }
-                        Task.find(query, function (error, tasks) {
+                        params.model.Task.find(query, function (error, tasks) {
                             if (error) {
                                 response.send({error : error});
                             } else {
@@ -142,21 +148,21 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {task}
      */
-    app.get('/task/:id', function (request,response) {
+    params.app.get('/task/:id', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        Task.findById(request.params.id, function (error, task) {
+                        params.model.Task.findById(request.params.id, function (error, task) {
                             if (error) {
                                 response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                             } else if (task === null) {
@@ -181,21 +187,21 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {}
      */
-    app.post('/task/:id/delete', function (request,response) {
+    params.app.post('/task/:id/delete', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        Task.findById(request.params.id, function (error, task) {
+                        params.model.Task.findById(request.params.id, function (error, task) {
                             if (error) {
                                 response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                             } else if (task === null) {
@@ -205,6 +211,7 @@ module.exports = function (app) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
+                                        params.kamisama.trigger(request.param('token'), 'remove task ' + task._id, task);
                                         response.send(null);
                                     }
                                 });
@@ -226,23 +233,23 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {}
      */
-    app.post('/task/:id/done', function (request,response) {
+    params.app.post('/task/:id/done', function (request,response) {
         var newDate;
 
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        Task.findById(request.params.id, function (error, task) {
+                        params.model.Task.findById(request.params.id, function (error, task) {
                             if (error) {
                                 response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                             } else if (task === null) {
@@ -252,6 +259,7 @@ module.exports = function (app) {
                                 task.dateUpdated = new Date();
                                 task.save(function (error) {
                                     var newTask;
+                                    params.kamisama.trigger(request.param('token'), 'remove task ' + task._id, task);
                                     if (error) {
                                         response.send({error : error});
                                     } else if (task.recurrence === 0) {
@@ -270,7 +278,7 @@ module.exports = function (app) {
                                         } else {
                                             newDate = new Date(task.dateDeadline.getFullYear(), task.dateDeadline.getMonth(), task.dateDeadline.getDate() + task.recurrence);
                                         }
-                                        newTask = new Model.Task({
+                                        newTask = new params.model.Task({
                                             company     : task.company,
                                             user        : task.user,
                                             author      : task.author,
@@ -291,12 +299,7 @@ module.exports = function (app) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
-                                                if (newTask.embeddeds) {
-                                                    for (var i = 0; i < newTask.embeddeds.length; i++) {
-                                                        bind(request.param('token', null), 'update embed ' + newTask.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/task/' + newTask._id + '/update');
-                                                        bind(request.param('token', null), 'delete embed ' + newTask.embeddeds[i], 'POST', 'http://' + config.host.url + ':' + config.host.port + '/task/' + newTask._id + '/delete');
-                                                    }
-                                                }
+                                                params.kamisama.trigger(request.param('token'), 'create task', newTask);
                                                 response.send({task : newTask});
                                             }
                                         });
@@ -320,21 +323,21 @@ module.exports = function (app) {
      * @request : {category, title, subtitle, description, important, recurrence, dateDealine, embeddeds, reminder, token}
      * @response : {task}
      */
-    app.post('/task/:id/update', function (request,response) {
+    params.app.post('/task/:id/update', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        Task.findById(request.params.id, function (error, task) {
+                        params.model.Task.findById(request.params.id, function (error, task) {
                             if (error) {
                                 response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                             } else if (task === null) {
@@ -355,6 +358,7 @@ module.exports = function (app) {
                                         response.send({error : error});
                                     } else {
                                         response.send({task : task});
+                                        params.kamisama.trigger(request.param('token'), 'update task ' + task._id, task);
                                     }
                                 });
                             }
@@ -375,21 +379,21 @@ module.exports = function (app) {
      * @request : {priority, token}
      * @response : {task}
      */
-    app.post('/task/:id/sort', function (request,response) {
+    params.app.post('/task/:id/sort', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
-                        Task.findById(request.params.id, function (error, task) {
+                        params.model.Task.findById(request.params.id, function (error, task) {
                             if (error) {
                                 response.send({error : { message : 'task not found', name : 'NotFoundError', id : request.params.id, path : 'task'}});
                             } else if (task === null) {
@@ -400,6 +404,7 @@ module.exports = function (app) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
+                                        params.kamisama.trigger(request.param('token'), 'drop task '  + task._id, task);
                                         response.send({task : task});
                                     }
                                 });

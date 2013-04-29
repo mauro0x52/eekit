@@ -5,10 +5,8 @@
  * @description : Módulo que implementa o painel do tracker referente ao serviço contacts
  */
 
-module.exports = function (app) {
-    var Model = require('./../model/Model.js'),
-        auth = require('../Utils.js').auth,
-        Event = Model.Event;
+module.exports = function (params) {
+    "use strict";
 
     /** GET /events/contacts
      *
@@ -23,7 +21,12 @@ module.exports = function (app) {
      * @request : {}
      * @response : {events}
      */
-    app.get('/events/contacts', function (request,response) {
+    params.app.get('/events/contacts', function (request,response) {
+        if (request.param('secret', null) != 'tr4ck3r') {
+            response.end();
+            return;
+        }
+        
         var utm = {};
 
         if (request.param('utm_source', null)) {
@@ -44,13 +47,14 @@ module.exports = function (app) {
 
         response.header('Access-Control-Allow-Origin', '*');
 
-        Event.cohort('contatos', 7, function (error, cohort) {
+        params.model.Event.cohort('contatos', 7, function (error, cohort) {
             if (error) {
                 response.send({error : error});
             } else {
                 var result = [];
 
                 for (var i in cohort) {
+
                     var date = new Date(cohort[i].date);
                     var monitoring = [];
                     while (date <= new Date) {

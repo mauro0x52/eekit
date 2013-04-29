@@ -1,7 +1,21 @@
 Changelog
 =========
 
-## 2.1
+## 2.3
+
+Features
+- Home Page
+- Página dos planos
+- Página do como funfa
+- Página de dúvidas
+- Página de cadastro
+
+## 2.2 (2013-04-15)
+
+Features
+- Filtragem de usuário no painel de controle
+
+## 2.1 (2013-04-12)
 
 Features
 - Alterar senha de usuários

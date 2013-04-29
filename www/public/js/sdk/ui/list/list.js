@@ -10,6 +10,9 @@ sdk.modules.ui.list = function (app) {
     var element = document.createElement('div'),
         header_div = document.createElement('div'),
         header_h4 = document.createElement('h4'),
+        close_div = document.createElement('div'),
+        close_image_div = document.createElement('div'),
+        close_legend_div = document.createElement('div'),
         body_div = document.createElement('div'),
         menu_div = document.createElement('div'),
         actions_menu = document.createElement('menu'),
@@ -31,6 +34,10 @@ sdk.modules.ui.list = function (app) {
     element.setAttribute('class', 'sheet list');
     header_div.setAttribute('class', 'header');
     header_h4.setAttribute('class', 'title');
+    close_div.setAttribute('class', 'close');
+    close_image_div.setAttribute('class', 'image');
+    close_legend_div.setAttribute('class', 'legend');
+    close_legend_div.innerHTML = 'fechar';
     body_div.setAttribute('class', 'body');
     menu_div.setAttribute('class', 'menu');
     actions_menu.setAttribute('class', 'actions');
@@ -49,6 +56,9 @@ sdk.modules.ui.list = function (app) {
     /* Hierarquia */
     element.appendChild(header_div);
     header_div.appendChild(header_h4);
+    header_div.appendChild(close_div);
+    close_div.appendChild(close_image_div);
+    close_div.appendChild(close_legend_div);
     element.appendChild(body_div);
     body_div.appendChild(menu_div);
     menu_div.appendChild(actions_menu);
@@ -63,6 +73,11 @@ sdk.modules.ui.list = function (app) {
     loading_div.appendChild(image_div);
 
     /* Eventos */
+    close_div.addEventListener('click', function (event) {
+        event.stopPropagation();
+        app.close();
+    }, true);
+
     filter_form.setAttribute('onsubmit', 'return false;');
     filter_form.addEventListener('submit', function (event) {
         event.stopPropagation();
@@ -102,6 +117,7 @@ sdk.modules.ui.list = function (app) {
     this.item = new sdk.modules.ui.item(app);
     this.fieldset = new sdk.modules.ui.fieldset(app);
     this.inputText = new sdk.modules.ui.inputText(app);
+    this.inputTextarea = new sdk.modules.ui.inputTextarea(app);
     this.inputPassword = new sdk.modules.ui.inputPassword(app);
     this.inputDate = new sdk.modules.ui.inputDate(app);
     this.inputSelector = new sdk.modules.ui.inputSelector(app);

@@ -18,11 +18,9 @@ install() {
     echo "------------------------------------------------------------"
     echo ""
 
-    cd $CONFIG_PROJECT_FOLDER
-
     for SERVICE in ${CONFIG_SERVICES[@]}
     do
-        cd $SERVICE
+        cd $CONFIG_PROJECT_FOLDER/$SERVICE
 
         # config.js
         if [ ! -f config.js ];
@@ -45,8 +43,7 @@ install() {
         # instala pacotes
         echo "-- Instalando pacotes"
         npm install
-
-        cd ..
+        npm update
     done
 }
 

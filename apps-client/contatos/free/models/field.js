@@ -42,8 +42,6 @@ app.models.field = function (params) {
     this.changePosition = function (position) {
         this.position = position;
         this.save();
-
-        app.events.trigger('drop field ' + this._id, this);
     };
 
     /**

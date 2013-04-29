@@ -391,6 +391,7 @@ app.routes.list('/', function (params, data) {
                 that.dateDeadline(task.dateDeadline);
                 that.category(task.category);
             }
+            app.ui.filter.submit();
         });
 
         /* Pegando o drop da tarefa */
@@ -592,7 +593,6 @@ app.routes.list('/', function (params, data) {
         }));
         /* dispara o evento de filtro */
         app.ui.filter.submit(function () {
-            console.log(fields.user.value())
             app.events.trigger('filter task', fields);
         });
 

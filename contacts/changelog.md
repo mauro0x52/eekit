@@ -1,6 +1,14 @@
 Changelog
 =========
 
+## 1.2
+- comunicação via socket com barramento de eventos
+
+## 1.1 (2013-04-15)
+
+Features
+- Adição de usuário responsável nos contatos
+
 ## 1.0 (2013-04-04)
 
 Features

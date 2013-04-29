@@ -7,12 +7,8 @@
  * @description : Módulo que implementa as funcionalidades de campos configuraveis
  */
 
-module.exports = function (app) {
-    var Model = require('./../model/Model.js'),
-        auth = require('../Utils.js').auth,
-        trigger = require('../Utils.js').trigger,
-        Field = Model.Field,
-        Company = Model.Company;
+module.exports = function (params) {
+    "use strict";
 
     /** POST /field
      *
@@ -24,15 +20,15 @@ module.exports = function (app) {
      * @request : {token, name, position}
      * @response : {field}
      */
-    app.post('/field', function (request,response) {
+    params.app.post('/field', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
@@ -43,10 +39,12 @@ module.exports = function (app) {
                             position : request.param('position', null)
                         });
                         company.save(function (error) {
+                            var field = company.fields.pop();
                             if (error) {
                                 response.send({error : error});
                             } else {
-                                response.send({field : company.fields.pop()});
+                                params.kamisama.trigger(request.param('token'), 'create field', field);
+                                response.send({field : field});
                             }
                         });
                     }
@@ -65,15 +63,15 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {fields[]}
      */
-    app.get('/fields', function (request,response) {
+    params.app.get('/fields', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
@@ -96,15 +94,15 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {field}
      */
-    app.get('/field/:id', function (request,response) {
+    params.app.get('/field/:id', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
@@ -135,15 +133,15 @@ module.exports = function (app) {
      * @request : {token, name, position}
      * @response : {field}
      */
-    app.post('/field/:id/update', function (request,response) {
+    params.app.post('/field/:id/update', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
@@ -161,6 +159,7 @@ module.exports = function (app) {
                                     if (error) {
                                         response.send({error: error});
                                     } else {
+                                        params.kamisama.trigger(request.param('token'), 'update field ' + field._id, field);
                                         response.send({field : field});
                                     }
                                 });
@@ -182,15 +181,15 @@ module.exports = function (app) {
      * @request : {token}
      * @response : {}
      */
-    app.post('/field/:id/delete', function (request,response) {
+    params.app.post('/field/:id/delete', function (request,response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        auth(request.param('token', null), function (error, data) {
+        params.auth(request.param('token', null), function (error, data) {
             if (error) {
                 response.send({error : error});
             } else {
-                Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : data.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
@@ -207,6 +206,7 @@ module.exports = function (app) {
                                     if (error) {
                                         response.send({error: error});
                                     } else {
+                                        params.kamisama.trigger(request.param('token'), 'remove field ' + field._id, field);
                                         response.send(null);
                                     }
                                 });

@@ -39,7 +39,9 @@ app.routes.entity('/tarefa/:id', function (params, data) {
             recurrence   : new app.ui.data({legend : 'recorrência'}),
             important    : new app.ui.data({legend : 'importante'}),
             category     : new app.ui.data({legend : 'categoria'}),
-            reminder     : new app.ui.data({legend : 'lembrar-me por email'})
+            reminder     : new app.ui.data({legend : 'lembrar-me por email'}),
+            user     : new app.ui.data({legend : 'responsável'}),
+            author   : new app.ui.data({legend : 'criado por'})
         };
 
         /* Botões do item */
@@ -181,6 +183,36 @@ app.routes.entity('/tarefa/:id', function (params, data) {
             }
         };
 
+        /* Exibe o autor do contato */
+        this.author = function (value) {
+            fields.author.values.remove();
+            if (value) {
+                for (var i in app.config.users) {
+                    if (app.config.users[i]._id === value) {
+                        fields.author.values.add(new app.ui.value({value : app.config.users[i].name}));
+                        fieldsets.details.fields.add(fields.author);
+                    }
+                }
+            } else {
+                fieldsets.details.fields.remove(fields.author);
+            }
+        };
+
+        /* Exibe o responsável do contato */
+        this.user = function (value) {
+            fields.user.values.remove();
+            if (value) {
+                for (var i in app.config.users) {
+                    if (app.config.users[i]._id === value) {
+                        fields.user.values.add(new app.ui.value({value : app.config.users[i].name}));
+                        fieldsets.details.fields.add(fields.user);
+                    }
+                }
+            } else {
+                fieldsets.details.fields.remove(fields.user);
+            }
+        };
+
         /* Pegando a edição da tarefa */
         app.events.bind('update task ' + task._id, function (data) {
             task = new app.models.task(data);
@@ -193,6 +225,8 @@ app.routes.entity('/tarefa/:id', function (params, data) {
                 that.reminder(task.reminder);
                 that.dateDeadline(task.dateDeadline);
                 that.category(task.category);
+                that.author(task.author);
+                that.user(task.user);
             }
         });
 
@@ -219,6 +253,8 @@ app.routes.entity('/tarefa/:id', function (params, data) {
             this.reminder(task.reminder);
             this.dateDeadline(task.dateDeadline);
             this.category(task.category);
+            this.author(task.author);
+            this.user(task.user);
         }
     };
 

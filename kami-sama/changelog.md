@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 1.0
+- Browser Sync
+- Conexões via socket entre serviços
+
 ## 0.2 (2013-03-19)
 - Autenticação de serviço
 - Comunicação com barramento de eventos

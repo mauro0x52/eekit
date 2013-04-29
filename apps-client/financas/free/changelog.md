@@ -1,6 +1,19 @@
 Changelog
 =========
 
+## 2.1.1 (2013-04-19)
+
+Melhorias
+- Remover campo número da nota
+- Inserir campo observações
+- Remover número de parcelas de transferencia
+- Modal de nova transação expansível
+
+## 2.1 (2013-04-15)
+
+Features
+- Exibição de usuário criador
+
 ## 2.0 (2013-04-04)
 
 Features

@@ -6,46 +6,39 @@
  * @description : Server do barreamento de eventos da empreendemia
  */
 
-var express = require('express'),
-    config  = require('./config.js');
+var config = require('./config.js'),
+    io = require('socket.io').listen(config.host.port),
+    sockets = [];
 
-var app = module.exports = express();
+function emit (socket, evt) {
+    require('restler').post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/' + socket.service + '/authorize', {
+        data: {
+            secret : config.security.secret,
+            token  : evt.token
+        }
+    }).on('success', function(data) {
+        evt.token = data.token;
+        socket.emit('trigger', evt);
+    });
+}
 
-/*  Configurando o server */
-app.configure(function () {
-    "use strict";
+io.sockets.on('connection', function (socket) {
+    socket.user = socket.handshake.address.address;
+    sockets.push(socket);
 
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
+    socket.on('auth', function (data) {
+        if (data.service) {
+            socket.service = data.service;
+        } else {
+            socket.service = 'www';
+            socket.client = data.user;
+        }
+    });
 
-    /* caso seja ambiente de produção, esconder erros */
-    if (config.host.debuglevel === 0) {
-        app.use(express.errorHandler({ dumpExceptions: true }));
-    }
-
-    app.use(app.router);
-});
-
-/*  Chamando controllers */
-require('./controller/Event.js')(app);
-
-/*  Métodos para dev e teste */
-app.get('/ping', function (request,response) {
-    "use strict";
-
-    response.contentType('json');
-    response.header('Access-Control-Allow-Origin', '*');
-
-    var fs = require('fs'), regexm;
-
-    fs.readFile('changelog.md', 'utf8', function(error, data) {
-        if (error) response.send({error : error});
-        else {
-            regexm = data.match(/\#{2}\s*([0-9]+\.[0-9]+\.?[0-9]?)\s*(\((.*)\))?/);
-            response.send({ version : regexm[1], date : regexm[3] });
+    socket.on('trigger', function (data) {
+        data.source = socket.service;
+        for (var i in sockets) {
+            emit(sockets[i], data);
         }
     });
 });
-
-/*  Ativando o server */
-app.listen(config.host.port);

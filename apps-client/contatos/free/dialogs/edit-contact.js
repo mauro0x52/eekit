@@ -57,7 +57,7 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
      * @param  contact : contato a ser atualizado
      */
     function form (categories, userfields, contact) {
-        var fields = {}, categoriesOptions = [], fieldset, i;
+        var fields = {}, categoriesOptions = [], fieldset, i, userOptions = [];
 
         /* Input com as fases */
         for (var i in categories) {
@@ -67,6 +67,17 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
                     value : categories[i]._id,
                     label : categories[i].color,
                     clicked : categories[i]._id === contact.category
+                }));
+            }
+        }
+
+        /* Input com os usuários */
+        for (var i in app.config.users) {
+            if (app.config.users.hasOwnProperty(i)) {
+                userOptions.push(new app.ui.inputOption({
+                    legend  : app.config.users[i].name,
+                    value   : app.config.users[i]._id,
+                    clicked : contact.user === app.config.users[i]._id
                 }));
             }
         }
@@ -98,11 +109,18 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
             name : 'phone',
             value : contact.phone
         });
-        fields.notes = new app.ui.inputText({
-            legend : 'Notas',
+        fields.notes = new app.ui.inputTextarea({
+            legend : 'Observações',
             type : 'text',
             name : 'notes',
             value : contact.notes
+        });
+        fields.user = new app.ui.inputSelector({
+            name : 'user',
+            type : 'single',
+            legend  : 'Responsável',
+            options : userOptions,
+            filterable : true
         });
         fields.userfields = [];
         for (i in userfields) {
@@ -124,6 +142,7 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
             fieldset.fields.add(fields.userfields[i]);
         }
         fieldset.fields.add(fields.notes);
+        fieldset.fields.add(fields.user);
 
         app.ui.form.fieldsets.add(fieldset);
 
@@ -136,6 +155,7 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
             contact.category = fields.category.value()[0];
             contact.phone = fields.phone.value();
             contact.notes = fields.notes.value();
+            contact.user = fields.user.value()[0];
             contact.fieldValues = [];
             for (var i in fields.userfields) {
                 contact.fieldValues.push({
@@ -145,7 +165,6 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
                 })
             }
             contact.save(function () {
-                app.events.trigger('update contact ' + params.id, contact);
                 app.close(contact);
             });
         });

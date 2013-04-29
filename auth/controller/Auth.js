@@ -7,13 +7,8 @@
  * @description : Módulo que implementa as funcionalidades de autenticação de serviços e apps
  */
 
-module.exports = function (app) {
+module.exports = function (params) {
     "use strict";
-
-    var Model = require('./../model/Model.js'),
-        User  = Model.User,
-        config  = require('../config.js');
-
 
     /** GET /validate
      *
@@ -25,15 +20,15 @@ module.exports = function (app) {
      * @request : {token, secret}
      * @response : {user}
      */
-    app.get('/validate', function (request, response) {
+    params.app.get('/validate', function (request, response) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
         var service = null, result = {};
 
-        for (var i in config.services) {
-            if (config.services[i].secret === request.param('secret', '')) {
-                service = config.services[i]
+        for (var i in params.config.services) {
+            if (params.config.services[i].secret === request.param('secret', '')) {
+                service = params.config.services[i]
                 service.slug = i;
             }
         }
@@ -41,7 +36,7 @@ module.exports = function (app) {
         if (service === null) {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
-            User.findByToken(request.param('token', null), function (error, user) {
+            params.model.User.findByToken(request.param('token', null), function (error, user) {
                 if (error) {
                     response.send({error : { message : 'invalid token', name : 'InvalidTokenError'}});
                 } else if (user === null) {

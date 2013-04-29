@@ -43,6 +43,14 @@ app.models.contact = function (params) {
      * Data de criação do contato
      */
     this.fieldValues = params.fieldValues;
+    /**
+     * Responsável do contato
+     */
+    this.user = params.user;
+    /**
+     * Responsável do contato
+     */
+    this.author = params.author;
 
     /**
      * Remove o contato
@@ -68,8 +76,6 @@ app.models.contact = function (params) {
         this.priority = priority;
         this.category = category;
         this.save();
-
-        app.events.trigger('drop contact ' + this._id, this);
     };
 
     /**
@@ -88,7 +94,8 @@ app.models.contact = function (params) {
             phone : this.phone,
             notes : this.notes,
             priority : this.priority,
-            fieldValues : this.fieldValues
+            fieldValues : this.fieldValues,
+            user : this.user
         },
         url, event;
 

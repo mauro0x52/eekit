@@ -154,26 +154,36 @@ app.routes.dialog('/adicionar-despesa', function (params, data) {
                 }
             }
         });
-        fields.noteNumber = new app.ui.inputText({
-            legend : 'Número da nota',
+        fields.observation = new app.ui.inputTextarea({
+            legend : 'Observações',
             type : 'text',
-            name : 'noteNumber'
+            name : 'observation'
         });
 
-        fieldset = new app.ui.fieldset({
-            legend : 'Transação'
-        });
-        fieldset.fields.add(fields.name);
-        fieldset.fields.add(fields.value);
-        fieldset.fields.add(fields.category);
-        fieldset.fields.add(fields.account);
-        fieldset.fields.add(fields.date);
-        fieldset.fields.add(fields.reminder);
-        fieldset.fields.add(fields.repetitions);
-        fieldset.fields.add(fields.recurrence);
-        fieldset.fields.add(fields.noteNumber);
+        fieldsets = {
+            transaction : new app.ui.fieldset({
+                legend : 'Despesa',
+                collapsed : false
+            }),
+            adittional : new app.ui.fieldset({
+                legend : 'Mais informações',
+                collapsed : true
+            }),
+        };
 
-        app.ui.form.fieldsets.add(fieldset);
+        fieldsets.transaction.fields.add(fields.name);
+        fieldsets.transaction.fields.add(fields.value);
+        fieldsets.transaction.fields.add(fields.category);
+        fieldsets.transaction.fields.add(fields.account);
+        fieldsets.transaction.fields.add(fields.date);
+
+        //fieldset.fields.add(fields.reminder);
+        fieldsets.adittional.fields.add(fields.repetitions);
+        fieldsets.adittional.fields.add(fields.recurrence);
+        fieldsets.adittional.fields.add(fields.observation);
+
+        app.ui.form.fieldsets.add(fieldsets.transaction);
+        app.ui.form.fieldsets.add(fieldsets.adittional);
 
         fields.name.focus();
 
@@ -189,7 +199,6 @@ app.routes.dialog('/adicionar-despesa', function (params, data) {
              */
             saveTransaction = function (i, repetitions) {
                 transactions[i].save(function () {
-                    app.events.trigger('create transaction', transactions[i]);
                     if (i === repetitions - 1) {
                         app.close(transactions);
                     }
@@ -206,7 +215,7 @@ app.routes.dialog('/adicionar-despesa', function (params, data) {
                     category : fields.category.value()[0],
                     account : fields.account.value()[0],
                     date : fields.date.value() ? fields.date.date() : null,
-                    noteNumber : fields.noteNumber.value(),
+                    observation : fields.observation.value(),
                     type : 'debt'
                 },
                 date = new Date(data.date);
