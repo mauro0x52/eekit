@@ -597,7 +597,7 @@ app.routes.frame('/', function (params, data) {
                             },
                             events : {
                                 click : function () {
-                                    app.apps.open({app : app.slug, route : '/suporte'});
+                                    app.apps.open({app : app.slug, route : '/como-funciona'});
                                     app.close();
                                 }
                             }

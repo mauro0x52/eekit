@@ -29,7 +29,7 @@ app.configure(function () {
 
 require('./utils/kamisama')(function (kamisama) {
     var model = require('./model/Model'),
-        auth = require('./utils/Auth');
+        auth = require('./utils/auth');
     /*  Chamando controllers */
     require('./controller/Billet.js')({
         app      : app,
