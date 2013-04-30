@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.3.1 (2013-04-29)
+
+Correções
+- Link com utm não carregava site para usuário logado
+
 ## 1.3 (2013-04-29)
 
 Correções
