@@ -62,6 +62,7 @@ app.get('/processes', function (request, response) {
             }
         }
         result += '</table>';
+        response.send(result);
     });
 });
 
