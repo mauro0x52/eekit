@@ -45,7 +45,7 @@ app.get('/processes', function (request, response) {
         lines = stdout.split('\n');
         for (var i in lines) {
             match = lines[i].match(/^([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+(.*)$/);
-            if (match[11]) {
+            if (match && match[11]) {
                 result += '<tr>';
                 result += '<td>'+match[1]+'</td>';
                 result += '<td>'+match[2]+'</td>';
