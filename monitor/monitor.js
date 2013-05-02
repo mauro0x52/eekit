@@ -44,20 +44,22 @@ app.get('/processes', function (request, response) {
         result = '<table>';
         lines = stdout.split('\n');
         for (var i in lines) {
-            result += '<tr>'
             match = lines[i].match(/^([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+(.*)$/);
-            result += '<td>'+match[1]+'</td>';
-            result += '<td>'+match[2]+'</td>';
-            result += '<td>'+match[3]+'</td>';
-            result += '<td>'+match[4]+'</td>';
-            result += '<td>'+match[5]+'</td>';
-            result += '<td>'+match[6]+'</td>';
-            result += '<td>'+match[7]+'</td>';
-            result += '<td>'+match[8]+'</td>';
-            result += '<td>'+match[9]+'</td>';
-            result += '<td>'+match[10]+'</td>';
-            result += '<td>'+match[11]+'</td>';
-            result += '</tr>'
+            if (match[11]) {
+                result += '<tr>';
+                result += '<td>'+match[1]+'</td>';
+                result += '<td>'+match[2]+'</td>';
+                result += '<td>'+match[3]+'</td>';
+                result += '<td>'+match[4]+'</td>';
+                result += '<td>'+match[5]+'</td>';
+                result += '<td>'+match[6]+'</td>';
+                result += '<td>'+match[7]+'</td>';
+                result += '<td>'+match[8]+'</td>';
+                result += '<td>'+match[9]+'</td>';
+                result += '<td>'+match[10]+'</td>';
+                result += '<td>'+match[11]+'</td>';
+                result += '</tr>';
+            }
         }
         result += '</table>';
     });
