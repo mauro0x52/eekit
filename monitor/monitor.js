@@ -30,7 +30,18 @@ app.get('/resources', function (request, response) {
     exec('uptime', function (error, stdout, stderr) {
         response.send(stdout)
     });
+});
 
+app.get('/processes', function (request, response) {
+    if (request.param('secret', null) != 'm0n1t0rm4ne1r0p4r4vcs3rf3l1z') {
+        response.end();
+        return;
+    }
+    var exec = require('child_process').exec,
+        lines;
+    exec('ps aux --sort -%cpu', function (error, stdout, stderr) {
+        response.send(stdout);
+    });
 });
 
 app.get('/service/:id/log', function (request, response) {
