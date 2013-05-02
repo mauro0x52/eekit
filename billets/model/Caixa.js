@@ -111,7 +111,6 @@ Billet.print = function (billet, cb) {
             freeDv = that.ourNumberVerificationDigit(free);
 
             fOurNumberDv = that.ourNumberVerificationDigit(fOurNumber);
-console.log(billet.bankId + '' + billet.currency + '' + that.dueFactor(billet.dueDate) + '' + fValue + '' + free + '' + freeDv)
             dv = that.codeVerificationDigit(billet.bankId + '' + billet.currency + '' + that.dueFactor(billet.dueDate) + '' + fValue + '' + free + '' + freeDv);
 
             line = billet.bankId + '' + billet.currency + '' + dv + '' + that.dueFactor(billet.dueDate) + '' + fValue + '' + free + '' + freeDv;

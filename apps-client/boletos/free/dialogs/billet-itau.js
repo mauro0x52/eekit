@@ -217,6 +217,7 @@ app.routes.dialog('/boleto/itau/:id', function (params, data) {
                 });
                 billet.save(function() {
                     app.events.trigger('create billet', billet);
+                    app.routes.redirect('http://' + app.config.services.billets.host + ':' + app.config.services.billets.port + '/billet/'+billet._id+'/print/'+billet.ourNumber);
                     app.close();
                 });
             } else {
