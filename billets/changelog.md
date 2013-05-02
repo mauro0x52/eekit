@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 0.5
+
+Features
+- Boleto da Caixa (SIGCB)
+
 ## 0.4.1 (2013-04-29)
 
 Ajustes

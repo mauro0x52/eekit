@@ -60,9 +60,23 @@ app.routes.list('/', function (params, data) {
             this.item.title(value);
         };
 
-        this.category = function (value) {
-            this.item.label.legend(value);
-            this.item.label.color('blue');
+        this.category = function (bankId, bank) {
+            if (bankId === '001') {
+                this.item.label.legend(bank);
+                this.item.label.color('yellow');
+            } else if (bankId === '104') {
+                this.item.label.legend(bank);
+                this.item.label.color('orange');
+            } else if (bankId === '237') {
+                this.item.label.legend(bank);
+                this.item.label.color('red');
+            } else if (bankId === '341') {
+                this.item.label.legend(bank);
+                this.item.label.color('blue');
+            } else {
+                this.item.label.legend(bank);
+                this.item.label.color('black');
+            }
         }
 
         /* Pegando a exclusão do boleto */
@@ -84,7 +98,7 @@ app.routes.list('/', function (params, data) {
 
         if (billet) {
             this.title(billet.ourNumber);
-            this.category('boleto');
+            this.category(billet.bankId, billet.bank);
         }
     }
 

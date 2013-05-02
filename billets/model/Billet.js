@@ -9,6 +9,7 @@
 var Itau = require('./Itau.js').Itau,
     Bradesco = require('./Bradesco.js').Bradesco,
     Bb = require('./Bb.js').Bb,
+    Caixa = require('./Caixa.js').Caixa,
     mongoose = require('mongoose'),
     schema   = mongoose.Schema,
     objectId = schema.ObjectId,
@@ -20,7 +21,7 @@ billetSchema = new schema({
     company         : { type : objectId, required : true },
     /* banco */
     bank            : { type : String},
-    bankId          : { type : String, required : true, 'enum' : ['001', '237', '341']},
+    bankId          : { type : String, required : true, 'enum' : ['001', '104', '237', '341']},
     wallet          : { type : String },
     currency        : { type : String, required : true, 'default' : '9'},
     /* recebedor */
@@ -59,6 +60,10 @@ billetSchema.pre('save', function (next) {
         Bb.validate(this, function (error) {
             next(error);
         });
+    } else if (this.bankId === '104') {
+        Caixa.validate(this, function (error) {
+            next(error);
+        });
     } else if (this.bankId === '237') {
         Bradesco.validate(this, function (error) {
             next(error);
@@ -75,6 +80,10 @@ billetSchema.pre('save', function (next) {
 billetSchema.methods.print = function (cb) {
     if (this.bankId === '001') {
         Bb.print(this, function (error, print) {
+            cb(error, print);
+        });
+    } else if (this.bankId === '104') {
+        Caixa.print(this, function (error, print) {
             cb(error, print);
         });
     } else if (this.bankId === '237') {

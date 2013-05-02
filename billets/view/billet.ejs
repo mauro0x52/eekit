@@ -15,6 +15,18 @@ function printDefined(variable) {
     if (typeof variable !== 'undefined' && variable) return variable;
     return '&nbsp;';
 }
+
+function formatCpfCnpj (cpfCnpj) {
+    if (typeof cpfCnpj !== 'undefined' && cpfCnpj) {
+        if (cpfCnpj.length === 14) {
+            return cpfCnpj.substring(0,2) + '.' + cpfCnpj.substring(2,5) + '.' + cpfCnpj.substring(5,8) + '/' + cpfCnpj.substring(8,12) + '-' + cpfCnpj.substring(12,14);
+        } else if (cpfCnpj.length === 11) {
+            return cpfCnpj.substring(0,3) + '.' + cpfCnpj.substring(3,6) + '.' + cpfCnpj.substring(6,9) + '-' + cpfCnpj.substring(9,11);
+        }
+        return cpfCnpj;
+    };
+    return '&nbsp;';
+}
 %>
 
 <!DOCTYPE html>
@@ -270,7 +282,7 @@ dl.direita dd {
             <% } %>
             <dl>
                 <dt>CPF/CNPJ</dt>
-                <dd><%= printDefined(cpfCnpj) %></dd>
+                <dd><%= formatCpfCnpj(cpfCnpj) %></dd>
             </dl>
             <dl>
                 <dt>Vencimento</dt>

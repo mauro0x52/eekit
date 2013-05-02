@@ -10,7 +10,7 @@
 var Billet = {
     bank : 'Banco Bradesco',
     bankId : '237',
-    wallets : ['06', '03', '09']
+    wallets : ['06']
 }
 
 /**
@@ -23,11 +23,22 @@ var Billet = {
  * @param cb callback
  */
 Billet.validate = function (billet, cb) {
-    var valid = true, error = null, errors = {};
+    var valid = true, error = null, errors = {},
+        util = require('util');
 
     constructError = function (path, type) {
         return { message : 'Validator "'+type+'" failed for path '+path, name : 'ValidatorError', path : path, type : type };
     }
+
+    ValidationError = function (errors) {
+        Error.call(this);
+        Error.captureStackTrace(this, this.constructor);
+
+        this.message = 'Validation failed';
+        this.name = 'ValidationError';
+        this.errors = errors;
+    }
+    util.inherits(ValidationError, Error);
 
     /* obrigatórios */
     if (!billet.wallet || this.wallets.indexOf(billet.wallet.toString()) === -1) {
@@ -64,11 +75,7 @@ Billet.validate = function (billet, cb) {
         }
         billet.bank = this.bank;
     } else {
-        error = {
-            message : 'Validation failed',
-            name : 'ValidationError',
-            errors : errors
-        }
+        error = new ValidationError(errors);
     }
 
     cb(error);
@@ -96,7 +103,7 @@ Billet.print = function (billet, cb) {
                     '237' +
                     '9' +
                     that.dueFactor(billet.dueDate) +
-                    that.formatNumber(billet.value, 10) +
+                    that.formatNumber(billet.value.toFixed(2), 10) +
                     that.formatNumber(billet.agency, 4).split('-')[0] +
                     nnum +
                     that.formatNumber(billet.account, 7).split('-')[0] +
@@ -209,6 +216,7 @@ Billet.formatNumber = function (number, loop) {
     number = number.toString();
 
     number = number.replace(',', '');
+    number = number.replace('.', '');
     while (number.length < loop) {
         number = '0' + number;
     }

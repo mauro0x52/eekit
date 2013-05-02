@@ -1,21 +1,40 @@
 /**
- * Diálogo para editar um boleto
+ * Diálogo para criar um boleto
  *
  * @author Mauro Ribeiro
  * @since  2013-02
  */
-app.routes.dialog('/editar-boleto/:id', function (params, data) {
+app.routes.dialog('/adicionar-boleto', function (params, data) {
     var request = data ? data : {};
+
+    app.tracker.event('clicar: adicionar boleto');
+    /**
+     * Pega o id de uma categoria a partir do nome
+     *
+     * @author Mauro Ribeiro
+     * @since  2012-12
+     *
+     * @param  categories : lista de categorias
+     * @param  name : nome da categoria
+     */
+    function categoryId (categories, name) {
+        for (var i in categories) {
+            if (categories[i].name === name) {
+                return categories[i]._id
+            }
+        }
+        return categories[0]._id;
+    }
 
     /**
      * Monta o formulário
      *
      * @author Mauro Ribeiro
-     * @since  2013-04
+     * @since  2012-11
      *
-     * @param  billet: boleto a ser alterado
+     * @param  categories : lista de categorias do usuário
      */
-    function form (billet) {
+    function form (categories) {
         var
         /**
          * Campos do formulário
@@ -77,6 +96,15 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
             } else {
                 fields.agreement.visibility('hide');
             }
+            if (bank === '104') {
+                fields.account.legend('Código do Cedente');
+            } else {
+                fields.account.legend('Conta corrente');
+            }
+
+            fieldsets.bank.collapsed(false);
+            fieldsets.dates.collapsed(false);
+            fieldsets.client.collapsed(false);
 
             for (var i in walletsOptions) {
                 if (i.indexOf(banks[bank]) === -1) {
@@ -99,32 +127,30 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
 
         /* input com os bancos */
         banksOptions = {
-            bb : new app.ui.inputOption({ legend : 'Banco do Brasil', value : '001', clicked : billet.bankId === '001' }),
-            bradesco : new app.ui.inputOption({ legend : 'Bradesco', value : '237', clicked : billet.bankId === '247' }),
-            caixa : new app.ui.inputOption({ legend : 'Caixa', value : '104' , clicked : billet.bankId === '104' }),
-            itau     : new app.ui.inputOption({ legend : 'Itaú', value : '341', clicked : billet.bankId === '341' })
+            bb : new app.ui.inputOption({ legend : 'Banco do Brasil', value : '001' }),
+            bradesco : new app.ui.inputOption({ legend : 'Bradesco', value : '237' }),
+            caixa : new app.ui.inputOption({ legend : 'Caixa', value : '104' }),
+            itau     : new app.ui.inputOption({ legend : 'Itaú', value : '341' })
         }
 
         /* input com os bancos */
         walletsOptions = {
-            bb18        : new app.ui.inputOption({ legend : '18', value : '18', clicked : billet.wallet === '18' }),
-            bradesco06  : new app.ui.inputOption({ legend : '06', value : '06', clicked : billet.wallet === '06' }),
-            caixaSIGCB  : new app.ui.inputOption({ legend : 'SIGCB - sem registro', value : 'sigcb', clicked : billet.wallet === 'sigcb' }),
-            itau175     : new app.ui.inputOption({ legend : '175', value : '175', clicked : billet.wallet === '175' })
+            bb18        : new app.ui.inputOption({ legend : '18 - sem registro', value : '18' }),
+            bradesco06  : new app.ui.inputOption({ legend : '06 - sem registro', value : '06' }),
+            caixaSIGCB  : new app.ui.inputOption({ legend : 'SIGCB - sem registro', value : 'sigcb' }),
+            itau175     : new app.ui.inputOption({ legend : '175 - sem registro', value : '175' })
         }
 
         /* campos do recebedor */
         fields.receiver = new app.ui.inputText({
-            legend : 'Sua razão social',
+            legend : 'Seu nome ou razão social',
             name : 'receiver',
-            rules : [{rule : /^.{3,}$/, message : 'campo obrigatório'}],
-            value : billet.receiver
+            rules : [{rule : /^.{3,}$/, message : 'campo obrigatório'}]
         });
         fields.cpfCnpj = new app.ui.inputText({
-            legend : 'Seu cnpj',
+            legend : 'Seu CNPJ ou CPF',
             name : 'cpfCnpj',
-            rules : [{rule : /^\d\d\.?\d\d\d\.?\d\d\d\/?\d\d\d\d\-?\d\d$/, message : 'ex: 12.345.678/9999-00'}],
-            value : billet.cpfCnpj
+            rules : [{rule : /^((\d\d\d\.?\d\d\d\.?\d\d\d\-?\d\d)|(\d\d\.?\d\d\d\.?\d\d\d\/?\d\d\d\d\-?\d\d))$/, message : 'CPF ou CNPJ inválido'}]
         });
         fields.bankId = new app.ui.inputSelector({
             type : 'single',
@@ -138,8 +164,9 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
         });
 
         fieldsets.receiver = new app.ui.fieldset({
-            legend : 'Recebedor'
+            legend : 'Cedente'
         });
+
         fieldsets.receiver.fields.add([
             fields.receiver,
             fields.cpfCnpj,
@@ -151,15 +178,13 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
             legend : 'Agência',
             name : 'agency',
             value : request.agency ? request.agency : '',
-            rules : [{rule : /^\d{4}(\-[0-9x]{1})?$/, message : 'agência inválida'}],
-            value : billet.agency
+            rules : [{rule : /^\d{4}(\-[0-9x]{1})?$/, message : 'agência inválida'}]
         });
         fields.account = new app.ui.inputText({
             legend : 'Conta corrente',
             name : 'account',
             value : request.account ? request.account : '',
-            rules : [{rule : /^\d{5,8}(\-[0-9x]{1})?$/, message : 'conta inválida'}],
-            value : billet.account
+            rules : [{rule : /^\d{5,8}(\-[0-9x]{1})?$/, message : 'conta inválida'}]
         });
         for (var i in walletsOptions) {
             walletsOptions[i].visibility('hide');
@@ -175,19 +200,19 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
         fields.agreement = new app.ui.inputText({
             name : 'agreement',
             legend : 'Convênio (com 0`s)',
-            rules : [{rule : /(^$)|(^\d{6,8}$)/, message : 'formato inválido'}],
-            value : billet.agreement
+            rules : [{rule : /(^$)|(^\d{6,8}$)/, message : 'formato inválido'}]
         });
         fields.agreement.visibility('hide');
         fields.value = new app.ui.inputText({
             legend : 'Valor (R$)',
             name : 'value',
-            rules : [{rule:/^[0-9]{1,8}([\.\,][0-9]{2})?$/, message : 'valor inválido'}],
-            value : billet.value
+            value : request.value ? request.value : '',
+            rules : [{rule:/^[0-9]{1,8}([\.\,][0-9]{2})?$/, message : 'valor inválido'}]
         });
 
         fieldsets.bank = new app.ui.fieldset({
-            legend : 'Dados bancários'
+            legend : 'Dados bancários',
+            collapsed : true
         });
         fieldsets.bank.fields.add([
             fields.agency,
@@ -212,7 +237,8 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
         });
 
         fieldsets.dates = new app.ui.fieldset({
-            legend : 'Datas'
+            legend : 'Datas',
+            collapsed : true
         });
         fieldsets.dates.fields.add([
             fields.creationDate,
@@ -222,22 +248,21 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
         /* campos do cliente */
         fields.clientName = new app.ui.inputText({
             legend : 'Nome do cliente',
-            name : 'clientName',
-            value : billet.clientName
+            name : 'clientName'
         });
         fields.demonstrative = new app.ui.inputText({
             legend : 'Demonstrativo',
-            name : 'demonstrative',
-            value : billet.demonstrative
+            name : 'demonstrative'
         });
         fields.instructions = new app.ui.inputText({
             legend : 'Instruções ao caixa',
             name : 'instructions',
-            value : billet.instructions
+            value : 'Não aceitar após o vencimento.'
         });
 
         fieldsets.client = new app.ui.fieldset({
-            legend : 'Cliente'
+            legend : 'Cliente',
+            collapsed : true
         });
         fieldsets.client.fields.add([
             fields.clientName,
@@ -254,35 +279,34 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
 
         /* Controle de envio do form */
         app.ui.form.submit(function() {
-            /* recebedor */
-            billet.receiver = fields.receiver.value();
-            billet.cpfCnpj = fields.cpfCnpj.value();
-            /* banco */
-            billet.bankId = fields.bankId.value()[0];
-            billet.agency = fields.agency.value().split('-')[0];
-            billet.account = fields.account.value().split('-')[0];
-            billet.accountVD = fields.account.value().split('-')[1];
-            billet.wallet = fields.wallet.value()[0];
-            billet.agreement = fields.agreement.value();
-            billet.value = fields.value.value().replace(',','.');
-            /* datas */
-            billet.creationDate = fields.creationDate.date();
-            billet.dueDate = fields.dueDate.date();
-            /* cliente */
-            billet.clientName = fields.clientName.value();
-            billet.demonstrative = fields.demonstrative.value();
-            billet.instructions = fields.instructions.value();
-            if (billet.value.indexOf('.') === -1) {
-                billet.value += '.00';
+            var data = {
+                /* recebedor */
+                receiver : fields.receiver.value(),
+                cpfCnpj : fields.cpfCnpj.value(),
+                /* banco */
+                bankId : fields.bankId.value()[0],
+                agency : fields.agency.value().split('-')[0],
+                account : fields.account.value().split('-')[0],
+                accountVD : fields.account.value().split('-')[1],
+                wallet : fields.wallet.value()[0],
+                agreement : fields.agreement.value(),
+                value : fields.value.value().replace(',','.'),
+                /* datas */
+                creationDate : fields.creationDate.date(),
+                dueDate : fields.dueDate.date(),
+                /* cliente */
+                clientName : fields.clientName.value(),
+                demonstrative : fields.demonstrative.value(),
+                instructions : fields.instructions.value()
             }
-            if (!billet.bankId) {
+            if (!data.bankId) {
                 app.ui.error('Escolha um banco');
-            } else if (!billet.wallet) {
+            } else if (!data.wallet) {
                 app.ui.error('Escolha uma carteira');
             } else {
-                console.log(billet.value)
+                var billet = new app.models.billet(data);
                 billet.save(function() {
-                    app.events.trigger('update billet ' + billet._id, billet);
+                    app.events.trigger('create billet', billet);
                     app.close();
                 });
             }
@@ -298,7 +322,5 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
      */
     app.ui.title("Gerar boleto");
 
-    app.models.billet.find(params.id, function (billet) {
-        form(billet);
-    });
+    form();
 });
