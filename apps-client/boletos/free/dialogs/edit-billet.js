@@ -178,7 +178,7 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
             rules : [{rule : /(^$)|(^\d{6,8}$)/, message : 'formato inválido'}],
             value : billet.agreement
         });
-        fields.agreement.visibility('hide');
+        
         fields.value = new app.ui.inputText({
             legend : 'Valor (R$)',
             name : 'value',
@@ -280,7 +280,6 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
             } else if (!billet.wallet) {
                 app.ui.error('Escolha uma carteira');
             } else {
-                console.log(billet.value)
                 billet.save(function() {
                     app.events.trigger('update billet ' + billet._id, billet);
                     app.close();

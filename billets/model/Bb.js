@@ -68,28 +68,28 @@ Billet.validate = function (billet, cb) {
     if (!billet.agreement || /^\d{6,8}$/.test(billet.agreement) === false) {
         valid = false;
         errors.agreement = constructError('agreement', '\\d{6,8}');
-    }
-
-    if (billet.agreement.length === 6) {
-        if (!billet.ourNumber) {
-            billet.ourNumber = this.generateOurNumber(17);
-        } else if ((/^\d{1,17}$/.test(billet.ourNumber) === false)) {
-            valid = false;
-            errors.ourNumber = constructError('ourNumber', '\\d{1,17}');
-        }
-    } else if (billet.agreement.length === 7) {
-        if (!billet.ourNumber) {
-            billet.ourNumber = this.generateOurNumber(10);
-        } else if ((/^\d{1,10}$/.test(billet.ourNumber) === false)) {
-            valid = false;
-            errors.ourNumber = constructError('ourNumber', '\\d{1,10}');
-        }
-    } else if (billet.agreement.length === 8) {
-        if (!billet.ourNumber) {
-            billet.ourNumber = this.generateOurNumber(9);
-        } else if ((/^\d{1,9}$/.test(billet.ourNumber) === false)) {
-            valid = false;
-            errors.ourNumber = constructError('ourNumber', '\\d{1,9}');
+    } else {
+        if (billet.agreement.length === 6) {
+            if (!billet.ourNumber) {
+                billet.ourNumber = this.generateOurNumber(17);
+            } else if ((/^\d{1,17}$/.test(billet.ourNumber) === false)) {
+                valid = false;
+                errors.ourNumber = constructError('ourNumber', '\\d{1,17}');
+            }
+        } else if (billet.agreement.length === 7) {
+            if (!billet.ourNumber) {
+                billet.ourNumber = this.generateOurNumber(10);
+            } else if ((/^\d{1,10}$/.test(billet.ourNumber) === false)) {
+                valid = false;
+                errors.ourNumber = constructError('ourNumber', '\\d{1,10}');
+            }
+        } else if (billet.agreement.length === 8) {
+            if (!billet.ourNumber) {
+                billet.ourNumber = this.generateOurNumber(9);
+            } else if ((/^\d{1,9}$/.test(billet.ourNumber) === false)) {
+                valid = false;
+                errors.ourNumber = constructError('ourNumber', '\\d{1,9}');
+            }
         }
     }
 

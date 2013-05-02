@@ -4,9 +4,9 @@
  * @author Mauro Ribeiro
  * @since  2013-02
  */
-app.routes.dialog('/boleto/bb/:id', function (params, data) {
+app.routes.dialog('/boleto/caixa/:id', function (params, data) {
     var request = data ? data : {},
-        bankId = app.models.banks.bb.id,
+        bankId = app.models.banks.caixa.id,
         newBillet = (params.id === 'novo') ? true : false;
 
     /**
@@ -70,7 +70,7 @@ app.routes.dialog('/boleto/bb/:id', function (params, data) {
 
         /* input com os bancos */
         walletsOptions = {
-            bb18        : new app.ui.inputOption({ legend : '18 - sem registro', value : '18', clicked : true })
+            caixaSIGCB : new app.ui.inputOption({ legend : 'SIGCB sem registro', value : 'sigcb', clicked : true })
         }
 
         /* campos do recebedor */
@@ -115,17 +115,11 @@ app.routes.dialog('/boleto/bb/:id', function (params, data) {
             value : billet.agency ? billet.agency : ''
         });
         fields.account = new app.ui.inputText({
-            legend : 'Conta corrente',
+            legend : 'Código do cedente',
             name : 'account',
             value : request.account ? request.account : '',
-            rules : [{rule : /^\d{5}(\-[0-9x]{1})?$/, message : 'conta inválida'}],
+            rules : [{rule : /^\d{6}(\-[0-9x]{1})?$/, message : 'conta inválida'}],
             value : billet.account ? billet.account : ''
-        });
-        fields.agreement = new app.ui.inputText({
-            name : 'agreement',
-            legend : 'Convênio (com 0`s)',
-            rules : [{rule : /^\d{6,8}$/, message : 'formato inválido'}],
-            value : billet.agreement ? billet.agreement : ''
         });
         fields.value = new app.ui.inputText({
             legend : 'Valor (R$)',
@@ -142,7 +136,6 @@ app.routes.dialog('/boleto/bb/:id', function (params, data) {
             fields.wallet,
             fields.agency,
             fields.account,
-            fields.agreement,
             fields.value
         ]);
 
@@ -213,7 +206,6 @@ app.routes.dialog('/boleto/bb/:id', function (params, data) {
                     account : fields.account.value().split('-')[0],
                     accountVD : fields.account.value().split('-')[1],
                     wallet : fields.wallet.value()[0],
-                    agreement : fields.agreement.value(),
                     value : fields.value.value().replace(',','.'),
                     /* datas */
                     creationDate : fields.creationDate.date(),
@@ -237,7 +229,6 @@ app.routes.dialog('/boleto/bb/:id', function (params, data) {
                 billet.account = fields.account.value().split('-')[0];
                 billet.accountVD = fields.account.value().split('-')[1];
                 billet.wallet = fields.wallet.value()[0];
-                billet.agreement = fields.agreement.value();
                 billet.value = fields.value.value().replace(',','.');
                 /* datas */
                 billet.creationDate = fields.creationDate.date();
@@ -261,7 +252,7 @@ app.routes.dialog('/boleto/bb/:id', function (params, data) {
      * @author Mauro Ribeiro
      * @since  2013-02
      */
-    app.ui.title("Boleto Banco do Brasil");
+    app.ui.title("Boleto Caixa");
 
     if (newBillet) {
         form();

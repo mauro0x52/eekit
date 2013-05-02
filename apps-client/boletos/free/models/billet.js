@@ -50,6 +50,10 @@ app.models.billet = function (params) {
     this.clientState = params.clientState;
     this.clientZipCode = params.clientZipCode;
     this.demonstrative = params.demonstrative;
+    /**
+     * particularidades bb
+     */
+    this.agreement = params.agreement;
 
     /**
      * Remove o boleto
@@ -98,7 +102,8 @@ app.models.billet = function (params) {
             clientCity : this.clientCity,
             clientState : this.clientState,
             clientZipCode : this.clientZipCode,
-            demonstrative : this.demonstrative
+            demonstrative : this.demonstrative,
+            agreement : this.agreement
         },
         url, event;
 
