@@ -79,7 +79,7 @@ app.get('/uptime', function (request, response) {
 
     exec('uptime', function (error, stdout, stderr) {
 
-        match = stdout.match(/(\d\d\:\d\d\:\d\d)\s+up\s+(([0-9])\s+days?,)?\s+(\d\d)\:(\d\d),\s+[0-9]+\s+users,\s+load\s+average:\s+(\d+\.\d\d),\s+(\d+\.\d\d),\s+(\d+\.\d\d)/);
+        match = stdout.match(/(\d\d\:\d\d\:\d\d)\s+up\s+(([0-9]+)\s+days?,)?\s+(\d\d)\:(\d\d),\s+[0-9]+\s+users,\s+load\s+average:\s+(\d+\.\d\d),\s+(\d+\.\d\d),\s+(\d+\.\d\d)/);
 
         response.send({
             localTime : match[1],
