@@ -239,7 +239,7 @@
                 } else {
                     var color, height, value, newPoint;
                     document.getElementById('upTime_localTime').innerHTML = data.localTime;
-                    document.getElementById('upTime_upTime').innerHTML = (data.upTime.days ? data.upTime.days + ' dias' : '0 dia') + ', ' + data.upTime.hours + ':' + data.upTime.minutes;
+                    document.getElementById('upTime_upTime').innerHTML = data.upTime.replace('day','dia').replace('sec','sec');
                     document.getElementById('loadAverage_1min').innerHTML = data.loadAverage[1];
                     document.getElementById('loadAverage_5min').innerHTML = data.loadAverage[5];
                     document.getElementById('loadAverage_15min').innerHTML = data.loadAverage[15];
@@ -316,7 +316,7 @@
         <h3>Horário local:</h3>
         <p id="upTime_localTime">00:00:00</p>
         <h3>Tempo em execução:</h3>
-        <p id="upTime_upTime">0 dia, 00:00</p>
+        <p id="upTime_upTime">0 dia, 0 min</p>
     </div>
 
     <div id="loadAverage">

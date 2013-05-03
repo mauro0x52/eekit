@@ -79,19 +79,15 @@ app.get('/uptime', function (request, response) {
 
     exec('uptime', function (error, stdout, stderr) {
 
-        match = stdout.match(/(\d\d\:\d\d\:\d\d)\s+up\s+(([0-9]+)\s+days?,)?\s+(\d\d)\:(\d\d),\s+[0-9]+\s+users,\s+load\s+average:\s+(\d+\.\d\d),\s+(\d+\.\d\d),\s+(\d+\.\d\d)/);
+        match = stdout.match(/(\d\d\:\d\d\:\d\d)\s+up\s+([0-9]+\s+days?,?\s+[0-9a-z\s\:]+),\s+[0-9]+\s+users?,\s+load\s+average:\s+(\d+\.\d\d),\s+(\d+\.\d\d),\s+(\d+\.\d\d)/);
 
-        response.send({
+response.send({
             localTime : match[1],
-            upTime : {
-                days : match[3],
-                hours : match[4],
-                minutes : match[5]
-            },
+            upTime : match[2],
             loadAverage : {
-                1 : match[6],
-                5 : match[7],
-                15 : match[8]
+                1 : match[3],
+                5 : match[4],
+                15 : match[5]
             }
         })
     });
@@ -149,14 +145,14 @@ app.get('/service/:id/log', function (request, response) {
         return;
     }
 
-    forever.tail(request.params.id + '.js', function (error, services) {
+    forever.tail(request.params.id + '.js', function (error, data) {
         if (error) {
             response.send({ error : error });
         } else {
-            if (services instanceof Array) {
-                response.send({ log : services[0].logs });
+            if (data instanceof Array && data[0] && data[0].logs) {
+                response.send({ log : data[0].logs });
             } else {
-                response.send({ log : services.line });
+                response.send({ data : data });
             }
         }
     })
