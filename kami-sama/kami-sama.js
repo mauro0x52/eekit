@@ -8,37 +8,65 @@
 
 var config = require('./config.js'),
     io = require('socket.io').listen(config.host.port),
-    sockets = [];
+    clients = [],
+    services = [];
 
-function emit (socket, evt) {
-    require('restler').post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/' + socket.service + '/authorize', {
-        data: {
-            secret : config.security.secret,
-            token  : evt.token
-        }
-    }).on('success', function(data) {
-        evt.token = data.token;
-        socket.emit('trigger', evt);
-    });
+function emit(socket, data, service) {
+    if (socket.tokens[service]) {
+        data.token = socket.tokens[service];
+        socket.emit('trigger', data);
+    } else {
+        require('restler').post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/' + service + '/authorize', {
+            data: {
+                secret : config.security.secret,
+                token  : data.token
+            }
+        }).on('success', function(res) {
+            socket.tokens[service] = res.token;
+            data.token = res.token;
+            socket.emit('trigger', data);
+        });
+    }
 }
 
 io.sockets.on('connection', function (socket) {
     socket.user = socket.handshake.address.address;
-    sockets.push(socket);
+    socket.tokens = {};
 
     socket.on('auth', function (data) {
         if (data.service) {
             socket.service = data.service;
+            services.push(socket)
         } else {
-            socket.service = 'www';
             socket.client = data.user;
+            clients.push(socket)
         }
     });
 
     socket.on('trigger', function (data) {
         data.source = socket.service;
-        for (var i in sockets) {
-            emit(sockets[i], data);
+        for (var i in clients) {
+            if (clients[i]) {
+                emit(clients[i], data, 'www');
+            }
+        }
+        for (var i in services) {
+            if (services[i]) {
+                emit(services[i], data, services[i].service);
+            }
+        }
+    });
+
+    socket.on('disconnect', function () {
+        for (var i in clients) {
+            if (clients[i] === socket) {
+                delete clients[i];
+            }
+        }
+        for (var i in services) {
+            if (services[i] === socket) {
+                delete services[i];
+            }
         }
     });
 });
