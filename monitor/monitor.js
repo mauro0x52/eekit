@@ -135,6 +135,47 @@ app.get('/processes', function (request, response) {
     });
 });
 
+
+/**
+ * Visualiza recursos da maquina
+ *
+ * @author Mauro Ribeiro, Rafael Erthal
+ * @since  2013-05
+ */
+app.get('/top', function (request, response) {
+    "use strict";
+
+    response.contentType('json');
+
+    if (request.param('secret', null) != 'm0n1t0rm4ne1r0p4r4vcs3rf3l1z') {
+        response.end();
+        return;
+    }
+
+    var exec = require('child_process').exec,
+        result = {}, match, lines, length;
+
+    exec('top -b -n 1', function (error, stdout, stderr) {
+        lines = stdout.split('\n');
+        length = lines.length;
+        match = lines[0].match(/top\s+\-\s+(\d\d\:\d\d\:\d\d)\s+up\s+([0-9]+\s+days?,?\s+[0-9a-z\s\:]+),\s+[0-9]+\s+users?,\s+load\s+average:\s+(\d+\.\d\d),\s+(\d+\.\d\d),\s+(\d+\.\d\d)/);
+        result.localTime = match[1];
+        result.upTime = match[2];
+        result.loadAverage = {
+            1 : match[3],
+            5 : match[4],
+            15 : match[5]
+        }
+        result.cpu = lines[2].match(/Cpu\(s\):\s+(\d+.?\d*)\%us\,.*/)[1];
+
+        match = lines[3].match(/Mem\:\s+(\d+)k\s+total\,\s+(\d+)k used*/);
+        result.totalMemory = match[1];
+        result.memory = match[2];
+        result.processes = [];
+        response.send(result);
+    });
+});
+
 app.get('/service/:id/log', function (request, response) {
     "use strict";
 
