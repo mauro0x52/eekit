@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monitor do serviço <%= app %></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        body {
+            background-color: #eee;
+            margin: 0;
+            padding: 20px;
+            font-family: Verdana,Helvetica,sans-serif;
+        }
+        #wrapper {
+            width: 920px;
+            padding: 40px;
+            margin: auto;
+            box-shadow: 0 0 200px rgba(0,0,0,0.4);
+            background-color: #fff;
+        }
+        h1 {
+            margin: -40px -40px 0 -40px;
+            padding: 40px;
+            font-size: 25px;
+            font-family: Arial,Helvetica,sans-serif;
+        }
+        h2 {
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            font-family: Arial,Helvetica,sans-serif;
+        }
+        h3 {
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+        }
+        #log h2 {
+            padding: 20px 0;
+            border-top: 1px dotted #ccc;
+        }
+        #log_text[disabled] {
+            width: 100%;
+            height: 400px;
+            background-color: #fff;
+            border: none;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+    <script type="text/javascript">
+        ajax = function (url, cb) {
+            var invocation,
+                start;
+
+            try {
+                /* Testa chamada para o IE */
+                if (window.XDomainRequest) {
+                    invocation = new XDomainRequest();
+                } else {
+                    invocation = new XMLHttpRequest();
+                }
+                /* Verifica se ajax esta disponível no browser */
+                if (invocation) {
+                    /* Callback de sucesso */
+                    invocation.onload = function () {
+                        try {
+                            var end = new Date(),
+                                data = eval('(' + invocation.responseText + ')');
+                            data.responseTime = end - start;
+
+                            if (cb) {
+                                cb(null, data);
+                            }
+                        } catch(e) {
+                            if (cb) {
+                                cb(e, null);
+                            }
+                        }
+                    };
+                    /* Callback de falha */
+                    invocation.onerror = function (error) {
+                        cb(error, null);
+                    };
+                    /* dispara a chamada */
+                    invocation.open('GET', url, true);
+                    start = new Date()
+                    invocation.send();
+                } else {
+                    cb('unable to create request object', null);
+                }
+            } catch (error) {
+                cb(error, null);
+            }
+        };
+
+
+        log = function () {
+            ajax('/service/<%= app %>/log?secret=m0n1t0rm4ne1r0p4r4vcs3rf3l1z', function(error, data) {
+                if (error) {
+
+                } else {
+                    document.getElementById('log_text').innerHTML = data.log;
+                }
+            });
+        }
+
+        log();
+        setInterval(log, 5000);
+    </script>
+</head>
+<body>
+
+<div id="wrapper">
+    <h1>Serviço <%= app %></h1>
+
+    <div id="log">
+        <h2>Log do serviço </h2>
+        <textarea id="log_text" disabled></textarea>
+    </div>
+</div>
+
+</body>
+</html>
