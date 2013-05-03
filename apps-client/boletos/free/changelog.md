@@ -1,6 +1,15 @@
 Changelog
 =========
 
+## 1.1
+
+Features
+- Boleto da Caixa
+- Deixar CPF
+
+Melhorias
+- Reestruturação do código
+
 ## 1.0.1 (2013-03-07)
 
 Correções

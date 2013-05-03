@@ -432,7 +432,8 @@ inputs.name = new app.ui.tag({
             }
         ],
         events : {
-            submit : function () {
+            submit : function (evt) {
+                evt.preventDefault();
                 var data = {
                     name : inputs.company.value(),
                     admin : {
@@ -461,7 +462,6 @@ inputs.name = new app.ui.tag({
                         app.close();
                     }
                 });
-
             }
         }
     }

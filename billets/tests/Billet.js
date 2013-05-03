@@ -84,7 +84,7 @@ describe('GET /billet/:id', function () {
 });
 
 
-describe('GET /billet/:id/print/:barCode', function () {
+describe('GET /billet/:id/print/:ourNumber', function () {
 
     it('imprime o boleto', function (done) {
         console.log('verificar http://'+config.services['billets'].url+':'+config.services['billets'].port + '/billet/'+billet._id+'/print/'+billet.ourNumber);

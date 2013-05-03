@@ -1,23 +1,23 @@
 /**
- * Banco do Brasil
+ * Caixa
  *
  * @author : Mauro Ribeiro
- * @since : 2013-03
+ * @since : 2013-04
  *
- * @description : Representação da entidade de boleto do Banco do Brasil
+ * @description : Representação da entidade de boleto da Caixa
  */
 
 var Billet = {
-    bank : 'Banco do Brasil',
-    bankId : '001',
-    wallets : ['18']
+    bank : 'Caixa',
+    bankId : '104',
+    wallets : ['sigcb'] // SICOB e SINCO estão deprecados
 }
 
 /**
- * Valida os dados do boleto para o Banco do Brasil
+ * Valida os dados do boleto para a Caixa
  *
  * @author Mauro Ribeiro
- * @since  2013-02
+ * @since  2013-04
  *
  * @param billet boleto
  * @param cb callback
@@ -29,7 +29,6 @@ Billet.validate = function (billet, cb) {
     constructError = function (path, type) {
         return { message : 'Validator "'+type+'" failed for path '+path, name : 'ValidatorError', path : path, type : type };
     }
-
     ValidationError = function (errors) {
         Error.call(this);
         Error.captureStackTrace(this, this.constructor);
@@ -49,9 +48,10 @@ Billet.validate = function (billet, cb) {
         valid = false;
         errors.agency = constructError('agency', '\\d{4}');
     }
-    if (!billet.account || /^\d{5}$/.test(billet.account) === false) {
+    /* na verdade trata-se de um codigo do cedente */
+    if (!billet.account || /^\d{6}$/.test(billet.account) === false) {
         valid = false;
-        errors.account = constructError('account', '\\d{5}');
+        errors.account = constructError('account', '\\d{6}');
     }
     if (!billet.dueDate) {
         valid = false;
@@ -65,35 +65,15 @@ Billet.validate = function (billet, cb) {
         valid = false;
         errors.value = constructError('value', 'required');
     }
-    if (!billet.agreement || /^\d{6,8}$/.test(billet.agreement) === false) {
-        valid = false;
-        errors.agreement = constructError('agreement', '\\d{6,8}');
-    } else {
-        if (billet.agreement.length === 6) {
-            if (!billet.ourNumber) {
-                billet.ourNumber = this.generateOurNumber(17);
-            } else if ((/^\d{1,17}$/.test(billet.ourNumber) === false)) {
-                valid = false;
-                errors.ourNumber = constructError('ourNumber', '\\d{1,17}');
-            }
-        } else if (billet.agreement.length === 7) {
-            if (!billet.ourNumber) {
-                billet.ourNumber = this.generateOurNumber(10);
-            } else if ((/^\d{1,10}$/.test(billet.ourNumber) === false)) {
-                valid = false;
-                errors.ourNumber = constructError('ourNumber', '\\d{1,10}');
-            }
-        } else if (billet.agreement.length === 8) {
-            if (!billet.ourNumber) {
-                billet.ourNumber = this.generateOurNumber(9);
-            } else if ((/^\d{1,9}$/.test(billet.ourNumber) === false)) {
-                valid = false;
-                errors.ourNumber = constructError('ourNumber', '\\d{1,9}');
-            }
-        }
-    }
 
     if (valid) {
+        /* opcional */
+        if (!billet.ourNumber) {
+            billet.ourNumber = this.generateOurNumber();
+        } else if (/^24\d{15}$/.test(billet.ourNumber) === false) {
+            valid = false;
+            errors.ourNumber = constructError('ourNumber', '24\\d{15}');
+        }
         billet.bank = this.bank;
     } else {
         error = new ValidationError(errors);
@@ -106,15 +86,14 @@ Billet.validate = function (billet, cb) {
  * Formata os dados tudo bonitinho para imprimir o boleto
  *
  * @author Mauro Ribeiro
- * @since  2013-02
+ * @since  2013-04
  *
  * @param billet boleto
  * @param cb callback
  */
 Billet.print = function (billet, cb) {
-    var line,
-        fValue, fAgency, fAccount, vd,
-        fAgencyVD, fAccountVD, dueFactor,
+    var line, free, freeDv,
+        fValue, fOurNumber, fOurNumberDv, fAgency, fAccount, fAccountDv, dv,
         print = {},
         that = this;
 
@@ -123,11 +102,18 @@ Billet.print = function (billet, cb) {
             cb(error);
         } else {
             fValue = that.formatNumber(billet.value.toFixed(2), 10, 0, 'value');
+            fOurNumber = that.formatNumber(billet.ourNumber, 17, 0);
             fAgency = that.formatNumber(billet.agency, 4, 0);
-            fAccount = that.formatNumber(billet.account, 8, 0);
-            fAgencyVD = that.modulus11(fAgency);
-            fAccountVD = that.modulus11(fAccount);
-            dueFactor = that.dueFactor(billet.dueDate);
+            fAccount = that.formatNumber(billet.account, 6, 0);
+            fAccountDv = that.modulus11(fAccount);
+
+            free = fAccount + fAccountDv + that.formatNumber(fOurNumber.substring(2,5), 3, 0) + that.formatNumber(fOurNumber.substring(0,1), 1, 0) + that.formatNumber(fOurNumber.substring(5,8), 3, 0) + that.formatNumber(fOurNumber.substring(1,2), 1, 0) + that.formatNumber(fOurNumber.substring(8), 9, 0);
+            freeDv = that.ourNumberVerificationDigit(free);
+
+            fOurNumberDv = that.ourNumberVerificationDigit(fOurNumber);
+            dv = that.codeVerificationDigit(billet.bankId + '' + billet.currency + '' + that.dueFactor(billet.dueDate) + '' + fValue + '' + free + '' + freeDv);
+
+            line = billet.bankId + '' + billet.currency + '' + dv + '' + that.dueFactor(billet.dueDate) + '' + fValue + '' + free + '' + freeDv;
 
             for (var i in billet) {
                 if (typeof billet[i] !== 'function' && i[0] !== '_') {
@@ -135,33 +121,16 @@ Billet.print = function (billet, cb) {
                 }
             }
 
-            if (print.agreement.length === 6) {
-                print.ourNumber = that.formatNumber(print.ourNumber, 17, 0);
-                vd = that.modulus11(print.bankId + '' + print.currency + '' + dueFactor + '' + fValue + '' + '' + print.agreement + '' + print.ourNumber + '21', 9, 0, false);
-                line = print.bankId + '' + print.currency + '' + vd + '' + dueFactor + '' + fValue + '' + '' + print.agreement + '' + print.ourNumber + '21';
-                print.ourNumber = print.agreement + print.ourNumber +'-'+ that.modulus11(print.agreement + print.ourNumber);
-            } else if (print.agreement.length === 7) {
-                print.ourNumber = that.formatNumber(print.ourNumber, 10, 0);
-                vd = that.modulus11(print.bankId + '' + print.currency + '' + dueFactor + '' + fValue + '000000' + '' + print.agreement + '' + print.ourNumber + '' + print.wallet, 9, 0, false);
-                line = print.bankId + '' + print.currency + '' + vd + '' + dueFactor + '' + fValue + '000000' + '' + print.agreement + '' + print.ourNumber + '' + print.wallet;
-                print.ourNumber = print.agreement + print.ourNumber;
-            } else if (print.agreement.length === 8) {
-                print.ourNumber = that.formatNumber(print.ourNumber, 9, 0);
-                vd = that.modulus11(print.bankId + '' + print.currency + '' + dueFactor + '' + fValue + '000000' + '' + print.agreement + '' + print.ourNumber + '' + print.wallet, 9, 0, false);
-                line = print.bankId + '' + print.currency + '' + vd + '' + dueFactor + '' + fValue + '000000' + '' + print.agreement + '' + print.ourNumber + '' + print.wallet;
-                print.ourNumber = print.agreement + print.ourNumber +'-'+ that.modulus11(print.agreement + print.ourNumber);
-            }
-
-            print.agency = print.agency+'-'+fAgencyVD;
-            print.account = print.account+'-'+fAccountVD;
             print.bankIdVD = that.bankVerificationDigit(billet.bankId);
-            print.ourNumberVD = that.modulus10(fAgency + fAccount + billet.wallet + billet.ourNumber);
+            print.ourNumber = fOurNumber + '-' + fOurNumberDv;
+            print.account = print.account+'-'+fAccountDv
             print.bank = that.bank;
             print.digitCode = that.digitCode(line);
             print.barCodeNumber = line;
             print.barCode = that.barCode(line);
+            print.wallet = 'SR';
             cb(null, print);
-        };
+        }
     });
 }
 
@@ -171,14 +140,12 @@ Billet.print = function (billet, cb) {
  * @author Mauro Ribeiro
  * @since  2013-02
  */
-Billet.generateOurNumber = function (size) {
+Billet.generateOurNumber = function () {
     var date = new Date(),
-        time;
-
-    if (!size) size = 10;
-
-    time = (parseInt(date.getTime()/1000,10)).toString();
-    return time.substring(time.length - size, time.length);
+        number;
+    number = (parseInt(date.getTime()/1000,10)%100000000).toString();
+    number = this.formatNumber(number, 15, 0);
+    return '24'+number;
 }
 
 /**
@@ -197,14 +164,14 @@ Billet.bankVerificationDigit = function (bankId) {
 }
 
 /**
- * Calcula dígito de verificação do número do código de barra
+ * Calcula dígito de verificação do nosso numero
  *
  * @author Mauro Ribeiro
  * @since  2013-02
  *
  * @param number string de caracteres com os dados do boleto
  */
-Billet.codeVerificationDigit = function (number) {
+Billet.ourNumberVerificationDigit = function (number) {
     var mod, digit, verificationDigit;
     mod = this.modulus11(number, 9, 1);
 
@@ -213,6 +180,26 @@ Billet.codeVerificationDigit = function (number) {
         verificationDigit = 1;
     } else {
         verificationDigit = digit;
+    }
+    return verificationDigit;
+}
+
+/**
+ * Calcula dígito de verificação do número do código de barra
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-05
+ *
+ * @param number string de caracteres com os dados do boleto
+ */
+Billet.codeVerificationDigit = function (number) {
+    var mod, digit, verificationDigit;
+    mod = this.modulus11(number, 9, 1);
+
+    if (mod === 0 || mod === 1 || mod === 10) {
+        verificationDigit = 1;
+    } else {
+        verificationDigit = 11 - mod;
     }
     return verificationDigit;
 }
@@ -318,29 +305,35 @@ Billet.barCode = function (value) {
  * @param code número do código de barras
  */
 Billet.digitCode = function (code) {
-    var free1, free2, free3,
-        bank, moeda, dv1, dv2, dv3, dv4,
+    var bank, moeda, ccc, ddnnum, dv1,
+        resnum, dac1, dddag, dv2,
+        resag, contadac, zeros, dv3,
+        dv4,
         factor, value,
         set1, set2, set3,
         field1, field2, field3, field4, field5;
 
     bank = code.substring(0, 3);
     moeda = code.substring(3, 4);
-    free1 = code.substring(19, 24);
-    free2 = code.substring(24,34);
-    free3 = code.substring(34, 44);
+    dv4 = code.substring(4, 5);
     factor = code.substring(5, 9);
     value = code.substring(9, 19);
+    ccc = code.substring(19, 22);
+    ddnnum = code.substring(22, 24);
+    resnum = code.substring(24, 30);
+    dac1 = code.substring(30, 31);
+    dddag = code.substring(31, 34);
+    resag = code.substring(34, 35);
+    contadac = code.substring(35, 41);
+    zeros = code.substring(41, 44);
 
-    dv4 = code.substring(4, 5);
-
-    set1 = bank + '' + moeda + '' + free1;
+    set1 = bank + '' + moeda + '' + ccc + '' + ddnnum;
     dv1 = this.modulus10(set1);
 
-    set2 = free2;
+    set2 = resnum + '' + dac1 + '' + dddag;
     dv2 = this.modulus10(set2);
 
-    set3 = free3;
+    set3 = resag + '' + contadac + '' + zeros;
     dv3 = this.modulus10(set3);
 
     field1 = set1.substring(0,5) + '.' + set1.substring(5,9)+dv1;
@@ -424,12 +417,11 @@ Billet.modulus10 = function (number) {
  *
  * @param number string de caracteres numéricos
  */
-Billet.modulus11 = function (number, base, r, digitx) {
+Billet.modulus11 = function (number, base, r) {
     var sum = 0, factor = 2,
         digit;
-    if (!base) base = 9;
     if (!r) r = 0;
-    if (!digitx) digitx = true;
+    if (!base) base = 9;
 
     number = number.toString();
 
@@ -449,10 +441,7 @@ Billet.modulus11 = function (number, base, r, digitx) {
         sum *= 10;
         digit = sum % 11;
         if (digit === 10) {
-            digit = 'X';
-        }
-        if (digitx === false && (digit === 0 || digit === 'X' || digit > 9)) {
-            digit = 1;
+            digit = 0;
         }
         return digit;
     } else {
@@ -461,4 +450,4 @@ Billet.modulus11 = function (number, base, r, digitx) {
 }
 
 /*  Exportando o pacote  */
-exports.Bb = Billet;
+exports.Caixa = Billet;

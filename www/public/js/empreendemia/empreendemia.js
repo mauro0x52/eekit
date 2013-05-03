@@ -58,7 +58,7 @@ var empreendemia = {
                 } else {
                     routes = old_route;
                 }
-                slug = routes.split('/')[0];
+                slug = routes.split('/')[0] || 'ee';
                 route = routes.replace(slug, '') || '/';
             } else {
                 /* Usuário deslogado */
@@ -93,8 +93,7 @@ var empreendemia = {
             empreendemia.ui.header.menu.apps.remove();
             for (var i in apps) {
                 if (
-                    apps[i].name.toLowerCase() !== 'ee' &&
-                    apps[i].name.toLowerCase() !== 'boletos'
+                    apps[i].name.toLowerCase() !== 'ee'
                 ) {
                     empreendemia.ui.header.menu.apps.add(new empreendemia.ui.appIcon({
                         legend : apps[i].name,
