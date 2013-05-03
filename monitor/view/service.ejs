@@ -38,13 +38,18 @@
             padding: 20px 0;
             border-top: 1px dotted #ccc;
         }
-        #log_text[disabled] {
-            width: 100%;
+        #log_lines {
             height: 400px;
+            overflow-x: hidden;
+            overflow-y: scroll;
             background-color: #fff;
             border: none;
             color: #666;
             font-size: 14px;
+        }
+        #log_lines p {
+            line-height: 16px;
+            margin: 5px 0;
         }
     </style>
     <script type="text/javascript">
@@ -95,17 +100,23 @@
 
 
         log = function () {
+            var element = document.getElementById('log_lines');
             ajax('/service/<%= app %>/log?secret=m0n1t0rm4ne1r0p4r4vcs3rf3l1z', function(error, data) {
                 if (error) {
 
                 } else {
-                    document.getElementById('log_text').innerHTML = data.log;
+                    var html = '';
+                    for (var i in data.log) {
+                        html += '<p>'+data.log[i]+'</p>';
+                    }
+                    element.innerHTML = html;
+                    element.scrollTop = element.scrollHeight;
                 }
             });
         }
 
         log();
-        setInterval(log, 5000);
+        setInterval(log, 1000);
     </script>
 </head>
 <body>
@@ -115,7 +126,7 @@
 
     <div id="log">
         <h2>Log do serviço </h2>
-        <textarea id="log_text" disabled></textarea>
+        <div id="log_lines"></div>
     </div>
 </div>
 

@@ -145,17 +145,19 @@ app.get('/service/:id/log', function (request, response) {
         return;
     }
 
-    forever.tail(request.params.id + '.js', function (error, data) {
+    var log = [];
+
+    forever.tail(request.params.id+'.js', { length : 100, stream : false }, function (error, data) {
         if (error) {
             response.send({ error : error });
         } else {
-            if (data instanceof Array && data[0] && data[0].logs) {
-                response.send({ log : data[0].logs });
-            } else {
-                response.send({ data : data });
-            }
+            log.push(data.line);
         }
-    })
+    });
+
+    setTimeout(function () {
+        response.send({log : log})
+    }, 500);
 });
 
 app.listen(8099);
