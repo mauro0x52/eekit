@@ -82,6 +82,15 @@ module.exports(new Class (function (params) {
 
     };
 
+    /* Encerra a execução do app e remove-o da ui
+     *
+     * @author: rafael erthal
+     * @since: 2013-05
+     */
+    this.close = function () {
+
+    }
+
     /* Controla a biblioteca de ajax do app
      *
      * @author: rafael erthal
@@ -226,6 +235,7 @@ module.exports(new Class (function (params) {
 
     }
 
+    this.ui = new Empreendekit.ui[this.type()](this);
     this.route().apply(this, [this.params()]);
 
 }));

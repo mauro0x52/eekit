@@ -14,6 +14,10 @@ var match = function (route) {
     var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g),
         current_route = route.match(/([\/][A-Za-z0-9\-\:]*[^\/])/g);
 
+    if (current_route === null && current_path.length === 1) {
+        return true;
+    }
+
     if (current_path.length != current_route.length + 1) {
         return false;
     }
@@ -40,9 +44,11 @@ var params = function (route) {
         current_route = route.match(/([\/][A-Za-z0-9\-\:]*[^\/])/g),
         res = {};
 
-    for (var i = 0; i < current_route.length; i++) {
-        if (current_route[i].substring(1,2) === ':') {
-            res[current_route[i].substring(2)] = current_path[i+1].substring(1);
+    if (current_route) {
+        for (var i = 0; i < current_route.length; i++) {
+            if (current_route[i].substring(1,2) === ':') {
+                res[current_route[i].substring(2)] = current_path[i+1].substring(1);
+            }
         }
     }
 

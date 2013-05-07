@@ -27,6 +27,13 @@
                 tracker : folder + 'tracker/tracker.js',
                 ui      : folder + 'ui/ui.js'
             }, function () {
+                this.apps.open({
+                    app   : 'tarefas',
+                    route : '/pendentes',
+                    open  : function (app) {
+                        console.log(app)
+                    }
+                });
                 /*
                 new this.apps.app({
                     name   : 'teste',
