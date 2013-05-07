@@ -22,6 +22,7 @@ app.configure(function () {
     app.use('/js', express.static('public/js'));
     app.use('/css', express.static('public/css'));
     app.use('/images', express.static('public/images'));
+    app.use('/template', express.static('public/template'));
 
     /* caso seja ambiente de produção, esconder erros */
     if (config.host.debuglevel === 0) {

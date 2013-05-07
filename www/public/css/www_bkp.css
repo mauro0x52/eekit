@@ -1,0 +1,2878 @@
+html {
+    height: 100%;
+}
+
+body {
+    font-family: Verdana, Helvetia, sans-serif;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: #fff;
+    line-height: 1em;
+}
+
+body > .body {
+    display: block;
+    position: relative;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    z-index: 10;
+}
+
+a {
+    text-decoration: none;
+}
+
+a img {
+    border: none;
+}
+
+ul, ol, menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+li {
+    margin: 0;
+    padding: 0;
+}
+
+form {
+    margin: 0;
+    padding: 0;
+}
+
+.break {
+    clear: both;
+}
+
+.hide {
+    display: none;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Header                                                                     */
+/* -------------------------------------------------------------------------- */
+
+.body > .header {
+    background-color: #2b4f67;
+    height: 80px;
+    position: relative;
+    z-index: 1000000;
+}
+
+/* logo */
+
+.body > .header > .logo {
+    position: absolute;
+    top: 0;
+    width: 115px;
+    height: 94px;
+    overflow: hidden;
+    left: -15px;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.body > .header > .logo:hover {
+    left: -10px;
+}
+
+.body > .header > .logo > .anchor {
+    display: block;
+    color: #fff;
+}
+
+.body > .header > .logo > .anchor > .image {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 115px;
+    height: 94px;
+    background-image: url("../images/logo.png");
+}
+
+
+.body > .header > .logo > .anchor > .title {
+    position: absolute;
+    left: -100000px;
+    top: -100000px;
+}
+
+/* menu */
+
+.body > .header > .menu {
+    display: block;
+    list-style: none;
+    margin: 0 0 0 100px;
+    padding: 10px 0;
+    height: 60px;
+    min-width: 900px;
+}
+
+.body > .header > .menu > .tools,
+.body > .header > .menu > .more  {
+    display: inline-block;
+    padding: 0 20px;
+    margin: 0;
+    height: 60px;
+    /*border-right: 1px dotted #fdfdeb;*/
+}
+
+.body > .header > .menu  .list {
+    display: block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.body > .header > .menu  .list > .item {
+    position: relative;
+    display: inline-block;
+    width: 70px;
+    height: 60px;
+    text-align: center;
+}
+
+.body > .header > .menu  .list > .item  > .anchor {
+    position: absolute;
+    display: block;
+    padding: 5px 5px 0 5px;
+    height: 60px;
+    width: 60px;
+    top: 0;
+    color: #fdfdeb;
+}
+
+.body > .header > .menu  .list > .item  > .anchor > .legend{
+    margin: 2px 0;
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 11px;
+}
+.body > .header > .menu  .list > .item.selected  > .arrow {
+    position: absolute;
+    top: 70px;
+    left: 25px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #2b4f67;
+}
+
+/* busca */
+
+.body > .header > .menu > .search  {
+    display: inline-block;
+    position: relative;
+    margin: 0;
+    height: 60px;
+    width: 240px;
+}
+
+.body > .header > .menu > .search > .form {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 240px;
+    line-height: 1em;
+}
+
+.body > .header > .menu > .search > .form > .field {
+    position: absolute;
+	display: block;
+    top: 15px;
+    left: 20px;
+    height: 30px;
+    width: 180px;
+    border-radius: 8px;
+    border: none;
+	background-color: #fdfdeb;
+}
+
+.body > .header > .menu > .search > .form > .field > .input {
+	position: absolute;
+	font-size: 14px;
+	top: 6px;
+	left: 10px;
+	width: 150px;
+	border: 0;
+	padding: 0;
+	background-color: transparent;
+}
+
+.body > .header > .menu > .search > .form > .field > .input:focus {
+	border: 0;
+	box-shadow: 0;
+	margin: 0;
+}
+
+
+.body > .header > .menu > .search > .form > .submit {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 0 8px 8px 0;
+    border: none;
+    background-color: #f38520;
+}
+
+.body > .header > .menu > .search > .form > .submit > .image {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    width: 17px;
+    height: 17px;
+    background-image: url("../images/ui.png");
+    background-position: 0 -20px;
+}
+
+.body > .header > .menu > .search > .form > .submit > .input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+	opacity: 0;
+    border: none;
+    background-color: transparent;
+    font-size: 0;
+	cursor: pointer;
+}
+
+/* user */
+
+.body > .header > .user {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.body > .header > .user > .options {
+    position: absolute;
+    right: 0;
+    text-align: right;
+}
+
+.body > .header > .user > .options > .option {
+    width: 200px;
+}
+
+.body > .header > .user > .options > .option.name {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.body > .header > .user > .options > .option.settings {
+    font-size: 11px;
+}
+
+.body > .header > .user > .options > .option.logout {
+    font-size: 11px;
+    margin-top: 10px;
+}
+
+.body > .header > .user > .options > .option > .anchor {
+    color: #fdfdeb;
+}
+
+/* visitor */
+
+
+.body > .header > .visitor {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.body > .header > .visitor > .options {
+    position: absolute;
+    right: 0;
+    text-align: right;
+}
+
+.body > .header > .visitor > .options > .option {
+    width: 200px;
+}
+
+.body > .header > .visitor > .options > .option.signup {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.body > .header > .visitor > .options > .option.login {
+    font-size: 11px;
+    margin-top: 8px;
+}
+
+.body > .header > .visitor > .options > .option > .anchor {
+    color: #fdfdeb;
+}
+
+
+
+
+/* -------------------------------------------------------------------------- */
+/* Content                                                                    */
+/* -------------------------------------------------------------------------- */
+
+.body > .content {
+    height: 100%;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Tool                                                                       */
+/* -------------------------------------------------------------------------- */
+
+.content > .tool {
+    position: relative;
+    height: 100%;
+}
+
+/* navigation */
+
+.content > .tool > .navigation {
+    height: 40px;
+    background-color: #fff;
+    z-index: 100000;
+    position: relative;
+    min-width: 1000px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.8);
+}
+
+.content > .tool > .navigation > .sheets {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.content > .tool > .navigation > .sheets > .sheet {
+    display: block;
+    float: left;
+    border-bottom: 4px solid #fff;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.content > .tool > .navigation > .sheets > .selected {
+    border-bottom: 4px solid #f38520;
+}
+ç
+
+.content > .tool > .navigation > .sheets > .sheet > .anchor {
+    display: block;
+    padding: 12px 20px 7px 20px;
+    font-size: 10px;
+    color: #2b4f67;
+}
+
+
+/* plan */
+
+.content > .tool > .plan {
+    position: relative;
+    height: 100%;
+}
+
+.content > .tool > .roll {
+    display: block;
+    position: relative;
+    height: 100%;
+    width: 20000000px;
+    transition: all 0.5s cubic-bezier(0.6, 0, 0, 1) 0s;
+    -webkit-transition: all 0.5s cubic-bezier(0.6, 0, 0, 1) 0s;
+    -moz-transition: all 0.5s cubic-bezier(0.6, 0, 0, 1) 0s;
+    -o-transition: all 0.5s cubic-bezier(0.6, 0, 0, 1) 0s;
+}
+
+/* menu */
+
+.content > .tool > .roll > .menu {
+    display: block;
+    position: relative;
+    float: left;
+    z-index: 20000;
+    height: 100%;
+}
+
+.content > .tool > .roll > .menu > .list {
+    padding: 20px 0;
+    background-color: #b9ac9f;
+    width: 100px;
+    height: 100%;
+    border-right: 1px solid #fdfdeb;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.content > .tool > .roll > .menu > .list > .item {
+    position: relative;
+    text-align: center;
+}
+
+.content > .tool > .roll > .menu > .list > .item:hover,
+.content > .tool > .roll > .menu > .list > .item.selected {
+
+}
+
+.content > .tool > .roll > .menu > .list > .item.selected   > .arrow {
+    position: absolute;
+    top: 28px;
+    left: 100px;
+    border-top: 11px solid transparent;
+    border-bottom: 11px solid transparent;
+    border-left: 11px solid #fdfdeb;
+}
+
+.content > .tool > .roll > .menu > .list > .selected   > .arrow > .fill {
+    position: absolute;
+    top: -10px;
+    left: -11px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #b9ac9f;
+}
+
+.content > .tool > .roll > .menu > .list > .item > .anchor {
+    display: block;
+    color: #fff;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.content > .tool > .roll > .menu > .list > .item > .anchor > .legend{
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    width: 80px;
+    margin: auto;
+    margin-top: 10px;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Sheet                                                                      */
+/* -------------------------------------------------------------------------- */
+
+.content > .tool > .roll > .sheets{
+    position: relative;
+    display: block;
+    height: 100%;
+    float: left;
+    z-index: 10000;
+    width: 10000000px;
+}
+
+.content > .tool > .roll > .sheets> .sheet {
+    float: left;
+    position: relative;
+    /*width: 640px;*/
+    width: 650px;
+    height: 100%;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    background-color: #fdfdeb;
+    z-index: 10000;
+}
+
+.content > .tool > .roll > .sheets> .sheet:first-child {
+    width: 890px;
+}
+
+.content > .tool > .roll > .sheets> .sheet.frame:first-child {
+    width: auto;
+}
+
+.sheets  > .sheet > .header {
+    height: 35px;
+    background-color: #b9ac9f;
+    position: relative;
+}
+
+.sheets > .sheet > .loading {
+    position: absolute;
+    top: 0;
+    right: 30px;
+    opacity: 0;
+    transition: all 0.1s ease;
+    -webkit-transition: all 0.1s ease;
+    -moz-transition: all 0.1s ease;
+    -o-transition: all 0.1s ease;
+}
+
+.sheets > .sheet.loading > .loading {
+    right: 40px;
+    opacity: 1;
+}
+
+.sheets > .sheet > .loading > .legend {
+    position: absolute;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    right: 70px;
+    top: 10px;
+}
+
+.sheets > .sheet > .loading > .image{
+    position: absolute;
+    background-image: url("../images/loading-sheet.gif");
+    background-repeat: no-repeat;
+    width: 60px;
+    height: 20px;
+    right: 0;
+    top: 8px;
+}
+
+.sheets  > .sheet > .header > .title {
+    color: #fdfdeb;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 16px;
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    top: 10px;
+    left: 20px;
+}
+
+.sheets > .sheet > .header > .close {
+    position: absolute;
+    right: 8px;
+    top: 12px;
+    cursor: pointer;
+}
+
+.sheets > .sheet > .header > .close > .image {
+    width: 12px;
+    height: 12px;
+    background-image: url("../images/ui.png");
+    background-position: -12px 0;
+    background-repeat: no-repeat;
+    border-radius: 2px;
+}
+
+.sheets > .sheet > .header > .close > .legend {
+    display: none;
+}
+
+.sheets  > .sheet > .body {
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sheets  > .sheet > .body .body {
+}
+
+
+
+/* -------------------------------------------------------------------------- */
+/* Frame                                                                      */
+/* -------------------------------------------------------------------------- */
+
+.content > .tool > .roll > .sheets > .sheet.frame {
+    background-color: #fff;
+    box-shadow: none;
+}
+
+.sheet.frame > .body {
+    background-color: #fff;
+    z-index: 10000;
+}
+
+/* -------------------------------------------------------------------------- */
+/* List                                                                       */
+/* -------------------------------------------------------------------------- */
+
+.sheet.list > .body,
+.related.list > .body {
+    background-color: #fff;
+    z-index: 10000;
+}
+
+.sheet.list:first-child > .body {
+    float: right;
+    border-left: 1px dotted #b9ac9f;
+    width: 650px;
+}
+
+.sheet.list > .body .groups,
+.related.list > .body .groups {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sheet.list > .body .items,
+.related.list > .body .items {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 20px;
+}
+
+.sheet.list:first-child > .header > .close{
+    display: none;
+}
+
+/* grupo */
+
+.sheets .body > .groups > .group {
+    position: relative;
+    border-color: #ffffff;
+    border-bottom: 2px solid #ccc;
+    min-height: 60px;
+}
+
+.sheets .body .groups > .group.hide {
+    display: block;
+    min-height: 0;
+    height: 0;
+    margin: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+}
+
+.sheets .body > .groups > .group > .header {
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.sheets .body > .groups > .group > .header > .name {
+    display: inline-block;
+    color: #888;
+    font-size: 14px;
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+}
+
+.sheets .body > .groups > .group > .footer {
+    padding: 10px 20px;
+    border-top: 1px solid #ccc;
+    min-height: 15px;
+    position: relative;
+}
+
+.sheets .body > .groups > .group > .footer > .name {
+    display: block;
+    position: absolute;
+    right: 20px;
+    color: #888;
+    font-size: 14px;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+/* icones de um grupo */
+
+.sheets .list .group > .header  > .icons ,
+.sheets .list .group > .footer  > .icons {
+    display: block;
+    padding: 0;
+    font-size: 11px;
+    margin: 4px 0;
+}
+
+
+.sheets .list .group  > .header  > .icons > .icon,
+.sheets .list .group  > .footer  > .icons > .icon {
+    display: inline-block;
+    margin: 0 8px 0 0;
+    padding: 0;
+}
+
+.sheets .list .group  > .header  > .icons > .icon > .image,
+.sheets .list .group  > .footer  > .icons > .icon > .image {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+    opacity: 0.6;
+    filter: url(filters.svg#grayscale);
+    filter: gray;
+    -webkit-filter: grayscale(1);
+}
+
+.sheets .list .group  > .header  > .icons > .icon > .legend,
+.sheets .list .group  > .footer  > .icons > .icon > .legend {
+    display: inline-block;
+    color: #888;
+    font-size: 11px;
+}
+
+/* menu de um grupo */
+
+.sheets .body .groups > .group > .header > .actions {
+    display: block;
+    position: absolute;
+    height: 20px;
+    right: 10px;
+    top: 15px;
+    margin: 0;
+    padding: 0;
+}
+
+.sheets .body .groups > .group .group > .header > .actions {
+    top: -2px;
+    opacity: 0;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.sheets .body .groups > .group .group:hover > .header > .actions {
+    opacity: 1;
+}
+
+.sheets .body .groups > .group > .header > .actions  > .action {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+.sheets .body .groups > .group > .header > .actions  > .action  > .anchor {
+    display: block;
+    padding: 5px;
+}
+
+.sheets .body .groups > .group > .header > .actions  > .action  > .anchor > .image {
+    display: block;
+    float: left;
+}
+
+.sheets .body .groups > .group > .header > .actions  > .action  > .anchor > .legend {
+    display: none;
+}
+
+/* subgrupos */
+
+.sheets .body > .groups .groups {
+    padding: 0 0 0 20px;
+    margin: 0;
+    list-style: none;
+}
+
+.sheets .body .groups > .group .group {
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid #ccc;
+    min-height: 60px;
+}
+
+.sheets .body .groups > .group .group.hide {
+    display: block;
+    height: 0;
+    min-height: 0;
+    margin: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+}
+
+.sheets .body .groups > .group .group:last-child {
+    border-bottom: none;
+}
+
+.sheets .body .groups > .group .group > .header {
+    position: relative;
+    padding: 5px 0 5px 20px;
+    margin: 5px 0 0 0;
+    border-bottom: 1px dotted #ccc;
+}
+
+.sheets .body .groups > .group .group > .header > .name {
+    display: inline-block;
+    color: #888;
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+    font-weight: normal;
+}
+
+.sheets .body > .groups > .group .group > .footer {
+    padding: 10px 20px;
+    border-top: 1px dotted #ccc;
+    min-height: 15px;
+    position: relative;
+}
+
+.sheets .body > .groups > .group .group > .footer > .name {
+    display: block;
+    position: absolute;
+    right: 20px;
+    color: #888;
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+}
+
+/* lista de resultados */
+
+.sheets .body > .groups .items {
+
+}
+
+.sheets .body > .groups .items > .item {
+    clear: both;
+    position: relative;
+    margin: 0 5px 0 0;
+    padding: 10px 0;
+    border-color: #ffffff;
+    height: auto;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+
+.sheets .body > .groups .items > .item.hide {
+    display: block;
+    height: 0;
+    margin: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+}
+
+.sheets .body > .groups .items > .item.remove {
+    height: 0;
+    margin: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+.sheets .body > .groups .items  > .item:first-child {
+    margin-top: 10px;
+}
+
+.sheets .body > .groups .items  > .item:last-child {
+    margin-bottom: 10px;
+}
+
+.sheets .body > .groups .item > .thumbnail {
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 80px;
+    height: auto;
+}
+
+.sheets .body > .groups .item > .label {
+    font-family: Arial, Helvetica, sans-serif;
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 78px;
+    padding: 2px 1px 3px 1px;
+    font-size: 9px;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.sheets .body > .groups .item  >.thumbnail > .anchor > .image {
+    width: 80px;
+    height: auto;
+}
+
+.sheets .body > .groups .item  >.title {
+    display: block;
+    width: 420px;
+    margin: 0 0 4px 100px;
+    font-weight: normal;
+    font-size: 12px;
+    color: #333;
+}
+
+.sheets .body > .groups .item > .title > .anchor {
+    display: block;
+    color: #333;
+}
+
+.sheets .body > .groups .item.clickable > .title > .anchor {
+    color: #2b4f67;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.sheets .body > .groups .item > .icons {
+    display: block;
+    padding: 0;
+    font-size: 11px;
+    margin: 4px 0 4px 100px;
+}
+
+
+.sheets .body > .groups .item  > .icons > .icon {
+    display: inline-block;
+    margin: 0 8px 0 0;
+    padding: 0;
+}
+
+.sheets .body > .groups .item > .icons > .icon > .image {
+    display: inline-block;
+    vertical-align: middle;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+}
+
+.sheets .body > .groups .item > .icons > .icon > .legend {
+    display: inline-block;
+    color: #666;
+    font-size: 11px;
+}
+
+.sheets .body > .groups .item > .description {
+    display: block;
+    margin: 8px 0 5px 100px;
+    font-size: 11px;
+    line-height: 1.4em;
+    color: #333;
+}
+
+
+.sheets .body > .groups .item   > .arrow {
+    position: absolute;
+    top: 20px;
+    right: -5px;
+    display: none;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+.sheets .body > .groups .item:hover > .arrow {
+    position: absolute;
+    top: 20px;
+    right: -15px;
+    display: none;
+}
+
+.sheets .body > .groups .item.clickable   > .arrow {
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid #B9AC9F;
+}
+
+.sheets .body > .groups .item.clickable   > .arrow > .fill {
+    position: absolute;
+    top: -6px;
+    left: -10px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 6px solid #fff;
+}
+
+/* menu */
+
+
+.sheets .body > .groups .item > .actions {
+    display: block;
+    position: absolute;
+    height: 20px;
+    font-size: 0;
+    right: 5px;
+    top: 5px;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.sheets .body > .groups .item:hover > .actions {
+    opacity: 1;
+}
+
+.sheets .body > .groups .item > .actions > .action {
+    display: inline-block;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.sheets .body > .groups .item:hover > .actions:hover > .action {
+    opacity: 0.4;
+}
+
+.sheets .body > .groups .item:hover > .actions:hover > .action:hover {
+    opacity: 1;
+}
+
+.sheets .body > .groups .item > .actions > .action > .anchor{
+    display: block;
+    padding: 5px;
+}
+
+.sheets .body > .groups .item > .actions > .action > .anchor > .image {
+    display: block;
+}
+
+.sheets .body > .groups .item > .actions > .action > .anchor > .legend {
+    display: block;
+}
+
+/* droppable */
+
+.sheets .body > .groups.droppable {
+
+}
+
+
+.sheets .body > .groups .group {
+    transition: all 0.2s ease-out;
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    -o-transition: all 0.2s ease-out;
+}
+
+.sheets .body > .groups .group > .header,
+.sheets .body > .groups .group > .items,
+.sheets .body > .groups .group > .footer {
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.sheets .body > .groups.droppable .group > .header,
+.sheets .body > .groups.droppable .group > .items,
+.sheets .body > .groups.droppable .group > .footer {
+    opacity: 0.2;
+}
+
+
+.sheets .body > .groups.droppable .group.droppable > .header,
+.sheets .body > .groups.droppable .group.droppable > .groups,
+.sheets .body > .groups.droppable .group.droppable > .items,
+.sheets .body > .groups.droppable .group.droppable > .footer {
+    opacity: 1;
+}
+
+.sheets .body > .groups .actions {
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.sheets .body > .groups.droppable .actions {
+    opacity: 0 !important;
+}
+
+.sheets .body > .groups.droppable .group.droppable:hover {
+    padding-bottom: 60px;
+}
+
+.sheets .body > .groups.droppable .group.droppable .items > .item:hover {
+    padding-top: 60px;
+}
+
+.sheets .body > .groups.droppable .group.droppable  .items > .item > .label {
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.sheets .body > .groups.droppable .group.droppable .items > .item:hover > .label {
+    top: 60px;
+}
+
+
+
+/* -------------------------------------------------------------------------- */
+/* List Filter                                                                */
+/* -------------------------------------------------------------------------- */
+
+.sheet.list > .filter,
+.sheet .related.list > .filter {
+    position: absolute;
+    top: 36px;
+    right: 0;
+    width: 240px;
+    border-left: 1px dotted #b9ac9f;
+    background-color: #fdfdeb;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    z-index: 1000;
+}
+
+.sheet .related.list > .filter {
+    display: none;
+}
+
+.sheet.list:first-child > .filter {
+    width: 260px;
+    top: 36px;
+    left: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-left: none;
+    border-right: 1px dotted #b9ac9f;
+}
+
+.sheet.list:first-child > .filter:hover {
+    width: 240px;
+}
+
+.sheet .filter > .form {
+    margin: 0;
+    padding: 0;
+}
+
+.sheet .filter > .form > .field-sets > .field-set{
+    position: relative;
+    border: none;
+    width: 240px;
+    padding: 0 0 19px 0;
+    border-bottom: 1px dotted #b9ac9f;
+    margin: 0;
+}
+
+.sheet .filter > .form > .field-sets > .field-set > .legend {
+    display: block;
+    width: 200px;
+    color: #b9ac9f;
+    padding: 10px 20px;
+    margin: 0 0 10px 0;
+    font-size: 11px;
+    border-bottom: 1px dotted #b9ac9f;
+    text-shadow: 1px 1px 0 #fff;
+}
+
+.sheet .filter > .form > .field-sets > .field-set > .fields > .field  {
+    display: block;
+    position: relative;
+    width: 200px;
+    margin: 0 20px;
+    padding: 2px 0 0 0;
+}
+
+.sheet .filter > .form > .field-sets > .field-set > .fields > .field > .legend  {
+    display: block;
+    color: #332e2e;
+    font-size: 11px;
+    margin: 4px 0;
+}
+
+.sheet .filter > .form > .field-sets > .field-set > .fields > .field > .legend > .label  {
+    margin: 0;
+    padding: 0;
+}
+
+.sheet .filter > .form > .field-sets > .field-set > .fields > .field > .data   {
+    display: block;
+    font-size: 12px;
+    margin: 2px 0 5px 0;
+    position: relative;
+}
+
+.sheet .filter > .form > .field-sets > .field-set > .fields > .field.text > .data > .input  {
+    width: 190px;
+    padding: 4px 6px;
+    border: 1px solid #b9ac9f;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.sheet .filter > .form > .field-sets > .field-set > .fields > .field.date > .data > .input  {
+    width: 190px;
+    padding: 4px 6px;
+    border: 1px solid #b9ac9f;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.sheet .filter > .form > .submit {
+    width: 200px;
+    text-align: right;
+    margin: 10px 20px 10px 10px;
+}
+
+.sheet .filter > .form > .submit > .input {
+    width: 100px;
+    background-color: #2b4f67;
+    color: #fff;
+    font-weight: bold;
+    padding: 4px;
+    font-size: 12px;
+    border: 1px solid #123;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* select */
+
+.field.select > .data  {
+    position: relative;
+}
+
+.field.select > .data > .input  {
+    position: absolute;
+    width: 300px;
+    padding: 2px 20px 2px 2px;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+    z-index: 1000;
+    margin: 0;
+}
+
+.field.select > .data > .input:focus  {
+    z-index: 20000;
+}
+
+.field.select > .data   > .arrow {
+    position: absolute;
+    top: 8px;
+    left: 282px;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    border-top: 6px solid #b9ac9f;
+    z-index: 10000;
+    cursor: pointer;
+}
+
+.field.select .data > .options > .option {
+    color: #332f2f;
+    padding: 2px 2px;
+    width: 190px;
+    cursor: pointer;
+}
+
+.field.select .data > .options > .option  > .check-box {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 10px;
+    border: 1px solid #b9ac9f;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    background-color: #fff;
+    transition: all 0.1s linear;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+}
+
+.field.select .data > .options > .option.selected  > .check-box {
+    background-color: #2b4f67;
+    border: 1px solid #2b4f67;
+    background-image: url("../images/ui.png");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+}
+
+.field.select .data > .selected-list {
+    font-size: 13px;
+    margin: 5px 0 5px 5px;
+    color: #000;
+    position: absolute;
+    top: -2px;
+    z-index: 10000;
+}
+
+.field.select .data > .selected-list > .legend {
+    display: none;
+    font-style: italic;
+}
+
+.field.select .data > .selected-list > .list {
+    display: inline;
+}
+
+.field.select .data > .selected-list > .list  >.item{
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-right: 4px;
+}
+
+/* options filterable */
+
+.field.select .data .options.filterable {
+    background-color: #fff;
+}
+
+.field.select .data > .options.filterable {
+    width: 290px;
+    max-height: 140px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: absolute;
+    top: 0;
+    left: -1px;
+    border: 1px solid #b9ac9f;
+    z-index: 10000;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+    padding: 25px 5px 5px 5px;
+}
+
+.field.select .options.filterable > .all  {
+    background-color: #b9ac9f;
+    padding: 5px 10px;
+    font-size: 10px;
+    color: #332f2f;
+}
+
+.field.select .options.filterable > .all > .select,
+.field.select .options.filterable > .all > .unselect  {
+    color: #2b4f67;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.field.select .options.filterable > .all  {
+    background-color: #b9ac9f;
+    padding: 5px 10px;
+    font-size: 10px;
+}
+
+.field.select .options.filterable .filter > .input  {
+    width: 190px;
+    padding: 6px 23px 6px 6px;
+    background-color: #fff;
+    border: 0;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    font-size: 12px;
+    margin: 0;
+}
+
+.field.select .options.filterable .close  {
+    position: absolute;
+    top: 1px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background-image: url("../images/ui.png");
+    background-position: -12px 0;
+    background-repeat: no-repeat;
+    border-top: 6px solid #b9ac9f;
+    border-bottom: 6px solid #b9ac9f;
+    border-left: 2px solid #b9ac9f;
+    border-right: 2px solid #b9ac9f;
+    background-color: #b9ac9f;
+    z-index: 10000;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.field.select .data .options.filterable .groups,
+.field.select .data .options.filterable .options {
+    display: block;
+    max-height: 280px;
+    overflow-y: scroll;
+    overflow-x: visible;
+    background-color: #fff;
+}
+
+.field.select .group > .options.filterable {
+    display: none;
+}
+
+.field.select .group.selected > .options.filterable {
+    position: absolute;
+    top: -1px;
+    left: 220px;
+    width: 220px;
+    display: block;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+    border: 1px solid #b9ac9f;
+}
+
+
+.field.select .options.filterable .groups > .group,
+.field.select .options.filterable .options > .option {
+    border-bottom: 1px solid #b9ac9f;
+    color: #332f2f;
+    padding: 5px 5px;
+    width: 190px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.field.select .groups > .group > .arrow {
+    position: relative;
+    float: right;
+    top: 2px;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid #b9ac9f;
+}
+
+.field.select .groups > .group.selected > .arrow > .fill{
+    border-left: 6px solid #6196ae;
+}
+
+.field.select .groups > .group.selected > .arrow {
+    border-left: 7px solid #fff;
+}
+
+.field.select .groups > .group.has-selected > .arrow > .fill{
+    border-left: 6px solid #def;
+}
+
+.field.select .groups > .group > .arrow > .fill{
+    position: absolute;
+    top: -6px;
+    left: -9px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 6px solid #fff;
+}
+
+.field.select .groups > .group.selected {
+    background-color: #6196ae;
+    box-shadow: inset 2px 6px 6px rgba(0,10,50,0.3);
+    color: #fff;
+}
+
+
+.field.select .options.filterable .groups > .group.has-selected {
+    background-color: #def;
+}
+
+.field.select .options.filterable .options > .option.selected {
+    background-color: #2b4f67;
+    color: #fff;
+}
+
+/* select box (só existe no gabarito) */
+
+.field.select .data .select-box {
+    background-color: #fff;
+}
+
+.field.select .data > .select-box {
+    width: 220px;
+    position: absolute;
+    top: 0;
+    border: 1px solid #b9ac9f;
+    z-index: 100000;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+}
+
+.field.select .select-box > .all  {
+    background-color: #b9ac9f;
+    padding: 5px 10px;
+    font-size: 10px;
+    color: #332f2f;
+}
+
+.field.select .select-box > .all > .select,
+.field.select .select-box > .all > .unselect  {
+    color: #2b4f67;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.field.select .select-box > .all  {
+    background-color: #b9ac9f;
+    padding: 5px 10px;
+    font-size: 10px;
+}
+
+.field.select .select-box .filter > .input  {
+    width: 190px;
+    padding: 6px 23px 6px 6px;
+    background-color: #fff;
+    border: 0;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    font-size: 12px;
+    outline: 0;
+}
+
+.field.select .select-box .close  {
+    position: absolute;
+    top: 1px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background-image: url("../images/ui.png");
+    background-position: -12px 0;
+    background-repeat: no-repeat;
+    border-top: 6px solid #b9ac9f;
+    border-bottom: 6px solid #b9ac9f;
+    border-left: 2px solid #b9ac9f;
+    border-right: 2px solid #b9ac9f;
+    background-color: #b9ac9f;
+    z-index: 10000;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.field.select .data .select-box .groups,
+.field.select .data .select-box .options {
+    display: block;
+    max-height: 280px;
+    overflow-y: scroll;
+    overflow-x: visible;
+    background-color: #fff;
+}
+
+.field.select .group > .select-box {
+    display: none;
+}
+
+.field.select .group.selected > .select-box {
+    position: absolute;
+    top: -1px;
+    left: 220px;
+    width: 220px;
+    display: block;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+    border: 1px solid #b9ac9f;
+}
+
+
+.field.select .select-box .groups > .group,
+.field.select .select-box .options > .option {
+    border-bottom: 1px solid #b9ac9f;
+    color: #332f2f;
+    padding: 5px 5px;
+    width: 190px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.field.select .groups > .group > .arrow {
+    position: relative;
+    float: right;
+    top: 2px;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid #b9ac9f;
+}
+
+.field.select .groups > .group.selected > .arrow > .fill{
+    border-left: 6px solid #6196ae;
+}
+
+.field.select .groups > .group.selected > .arrow {
+    border-left: 7px solid #fff;
+}
+
+.field.select .groups > .group.has-selected > .arrow > .fill{
+    border-left: 6px solid #def;
+}
+
+.field.select .groups > .group > .arrow > .fill{
+    position: absolute;
+    top: -6px;
+    left: -9px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 6px solid #fff;
+}
+
+.field.select .groups > .group.selected {
+    background-color: #6196ae;
+    box-shadow: inset 2px 6px 6px rgba(0,10,50,0.3);
+    color: #fff;
+}
+
+
+.field.select .select-box .groups > .group.has-selected {
+    background-color: #def;
+}
+
+.field.select .select-box .options > .option.selected {
+    background-color: #2b4f67;
+    color: #fff;
+}
+
+/* options */
+
+.field.select .options > .option > .check-box {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 10px;
+}
+
+.field.select .options > .option.selected > .check-box {
+    background-image: url("../images/ui.png");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+}
+
+.field.select .groups > .group > .label,
+.field.select .options > .option > .label {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 1px;
+}
+
+
+.field.select .groups > .group > .icon,
+.field.select .options > .option > .icon {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+}
+
+
+.field.select .groups > .group > .legend,
+.field.select .options > .option > .legend {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 11px;
+}
+
+.field.select .actions {
+    display: block;
+    overflow: hidden;
+    opacity: 0;
+    height: 0;
+    margin-bottom: 0;
+    transition: all 0.1s linear;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+}
+
+.field.select:hover .actions {
+    height: 30px;
+    line-height: 15px;
+    margin-bottom: 10px;
+    opacity: 1;
+}
+
+.field.select > .actions > .markall,
+.field.select > .actions > .unmarkall {
+    display: block;
+    font-size: 10px;
+    color: #2b4f67;
+    margin-left: 30px;
+    cursor: pointer;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Global Menu                                                                   */
+/* -------------------------------------------------------------------------- */
+
+/* menu */
+.sheets .body > .menu {
+    background-color: #fff;
+    border-bottom: 1px solid #b9ac9f;
+    padding: 10px 20px;
+    text-align: right;
+}
+
+.sheets .body > .menu > .actions {
+    display: block;
+    list-item: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sheets .body > .menu > .actions > .action {
+    display: inline-block;
+    position: relative;
+    margin-left: 10px;
+}
+
+.sheets .body > .menu > .actions > .action > .anchor {
+    color: #2b4f67;
+}
+
+
+.sheets .body > .menu > .actions > .action  > .anchor > .image{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.sheets .body > .menu > .actions > .action  > .anchor > .legend{
+    display: inline-block;
+    font-size: 10px;
+    padding: 0 0 0 5px;
+    vertical-align: middle;
+}
+
+/* -------------------------------------------------------------------------- */
+/* entity                                                                   */
+/* -------------------------------------------------------------------------- */
+
+/* body */
+
+.sheets > .entity >  .body > .title {
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #2b4f67;
+    font-weight: normal;
+    padding: 0;
+    margin: 20px;
+    text-shadow: 1px 1px 0 #fff;
+}
+
+.sheets > .entity >  .body > .description {
+    font-size: 12px;
+    line-height: 1.6em;
+    margin: 20px;
+}
+
+/* data-set */
+
+.sheets > .entity >  .body > .data-sets > .data-set {
+    margin: 20px;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .legend {
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #2b4f67;
+    font-weight: bold;
+    padding: 0;
+    margin: 10px 0;
+    text-shadow: 1px 1px 0 #fff;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields {
+    clear: both;
+    background-color: #6297af;
+    display: block;
+    font-size: 0;
+    border-bottom: 1px solid #b9ac9f;
+    width: 600px;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields > .field {
+    border-top: 1px solid #b9ac9f;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields  .legend {
+    display: block;
+    position: absolute;
+    text-align: right;
+    width: 180px;
+    font-size: 12px;
+    line-height: 1.4em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+    font-weight: bold;
+    margin: 0;
+    padding: 8px 10px 2px 10px;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields > .field  > .values {
+    display: block;
+    position: relative;
+    left: 200px;
+    width: 400px;
+    background-color: #fff;
+    margin: 0;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value  {
+    position: relative;
+    border-bottom: 1px dotted #b9ac9f;
+    width: 390px;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value:last-child {
+    border-bottom: none;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value > .data {
+    font-size: 14px;
+    line-height: 1.4em;
+    width: 280px;
+    padding: 5px 10px;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields > .field  > .values > .value > .actions {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value > .actions > .action {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields > .field  > .values > .value > .actions > .action > .anchor > .image {
+    display: inline-block;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields > .field  > .values > .value > .actions > .action > .anchor > .legend {
+    display: none;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Related Sheet                                                              */
+/* -------------------------------------------------------------------------- */
+
+.sheets  > .sheet .related {
+    position: relative;
+}
+
+.sheets  > .sheet .related > .header {
+    padding: 10px 20px;
+    border-bottom: 2px solid #b9ac9f;
+    z-index: 1000;
+}
+.sheets  > .sheet .related > .header > .title {
+    color: #b9ac9f;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Related Entity                                                              */
+/* -------------------------------------------------------------------------- */
+
+/* body */
+
+.related.entity > .body {
+    background-color: #fff;
+    padding: 1px 0 0 0;
+}
+
+.related.entity >  .body > .title {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #2b4f67;
+    padding: 0;
+    margin: 20px;
+    text-shadow: 1px 1px 0 #fff;
+    cursor: pointer;
+}
+
+.related.entity >  .body > .description {
+    font-size: 12px;
+    line-height: 1.6em;
+    margin: 20px;
+}
+
+/* data-set */
+
+.related.entity >  .body > .data-sets > .data-set {
+    margin: 20px;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .legend {
+    font-size: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #2b4f67;
+    font-weight: bold;
+    padding: 0;
+    margin: 10px 0;
+    text-shadow: 1px 1px 0 #fff;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields {
+    clear: both;
+    background-color: #6297af;
+    display: block;
+    font-size: 0;
+    border-bottom: 1px solid #b9ac9f;
+    width: 600px;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields > .field {
+    border-top: 1px solid #b9ac9f;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields  .legend {
+    display: block;
+    position: absolute;
+    text-align: right;
+    width: 180px;
+    font-size: 12px;
+    line-height: 1.4em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+    font-weight: bold;
+    margin: 0;
+    padding: 8px 10px 2px 10px;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields > .field  > .values {
+    display: block;
+    position: relative;
+    left: 200px;
+    width: 400px;
+    background-color: #fff;
+    margin: 0;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value  {
+    position: relative;
+    border-bottom: 1px dotted #b9ac9f;
+    width: 390px;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value:last-child {
+    border-bottom: none;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value > .data {
+    font-size: 14px;
+    line-height: 1.4em;
+    width: 280px;
+    padding: 5px 10px;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Modal                                                                      */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/* Wrapper                                                                    */
+/* -------------------------------------------------------------------------- */
+
+.modal-wrapper {
+    position: fixed;
+    display: table;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 200000;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.modal-wrapper.hide {
+    display: table !important;
+    opacity: 0;
+    z-index: 0;
+}
+
+.modal-wrapper > .centralizer {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Background                                                                 */
+/* -------------------------------------------------------------------------- */
+
+.modal-wrapper > .background {
+    position: fixed;
+    display: block;
+    background-color: #666;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0.8;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Modal                                                                      */
+/* -------------------------------------------------------------------------- */
+
+.modal-wrapper .modal {
+    position: relative;
+    display: block;
+    width: 540px;
+    margin: auto;
+    border: 4px solid #2b4f67;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Modal Sizes                                                                */
+/* -------------------------------------------------------------------------- */
+
+.modal-wrapper .modal.width-400 {
+    /*width: 400px;*/
+}
+
+.modal-wrapper .modal.width-800 {
+    /*width: 800px;*/
+}
+
+/* -------------------------------------------------------------------------- */
+/* Modal Header                                                               */
+/* -------------------------------------------------------------------------- */
+
+.modal > .header {
+    background-color: #2b4f67;
+    padding: 10px;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.modal > .header > .title {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.modal > .close {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    opacity: 0.5;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    cursor: pointer;
+    width: 60px;
+    height: 20px;
+}
+
+.modal > .close > .image {
+    position: absolute;
+    top: 1px;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    background-image: url("../images/ui.png");
+    background-position: -12px 0;
+    background-repeat: no-repeat;
+    z-index: 10000;
+    border-radius: 2px;
+}
+
+.modal > .close > .legend {
+    position: absolute;
+    right: 20px;
+    color: #fff;
+    font-size: 10px;
+}
+
+.modal > .close:hover {
+    opacity: 1;
+}
+
+.modal > .close:hover  > .image {
+
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Modal Flash                                                                */
+/* -------------------------------------------------------------------------- */
+
+.modal > .flash {
+    text-shadow: 1px 1px 0 #fff;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.4);
+    background-color: #fe8;
+    border-bottom: 1px solid #440;
+    color: #440;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.modal > .flash.hide {
+    display: block !important;
+    overflow: hidden;
+    border: none;
+    padding: 0;
+    margin: 0;
+    height: 0;
+    opacity: 0;
+}
+
+.modal > .flash.alert {
+    background-color: #ed8;
+    border-bottom: 1px solid #440;
+    color: #440;
+}
+
+.modal > .flash.error {
+    background-color: #fa8;
+    border-bottom: 1px solid #600;
+    color: #600;
+}
+
+.modal > .flash.success {
+    background-color: #bf8;
+    border-bottom: 1px solid #240;
+    color: #240;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Modal description                                                          */
+/* -------------------------------------------------------------------------- */
+
+.modal > .description {
+    color: #000;
+    font-size: 12px;
+    padding: 10px 20px;
+    border-bottom: 1px dotted #ccc;
+    background-color: #fdfdeb;
+}
+
+.modal > .description p {
+    margin: 10px 0;
+}
+
+.modal > .modal.width-800 .wrapper .description{
+    width: 300px;
+    float: left;
+    padding: 0 20px;
+    margin: 10px 0;
+    border-bottom: none;
+    border-right: 1px dotted #ccc;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Actions                                                                    */
+/* -------------------------------------------------------------------------- */
+
+.modal > .actions {
+    position: absolute;
+    bottom: 17px;
+    left: 10px;
+}
+
+.modal > .actions > .action > .anchor > .legend {
+    font-size: 10px;
+    color: #2B4F67;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Formulario                                                                 */
+/* -------------------------------------------------------------------------- */
+
+.field.text > .data > .input,
+.field.password > .data > .input,
+.field.date > .data > .input {
+    width: 300px;
+    padding: 2px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    margin: 0;
+}
+
+.field.textarea > .data > .input {
+    width: 300px;
+    height: 50px;
+    line-height: 1.4em;
+    padding: 2px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    margin: 0;
+    font-family: Verdana, Helvetia, sans-serif;
+    font-size: 12px;
+}
+
+.field.select> .data > .input:hover,
+.field.password > .data > .input:hover,
+.field.date > .data > .input:hover,
+.field.text > .data > .input:hover {
+    border: 1px solid #ccc;
+}
+
+.field.password > .data > .input:focus,
+.field.date > .data > .input:focus,
+.field.text > .data > .input:focus {
+    box-shadow: 1px 2px 5px rgba(0,0,0,0.2);
+}
+
+.modal > .form {
+    display: block;
+    background-color: #fff;
+    border: 0;
+}
+
+.modal > .form > .field-sets > .field-set {
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-top: 1px solid #ccc;
+    color: #B9AC9F;
+    position: relative;
+}
+
+.modal > .form > .field-sets > .field-set > .legend {
+    padding: 10px 10px 10px 20px;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+
+.modal > .form > .field-sets > .field-set > .fields {
+    transition: none;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    max-height: auto;
+}
+
+.modal > .form > .field-sets > .field-set.collapsed > .fields {
+    overflow: hidden;
+    transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    max-height: 0;
+    opacity: 0;
+}
+
+.modal > .form > .field-sets > .field-set > .fields > .field {
+    clear: both;
+    display: table-row;
+    opacity: 1;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.modal > .form > .field-sets > .field-set > .fields > .field.hide {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    display: block;
+}
+
+.modal > .form > .field-sets > .field-set > .fields > .field > .legend{
+    position: relative;
+    padding: 5px 10px 5px 20px;
+    display: table-cell;
+    width: 180px;
+    text-align: right;
+    font-size: 12px;
+    color: #332f2f;
+    vertical-align: top;
+}
+
+.modal > .form > .field-sets > .field-set > .fields > .field > .data {
+    display: block;
+    position: relative;
+    margin: 0;
+    padding: 0 0 5px 0;
+    font-size: 12px;
+}
+
+.modal > .form > .field-sets > .field-set > .fields > .field > .data > .errors.hide {
+    display: block;
+    opacity: 0;
+}
+
+.modal > .form > .field-sets > .field-set > .fields > .field > .data > .errors {
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    overflow: hidden;
+    opacity: 1;
+}
+
+.modal > .form > .field-sets > .field-set > .fields > .field > .data > .errors > .error {
+    display: block;
+    width: 200px;
+    opacity: 1;
+    height: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 4px 4px;
+    color: #c00;
+}
+
+.modal > .form > .field-sets > .field-set > .fields > .field > .data > .errors > .error:last-child {
+    margin-bottom: 5px;
+}
+
+.modal > .form > .submit {
+    display: block;
+    padding: 10px 20px;
+    background-color: #b9ac9f;
+    border-top: 1px solid #888;
+    text-align: right;
+}
+
+.modal > .form  > .submit > .input {
+    width: 100px;
+    background-color: #2b4f67;
+    color: #fff;
+    font-weight: bold;
+    padding: 4px;
+    font-size: 12px;
+    border: 1px solid #123;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* fieldset colapsado */
+.modal > .form > .field-sets > .field-set.collapsed {
+
+}
+
+.modal > .form > .field-sets > .field-set > .arrow {
+    position: absolute;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #B9AC9F;
+    border-top: none;
+    top: 14px;
+    left: 15px;
+    transition: all 0.4s linear;
+    -webkit-transition: all 0.4s linear;
+    -moz-transition: all 0.4s linear;
+    -o-transition: all 0.4s linear;
+    z-index: 100;
+}
+
+.modal > .form > .field-sets > .field-set.collapsed > .arrow {
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: none;
+    border-top: 6px solid #B9AC9F;
+}
+
+
+/* datepicker */
+
+.date-picker {
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    border-radius: 8px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    padding: 0;
+    position: absolute;
+    top: 25px;
+    left: 0;
+    z-index: 10000;
+}
+
+.date-picker > .calendar > .month {
+    background-color: #2b4f67;
+    color: #fff;
+    border-radius: 8px 8px 0 0;
+    width: 200px;
+    text-align: center;
+}
+
+.date-picker > .calendar  > .month > .date {
+    display: inline-block;
+    font-size: 11px;
+    padding: 8px 0;
+    width: 130px;
+    text-align: center;
+}
+
+.date-picker > .calendar > .month > .previous-month {
+    display: inline-block;
+    font-size: 14px;
+    padding: 8px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.date-picker > .calendar > .month > .previous-month:hover {
+    opacity: 1;
+}
+
+.date-picker > .calendar > .month > .next-month {
+    display: inline-block;
+    font-size: 14px;
+    padding: 8px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.date-picker > .calendar > .month > .next-month:hover {
+    opacity: 1;
+}
+
+.date-picker > .calendar > .week-days {
+    width: 180px;
+    padding: 0;
+    margin: 5px 10px;
+    list-style: none;
+}
+
+.date-picker > .calendar > .week-days > .day {
+    text-align: right;
+    font-size: 11px;
+    display: inline-block;
+    padding: 2px 4px 2px 0;
+    margin: 0;
+    width: 20px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff;
+}
+
+.date-picker > .calendar > .week-days > .day.weekend {
+    color: #800;
+}
+
+.date-picker > .calendar > .month-days {
+    margin: 5px 10px;
+    padding: 0;
+    width: 180px;
+    list-style: none;
+}
+
+.date-picker > .calendar > .month-days > .day {
+    text-align: right;
+    font-size: 11px;
+    display: inline-block;
+    padding: 2px 4px 2px 0;
+    margin: 0;
+    width: 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: #eee;
+    transition: all 0.5s linear;
+    -webkit-transition: all 0.5s linear;
+    -moz-transition: all 0.5s linear;
+    -o-transition: all 0.5s linear;
+}
+
+.date-picker > .calendar > .month-days > .day:hover {
+    background-color: #ccc;
+    transition: none;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+}
+
+.date-picker > .calendar > .month-days > .day.weekend {
+    color: #c00;
+}
+
+.date-picker > .calendar > .month-days > .day.previous-month,
+.date-picker > .calendar > .month-days > .day.next-month {
+    color: #aaa;
+}
+
+.date-picker > .calendar > .month-days > .day.today {
+    color: #2b4f67;
+    background-color: #fff;
+    font-weight: bold;
+}
+
+.date-picker > .calendar > .month-days > .day.selected {
+    background-color: #2b4f67;
+    color: #fff;
+    font-weight: bold;
+}
+
+.date-picker > .presets {
+    border-top: 1px dotted #ccc;
+    margin: 0;
+    list-style: none;
+    border-radius: 0 0 8px 8px;
+    background-color: #ddd;
+    text-align: center;
+}
+
+.date-picker > .presets .menu {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.date-picker .presets > .menu > .item {
+    display: inline-block;
+    margin: 0;
+    padding: 8px 5px;
+    color: #2b4f67;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.date-picker > .arrow {
+    position: absolute;
+    left: 40px;
+    top: -10px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #bbb;
+}
+
+.date-picker > .arrow  > .fill {
+    position: absolute;
+    left: -10px;
+    top: 1px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #2b4f67;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Footer                                                                     */
+/* -------------------------------------------------------------------------- */
+
+.modal > .footer {
+    background-color: #332f2f;
+    color: #fff;
+    padding: 10px;
+    font-size: 10px;
+    box-shadow: inset 2px 6px 6px rgba(0,0,0,0.3);
+}
+
+.modal > .footer > .anchor {
+    color: #6196ae;
+    font-weight: bold;
+}
+
+
+
+/* -------------------------------------------------------------------------- */
+/* Draggable                                                                  */
+/* -------------------------------------------------------------------------- */
+
+body > .draggable {
+    margin-left: 20px;
+    margin-top: 20px;
+    display: block;
+    position: absolute;
+    z-index: 1000000;
+    background-color: rgba(255,255,255,0.8);
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+body > .draggable.item {
+}
+
+
+body > .draggable.item > .thumbnail {
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 80px;
+    height: auto;
+}
+
+body > .draggable.item > .label {
+    font-family: Arial, Helvetica, sans-serif;
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 78px;
+    padding: 2px 1px 3px 1px;
+    font-size: 9px;
+    text-align: center;
+    border-radius: 2px;
+}
+
+body > .draggable.item  >.thumbnail > .anchor > .image {
+    width: 80px;
+    height: auto;
+}
+
+body > .draggable.item  >.title {
+    display: block;
+    width: 420px;
+    margin: 0 0 4px 100px;
+    font-weight: bold;
+    font-size: 12px;
+    color: #666;
+}
+
+body > .draggable.item > .title > .anchor {
+    display: block;
+    color: #2b4f67;
+}
+
+body > .draggable.item > .icons {
+    display: block;
+    padding: 0;
+    font-size: 11px;
+    margin: 4px 0 4px 100px;
+}
+
+
+body > .draggable.item  > .icons > .icon {
+    display: inline-block;
+    margin: 0 8px 0 0;
+    padding: 0;
+}
+
+body > .draggable.item > .icons > .icon > .image {
+    display: inline-block;
+    vertical-align: middle;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+}
+
+body > .draggable.item > .icons > .icon > .legend {
+    display: inline-block;
+    color: #666;
+    font-size: 11px;
+}
+
+body > .draggable.item > .description {
+    display: block;
+    margin: 8px 0 5px 100px;
+    font-size: 11px;
+    line-height: 1.4em;
+    color: #333;
+}
+
+body > .draggable.item > .actions {
+    display: none;
+}
+
+body > .draggable.item > .arrow {
+    display: none;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Helper                                                                   */
+/* -------------------------------------------------------------------------- */
+
+.helper {
+    background-color: #FFFFFF;
+    border: 2px solid #6196AE;
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    position: absolute;
+    right: -10px;
+    text-align: left;
+    top: 35px;
+    width: 320px;
+    z-index: 10000000;
+}
+
+.helper .description {
+    color: #6196AE;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-right: 30px;
+}
+
+.helper .example {
+    font-size: 11px;
+    color: #666;
+    font-style: italic;
+}
+
+
+.helper > .close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 16px;
+    height: 16px;
+    background-color: #6196ae;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.helper > .close > .image {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    background-image: url("../images/ui.png");
+    background-position: -12px 0;
+    background-repeat: no-repeat;
+    border-radius: 2px;
+}
+
+.helper > .close > .legend {
+    display: none;
+}
+
+.helper > .arrow {
+    position: absolute;
+    top: -10px;
+    right: 40px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #6196AE;
+}
+
+.helper > .arrow > .fill {
+    position: absolute;
+    top: 2px;
+    left: -8px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #fff;
+}
+
+/* field */
+.field .helper { top: 55px; width: 180px; }
+.field .helper > .arrow { left: 20px; right: auto; }
+
+/* item */
+.item .helper { left: 60px; right: auto; top: 40px; }
+.item .helper > .arrow { left: 30px; right: auto; }
+
+/* menu */
+.roll > .menu .helper { left: 102px; right: auto; top: -20px; }
+.roll > .menu .helper > .arrow {
+    position: absolute;
+    left: -20px;
+    top: 40px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #6196AE;
+}
+.roll > .menu .helper > .arrow > .fill {
+    position: absolute;
+    left: -6px;
+    top: -8px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #fff;
+}
+
+/* related actions */
+.related .actions .helper { left: auto; right: -10px; top: auto; bottom: 25px; }
+.related .actions .helper > .arrow {
+    position: absolute;
+    bottom: -10px;
+    top: auto;
+    right: 12px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #6196AE;
+    border-bottom: none;
+}
+.related .actions .helper > .arrow > .fill {
+    position: absolute;
+    bottom: 2px;
+    top: auto;
+    left: -8px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #fff;
+    border-bottom: none;
+}
+
+/* group footer */
+.group > .footer > .helper { left: auto; right: 10px; bottom: 40px; top: auto; }
+.group > .footer > .helper > .arrow {
+    position: absolute;
+    left: 284px;
+    right: auto;
+    bottom: -10px;
+    top: auto;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #6196AE;
+    border-bottom: none;
+}
+.group > .footer >  .helper > .arrow > .fill {
+    position: absolute;
+    bottom: 2px;
+    right: auto;
+    top: auto;
+    left: -8px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #fff;
+    border-bottom: none;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Feedback                                                                   */
+/* -------------------------------------------------------------------------- */
+
+.body > .feedback {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 5px;
+    z-index: 100000;
+    cursor: pointer;
+    background-color: #F38305;
+    padding: 8px 15px;
+    height: 11px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 5px 5px 0 0;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.body .feedback:hover {
+    height: 15px;
+}
