@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.1
+## 1.1 (2013-05-07)
 
 Features
 - Boleto da Caixa

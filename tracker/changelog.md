@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.0.5
+## 1.0.5 (2013-05-07)
 
 Melhorias
 - Reformatação das colunas do cohort do tracker

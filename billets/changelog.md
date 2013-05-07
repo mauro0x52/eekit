@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 0.5
+## 0.5 (2013-05-07)
 
 Features
 - Boleto da Caixa (SIGCB)
