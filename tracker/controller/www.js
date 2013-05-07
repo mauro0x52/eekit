@@ -88,21 +88,24 @@ module.exports = function (params) {
                         }],
                         activation : [{
                             name  : 'Inicio',
-                            users : cohort[i].filter(['cadastrar: inicio'],1, utm)
+                            users : cohort[i].filter(['visualizar: cadastro'],1, utm)
                         },{
                             name  : 'Nome',
                             users : cohort[i].filter(['cadastrar: nome'],1, utm)
+                        },{
+                            name  : 'Empresa',
+                            users : cohort[i].filter(['cadastrar: empresa'],1, utm)
+                        },{
+                            name  : 'Telefone',
+                            users : cohort[i].filter(['cadastrar: telefone'],1, utm)
                         },{
                             name  : 'Email',
                             users : cohort[i].filter(['cadastrar: email'],1, utm)
                         },{
                             name  : 'Senha',
                             users : cohort[i].filter(['cadastrar: senha'],1, utm)
-                        },{
-                            name  : 'Telefone',
-                            users : cohort[i].filter(['cadastrar: telefone'],1, utm)
                         },,{
-                            name  : 'Cadastrar',
+                            name  : 'Finalizou',
                             users : cohort[i].filter(['cadastrar'],1, utm)
                         },{
                             name  : 'Marcar',
@@ -121,7 +124,7 @@ module.exports = function (params) {
                         monitoring : []
                     });
                 }
-                
+
                 response.render('../view/cohort', {cohort : result});
             }
         });

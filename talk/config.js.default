@@ -1,0 +1,36 @@
+module.exports = {
+    host : {
+        port : 8011,
+        url  : 'localhost',
+        debuglevel : 1 // 0 sem erros, 1 com erros
+    },
+    mongodb : {
+        port : 27017,
+        url : 'localhost',
+        username : undefined,
+        password : undefined,
+        db : 'talk'
+    },
+    sendgrid : {
+        username : undefined,
+        password : undefined,
+    },
+    security : {
+        secret : 'talk',
+        name   : 'talk'
+    },
+    services : {
+        auth : {
+            url  : 'localhost',
+            port : 8001
+        },
+        talk : {
+            url  : 'localhost',
+            port : 8011
+        },
+        kamisama : {
+            url  : 'localhost',
+            port : 8008
+        }
+    }
+};

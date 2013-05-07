@@ -26,7 +26,7 @@ module.exports = function (params) {
             response.end();
             return;
         }
-        
+
         var utm = {};
 
         if (request.param('utm_source', null)) {
@@ -58,7 +58,7 @@ module.exports = function (params) {
                     var date = new Date(cohort[i].date);
                     var monitoring = [];
                     while (date <= new Date) {
-                        monitoring.push(cohort[i].filter(['marcar tarefa como feita'], 3, utm, date))
+                        monitoring.push(cohort[i].filter(['adicionar tarefa'], 3, utm, date))
                         date.setDate(date.getDate() + 7);
                     }
                     result.push({
@@ -73,13 +73,10 @@ module.exports = function (params) {
                         },{
                             name  : 'Adicionaram 1 tarefa',
                             users : cohort[i].filter(['adicionar tarefa'],1, utm)
-                        },{
-                            name  : 'Marcaram 1 tarefa como feita',
-                            users : cohort[i].filter(['marcar tarefa como feita'],1, utm)
                         }],
                         engagement : [{
-                            name  : 'Marcaram 3 tarefas como feitas',
-                            users : cohort[i].filter(['marcar tarefa como feita'],3, utm)
+                            name  : 'Adicionaram 3 tarefas',
+                            users : cohort[i].filter(['adicionar tarefa'],3, utm)
                         }],
                         monitoring : monitoring
                     });

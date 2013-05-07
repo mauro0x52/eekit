@@ -9,7 +9,7 @@ Event.lifeCycle(
 		minimum : 1,
         app : 'ee'
 	},{
-		labels : ['adicionar tarefa', 'adicionar transação'],
+		labels : ['adicionar contato'],
 		minimum : 1,
         app : 'contatos'
 	},
@@ -63,7 +63,7 @@ Event.lifeCycle(
 		minimum : 1,
         app : 'ee'
 	},{
-		labels : ['marcar tarefa como feita'],
+		labels : ['adicionar tarefa'],
 		minimum : 1,
         app : 'tarefas'
 	},
@@ -118,7 +118,7 @@ Event.lifeCycle(
         app : 'ee'
 	},{
 		labels : ['adicionar transação'],
-		minimum : 2,
+		minimum : 1,
         app : 'finanças'
 	},
 	function (error, users) {

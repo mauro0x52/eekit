@@ -1,9 +1,9 @@
-/** App
+/** Talk
  *
- * @autor : Mauro Ribeiro
+ * @autor : Rafael Erthal
  * @since : 2012-09
  *
- * @description : www da Empreendemia 3
+ * @description : Server de chat da empreendemia
  */
 
 var express = require('express'),
@@ -18,11 +18,6 @@ app.configure(function () {
     app.use(express.bodyParser());
     app.use(express.methodOverride());
 
-    /* Serve a pasta public */
-    app.use('/js', express.static('public/js'));
-    app.use('/css', express.static('public/css'));
-    app.use('/images', express.static('public/images'));
-
     /* caso seja ambiente de produção, esconder erros */
     if (config.host.debuglevel === 0) {
         app.use(express.errorHandler({ dumpExceptions: true }));
@@ -31,14 +26,35 @@ app.configure(function () {
     app.use(app.router);
 });
 
-/*  index.ejs */
-app.get('/*', function (request, response) {
-    "use strict";
-    response.render('../view/index.ejs', {config : config});
+require('./utils/kamisama')(function (kamisama) {
+    var model = require('./model/Model'),
+        auth = require('./utils/auth');
+    /*  Chamando controllers */
+    require('./controller/User.js')({
+        app      : app,
+        model    : model,
+        kamisama : kamisama,
+        auth     : auth,
+        config   : config
+    });
+    require('./controller/Thread.js')({
+        app      : app,
+        model    : model,
+        kamisama : kamisama,
+        auth     : auth,
+        config   : config
+    });
+    require('./controller/Message.js')({
+        app      : app,
+        model    : model,
+        kamisama : kamisama,
+        auth     : auth,
+        config   : config
+    });
 });
 
 /*  Métodos para dev e teste */
-app.get('/ping', function (request, response) {
+app.get('/ping', function (request,response) {
     "use strict";
 
     response.contentType('json');
@@ -53,23 +69,6 @@ app.get('/ping', function (request, response) {
             response.send({ version : regexm[1], date : regexm[3] });
         }
     });
-});
-
-/*  Métodos para dev e teste */
-app.get('/config', function (request, response) {
-    "use strict";
-
-    response.contentType('json');
-    response.header('Access-Control-Allow-Origin', '*');
-
-    var result = {services : {}};
-    for (var i in config.services) {
-        result.services[i] = {
-            host : config.services[i].url,
-            port : config.services[i].port
-        }
-    }
-    response.send(result);
 });
 
 /*  Ativando o server */

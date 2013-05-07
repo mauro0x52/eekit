@@ -149,6 +149,18 @@ module.exports = {
                 auth      : true,
                 informations : false
             }
+        },
+        talk : {
+            url  : 'localhost',
+            port : 8011,
+            secret : 'talk',
+            permissions : {
+                users     : false,
+                username  : true,
+                tokens    : false,
+                auth      : false,
+                informations : false
+            }
         }
     }
 };

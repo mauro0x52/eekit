@@ -41,13 +41,14 @@ module.exports = function (params) {
                     if (error) {
                         response.send({error : error});
                     } else {
-                        
+
                         var format = function (date) {
                             return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
                         }
 
                         var i,
-                            uses = {};
+                            uses = {},
+                            user = user;
 
                         user.name = data.user.name;
                         user.email = data.user.username;
@@ -75,28 +76,33 @@ module.exports = function (params) {
                                 }
                             }
                         }
-                        
-                        if (user.ocurrences('tarefas', ['marcar tarefa como feita']) >= 1) {
+
+                        if (user.ocurrences('tarefas', ['adicionar tarefa']) >= 1) {
                             user.apps.tarefas.status = 'Ativado';
-                            if (user.ocurrences('tarefas', ['marcar tarefa como feita'], sunday, saturday) >= 3) {
+                            if (user.ocurrences('tarefas', ['adicionar tarefa'], sunday, saturday) >= 3) {
                                 user.apps.tarefas.status = 'Engajado';
                             }
                         } else {
                             user.apps.tarefas.status = 'Nao Ativado';
                         }
-                        
-                        if (user.ocurrences('finanças', ['adicionar transação']) >= 2) {
+
+                        if (user.ocurrences('finanças', ['adicionar transação']) >= 1) {
                             user.apps['finanças'].status = 'Ativado';
-                            if (user.ocurrences('finanças', ['editar transação', 'adicionar transação'], sunday, saturday) >= 3) {
+                            if (user.ocurrences('finanças', ['editar transação'], sunday, saturday) >= 5) {
                                 user.apps['finanças'].status = 'Engajado';
                             }
                         } else {
                             user.apps['finanças'].status = 'Nao Ativado';
                         }
-                        
-                        if (user.ocurrences('contatos', ['adicionar tarefa', 'adicionar transação']) >= 1) {
+
+                        if (user.ocurrences('contatos', ['adicionar contato']) >= 1) {
                             user.apps.contatos.status = 'Ativado';
-                            if (user.ocurrences('contatos', ['marcar tarefa como feita', 'adicionar transação'], sunday, saturday) >= 2) {
+                            if (
+                                user.ocurrences('contatos', ['adicionar contato'], sunday, saturday) >= 3 ||
+                                user.ocurrences('contatos', ['adicionar tarefa'], sunday, saturday) >= 1 ||
+                                user.ocurrences('contatos', ['adicionar transação'], sunday, saturday) >= 1 ||
+                                user.ocurrences('contatos', ['editar contato'], sunday, saturday) >= 1
+                            ) {
                                 user.apps.contatos.status = 'Engajado';
                             }
                         } else {
@@ -249,9 +255,9 @@ module.exports = function (params) {
             newevent.utm = utm;
         }
 
-        params.auth(request.param('token', null), function (error, user) {
+        params.auth(request.param('token', null), function (error, data) {
             if (!error) {
-                newevent.user = user._id
+                newevent.user = data.user._id
             }
             newevent.save(function (error) {
                 if (error) {
