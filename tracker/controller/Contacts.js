@@ -58,7 +58,7 @@ module.exports = function (params) {
                     var date = new Date(cohort[i].date);
                     var monitoring = [];
                     while (date <= new Date) {
-                        monitoring.push(cohort[i].filter(['visualizar: contatos'],1, utm, date))
+                        monitoring.push(cohort[i].filter([],1, utm, date))
                         date.setDate(date.getDate() + 7);
                     }
 

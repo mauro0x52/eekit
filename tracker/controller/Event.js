@@ -88,7 +88,7 @@ module.exports = function (params) {
 
                         if (user.ocurrences('finanças', ['adicionar transação']) >= 1) {
                             user.apps['finanças'].status = 'Ativado';
-                            if (user.ocurrences('finanças', ['editar transação'], sunday, saturday) >= 5) {
+                            if (user.ocurrences('finanças', ['adicionar transação'], sunday, saturday) >= 5) {
                                 user.apps['finanças'].status = 'Engajado';
                             }
                         } else {

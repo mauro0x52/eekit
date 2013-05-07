@@ -72,9 +72,9 @@ module.exports = function (params) {
                                 cohort[i].users[j].utm.campaign === utm.campaign ||
                                 !utm.campaign
                             ) && (
-                                cohort[i].users[j].ocurrences('tarefas', ['marcar tarefa como feita']) >= 1 ||
-                                cohort[i].users[j].ocurrences('finanças', ['adicionar transação']) >= 2 ||
-                                cohort[i].users[j].ocurrences('contatos', ['adicionar tarefa', 'adicionar transação']) >= 1
+                                cohort[i].users[j].ocurrences('tarefas', ['adicionar tarefa']) >= 1 ||
+                                cohort[i].users[j].ocurrences('finanças', ['adicionar transação']) >= 1 ||
+                                cohort[i].users[j].ocurrences('contatos', ['adicionar contato']) >= 1
                             )
                         ) {
                             activated.push(cohort[i].users[j])
