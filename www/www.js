@@ -32,11 +32,10 @@ app.configure(function () {
 });
 
 /*  index.ejs */
-app.get('/', function (request, response) {
+app.get('/*', function (request, response) {
     "use strict";
     response.render('../view/index.ejs', {config : config});
 });
-
 
 /*  Métodos para dev e teste */
 app.get('/ping', function (request, response) {
