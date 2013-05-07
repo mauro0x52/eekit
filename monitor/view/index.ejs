@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monitor</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        body {
+            background-color: #eee;
+            margin: 0;
+            padding: 20px;
+            font-family: Verdana,Helvetica,sans-serif;
+        }
+        #wrapper {
+            width: 920px;
+            padding: 40px;
+            margin: auto;
+            box-shadow: 0 0 200px rgba(0,0,0,0.4);
+            background-color: #fff;
+        }
+        h1 {
+            margin: -40px -40px 0 -40px;
+            padding: 40px;
+            font-size: 25px;
+            font-family: Arial,Helvetica,sans-serif;
+        }
+        h2 {
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            font-family: Arial,Helvetica,sans-serif;
+        }
+        h3 {
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+        }
+        #upTime {
+            background-color: #333;
+            padding: 10px;
+            margin: 1px 0;
+            color: #fff;
+        }
+        #loadAverage {
+            background-color: #666;
+            padding: 10px;
+            color: #fff;
+        }
+        #upTime h2, #loadAverage h2 {
+            display: inline-block;
+            width: 120px;
+            color: #ccc;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        #upTime h3, #loadAverage h3 {
+            display: inline-block;
+            font-weight: normal;
+            color: #ccc;
+        }
+        #upTime p, #loadAverage p {
+            display: inline-block;
+            margin: 0 20px 0 5px;
+            font-size: 14px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        #loadAverage_graphic {
+            position: relative;
+            height: 100px;
+            overflow: hidden;
+            margin: 10px -10px -10px -10px;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+            background-color: #555;
+        }
+        #loadAverage_graphic .halfMarker {
+            position: absolute;
+            width: 100%;
+            top: 50px;
+            border-top: 1px dashed #111;
+        }
+        #loadAverage_graphic_plot {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100px;
+            width: 10000000px;
+            text-align: right;
+            overflow: hidden;
+        }
+        #loadAverage_graphic_plot .point {
+            position: relative;
+            display: inline-block;
+            height: 100px;
+            width:2px;
+        }
+        #loadAverage_graphic_plot .point .color {
+            position: absolute;
+            bottom: 0;
+            width:2px;
+        }
+        #loadAverage_graphic_plot .point .color.green {
+            background-color: #6e0;
+        }
+        #loadAverage_graphic_plot .point .color.yellow {
+            background-color: #cc0;
+        }
+        #loadAverage_graphic_plot .point .color.orange {
+            background-color: #e60;
+        }
+        #loadAverage_graphic_plot .point .color.red {
+            background-color: #c20;
+        }
+        #loadAverage_graphic .point .color.dark-red {
+            background-color: #800;
+        }
+        #processes h2 {
+            margin: 40px 0 20px 0;
+        }
+        #processes_header {
+            height: 32px;
+            padding: 10px;
+        }
+        #processes_header h3 {
+            font-size: 12px;
+            height: 1em;
+        }
+        #processes .process {
+            font-size: 12px;
+            border-top: 1px dotted #ddd;
+            padding: 10px;
+            height: 15px;
+        }
+        #processes .process.node {
+            background-color: #FFc;
+        }
+        #processes .user {
+            display: block;
+            float: left;
+            width: 100px;
+            height: 15px;
+            overflow: hidden;
+        }
+        #processes .cpu {
+            display: block;
+            float: left;
+            width: 50px;.
+            height: 15px;
+            overflow: hidden;
+        }
+        #processes .memory {
+            display: block;
+            float: left;
+            width: 50px;
+            height: 15px;
+            overflow: hidden;
+        }
+        #processes .start {
+            display: block;
+            float: left;
+            width: 80px;
+            height: 15px;
+            overflow: hidden;
+        }
+        #processes .time {
+            display: block;
+            float: left;
+            width: 80px;
+            height: 15px;
+            overflow: hidden;
+        }
+        #processes .command {
+            display: block;
+            float: left;
+            width: 520px;
+            height: 15px;
+            overflow: hidden;
+            color: #888;
+        }
+        #processes .node .command {
+            color: #433;
+        }
+        #processes .node .command a {
+            color: #06c;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+    <script type="text/javascript">
+        ajax = function (url, cb) {
+            var invocation,
+                start;
+
+            try {
+                /* Testa chamada para o IE */
+                if (window.XDomainRequest) {
+                    invocation = new XDomainRequest();
+                } else {
+                    invocation = new XMLHttpRequest();
+                }
+                /* Verifica se ajax esta disponível no browser */
+                if (invocation) {
+                    /* Callback de sucesso */
+                    invocation.onload = function () {
+                        try {
+                            var end = new Date(),
+                                data = eval('(' + invocation.responseText + ')');
+                            data.responseTime = end - start;
+
+                            if (cb) {
+                                cb(null, data);
+                            }
+                        } catch(e) {
+                            if (cb) {
+                                cb(e, null);
+                            }
+                        }
+                    };
+                    /* Callback de falha */
+                    invocation.onerror = function (error) {
+                        cb(error, null);
+                    };
+                    /* dispara a chamada */
+                    invocation.open('GET', url, true);
+                    start = new Date()
+                    invocation.send();
+                } else {
+                    cb('unable to create request object', null);
+                }
+            } catch (error) {
+                cb(error, null);
+            }
+        };
+
+
+        updateUptime = function () {
+            ajax('/uptime?secret=m0n1t0rm4ne1r0p4r4vcs3rf3l1z', function(error, data) {
+                if (error) {
+
+                } else {
+                    var color, height, value, newPoint;
+                    document.getElementById('upTime_localTime').innerHTML = data.localTime;
+                    document.getElementById('upTime_upTime').innerHTML = data.upTime.replace('day','dia').replace('sec','sec');
+                    document.getElementById('loadAverage_1min').innerHTML = data.loadAverage[1];
+                    document.getElementById('loadAverage_5min').innerHTML = data.loadAverage[5];
+                    document.getElementById('loadAverage_15min').innerHTML = data.loadAverage[15];
+                    value =  data.loadAverage[1]*100;
+                    if (value < 50) {
+                        color = 'green';
+                        height = value*0.5 + 1;
+                    } else if (value < 80) {
+                        color = 'yellow';
+                        height = value*0.5;
+                    } else if (value < 100) {
+                        color = 'orange';
+                        height = value*0.5;
+                    } else if (value < 500) {
+                        color = 'red';
+                        height = 50 + (value)*0.1;
+                    } else {
+                        color : 'dark-red';
+                        height = 100;
+                    }
+                    newPoint = document.createElement('div');
+                    newPoint.setAttribute('class', 'point');
+                    newPoint.innerHTML = '<div class="color '+color+'" style="height:'+height+'px"></div>';
+                    document.getElementById('loadAverage_graphic_plot').appendChild(newPoint);
+                }
+            });
+        }
+        updateProcesses = function () {
+            ajax('/processes?secret=m0n1t0rm4ne1r0p4r4vcs3rf3l1z', function(error, data) {
+                if (error) {
+
+                } else {
+                    var html = '', isNode = true, match;
+                    for (var i in data.processes) {
+                        isNode = (data.processes[i].command.indexOf('node') >= 0);
+                        html += '<div class="process '+(isNode ? 'node' : '')+'">';
+                        html += '<div class="user">'+data.processes[i].user+'</div>';
+                        html += '<div class="cpu">'+data.processes[i].cpu+'</div>';
+                        html += '<div class="memory">'+data.processes[i].memory+'</div>';
+                        html += '<div class="start">'+data.processes[i].start+'</div>';
+                        html += '<div class="time">'+data.processes[i].time+'</div>';
+                        html += '<div class="command">';
+                        if (isNode) {
+                            match = data.processes[i].command.match(/.*[\s\/]([a-z0-9\-]+)\.js.*/);
+                            if (match && match[1]) {
+                                html += data.processes[i].command.replace(match[1]+'.js', '<a href="/panel/service/'+match[1]+'?secret=m0n1t0rm4ne1r0p4r4vcs3rf3l1z">'+match[1]+'</a>.js');
+                            } else {
+                                html += data.processes[i].command;
+                            }
+                        } else {
+                            html += data.processes[i].command;
+                        }
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                    document.getElementById('processes_list').innerHTML = html;
+                }
+            });
+        }
+
+        updateProcesses();
+        setInterval(updateProcesses, 5000);
+        updateUptime();
+        setInterval(updateUptime, 2000);
+    </script>
+</head>
+<body>
+
+<div id="wrapper">
+    <h1>Servidor EmpreendeKit</h1>
+
+    <div id="upTime">
+        <h2>Tempo</h2>
+        <h3>Horário local:</h3>
+        <p id="upTime_localTime">00:00:00</p>
+        <h3>Tempo em execução:</h3>
+        <p id="upTime_upTime">0 dia, 0 min</p>
+    </div>
+
+    <div id="loadAverage">
+        <h2>Saturação</h2>
+        <h3>1 minuto:</h3>
+        <p id="loadAverage_1min">0.0</p>
+        <h3>5 minutos:</h3>
+        <p id="loadAverage_5min">0.0</p>
+        <h3>15 minutos:</h3>
+        <p id="loadAverage_15min">0.0</p>
+        <div id="loadAverage_graphic">
+            <div id="loadAverage_graphic_plot"></div>
+            <div class="halfMarker"></div>
+        </div>
+    </div>
+
+    <div id="processes">
+        <h2>Lista de processos</h2>
+        <div id="processes_header">
+            <h3 class="user">Usuário</h3>
+            <h3 class="cpu">CPU</h3>
+            <h3 class="memory">Mem</h3>
+            <h3 class="start">Desde</h3>
+            <h3 class="time">Tempo</h3>
+            <h3 class="command">Comando</h3>
+        </div>
+        <div id="processes_list"></div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.1 (2013-05-03)
+
+Ajustes
+- Cacheando em memória os tokens do usuário pois estava floodando o auth
+
 ## 1.0 (2013-04-29)
 
 Features

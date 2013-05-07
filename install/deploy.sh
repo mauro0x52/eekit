@@ -114,9 +114,7 @@ deploy() {
                 fi
 
                 echo "-- Reiniciando serviço..."
-                forever stop $SERVICE.js
-                echo "--- Serviço $SERVICE parado"
-                forever start $SERVICE.js
+                forever restart $SERVICE.js
                 echo "--- Serviço $SERVICE reiniciado"
             fi
 
