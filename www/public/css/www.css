@@ -292,20 +292,30 @@ form {
     padding:0;
 }
 
+
+/* selecionado */
 .tool > .sheets > .sheet {
     position: relative;
     display: block;
-    width: 660px;
     height: 100%;
+    width: 80px;
     top: 40px;
     border-radius: 10px 10px 0 0;
     overflow: hidden;
+    z-index: 10000;
+    float: left;
+    margin-left: -40px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    width: 660px;
     background-color: #fdfdeb;
 }
 
 .tool > .sheets > .sheet:first-child {
     width: 900px;
-    left: 100px;
+}
+
+.tool > .sheets > .sheet:first-child {
+    margin-left: 100px;
 }
 
 .tool > .sheets > .sheet > .header {
@@ -322,6 +332,29 @@ form {
     top: 6px;
     left: 20px;
     font-size: 16px;
+}
+
+
+/* colapsado */
+.tool > .sheets > .sheet.collapsed {
+    width: 80px;
+}
+.tool > .sheets > .sheet.collapsed > .header {
+    position: absolute;
+    display: block;
+    background-color: #b9ac9f;
+    height: 100%;
+    width: 100%;
+    z-index: 100000;
+}
+
+.tool > .sheets > .sheet.collapsed > .header > .title {
+    left: -233px;
+    position: absolute;
+    text-align: right;
+    top: 260px;
+    transform: rotate(-90deg);
+    width: 500px;
 }
 
 .sheets  > .sheet > .body {
@@ -1613,6 +1646,285 @@ form {
     font-size: 10px;
     padding: 0 0 0 5px;
     vertical-align: middle;
+}
+
+/* -------------------------------------------------------------------------- */
+/* entity                                                                   */
+/* -------------------------------------------------------------------------- */
+
+/* body */
+
+.sheets > .entity >  .body > .title {
+    font-size: 28px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #2b4f67;
+    font-weight: normal;
+    padding: 0;
+    margin: 20px;
+    text-shadow: 1px 1px 0 #fff;
+}
+
+.sheets > .entity >  .body > .description {
+    font-size: 12px;
+    line-height: 1.6em;
+    margin: 20px;
+}
+
+/* data-set */
+
+.sheets > .entity >  .body > .data-sets > .data-set {
+    margin: 30px 0;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .legend {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fdfdeb;
+    font-weight: bold;
+    padding: 5px 20px;
+    margin: 10px 0;
+    background-color: #2b4f67;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields {
+    clear: both;
+    display: block;
+    font-size: 0;
+    width: 600px;
+    margin: 20px 0 20px 20px;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields > .field {
+
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields  .legend {
+    display: block;
+    position: absolute;
+    text-align: right;
+    width: 180px;
+    font-size: 12px;
+    line-height: 1.4em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #2b4f67;
+    font-weight: bold;
+    margin: 0;
+    padding: 6px 10px 2px 10px;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields > .field  > .values {
+    display: block;
+    position: relative;
+    left: 200px;
+    width: 400px;
+    margin: 0;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value  {
+    position: relative;
+    width: 390px;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value:last-child {
+    border-bottom: none;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value > .data {
+    font-size: 12px;
+    line-height: 1.4em;
+    width: 280px;
+    padding: 5px 10px;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields > .field  > .values > .value > .actions {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value > .actions > .action {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields > .field  > .values > .value > .actions > .action > .anchor > .image {
+    display: inline-block;
+}
+
+.sheets > .entity >  .body > .data-sets > .data-set  > .fields > .field  > .values > .value > .actions > .action > .anchor > .legend {
+    display: none;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* Related Sheet                                                              */
+/* -------------------------------------------------------------------------- */
+
+.sheets  > .sheet .related {
+    position: relative;
+}
+
+.sheets  > .sheet .related > .header {
+    padding: 10px 20px;
+    z-index: 1000;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fdfdeb;
+    font-weight: bold;
+    padding: 5px 20px;
+    margin: 0;
+    background-color: #b9ac9f;
+}
+.sheets  > .sheet .related > .header > .title {
+    color: #fdfdeb;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Related Entity                                                              */
+/* -------------------------------------------------------------------------- */
+
+/* body */
+
+.related.entity > .body {
+    position: relative;
+    padding: 1px 0 1px 0;
+}
+
+.related.entity >  .body > .title {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #332f2f;
+    padding: 0;
+    margin: 20px 40px 10px 20px;
+    text-shadow: 1px 1px 0 #fff;
+    cursor: pointer;
+}
+
+.related.entity >  .body > .description {
+    font-size: 12px;
+    line-height: 1.6em;
+    color: #332f2f;
+    margin: 10px 40px 10px 20px;
+}
+
+/* data-set */
+
+.related.entity >  .body > .data-sets > .data-set {
+    margin: 20px 40px 20px 20px;
+    border-top: 1px solid #332f2f;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .legend {
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #332f2f;
+    font-weight: bold;
+    padding: 5px 0;
+    margin: 0 0 10px 0;
+    text-shadow: 1px 1px 0 #fff;
+    border-bottom: 1px dotted #332f2f;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields {
+    clear: both;
+    display: block;
+    font-size: 0;
+    width: 600px;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields > .field {
+
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields  .legend {
+    display: block;
+    position: absolute;
+    text-align: right;
+    width: 180px;
+    font-size: 12px;
+    line-height: 1.4em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #332f2f;
+    font-weight: bold;
+    margin: 0;
+    padding: 5px 10px 2px 10px;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields > .field  > .values {
+    display: block;
+    position: relative;
+    left: 200px;
+    width: 400px;
+    margin: 0;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value  {
+    position: relative;
+    border-bottom: 1px dotted #b9ac9f;
+    width: 390px;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value:last-child {
+    border-bottom: none;
+}
+
+.related.entity >  .body > .data-sets > .data-set  > .fields  > .field > .values > .value > .data {
+    font-size: 12px;
+    line-height: 1.4em;
+    width: 280px;
+    padding: 5px 10px;
+}
+
+.related.entity > .body > .click {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25px;
+    height: 100%;
+    background-color: #332f2f;
+    transition: all 0.2s ease;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    cursor: pointer;
+    z-index:10000;
+}
+
+.related.entity > .body > .click > .arrow {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    margin-top: -8px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid #b9ac9f;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+}
+
+.related.entity > .body > .click   > .arrow > .fill {
+    position: absolute;
+    top: -8px;
+    left: -12px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid #332f2f;
+    transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
 }
 
 /* -------------------------------------------------------------------------- */
