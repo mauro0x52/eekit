@@ -347,7 +347,12 @@ form {
 /* colapsado */
 .tool > .sheets > .sheet.collapsed {
     width: 80px;
+    margin-right: -45px;
+}
+
+.tool > .sheets > .sheet.collapsed:hover {
     margin-right: -40px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
 }
 
 .tool > .sheets > .sheet.collapsed > .header {
@@ -360,7 +365,7 @@ form {
     cursor: pointer;
 }
 
-.tool > .sheets > .sheet.collapsed > .header:hover {
+.tool > .sheets > .sheet.collapsed:hover > .header {
     background-color: #f38305;
 }
 
