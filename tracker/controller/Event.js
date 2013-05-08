@@ -47,12 +47,22 @@ module.exports = function (params) {
                         }
 
                         var i,
-                            uses = {},
-                            user = user;
+                            uses = {};
 
-                        user.name = data.user.name;
-                        user.email = data.user.username;
-                        if (data.user.informations) user.phone = data.user.informations.phone;
+
+                        user = user || {};
+
+                        if (data.user) {
+                            user.name = data.user.name;
+                            user.email = data.user.username;
+                            if (data.user.informations) {
+                                user.phone = data.user.informations.phone;
+                            }
+                        } else {
+                            user.name = 'deslogado';
+                            user.email = 'deslogado';
+                            user.phone = 'deslogado';
+                        }
                         user.apps = {
                             'contatos' : {days : 0, status : '&nbsp;'},
                             'tarefas'  : {days : 0, status : '&nbsp;'},
