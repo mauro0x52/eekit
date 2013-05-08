@@ -27,52 +27,51 @@ app.configure(function () {
     app.use(app.router);
 });
 
-require('./utils/kamisama')(function (kamisama) {
-    var model = require('./model/Model'),
-        auth = require('./utils/auth');
-    /*  Chamando controllers */
-    require('./controller/Event.js')({
-        app      : app,
-        model    : model,
-        kamisama : kamisama,
-        auth     : auth,
-        config   : config
-    });
-    require('./controller/Tasks.js')({
-        app      : app,
-        model    : model,
-        kamisama : kamisama,
-        auth     : auth,
-        config   : config
-    });
-    require('./controller/Contacts.js')({
-        app      : app,
-        model    : model,
-        kamisama : kamisama,
-        auth     : auth,
-        config   : config
-    });
-    require('./controller/Finances.js')({
-        app      : app,
-        model    : model,
-        kamisama : kamisama,
-        auth     : auth,
-        config   : config
-    });
-    require('./controller/Utm.js')({
-        app      : app,
-        model    : model,
-        kamisama : kamisama,
-        auth     : auth,
-        config   : config
-    });
-    require('./controller/www.js')({
-        app      : app,
-        model    : model,
-        kamisama : kamisama,
-        auth     : auth,
-        config   : config
-    });
+var model = require('./model/Model'),
+    auth = require('./utils/auth'),
+    kamisama = require('./utils/kamisama');
+/*  Chamando controllers */
+require('./controller/Event.js')({
+    app      : app,
+    model    : model,
+    kamisama : kamisama,
+    auth     : auth,
+    config   : config
+});
+require('./controller/Tasks.js')({
+    app      : app,
+    model    : model,
+    kamisama : kamisama,
+    auth     : auth,
+    config   : config
+});
+require('./controller/Contacts.js')({
+    app      : app,
+    model    : model,
+    kamisama : kamisama,
+    auth     : auth,
+    config   : config
+});
+require('./controller/Finances.js')({
+    app      : app,
+    model    : model,
+    kamisama : kamisama,
+    auth     : auth,
+    config   : config
+});
+require('./controller/Utm.js')({
+    app      : app,
+    model    : model,
+    kamisama : kamisama,
+    auth     : auth,
+    config   : config
+});
+require('./controller/www.js')({
+    app      : app,
+    model    : model,
+    kamisama : kamisama,
+    auth     : auth,
+    config   : config
 });
 
 /*  Métodos para dev e teste */
