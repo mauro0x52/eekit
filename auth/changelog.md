@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.2.2 (2013-05-08)
+
+Melhorias
+- Validate não precisa mais ficar chamando checktoken
+
 ## 1.2.1 (2013-04-29)
 
 Ajustes

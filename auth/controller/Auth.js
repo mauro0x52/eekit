@@ -36,7 +36,7 @@ module.exports = function (params) {
         if (service === null) {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
-            params.model.User.findByToken(request.param('token', null), function (error, user) {
+            params.model.User.findByTokenService(request.param('token', null), service.slug, function (error, user) {
                 if (error) {
                     response.send({error : { message : 'invalid token', name : 'InvalidTokenError'}});
                 } else if (user === null) {
