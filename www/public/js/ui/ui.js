@@ -34,15 +34,13 @@ new Namespace({
             /* Logo */
             new this.element('div', {attributes : {'class' : 'logo'}, html : [
                 new this.element('a', {attributes : {'class' : 'anchor', 'href' : '#', 'title' : 'Página principal'}, html : [
-                    new this.element('div', {attributes : {'class' : 'image'}}),,
+                    new this.element('span', {attributes : {'class' : 'image'}}),,
                     new this.element('h1', {attributes : {'class' : 'title'}, html : 'EmpreendeKit'})
                 ]})
             ]}),
             /* Menu */
-            new this.element('menu', {attributes : {'class' : 'menu'}, html : [
-                new this.element('li', {attributes : {'class' : 'tools'}, html : [
-                    appsmenu = new this.element('menu', {attributes : {'class' : 'list'}})
-                ]})
+            new this.element('div', {attributes : {'class' : 'menu'}, html : [
+                appsmenu = new this.element('menu', {attributes : {'class' : 'tools'}})
             ]}),
             /* User */
             new this.element('div', {attributes : {'class' : 'user'}, html : [
@@ -62,23 +60,18 @@ new Namespace({
                 ]}),
             ]})
         ]}),
-        /* Content */
-        new this.element('div', {attributes : {'class' : 'content'}, html : [
-            new this.element('div', {attributes : {'class' : 'tool'}, html : [
-                /* Navigation */
-                new this.element('div', {attributes : {'class' : 'navigation'}, html : [
-                    navigation = new this.element('menu', {attributes : {'class' : 'sheets'}}),
-                ]}),
-                /* Rools */
-                new this.element('div', {attributes : {'class' : 'roll'}, html : [
-                    /* Menu */
-                    new this.element('div', {attributes : {'class' : 'menu'}, html : [
-                        appmenu = new this.element('menu', {attributes : {'class' : 'list'}})
-                    ]}),
-                    /* Sheets */
-                    sheets = new this.element('div', {attributes : {'class' : 'sheets'}})
-                ]})
-            ]})
+        /* Ferramenta */
+        new this.element('div', {attributes : {'class' : 'tool'}, html : [
+            /* Menu */
+            new this.element('div', {attributes : {'class' : 'menu'}, html : [
+                appmenu = new this.element('menu', {attributes : {'class' : 'options'}})
+            ]}),
+            /* Navigation */
+            new this.element('div', {attributes : {'class' : 'navigation'}, html : [
+                navigation = new this.element('menu', {attributes : {'class' : 'sheets'}}),
+            ]}),
+            /* Sheets */
+            sheets = new this.element('div', {attributes : {'class' : 'sheets'}})
         ]})
     ]});
 

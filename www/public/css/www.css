@@ -349,6 +349,7 @@ form {
     width: 80px;
     margin-right: -40px;
 }
+
 .tool > .sheets > .sheet.collapsed > .header {
     position: absolute;
     display: block;
@@ -358,6 +359,7 @@ form {
     z-index: 100000;
     cursor: pointer;
 }
+
 .tool > .sheets > .sheet.collapsed > .header:hover {
     background-color: #f38305;
 }
@@ -426,7 +428,7 @@ form {
     top: 10px;
 }
 
-.sheets > .sheet > .loading > .image{
+.sheets > .sheet > .loading > .image {
     position: absolute;
     background-image: url("../images/loading-sheet.gif");
     background-repeat: no-repeat;
