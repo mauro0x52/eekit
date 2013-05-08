@@ -127,6 +127,43 @@ module.exports = function (params) {
         });
     });
 
+    /** GET /user/:id/events
+     *
+     * @autor : Rafael Erthal
+     * @since : 2012-10
+     *
+     * @description : Lista eventos de um usuário
+     *
+     * @allowedApp : Qualquer APP
+     * @allowedUser : Logado
+     *
+     * @request : {}
+     * @response : {events}
+     */
+    params.app.get('/user/associate', function (request,response) {
+        if (request.param('secret', null) != 'tr4ck3r') {
+            response.end();
+            return;
+        }
+
+        params.model.Event.findOne({ip : request.param('ip')}, function (error, event) {
+            if (error) {
+                response.send({error : error});
+            } else if (event === null) {
+                response.send({error : 'error'});
+            } else {
+                event.user = request.param('user');
+                event.save(function (error) {
+                    if (error) {
+                        response.send({error : error});
+                    } else {
+                        response.send({status : 'ok'});
+                    }
+                });
+            }
+        });
+    });
+
     /** GET /users
      *
      * @autor : Rafael Erthal
