@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.2
+
+Ajustes
+- Controle de autenticação de usuários
+
 ## 1.0.1 (2013-05-03)
 
 Ajustes
