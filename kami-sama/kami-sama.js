@@ -11,20 +11,31 @@ var config = require('./config.js'),
     clients = [],
     services = [];
 
-function emit(socket, data, service) {
-    if (socket.tokens[service]) {
-        data.token = socket.tokens[service];
-        socket.emit('trigger', data);
+function emit(source, target, data) {
+    if (target.tokens[source.service]) {
+        require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
+            data: {
+                secret : source.secret,
+                token  : target.tokens[source.service]
+            }
+        }).on('success', function(res) {
+            if (target.secret || target.company === res.company._id) {
+                data.token = target.tokens[source.service];
+                target.emit('trigger', data);   
+            }
+        });
     } else {
-        require('restler').post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/' + service + '/authorize', {
+        require('restler').post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/' + source.service + '/authorize', {
             data: {
                 secret : config.security.secret,
                 token  : data.token
             }
         }).on('success', function(res) {
-            socket.tokens[service] = res.token;
-            data.token = res.token;
-            socket.emit('trigger', data);
+            target.tokens[source.service] = res.token;
+            if (target.secret || target.company === res.company._id) {
+                data.token = target.tokens[source.service];
+                target.emit('trigger', data);
+            }
         });
     }
 }
@@ -36,9 +47,11 @@ io.sockets.on('connection', function (socket) {
     socket.on('auth', function (data) {
         if (data.service) {
             socket.service = data.service;
+            socket.secret = data.secret;
             services.push(socket)
         } else {
-            socket.client = data.user;
+            socket.service = 'www';
+            socket.company = data.company;
             clients.push(socket)
         }
     });
@@ -47,12 +60,12 @@ io.sockets.on('connection', function (socket) {
         data.source = socket.service;
         for (var i in clients) {
             if (clients[i]) {
-                emit(clients[i], data, 'www');
+                emit(socket, clients[i], data);
             }
         }
         for (var i in services) {
             if (services[i]) {
-                emit(services[i], data, services[i].service);
+                emit(socket, services[i], data);
             }
         }
     });

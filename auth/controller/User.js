@@ -201,7 +201,7 @@ module.exports = function (params) {
                                 name : users[i].name
                             });
                         }
-                        response.send({users : result});
+                        response.send({users : result, company : user.company});
                     }
                 });
             }
