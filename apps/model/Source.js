@@ -54,31 +54,22 @@ Source.findOne = function (params, cb) {
             cb({error : { message : 'source not found', name : 'NotFoundError', path : 'source'}})
         } else {
             var i = 0;
-            source = 'app={';
+            source = '';
 
             if (srcMenu) {
-                source += 'menu:'
+                source += 'app.menu='
                 source += fs.readFileSync(srcMenu.path, 'utf-8');
-                source += ','
+                source += ';'
             }
 
-            source += 'models : function (){'
+            source += 'app.models = {};'
             for (i = 0; i < srcModels.length; i++) {
-                //source += srcModels[i].name+' :'
                 source += fs.readFileSync(srcModels[i].path, 'utf-8');
-                //if (i !== srcModels.length - 1) {
-                //    source += ',';
-                //}
             }
-            source += '},';
 
-            source += 'start:function(){app.models();';
             for (i = 0; i < srcFiles.length; i++) {
                 source += fs.readFileSync(srcFiles[i].path, 'utf-8');
             }
-            source += '}';
-
-            source += '}';
 
             try {
                 //source = jsp.parse(source); // parse code and get the initial AST
