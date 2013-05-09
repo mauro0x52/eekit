@@ -16,9 +16,10 @@
             var folder = '/js/',
                 auth = '<%=config.services.auth.url%>:<%=config.services.auth.port%>';
 
+            console.log(auth)
 
             var Empreendekit = new Namespace({
-                config    : folder + 'config/config.js',
+                config  : folder + 'config/config.js',
                 ajax    : folder + 'ajax/ajax.js',
                 apps    : folder + 'apps/apps.js',
                 auth    : folder + 'auth/auth.js',
@@ -26,21 +27,14 @@
                 routes  : folder + 'routes/routes.js',
                 tracker : folder + 'tracker/tracker.js',
                 ui      : folder + 'ui/ui.js'
-            }, function () {
+            }, function () {/*
                 this.apps.open({
-                    app   : 'tarefas',
-                    route : '/pendentes',
+                    app   : 'ee',
+                    route : '/',
                     open  : function (app) {
                         console.log(app)
                     }
-                });
-                /*
-                new this.apps.app({
-                    name   : 'teste',
-                    slug   : 'teste',
-                    source : 'app.routes.list("/temp/:id", function (params) {console.log(document);console.log(params)})'
-                });
-                */
+                });*/
             });
         </script>
     </body>
