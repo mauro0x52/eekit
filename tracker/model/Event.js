@@ -47,7 +47,7 @@ eventSchema.statics.groupByUser = function (cb) {
         	cb(error, null)
         } else {
 	        for (var i = 0; i < events.length; i += 1) {
-            	var id = events[i].user ? events[i].user.toString() : events[i].ip.toString();
+            	var id = events[i].user ? events[i].user.toString() : events[i].ip.toString().replace(/\./g, '_');
                 if (users[id]) {
                     users[id].events.push(events[i]);
                     if (users[id].date < events[i].date) {

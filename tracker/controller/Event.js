@@ -47,12 +47,22 @@ module.exports = function (params) {
                         }
 
                         var i,
-                            uses = {},
-                            user = user;
+                            uses = {};
 
-                        user.name = data.user.name;
-                        user.email = data.user.username;
-                        if (data.user.informations) user.phone = data.user.informations.phone;
+
+                        user = user || {};
+
+                        if (data.user) {
+                            user.name = data.user.name;
+                            user.email = data.user.username;
+                            if (data.user.informations) {
+                                user.phone = data.user.informations.phone;
+                            }
+                        } else {
+                            user.name = 'deslogado';
+                            user.email = 'deslogado';
+                            user.phone = 'deslogado';
+                        }
                         user.apps = {
                             'contatos' : {days : 0, status : '&nbsp;'},
                             'tarefas'  : {days : 0, status : '&nbsp;'},
@@ -114,6 +124,43 @@ module.exports = function (params) {
                 });
             }).on('error', function () {response.end()});
 
+        });
+    });
+
+    /** GET /user/:id/events
+     *
+     * @autor : Rafael Erthal
+     * @since : 2012-10
+     *
+     * @description : Lista eventos de um usuário
+     *
+     * @allowedApp : Qualquer APP
+     * @allowedUser : Logado
+     *
+     * @request : {}
+     * @response : {events}
+     */
+    params.app.get('/user/associate', function (request,response) {
+        if (request.param('secret', null) != 'tr4ck3r') {
+            response.end();
+            return;
+        }
+
+        params.model.Event.findOne({ip : request.param('ip')}, function (error, event) {
+            if (error) {
+                response.send({error : error});
+            } else if (event === null) {
+                response.send({error : 'error'});
+            } else {
+                event.user = request.param('user');
+                event.save(function (error) {
+                    if (error) {
+                        response.send({error : error});
+                    } else {
+                        response.send({status : 'ok'});
+                    }
+                });
+            }
         });
     });
 

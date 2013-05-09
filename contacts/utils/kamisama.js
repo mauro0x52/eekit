@@ -42,28 +42,25 @@ var trigger = function (token, label, data) {
 	});
 };
 
-module.exports = function (cb) {
-	socket.on('connect', function(){
+socket.on('connect', function () {
 
-		/* Autentica no kami-sama */
-		socket.emit('auth', {
-			service : config.security.name,
-			secret  : config.security.secret
-		});
-
-		/* Escuta qualquer evento que venha do kami-sama */
-		socket.on('trigger', function(data){
-			for (var i in events) {
-				if (events[i].label === data.label) {
-					events[i].callback(data.data);
-				}
-			}
-		});
-
-		/* Retorna os dados */
-		cb({
-			bind    : bind,
-			trigger : trigger
-		});
+	/* Autentica no kami-sama */
+	socket.emit('auth', {
+		service : config.security.name,
+		secret  : config.security.secret
 	});
+
+	/* Escuta qualquer evento que venha do kami-sama */
+	socket.on('trigger', function(data){
+		for (var i in events) {
+			if (events[i].label === data.label) {
+				events[i].callback(data.data);
+			}
+		}
+	});
+});
+
+module.exports = {
+	bind    : bind,
+	trigger : trigger
 };

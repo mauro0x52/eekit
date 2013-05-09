@@ -16,7 +16,8 @@ var empreendemia = {
      */
     load : function () {
         empreendemia.socket.emit('auth', {
-            user : sdk.config.user
+            user    : empreendemia.config.user,
+            company : empreendemia.config.company
         });
 
         empreendemia.ui.content.navigation.navigables.remove();

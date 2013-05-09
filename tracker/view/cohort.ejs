@@ -178,21 +178,21 @@
             <% for (var j in cohort[i].acquisition) { %>
                 <td colspan="2">
                     <% for (var k in cohort[i].acquisition[j].users) { %>
-                        <a href="/user/<%= cohort[i].acquisition[j].users[k].id %>/events?secret=tr4ck3r"><%= cohort[i].acquisition[j].users[k].id %></a><br />
+                        <a href="/user/<%= cohort[i].acquisition[j].users[k].id.replace(/\./g, '_') %>/events?secret=tr4ck3r"><%= cohort[i].acquisition[j].users[k].id %></a><br />
                     <% } %>&nbsp;
                 </td>
             <% } %>
             <% for (var j in cohort[i].activation) { %>
                 <td colspan="2">
                     <% for (var k in cohort[i].activation[j].users) { %>
-                        <a href="/user/<%= cohort[i].activation[j].users[k].id %>/events?secret=tr4ck3r"><%= cohort[i].activation[j].users[k].id %></a><br />
+                        <a href="/user/<%= cohort[i].activation[j].users[k].id.replace(/\./g, '_') %>/events?secret=tr4ck3r"><%= cohort[i].activation[j].users[k].id %></a><br />
                     <% } %>&nbsp;
                 </td>
             <% } %>
             <% for (var j in cohort[i].engagement) { %>
                 <td colspan="2">
                     <% for (var k in cohort[i].engagement[j].users) { %>
-                        <a href="/user/<%= cohort[i].engagement[j].users[k].id %>/events?secret=tr4ck3r"><%= cohort[i].engagement[j].users[k].id %></a><br />
+                        <a href="/user/<%= cohort[i].engagement[j].users[k].id.replace(/\./g, '_') %>/events?secret=tr4ck3r"><%= cohort[i].engagement[j].users[k].id %></a><br />
                     <% } %>&nbsp;
                 </td>
             <% } %>
@@ -200,7 +200,7 @@
             <% for (var j in cohort[i].monitoring) { %>
                 <td>
                     <% for (var k in cohort[i].monitoring[j]) { %>
-                        <a href="/user/<%= cohort[i].monitoring[j][k].id %>/events?secret=tr4ck3r"><%= cohort[i].monitoring[j][k].id %></a><br />
+                        <a href="/user/<%= cohort[i].monitoring[j][k].id.replace(/\./g, '_') %>/events?secret=tr4ck3r"><%= cohort[i].monitoring[j][k].id %></a><br />
                     <% } %>&nbsp;
                 </td>
             <% } %>

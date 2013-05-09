@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.0.6 (2013-05-09)
+
+Melhorias
+- log de usuario deslogado
+- poder associar usuário a um ip
+
 ## 1.0.5 (2013-05-07)
 
 Melhorias
