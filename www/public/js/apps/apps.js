@@ -59,6 +59,8 @@ new Namespace({
             };
         }
 
+        history.pushState({}, 'EmpreendeKit - ' + params.app, params.app + params.route)
+
         ajax.get({
             url : 'http://' + config.services.apps.host + ':' + config.services.apps.port + '/app/' + params.app + '/source'
         }, function (response) {

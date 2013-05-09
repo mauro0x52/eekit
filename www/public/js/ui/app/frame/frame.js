@@ -19,7 +19,7 @@ module.exports(new Class(function (context) {
     this.detach = element.detach;
 
     this.element = element;
-    this.css     = css;
+    this.css     = Css;
 
     /* Controla as tags do app
      *

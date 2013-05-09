@@ -5,6 +5,9 @@
  * @since: 2013-05
  */
 
+var ajax = module.use('ajax'),
+    config = module.use('config');
+
 module.exports({
 
     /* Grava evento de web analytics na api do tracker
@@ -14,7 +17,7 @@ module.exports({
      */
     event : function (label, app) {
 
-        var query = queryToJson(location.search),
+        var query = {},
             data = {
                 app : app.name,
                 label : label,
@@ -45,8 +48,8 @@ module.exports({
             data.source = app.caller();
         }
 
-        empreendemia.ajax.post({
-            url : 'http://' + empreendemia.config.services.tracker.host + ':' + empreendemia.config.services.tracker.port + '/event',
+        ajax.post({
+            url : 'http://' + config.services.tracker.host + ':' + config.services.tracker.port + '/event',
             data : data
         }, function (response) {});
 

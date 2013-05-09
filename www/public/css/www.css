@@ -271,7 +271,6 @@ form {
     left: 0;
     top: 0;
     padding-top: 30px;
-    background-color: #332f2f;
 }
 
 .body > .tool > .menu > .options {
@@ -324,7 +323,6 @@ form {
     width: 100%;
     padding-left: 110px;
     height: 40px;
-    background-color: #332f2f;
     z-index: 1000;
     min-width: 1000px;
 }
@@ -427,9 +425,15 @@ form {
     margin-right: -45px;
 }
 
+.tool > .sheets > .sheet.collapsed:hover,
 .tool > .sheets > .sheet.collapsed:hover {
+    margin-left: -5px;
     margin-right: -40px;
     box-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+
+.tool > .sheets > .sheet.collapsed:first-child:hover {
+    margin-left: 95px;
 }
 
 .tool > .sheets > .sheet.collapsed > .header {

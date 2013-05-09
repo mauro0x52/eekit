@@ -10,13 +10,15 @@ var folder = '/js/ui/';
 new Namespace({
     element     : folder + 'elements/element.js',
     css         : folder + 'elements/css.js',
+    collection  : folder + 'elements/collection.js',
     app         : folder + 'app/app.js',
     embedApp    : folder + 'app/embedApp.js',
     entity      : folder + 'app/entity/entity.js',
     list        : folder + 'app/list/list.js',
     embedEntity : folder + 'app/embedEntity/embedEntity.js',
     embedList   : folder + 'app/embedList/embedList.js',
-    dialog      : folder + 'app/dialog/dialog.js'
+    dialog      : folder + 'app/dialog/dialog.js',
+    frame       : folder + 'app/frame/frame.js'
 }, function () {
 
     var element,
@@ -107,21 +109,7 @@ new Namespace({
 
     };
 
-    this.menu = {
-
-        get : function () {
-
-        },
-
-        add : function () {
-
-        },
-
-        remove : function () {
-
-        }
-
-    };
+    this.menu = new this.collection(appsmenu, []);
 
     this.apps = {
 

@@ -3,9 +3,9 @@
         <title>EmpreendeKit</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        <link rel="stylesheet" type="text/css" href="css/www.css" />
-        <link rel="stylesheet" type="text/css" href="css/images.css" />
-        <link rel="stylesheet" type="text/css" href="css/colors.css" />
+        <link rel="stylesheet" type="text/css" href="/css/www.css" />
+        <link rel="stylesheet" type="text/css" href="/css/images.css" />
+        <link rel="stylesheet" type="text/css" href="/css/colors.css" />
 
         <script type="text/javascript" src="/js/class.min.js"></script>
         <script type="text/javascript" src="/js/ajax.min.js"></script>
@@ -16,8 +16,6 @@
             var folder = '/js/',
                 auth = '<%=config.services.auth.url%>:<%=config.services.auth.port%>';
 
-            console.log(auth)
-
             var Empreendekit = new Namespace({
                 config  : folder + 'config/config.js',
                 ajax    : folder + 'ajax/ajax.js',
@@ -27,14 +25,25 @@
                 routes  : folder + 'routes/routes.js',
                 tracker : folder + 'tracker/tracker.js',
                 ui      : folder + 'ui/ui.js'
-            }, function () {/*
-                this.apps.open({
-                    app   : 'ee',
-                    route : '/',
-                    open  : function (app) {
-                        console.log(app)
-                    }
-                });*/
+            }, function () {
+                var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'];
+                if (current_path[0] === '/') {
+                    this.apps.open({
+                        app   : 'ee',
+                        route : '/',
+                        open  : function (app) {
+                            console.log(app)
+                        }
+                    });
+                } else {
+                    this.apps.open({
+                        app   : current_path[0].replace('/', ''),
+                        route : location.pathname.replace(current_path[0], '') || '/',
+                        open  : function (app) {
+                            console.log(app)
+                        }
+                    });
+                }
             });
         </script>
     </body>
