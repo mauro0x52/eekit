@@ -53,6 +53,10 @@ new Namespace({
                     new this.element('li', {attributes : {'class' : 'option settings'}, html : [
                         settings = new this.element('a', {attributes : {'class' : 'anchor', 'href' : '#'}, html : 'configurações'})
                     ]}),
+                    /* Ajuda */
+                    new this.element('li', {attributes : {'class' : 'option help'}, html : [
+                        settings = new this.element('a', {attributes : {'class' : 'anchor', 'href' : '#'}, html : 'ajuda'})
+                    ]}),
                     /* Sair */
                     new this.element('li', {attributes : {'class' : 'option logout'}, html : [
                         logout = new this.element('a', {attributes : {'class' : 'anchor', 'href' : '#'}, html : 'sair'})
