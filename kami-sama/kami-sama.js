@@ -8,77 +8,64 @@
 
 var config = require('./config.js'),
     io = require('socket.io').listen(config.host.port),
-    clients = [],
-    services = [];
+    sockets = [];
 
-function emit(source, target, data) {
-    if (target.tokens[source.service]) {
-        require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
-            data: {
-                secret : source.secret,
-                token  : target.tokens[source.service]
-            }
-        }).on('success', function(res) {
-            if (target.secret || target.company === res.company._id) {
-                data.token = target.tokens[source.service];
-                target.emit('trigger', data);   
-            }
-        });
-    } else {
-        require('restler').post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/' + source.service + '/authorize', {
-            data: {
-                secret : config.security.secret,
-                token  : data.token
-            }
-        }).on('success', function(res) {
-            target.tokens[source.service] = res.token;
-            if (target.secret || target.company === res.company._id) {
-                data.token = target.tokens[source.service];
-                target.emit('trigger', data);
-            }
-        });
-    }
+function getCompany (token, secret, cb) {
+    require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
+        data: {
+            secret : secret,
+            token  : token
+        }
+    }).on('success', function(res) {
+        if (res.company) {
+            cb(res.company._id)
+        }
+    });
 }
 
 io.sockets.on('connection', function (socket) {
-    socket.user = socket.handshake.address.address;
-    socket.tokens = {};
+    sockets.push(socket);
+
+    var service,
+        secret,
+        company,
+        tokens = {};
+
+    socket.say = function (source_service, source_secret, data) {
+        if (service) {
+            /* TODO: implementar o trigger para servico */
+        }
+        if (company) {
+            getCompany(data.token, source_secret, function (event_company) {
+                if (company === event_company) {
+                    socket.emit('trigger', data);
+                }
+            });
+        }
+    };
 
     socket.on('auth', function (data) {
         if (data.service) {
-            socket.service = data.service;
-            socket.secret = data.secret;
-            services.push(socket)
-        } else {
-            socket.service = 'www';
-            socket.company = data.company;
-            clients.push(socket)
+            service = data.service;
+            secret  = data.secret;
+        } 
+        if (data.company) {
+            company = data.company;
         }
     });
 
     socket.on('trigger', function (data) {
-        data.source = socket.service;
-        for (var i in clients) {
-            if (clients[i]) {
-                emit(socket, clients[i], data);
-            }
-        }
-        for (var i in services) {
-            if (services[i]) {
-                emit(socket, services[i], data);
+        for (var i in sockets) {
+            if (sockets[i] && service && secret) {
+                sockets[i].say(service, secret, data);
             }
         }
     });
 
     socket.on('disconnect', function () {
-        for (var i in clients) {
-            if (clients[i] === socket) {
-                delete clients[i];
-            }
-        }
-        for (var i in services) {
-            if (services[i] === socket) {
-                delete services[i];
+        for (var i in sockets) {
+            if (sockets[i] === socket) {
+                delete sockets[i];
             }
         }
     });
