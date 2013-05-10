@@ -16,8 +16,6 @@ module.exports(new Class(function (context) {
 
     element = new Element('div', {attributes : {'class' : 'sheet frame', 'style' : 'width:' + window.innerWidth + 'px;'}});
 
-    console.log(window.innerWidth)
-
     this.attach = element.attach;
     this.detach = element.detach;
 

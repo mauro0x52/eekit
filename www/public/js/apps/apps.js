@@ -28,7 +28,7 @@ new Namespace({
                 source     : 'apps.js',
                 method     : 'open',
                 message    : 'Params must be especified',
-                arguments : arguments
+                arguments  : arguments
             };
         }
 
@@ -37,7 +37,7 @@ new Namespace({
                 source     : 'apps.js',
                 method     : 'open',
                 message    : 'App must be a string',
-                arguments : arguments
+                arguments  : arguments
             };
         }
 
@@ -46,22 +46,15 @@ new Namespace({
                 source     : 'apps.js',
                 method     : 'open',
                 message    : 'Route must be a string',
-                arguments : arguments
-            };
-        }
-
-        if (!params.open || params.open.constructor !== Function) {
-            throw {
-                source    : 'apps.js',
-                method    : 'open',
-                message   : 'Open callback must be a function',
-                arguments : arguments
+                arguments  : arguments
             };
         }
 
         ajax.get({
             url : 'http://' + config.services.apps.host + ':' + config.services.apps.port + '/app/' + params.app + '/source'
         }, function (response) {
+            history.pushState({}, 'EmpreendeKit', '/' + params.app + params.route);
+
             var newapp = new App({
                 name   : response.name,
                 slug   : response.slug,
@@ -82,7 +75,9 @@ new Namespace({
                     ui.collapse(false);
                 }
             }
-            params.open(newapp)
+            if (params.open) {
+                params.open(newapp)
+            }
 
         });
 

@@ -11,20 +11,16 @@
  * @since: 2013-05
  */
 var match = function (route) {
-    var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g),
-        current_route = route.match(/([\/][A-Za-z0-9\-\:]*[^\/])/g);
+    var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'],
+        current_route = route.match(/([\/][A-Za-z0-9\-\:]*[^\/])/g) || ['/'];
 
-    if (current_route === null && current_path.length === 1) {
-        return true;
-    }
-
-    if (current_path.length != current_route.length + 1) {
+    if (current_path.length != current_route.length) {
         return false;
     }
 
     for (var i = 0; i < current_path.length; i++) {
         if (
-            current_path[i+1] != current_route[i] &&
+            current_path[i] != current_route[i] &&
             current_route[i].substring(1, 2) !== ':'
         ) {
             return false;
@@ -82,7 +78,7 @@ module.exports({
             };
         }
 
-        if (match(route)) {
+        if (match('/' + app.slug() + route)) {
 
             app.route = function () {
 
@@ -130,7 +126,7 @@ module.exports({
             };
         }
 
-        if (match(route)) {
+        if (match('/' + app.slug() + route)) {
 
             app.route = function () {
 
@@ -178,7 +174,7 @@ module.exports({
             };
         }
 
-        if (match(route)) {
+        if (match('/' + app.slug() + route)) {
 
             app.route = function () {
 
@@ -226,7 +222,7 @@ module.exports({
             };
         }
 
-        if (match(route)) {
+        if (match('/' + app.slug() + route)) {
 
             app.route = function () {
 
@@ -274,7 +270,7 @@ module.exports({
             };
         }
 
-        if (match(route)) {
+        if (match('/' + app.slug() + route)) {
 
             app.route = function () {
 
@@ -322,7 +318,7 @@ module.exports({
             };
         }
 
-        if (match(route)) {
+        if (match('/' + app.slug() + route)) {
 
             app.route = function () {
 

@@ -87,7 +87,7 @@ module.exports(new Class (function (params) {
      * @since: 2013-05
      */
     this.close = function () {
-
+        this.ui.detach();
     }
 
     /* Controla a biblioteca de ajax do app

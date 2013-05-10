@@ -26,10 +26,10 @@
                 tracker : folder + 'tracker/tracker.js',
                 ui      : folder + 'ui/ui.js'
             }, function () {
-                var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'];
+                var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'],
+                    route = location.pathname.replace(current_path[0], '') || '/';
 
                 if (current_path[0] === '/') {
-                    history.pushState({}, 'EmpreendeKit', 'ee/')
                     this.apps.open({
                         app   : 'ee',
                         route : '/',
@@ -38,9 +38,11 @@
                         }
                     });
                 } else {
+                    history.pushState({}, 'EmpreendeKit', '/');
+
                     this.apps.open({
                         app   : current_path[0].replace('/', ''),
-                        route : location.pathname.replace(current_path[0], '') || '/',
+                        route : route,
                         open  : function (app) {
                             console.log(app)
                         }
