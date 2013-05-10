@@ -27,7 +27,9 @@
                 ui      : folder + 'ui/ui.js'
             }, function () {
                 var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'];
+
                 if (current_path[0] === '/') {
+                    history.pushState({}, 'EmpreendeKit', 'ee/')
                     this.apps.open({
                         app   : 'ee',
                         route : '/',

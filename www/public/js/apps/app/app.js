@@ -7,8 +7,7 @@
 
 module.exports(new Class (function (params) {
 
-    var source,
-        that = this;
+    var that = this;
 
     if (!params) {
         throw {

@@ -5,20 +5,23 @@
  * @since: 2013-05
  */
 
-var Element = module.use('element'),
-    Css     = module.use('css'),
-    App     = module.use('app');
+var Element    = module.use('element'),
+    Css        = module.use('css'),
+    App        = module.use('app'),
+    Collection = module.use('collection');
 
 module.exports(new Class(function (context) {
 
     var element;
 
-    element = new Element('div');
+    element = new Element('div', {attributes : {'class' : 'sheet frame', 'style' : 'width:' + window.innerWidth + 'px;'}});
+
+    console.log(window.innerWidth)
 
     this.attach = element.attach;
     this.detach = element.detach;
 
-    this.element = element;
+    this.tag     = Element;
     this.css     = Css;
 
     /* Controla as tags do app
@@ -26,20 +29,6 @@ module.exports(new Class(function (context) {
      * @author: rafael erthal
      * @since: 2013-05
      */
-    this.html = {
-
-        get : function () {
-
-        },
-
-        add : function () {
-
-        },
-
-        remove : function () {
-
-        }
-
-    };
+    this.html = new Collection(element, []);
 
 }));

@@ -59,8 +59,6 @@ new Namespace({
             };
         }
 
-        history.pushState({}, 'EmpreendeKit - ' + params.app, params.app + params.route)
-
         ajax.get({
             url : 'http://' + config.services.apps.host + ':' + config.services.apps.port + '/app/' + params.app + '/source'
         }, function (response) {
@@ -73,16 +71,18 @@ new Namespace({
 
             if (newapp.type() === 'dialog') {
                 ui.dialogs.add(newapp);
-            } else if (newapp.type() === 'embedList' || newapp.type() === 'embedEntity') {
-                params.open(newapp.ui);
-            } else if (newapp.type() === 'frame') {
-
-            } else {
-                if (!app.caller()) {
+            } else if (newapp.type() !== 'embedList' && newapp.type() !== 'embedEntity') {
+                if (!newapp.caller()) {
                     ui.apps.remove();
                 }
-                ui.apps.add(newapp);
+                ui.apps.add(newapp.ui);
+                if (newapp.type() === 'frame') {
+                    ui.collapse(true);
+                } else {
+                    ui.collapse(false);
+                }
             }
+            params.open(newapp)
 
         });
 

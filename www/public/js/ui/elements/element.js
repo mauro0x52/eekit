@@ -216,7 +216,6 @@ module.exports(Element = new Class(function (tag, params) {
         },
 
         attach : function (value) {
-
             if (!value) {
                 throw {
                     source     : 'element.js',

@@ -22,6 +22,7 @@ new Namespace({
 }, function () {
 
     var element,
+        header,
         name,
         settings,
         logout,
@@ -31,8 +32,8 @@ new Namespace({
         sheets;
 
     element = new this.element('div', {attributes : {'class' : 'body'}, html : [
-        /* Header */
-        new this.element('div', {attributes : {'class' : 'header'}, html : [
+        /* Hearder */
+        header = new this.element('div', {attributes : {'class' : 'header'}, html : [
             /* Logo */
             new this.element('div', {attributes : {'class' : 'logo'}, html : [
                 new this.element('a', {attributes : {'class' : 'anchor', 'href' : '#', 'title' : 'Página principal'}, html : [
@@ -86,6 +87,14 @@ new Namespace({
 
     this.attach(document.body);
 
+    this.collapse = function (value) {
+        if (value === true || value === false) {
+            header.attribute('class').set(value ? 'hide' : 'header');
+        } else {
+            return header.attribute('class').get() !== 'hide';
+        }
+    }
+
     this.user = {
 
         name : function (value) {
@@ -111,21 +120,7 @@ new Namespace({
 
     this.menu = new this.collection(appsmenu, []);
 
-    this.apps = {
-
-        get : function () {
-
-        },
-
-        add : function () {
-
-        },
-
-        remove : function () {
-
-        }
-
-    };
+    this.apps = new this.collection(sheets, []);
 
     module.exports(this);
 });
