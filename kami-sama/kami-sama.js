@@ -8,19 +8,22 @@
 
 var config = require('./config.js'),
     io = require('socket.io').listen(config.host.port),
-    sockets = [];
+    sockets = [],
+    qs = require('querystring');
 
 function getCompany (token, secret, cb) {
-    require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
-        data: {
-            secret : secret,
-            token  : token
+    require('needle').get(
+        'http://'+config.services.auth.url+':'+config.services.auth.port+'/validate?' + qs.stringify(
+            {
+                secret : secret,
+                token  : token
+            }),
+        function (error, response, data) {
+            if (data.company) {
+                cb(data.company._id)
+            }
         }
-    }).on('success', function(res) {
-        if (res.company) {
-            cb(res.company._id)
-        }
-    });
+    );
 }
 
 io.sockets.on('connection', function (socket) {
@@ -48,7 +51,7 @@ io.sockets.on('connection', function (socket) {
         if (data.service) {
             service = data.service;
             secret  = data.secret;
-        } 
+        }
         if (data.company) {
             company = data.company;
         }

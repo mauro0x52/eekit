@@ -9,22 +9,22 @@
 module.exports = function (token, cb) {
     "use strict";
 
-    var config = require('../config.js');
+    var config = require('../config.js'),
+        qs = require('querystring');
 
-    require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
-        data: {
-            token  : token,
-            secret : config.security.secret
+    require('needle').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate?' + qs.stringify({ token  : token, secret : config.security.secret }),
+        function (error, response, data) {
+            if (error) {
+                cb(error, null);
+            } else {
+                if (data.company) {
+                    cb(null, data);
+                } else if (data.error) {
+                    cb(data.error, null);
+                } else {
+                    cb(null, null);
+                }
+            }
         }
-    }).on('success', function(data) {
-        if (data.company) {
-            cb(null, data);
-        } else if (data.error) {
-            cb(data.error, null);
-        } else {
-            cb(null, null);
-        }
-    }).on('error', function(error) {
-        cb(error, null);
-    });
+    );
 };

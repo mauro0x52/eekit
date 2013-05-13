@@ -13,6 +13,7 @@ if (config.mongodb.username && config.mongodb.password) {
 } else {
     mongoose.connect('mongodb://' + config.mongodb.url + ':' + config.mongodb.port + '/' + config.mongodb.db);
 }
+
 /*  Exportar name-space  */
 exports.Task = require('./Task.js').Task;
 exports.Category = require('./Category.js').Category;

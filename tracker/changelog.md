@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.0.7
+
+Melhorias
+- Atualizando pacotes
+- Fazendo funfar no node 0.10
+
 ## 1.0.6 (2013-05-09)
 
 Melhorias
