@@ -12,7 +12,6 @@ var config = require('./config.js'),
     qs = require('querystring');
 
 function getCompany (token, secret, cb) {
-    console.log('aew')
     require('needle').get(
         'http://'+config.services.auth.url+':'+config.services.auth.port+'/validate?' + qs.stringify(
             {
@@ -20,7 +19,6 @@ function getCompany (token, secret, cb) {
                 token  : token
             }),
         function (error, response, data) {
-            console.log(data)
             if (data.company) {
                 cb(data.company._id)
             }
@@ -51,7 +49,6 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('auth', function (data) {
         if (data.service) {
-            console.log(data)
             service = data.service;
             secret  = data.secret;
         }
@@ -62,9 +59,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('trigger', function (data) {
         for (var i in sockets) {
-            console.log(i)
             if (sockets[i] && service && secret) {
-                console.log('aesdams')
                 sockets[i].say(service, secret, data);
             }
         }
