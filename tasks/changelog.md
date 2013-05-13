@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.0.2
+
+Melhorias
+- Atualizando pacotes
+- Fazendo funfar no node 0.10
+
 ## 1.0.1 (2013-04-29)
 
 Ajustes
