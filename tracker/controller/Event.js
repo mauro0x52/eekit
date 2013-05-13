@@ -42,7 +42,7 @@ module.exports = function (params) {
                     response.send({error : error});
                 } else {
                     require('needle').get(
-                        'http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/user/'+request.params.id + require('querystring').stringify({secret : params.config.security.secret}),
+                        'http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/user/'+request.params.id + '?' + require('querystring').stringify({secret : params.config.security.secret}),
                         function (error, resp, data) {
                             if (error) {
                                 response.send({error : error});
@@ -197,7 +197,7 @@ module.exports = function (params) {
         }
 
         require('needle').get(
-            'http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/users' + require('querystring').stringify({secret : params.config.security.secret}),
+            'http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/users?' + require('querystring').stringify({secret : params.config.security.secret}),
             function (error, resp, data) {
                 if (error) {
                     response.send({error : error});
