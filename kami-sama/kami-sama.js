@@ -8,19 +8,24 @@
 
 var config = require('./config.js'),
     io = require('socket.io').listen(config.host.port),
-    sockets = [];
+    sockets = [],
+    qs = require('querystring');
 
 function getCompany (token, secret, cb) {
-    require('restler').get('http://'+config.services.auth.url+':'+config.services.auth.port+'/validate', {
-        data: {
-            secret : secret,
-            token  : token
+    console.log('aew')
+    require('needle').get(
+        'http://'+config.services.auth.url+':'+config.services.auth.port+'/validate?' + qs.stringify(
+            {
+                secret : secret,
+                token  : token
+            }),
+        function (error, response, data) {
+            console.log(data)
+            if (data.company) {
+                cb(data.company._id)
+            }
         }
-    }).on('success', function(res) {
-        if (res.company) {
-            cb(res.company._id)
-        }
-    });
+    );
 }
 
 io.sockets.on('connection', function (socket) {
@@ -46,9 +51,10 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('auth', function (data) {
         if (data.service) {
+            console.log(data)
             service = data.service;
             secret  = data.secret;
-        } 
+        }
         if (data.company) {
             company = data.company;
         }
@@ -56,7 +62,9 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('trigger', function (data) {
         for (var i in sockets) {
+            console.log(i)
             if (sockets[i] && service && secret) {
+                console.log('aesdams')
                 sockets[i].say(service, secret, data);
             }
         }
