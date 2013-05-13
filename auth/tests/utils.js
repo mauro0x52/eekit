@@ -8,15 +8,19 @@
 var config = require('../config.js');
 var needle = require('needle');
 var fs = require('fs');
+var qs = require('querystring');
 
 var api = {
     get : function(service, url, data, cb) {
         data = data ? data : {};
         needle.get(
-            'http://'+config.services[service].url+':'+config.services[service].port + url,
-            data,
+            'http://'+config.services[service].url+':'+config.services[service].port + url + '?' + qs.stringify(data),
             function (error, response, data) {
-                cb (error, data, response)
+                if (!data) {
+                    cb (error, null, response)
+                } else {
+                    cb (error, data, response)
+                }
             }
         );
     },
@@ -26,7 +30,11 @@ var api = {
             'http://'+config.services[service].url+':'+config.services[service].port + url,
             data,
             function (error, response, data) {
-                cb (error, data, response)
+                if (!data) {
+                    cb (error, null, response)
+                } else {
+                    cb (error, data, response)
+                }
             }
         );
     }
