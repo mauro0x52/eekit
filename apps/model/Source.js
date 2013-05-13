@@ -33,7 +33,8 @@ Source.findOne = function (params, cb) {
     srcModels = [];
 
     folderPath = config.appsFiles.path + '/' + appSlug + '/' + params.type;
-
+    folderPath = folderPath.replace('//', '/');
+    
     new File(folderPath).list(function (name, path) {
         if (name === 'menu.js') {
             srcMenu = {name : 'menu', path : path};
