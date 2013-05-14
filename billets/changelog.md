@@ -1,6 +1,17 @@
 Changelog
 =========
 
+## 0.5.1
+
+Melhorias
+- Atualizando pacotes
+- Fazendo funfar no node 0.10
+
+## 0.5 (2013-05-07)
+
+Features
+- Boleto da Caixa (SIGCB)
+
 ## 0.4.1 (2013-04-29)
 
 Ajustes

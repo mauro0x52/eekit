@@ -8,64 +8,72 @@
 
 var config = require('./config.js'),
     io = require('socket.io').listen(config.host.port),
-    clients = [],
-    services = [];
+    sockets = [],
+    qs = require('querystring');
 
-function emit(socket, data, service) {
-    if (socket.tokens[service]) {
-        data.token = socket.tokens[service];
-        socket.emit('trigger', data);
-    } else {
-        require('restler').post('http://'+config.services.auth.url+':'+config.services.auth.port+'/service/' + service + '/authorize', {
-            data: {
-                secret : config.security.secret,
-                token  : data.token
+function getCompany (token, secret, cb) {
+    console.log('aew')
+    require('needle').get(
+        'http://'+config.services.auth.url+':'+config.services.auth.port+'/validate?' + qs.stringify(
+            {
+                secret : secret,
+                token  : token
+            }),
+        function (error, response, data) {
+            console.log(data)
+            if (data.company) {
+                cb(data.company._id)
             }
-        }).on('success', function(res) {
-            socket.tokens[service] = res.token;
-            data.token = res.token;
-            socket.emit('trigger', data);
-        });
-    }
+        }
+    );
 }
 
 io.sockets.on('connection', function (socket) {
-    socket.user = socket.handshake.address.address;
-    socket.tokens = {};
+    sockets.push(socket);
+
+    var service,
+        secret,
+        company,
+        tokens = {};
+
+    socket.say = function (source_service, source_secret, data) {
+        if (service) {
+            /* TODO: implementar o trigger para servico */
+        }
+        if (company) {
+            getCompany(data.token, source_secret, function (event_company) {
+                if (company === event_company) {
+                    socket.emit('trigger', data);
+                }
+            });
+        }
+    };
 
     socket.on('auth', function (data) {
         if (data.service) {
-            socket.service = data.service;
-            services.push(socket)
-        } else {
-            socket.client = data.user;
-            clients.push(socket)
+            console.log(data)
+            service = data.service;
+            secret  = data.secret;
+        }
+        if (data.company) {
+            company = data.company;
         }
     });
 
     socket.on('trigger', function (data) {
-        data.source = socket.service;
-        for (var i in clients) {
-            if (clients[i]) {
-                emit(clients[i], data, 'www');
-            }
-        }
-        for (var i in services) {
-            if (services[i]) {
-                emit(services[i], data, services[i].service);
+        for (var i in sockets) {
+            console.log(i)
+            if (sockets[i] && service && secret) {
+                console.log('aesdams')
+                sockets[i].say(service, secret, data);
             }
         }
     });
 
     socket.on('disconnect', function () {
-        for (var i in clients) {
-            if (clients[i] === socket) {
-                delete clients[i];
-            }
-        }
-        for (var i in services) {
-            if (services[i] === socket) {
-                delete services[i];
+        for (var i in sockets) {
+            if (sockets[i] === socket) {
+                delete sockets[i];
             }
         }
     });

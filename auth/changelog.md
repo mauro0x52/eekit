@@ -1,6 +1,22 @@
 Changelog
 =========
 
+## 1.3.1
+
+Melhorias
+- Atualizando pacotes
+- Fazendo funfar no node 0.10
+
+## 1.3 (2013-05-08)
+
+Feature
+- Limpar tokens expirados
+
+## 1.2.2 (2013-05-08)
+
+Melhorias
+- Validate não precisa mais ficar chamando checktoken
+
 ## 1.2.1 (2013-04-29)
 
 Ajustes

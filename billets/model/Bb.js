@@ -23,12 +23,22 @@ var Billet = {
  * @param cb callback
  */
 Billet.validate = function (billet, cb) {
-    var valid = true, error = null, errors = {};
+    var valid = true, error = null, errors = {},
+        util = require('util');
 
     constructError = function (path, type) {
-        valid = false;
         return { message : 'Validator "'+type+'" failed for path '+path, name : 'ValidatorError', path : path, type : type };
     }
+
+    ValidationError = function (errors) {
+        Error.call(this);
+        Error.captureStackTrace(this, this.constructor);
+
+        this.message = 'Validation failed';
+        this.name = 'ValidationError';
+        this.errors = errors;
+    }
+    util.inherits(ValidationError, Error);
 
     /* obrigatórios */
     if (!billet.wallet || this.wallets.indexOf(billet.wallet.toString()) === -1) {
@@ -58,39 +68,35 @@ Billet.validate = function (billet, cb) {
     if (!billet.agreement || /^\d{6,8}$/.test(billet.agreement) === false) {
         valid = false;
         errors.agreement = constructError('agreement', '\\d{6,8}');
-    }
-
-    if (billet.agreement.length === 6) {
-        if (!billet.ourNumber) {
-            billet.ourNumber = this.generateOurNumber(17);
-        } else if ((/^\d{1,17}$/.test(billet.ourNumber) === false)) {
-            valid = false;
-            errors.ourNumber = constructError('ourNumber', '\\d{1,17}');
-        }
-    } else if (billet.agreement.length === 7) {
-        if (!billet.ourNumber) {
-            billet.ourNumber = this.generateOurNumber(10);
-        } else if ((/^\d{1,10}$/.test(billet.ourNumber) === false)) {
-            valid = false;
-            errors.ourNumber = constructError('ourNumber', '\\d{1,10}');
-        }
-    } else if (billet.agreement.length === 8) {
-        if (!billet.ourNumber) {
-            billet.ourNumber = this.generateOurNumber(9);
-        } else if ((/^\d{1,9}$/.test(billet.ourNumber) === false)) {
-            valid = false;
-            errors.ourNumber = constructError('ourNumber', '\\d{1,9}');
+    } else {
+        if (billet.agreement.length === 6) {
+            if (!billet.ourNumber) {
+                billet.ourNumber = this.generateOurNumber(17);
+            } else if ((/^\d{1,17}$/.test(billet.ourNumber) === false)) {
+                valid = false;
+                errors.ourNumber = constructError('ourNumber', '\\d{1,17}');
+            }
+        } else if (billet.agreement.length === 7) {
+            if (!billet.ourNumber) {
+                billet.ourNumber = this.generateOurNumber(10);
+            } else if ((/^\d{1,10}$/.test(billet.ourNumber) === false)) {
+                valid = false;
+                errors.ourNumber = constructError('ourNumber', '\\d{1,10}');
+            }
+        } else if (billet.agreement.length === 8) {
+            if (!billet.ourNumber) {
+                billet.ourNumber = this.generateOurNumber(9);
+            } else if ((/^\d{1,9}$/.test(billet.ourNumber) === false)) {
+                valid = false;
+                errors.ourNumber = constructError('ourNumber', '\\d{1,9}');
+            }
         }
     }
 
     if (valid) {
         billet.bank = this.bank;
     } else {
-        error = {
-            message : 'Validation failed',
-            name : 'ValidationError',
-            errors : errors
-        }
+        error = new ValidationError(errors);
     }
 
     cb(error);
@@ -116,7 +122,7 @@ Billet.print = function (billet, cb) {
         if (error) {
             cb(error);
         } else {
-            fValue = that.formatNumber(billet.value, 10, 0, 'value');
+            fValue = that.formatNumber(billet.value.toFixed(2), 10, 0, 'value');
             fAgency = that.formatNumber(billet.agency, 4, 0);
             fAccount = that.formatNumber(billet.account, 8, 0);
             fAgencyVD = that.modulus11(fAgency);
@@ -229,12 +235,14 @@ Billet.formatNumber = function (number, loop, insert, type) {
     if (!type) type = 'general';
     if (type === 'general') {
         number = number.replace(',', '');
+        number = number.replace('.', '');
         while (number.length < loop) {
             number = insert + number;
         }
     } else if (type === 'value') {
         /* retira as virgulas, formata o numero e preenche com zeros */
         number = number.replace(',', '');
+        number = number.replace('.', '');
         while (number.length < loop) {
             number = insert + number;
         }

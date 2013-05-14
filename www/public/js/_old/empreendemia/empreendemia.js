@@ -16,7 +16,8 @@ var empreendemia = {
      */
     load : function () {
         empreendemia.socket.emit('auth', {
-            user : sdk.config.user
+            user    : empreendemia.config.user,
+            company : empreendemia.config.company
         });
 
         empreendemia.ui.content.navigation.navigables.remove();
@@ -93,8 +94,7 @@ var empreendemia = {
             empreendemia.ui.header.menu.apps.remove();
             for (var i in apps) {
                 if (
-                    apps[i].name.toLowerCase() !== 'ee' &&
-                    apps[i].name.toLowerCase() !== 'boletos'
+                    apps[i].name.toLowerCase() !== 'ee'
                 ) {
                     empreendemia.ui.header.menu.apps.add(new empreendemia.ui.appIcon({
                         legend : apps[i].name,

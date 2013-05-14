@@ -10,7 +10,7 @@
 var Billet = {
     bank : 'Banco Itaú',
     bankId : '341',
-    wallets : ['175', '174', '178', '104', '109', '157']
+    wallets : ['175']
 }
 
 /**
@@ -23,11 +23,22 @@ var Billet = {
  * @param cb callback
  */
 Billet.validate = function (billet, cb) {
-    var valid = true, error = null, errors = {};
+    var valid = true, error = null, errors = {},
+        util = require('util');
 
     constructError = function (path, type) {
         return { message : 'Validator "'+type+'" failed for path '+path, name : 'ValidatorError', path : path, type : type };
     }
+
+    ValidationError = function (errors) {
+        Error.call(this);
+        Error.captureStackTrace(this, this.constructor);
+
+        this.message = 'Validation failed';
+        this.name = 'ValidationError';
+        this.errors = errors;
+    }
+    util.inherits(ValidationError, Error);
 
     /* obrigatórios */
     if (!billet.wallet || this.wallets.indexOf(billet.wallet.toString()) === -1) {
@@ -64,11 +75,7 @@ Billet.validate = function (billet, cb) {
         }
         billet.bank = this.bank;
     } else {
-        error = {
-            message : 'Validation failed',
-            name : 'ValidationError',
-            errors : errors
-        }
+        error = new ValidationError(errors);
     }
 
     cb(error);
@@ -93,7 +100,7 @@ Billet.print = function (billet, cb) {
         if (error) {
             cb(error);
         } else {
-            fValue = that.formatNumber(billet.value, 10, 0, 'value');
+            fValue = that.formatNumber(billet.value.toFixed(2), 10, 0, 'value');
             fOurNumber = that.formatNumber(billet.ourNumber, 8, 0);
             fAgency = that.formatNumber(billet.agency, 4, 0);
             fAccount = that.formatNumber(billet.account, 5, 0);
@@ -186,12 +193,14 @@ Billet.formatNumber = function (number, loop, insert, type) {
     if (!type) type = 'general';
     if (type === 'general') {
         number = number.replace(',', '');
+        number = number.replace('.', '');
         while (number.length < loop) {
             number = insert + number;
         }
     } else if (type === 'value') {
         /* retira as virgulas, formata o numero e preenche com zeros */
         number = number.replace(',', '');
+        number = number.replace('.', '');
         while (number.length < loop) {
             number = insert + number;
         }

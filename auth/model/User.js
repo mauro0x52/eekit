@@ -81,6 +81,26 @@ userSchema.statics.findByToken = function (tokenKey, cb) {
 };
 
 /**
+ * Encontra um usuário pelo seu token e serviço
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-05
+ *
+ * @param tokenKey  token do usuário
+ * @param service   nome do servico
+ * @param cb        callback a ser chamado
+ */
+userSchema.statics.findByTokenService = function (tokenKey, service, cb) {
+    "use strict";
+
+    if (tokenKey) {
+        User.findOne({'tokens.token' : tokenKey, 'tokens.service': service}, cb);
+    } else {
+        cb({ message : 'invalid token', name : 'InvalidTokenError'}, null);
+    }
+};
+
+/**
  * Verifica se o token é válido
  *
  * @author Rafael Erthal

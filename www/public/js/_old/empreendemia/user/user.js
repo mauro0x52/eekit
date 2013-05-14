@@ -44,7 +44,9 @@ empreendemia.user = {
             }
         }, function (data) {
             empreendemia.config.users = data.users;
+            empreendemia.config.company = data.company;
             sdk.config.users = data.users;
+            sdk.config.company = data.company;
             cb();
         });
     },

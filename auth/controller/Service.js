@@ -85,11 +85,21 @@ module.exports = function (params) {
                                         if (error) {
                                             response.send({error : error});
                                         } else {
-                                            response.send({
+                                            var responseData = {
                                                 user : {_id : user._id},
                                                 company : {_id : user.company},
                                                 token : token
-                                            });
+                                            };
+                                            if (service.permissions.username) {
+                                                responseData.user.username = user.username;
+                                            }
+                                            if (service.permissions.tokens) {
+                                                responseData.tokens = user.tokens;
+                                            }
+                                            if (service.permissions.informations) {
+                                                responseData.informations = user.informations;
+                                            }
+                                            response.send(responseData);
                                         }
                                     })
                                 }

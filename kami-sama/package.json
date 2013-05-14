@@ -2,7 +2,7 @@
   "name": "Kami-sama",
   "version": "0.0.1",
   "dependencies" : {
-    "restler": "2.0.1",
-	"socket.io": "0.9.14"
+      "needle": "0.4.8",
+      "socket.io": "0.9.14"
   }
 }

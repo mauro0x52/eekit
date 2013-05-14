@@ -80,27 +80,39 @@ module.exports = function (params) {
                                         token : token
                                     });
                                     /* manda email para o usuário */
-                                    require('restler').post('http://' + params.config.services.jaiminho.url + ':' + params.config.services.jaiminho.port + '/mail/self', {
-                                        data : {
+                                    require('needle').post(
+                                        'http://' + params.config.services.jaiminho.url + ':' + params.config.services.jaiminho.port + '/mail/self',
+                                        {
                                             token : token,
                                             service : 'auth',
                                             subject : 'Presente de boas vindas do Empreendekit',
                                             name : 'novo usuario',
                                             from : 'lucas@empreendemia.com.br',
                                             html : '<p>Olá '+userData.name + ', tudo bom?</p><p>Você se cadastrou no EmpreendeKit e acabou de dar o primeiro passo para tornar sua empresa mais produtiva.</p><p>Para te ajudar nessa jornada, estou te enviando um ebook que acabamos de lançar: "Produtividade sem Enrolação".</p><p>Para baixar gratuitamente o ebook, clique <a href="http://pages.rdstation.com.br/livro-produtividade?utm_source=Etapa2&utm_medium=Email-semana2&utm_content=Contatos-poscadastro&utm_campaign=LC02">aqui</a>.</p><p>Qualquer dúvida sobre o EmpreendeKit, pode mandar um email direto para mim.</p><p>Abraços,<br />Lucas</p><br /><br />'
+                                        },
+                                        function (error, response, data) {
+                                            if (error) {
+                                                console.log(error);
+                                            }
                                         }
-                                    }).on('success', function(data) {}).on('error', function(data) {console.log(data)});
+                                    );
                                     /* manda email para o admin */
-                                    require('restler').post('http://' + params.config.services.jaiminho.url + ':' + params.config.services.jaiminho.port + '/mail/admin', {
-                                        data : {
+                                    require('needle').post(
+                                        'http://' + params.config.services.jaiminho.url + ':' + params.config.services.jaiminho.port + '/mail/admin',
+                                        {
                                             token : token,
                                             service : 'auth',
                                             subject : 'Novo usuario cadastrado',
                                             name : 'novo usuário',
                                             to : 'lucas@empreendemia.com.br',
                                             html : '<p>Nome: '+ userData.name + '</p><p>Telefone: ' + (userData.informations && userData.informations.phone ? userData.informations.phone : '') + '</p>'
+                                        },
+                                        function (error, response, data) {
+                                            if (error) {
+                                                console.log(error);
+                                            }
                                         }
-                                    }).on('success', function(data) {}).on('error', function(data) {console.log(data)});
+                                    );
                                 }
                             });
                         }
