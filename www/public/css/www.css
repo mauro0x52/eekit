@@ -25,7 +25,10 @@ body {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background-color: #fff;
+    background-color: #332f2f;
+    background-image: url("../images/loading-global.gif");
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 body > .body {
@@ -730,7 +733,6 @@ form {
     position: relative;
     padding: 6px 0 6px 20px;
     margin: 5px 0 0 100px;
-    background-color: #332f2f;
     border-radius: 10px 0 0 0;
 }
 

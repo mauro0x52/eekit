@@ -33,7 +33,7 @@ new Namespace({
 
     element = new this.element('div', {attributes : {'class' : 'body'}, html : [
         /* Hearder */
-        header = new this.element('div', {attributes : {'class' : 'header'}, html : [
+        header = new this.element('div', {attributes : {'class' : 'header hide'}, html : [
             /* Logo */
             new this.element('div', {attributes : {'class' : 'logo'}, html : [
                 new this.element('a', {attributes : {'class' : 'anchor', 'href' : '#', 'title' : 'Página principal'}, html : [
