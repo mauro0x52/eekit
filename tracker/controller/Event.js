@@ -53,7 +53,6 @@ module.exports = function (params) {
                             var i,
                                 uses = {};
 
-
                             user = user || {};
 
                             if (data.user) {
@@ -123,7 +122,7 @@ module.exports = function (params) {
                                 user.apps.contatos.status = 'Nao Ativado';
                             }
 
-                            response.render('../view/user', {user : user});
+                            response.render('../view/user', {user : user, temp : data});
                         }
                     });
                 }
