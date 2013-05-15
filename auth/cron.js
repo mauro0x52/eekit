@@ -6,6 +6,7 @@ saveAll = function () {
     var user = usersArray.pop();
     user.save(function (error, saved) {
         if (--totalUsers) saveAll();
+        else console.log('Tokens removidos');
     });
 }
 
@@ -20,5 +21,6 @@ model.User.find({'tokens.dateExpiration' : {$lt : now}}, function (error, users)
         usersArray.push(users[i]);
         totalUsers++;
     }
+    console.log(totalUsers + ' usuarios com tokens expirados');
     saveAll();
 });
