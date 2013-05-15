@@ -41,89 +41,100 @@ module.exports = function (params) {
                 if (error) {
                     response.send({error : error});
                 } else {
-                    params.model.Event.user(request.params.id, function (error, user) {
-                        if (error) {
-                            response.send({error : error});
-                        } else {
-                            var format = function (date) {
-                                return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
-                            }
-
-                            var i,
-                                uses = {};
-
-                            user = user || {};
-
-                            if (data.user) {
-                                user.name = data.user.name;
-                                user.email = data.user.username;
-                                if (data.user.informations) {
-                                    user.phone = data.user.informations.phone;
-                                }
+                    require('needle').get(
+                        'http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/user/'+request.params.id + '?' + require('querystring').stringify({secret : params.config.security.secret}),
+                        function (error, resp, data) {
+                            if (error) {
+                                response.send({error : error});
                             } else {
-                                user.name = 'deslogado';
-                                user.email = 'deslogado';
-                                user.phone = 'deslogado';
-                            }
-                            user.apps = {
-                                'contatos' : {days : 0, status : '&nbsp;'},
-                                'tarefas'  : {days : 0, status : '&nbsp;'},
-                                'finanças' : {days : 0, status : '&nbsp;'},
-                                'ee'       : {days : 0, status : '&nbsp;'}
-                            };
+                                params.model.Event.user(request.params.id, function (error, user) {
+                                    if (error) {
+                                        response.send({error : error});
+                                    } else {
 
-                            for (i in user.events) {
-                                if (!uses[user.events[i].app]) {
-                                    uses[user.events[i].app] = {};
-                                }
-                                if (!uses[user.events[i].app][format(user.events[i].date)]) {
-                                    uses[user.events[i].app][format(user.events[i].date)] = true;
-                                }
-                            }
-                            for (i in uses) {
-                                var days = 0;
-                                for (var prop in uses[i]) {
-                                    if (user.apps[i]) {
-                                        user.apps[i].days++;
+                                        var format = function (date) {
+                                            return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                                        }
+
+                                        var i,
+                                            uses = {};
+
+
+                                        user = user || {};
+
+                                        if (data.user) {
+                                            user.name = data.user.name;
+                                            user.email = data.user.username;
+                                            if (data.user.informations) {
+                                                user.phone = data.user.informations.phone;
+                                            }
+                                        } else {
+                                            user.name = 'deslogado';
+                                            user.email = 'deslogado';
+                                            user.phone = 'deslogado';
+                                        }
+                                        user.apps = {
+                                            'contatos' : {days : 0, status : '&nbsp;'},
+                                            'tarefas'  : {days : 0, status : '&nbsp;'},
+                                            'finanças' : {days : 0, status : '&nbsp;'},
+                                            'ee'       : {days : 0, status : '&nbsp;'}
+                                        };
+
+                                        for (i in user.events) {
+                                            if (!uses[user.events[i].app]) {
+                                                uses[user.events[i].app] = {};
+                                            }
+                                            if (!uses[user.events[i].app][format(user.events[i].date)]) {
+                                                uses[user.events[i].app][format(user.events[i].date)] = true;
+                                            }
+                                        }
+                                        for (i in uses) {
+                                            var days = 0;
+                                            for (var prop in uses[i]) {
+                                                if (user.apps[i]) {
+                                                    user.apps[i].days++;
+                                                }
+                                            }
+                                        }
+
+                                        if (user.ocurrences('tarefas', ['adicionar tarefa']) >= 1) {
+                                            user.apps.tarefas.status = 'Ativado';
+                                            if (user.ocurrences('tarefas', ['adicionar tarefa'], sunday, saturday) >= 3) {
+                                                user.apps.tarefas.status = 'Engajado';
+                                            }
+                                        } else {
+                                            user.apps.tarefas.status = 'Nao Ativado';
+                                        }
+
+                                        if (user.ocurrences('finanças', ['adicionar transação']) >= 1) {
+                                            user.apps['finanças'].status = 'Ativado';
+                                            if (user.ocurrences('finanças', ['adicionar transação'], sunday, saturday) >= 5) {
+                                                user.apps['finanças'].status = 'Engajado';
+                                            }
+                                        } else {
+                                            user.apps['finanças'].status = 'Nao Ativado';
+                                        }
+
+                                        if (user.ocurrences('contatos', ['adicionar contato']) >= 1) {
+                                            user.apps.contatos.status = 'Ativado';
+                                            if (
+                                                user.ocurrences('contatos', ['adicionar contato'], sunday, saturday) >= 3 ||
+                                                user.ocurrences('contatos', ['adicionar tarefa'], sunday, saturday) >= 1 ||
+                                                user.ocurrences('contatos', ['adicionar transação'], sunday, saturday) >= 1 ||
+                                                user.ocurrences('contatos', ['editar contato'], sunday, saturday) >= 1
+                                            ) {
+                                                user.apps.contatos.status = 'Engajado';
+                                            }
+                                        } else {
+                                            user.apps.contatos.status = 'Nao Ativado';
+                                        }
+
+                                        response.render('../view/user', {user : user});
                                     }
-                                }
+                                });
                             }
-
-                            if (user.ocurrences('tarefas', ['adicionar tarefa']) >= 1) {
-                                user.apps.tarefas.status = 'Ativado';
-                                if (user.ocurrences('tarefas', ['adicionar tarefa'], sunday, saturday) >= 3) {
-                                    user.apps.tarefas.status = 'Engajado';
-                                }
-                            } else {
-                                user.apps.tarefas.status = 'Nao Ativado';
-                            }
-
-                            if (user.ocurrences('finanças', ['adicionar transação']) >= 1) {
-                                user.apps['finanças'].status = 'Ativado';
-                                if (user.ocurrences('finanças', ['adicionar transação'], sunday, saturday) >= 5) {
-                                    user.apps['finanças'].status = 'Engajado';
-                                }
-                            } else {
-                                user.apps['finanças'].status = 'Nao Ativado';
-                            }
-
-                            if (user.ocurrences('contatos', ['adicionar contato']) >= 1) {
-                                user.apps.contatos.status = 'Ativado';
-                                if (
-                                    user.ocurrences('contatos', ['adicionar contato'], sunday, saturday) >= 3 ||
-                                    user.ocurrences('contatos', ['adicionar tarefa'], sunday, saturday) >= 1 ||
-                                    user.ocurrences('contatos', ['adicionar transação'], sunday, saturday) >= 1 ||
-                                    user.ocurrences('contatos', ['editar contato'], sunday, saturday) >= 1
-                                ) {
-                                    user.apps.contatos.status = 'Engajado';
-                                }
-                            } else {
-                                user.apps.contatos.status = 'Nao Ativado';
-                            }
-
-                            response.render('../view/user', {user : user});
                         }
-                    });
+                    );
                 }
             }
         );
