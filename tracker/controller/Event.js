@@ -36,7 +36,7 @@ module.exports = function (params) {
         saturday.setDate(saturday.getDate() + 7);
 
         require('needle').get(
-            'http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/user/' + request.params.id + '?secret=' + params.config.security.secret,
+            'http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/user/' + request.params.id + '?secret=' + require('querystring').escape(params.config.security.secret),
             function (error, resp, data) {
                 if (error) {
                     response.send({error : error});
