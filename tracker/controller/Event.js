@@ -122,7 +122,7 @@ module.exports = function (params) {
                                 user.apps.contatos.status = 'Nao Ativado';
                             }
 
-                            response.render('../view/user', {user : user, temp : data});
+                            response.render('../view/user', {user : user, data : data, resp : resp, error : error});
                         }
                     });
                 }
