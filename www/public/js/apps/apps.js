@@ -6,6 +6,7 @@
  */
 
 var folder = '/js/apps/',
+    path   = module.use('path'),
     ajax   = module.use('ajax'),
     config = module.use('config'),
     ui     = module.use('ui');
@@ -53,7 +54,7 @@ new Namespace({
         ajax.get({
             url : 'http://' + config.services.apps.host + ':' + config.services.apps.port + '/app/' + params.app + '/source'
         }, function (response) {
-            history.pushState({}, 'EmpreendeKit', '/' + params.app + params.route);
+            path.redirect('/' + app + route);
 
             var newapp = new App({
                 name   : response.name,
