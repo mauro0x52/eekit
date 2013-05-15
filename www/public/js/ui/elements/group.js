@@ -1,23 +1,23 @@
 /**
- * Conjunto de grupos do eekit
+ * Ícones do eekit
  *
- * @author rafael erthal
- * @since 2013-05
+ * @author Mauro Ribeiro
+ * @since  2013-05
  */
 
 var Element    = module.use('element'),
     Css        = module.use('css'),
     Collection = module.use('collection'),
     Icon       = module.use('icon'),
-    Group      = module.use('group'),
     Action     = module.use('action'),
-    GroupSet;
+    Item       = module.use('item');
 
-module.exports(GroupSet = new Class(function (params) {
+module.exports(new Class(function (params) {
+
     var element,
         headerTitle, headerIcons, headerActions,
         footer, footerTitle, footerIcons,
-        groups;
+        items;
 
     element = new Element('div', {attributes : {'class' : 'group'}, html : [
         new Element('div', {attributes : {'class' : 'header'}, html : [
@@ -25,20 +25,45 @@ module.exports(GroupSet = new Class(function (params) {
             headerIcons = new Element('ul', {attributes : {'class' : 'icons'}}),
             headerActions = new Element('menu', {attributes : {'class' : 'actions'}})
         ]}),
-        groups = new Element('ol', {attributes : {'class' : 'groups'}}),
+        items = new Element('ol', {attributes : {'class' : 'items'}}),
         footer = new Element('div', {attributes : {'class' : 'hide'}, html : [
             footerTitle = new Element('div', {attributes : {'class' : 'name'}}),
             footerIcons = new Element('ul', {attributes : {'class' : 'icons'}})
         ]})
     ]});
 
+
+//    element.addEventListener('click', function () {
+//        var releasable = app.ui.releasable();
+//
+//        /* Marca o grupo para receber o item */
+//        if (releasable && releasable.constructor === app.ui.item && that.droppable()) {
+//            app.ui.receptive(that);
+//
+//            setTimeout(function () {
+//                var releasable = app.ui.releasable(),
+//                    receptive =  app.ui.receptive();
+//
+//                if (releasable && releasable.constructor === app.ui.item && receptive && receptive.constructor === app.ui.group) {
+//                    releasable.detach(document.body, ['aaa']);
+//
+//                    var position = receptive.items.get().length + 1;
+//                    if (receptive.droppable && receptive.droppable()) {
+//                        releasable.drop(receptive, position);
+//                    }
+//                }
+//            }, 10);
+//        }
+//    }, true);
+
+
     this.attach = element.attach;
     this.detach = element.detach;
 
     /**
-     * Controla o cabeçalho do conjunto de grupos
+     * Controla o cabeçalho do grupo
      *
-     * @author Mauro Ribeiro, Rafael Erthal
+     * @author Mauro Ribeiro
      * @since  2013-05
      */
     this.header = {
@@ -50,7 +75,7 @@ module.exports(GroupSet = new Class(function (params) {
 
                 if (value.constructor !== String) {
                     throw new Error({
-                        source    : 'groupset.js',
+                        source    : 'group.js',
                         method    : 'header.title',
                         message   : 'Title value must be a string',
                         arguments : arguments
@@ -68,9 +93,9 @@ module.exports(GroupSet = new Class(function (params) {
     };
 
     /**
-     * Controla o rodapé do conjunto de grupos
+     * Controla o rodapé do grupo
      *
-     * @author Mauro Ribeiro, Rafael Erthal
+     * @author Mauro Ribeiro
      * @since  2013-05
      */
     this.footer = {
@@ -82,7 +107,7 @@ module.exports(GroupSet = new Class(function (params) {
 
                 if (value.constructor !== String) {
                     throw new Error({
-                        source    : 'groupset.js',
+                        source    : 'group.js',
                         method    : 'footer.title',
                         message   : 'Title value must be a string',
                         arguments : arguments
@@ -101,9 +126,26 @@ module.exports(GroupSet = new Class(function (params) {
     };
 
     /**
-     * Controla a visibilidade do conjunto de grupos
+     * Define grupo como dropável ou não
+     * @TODO implementar
+     */
+//    this.droppable = function (value) {
+//        if (value === true || value === false) {
+//            if (value) {
+//                element.setAttribute('class', 'group droppable');
+//            } else {
+//                element.setAttribute('class', 'group');
+//            }
+//        } else {
+//            return element.getAttribute('class') === 'group droppable';
+//        }
+//    }
+
+
+    /**
+     * Controla a visibilidade do grupo
      *
-     * @author Mauro Ribeiro, Rafael Erthal
+     * @author Mauro Ribeiro
      * @since  2013-05
      */
     this.visibility = function (value) {
@@ -111,7 +153,7 @@ module.exports(GroupSet = new Class(function (params) {
 
             if (value.constructor !== String) {
                 throw new Error({
-                    source    : 'groupset.js',
+                    source    : 'group.js',
                     method    : 'visibility',
                     message   : 'Visibility value must be a string',
                     arguments : arguments
@@ -135,37 +177,31 @@ module.exports(GroupSet = new Class(function (params) {
     }
 
     /**
-     * Controla os grupos dentro do conjunto de grupos
+     * Controla os items de um grupo
      *
-     * @author Mauro Ribeiro, Rafael Erthal
+     * @author Mauro Ribeiro
      * @since  2013-05
      */
-    this.groups = new Collection(groups, [GroupSet, Group]);
+    this.items = new Collection(items, [Item]);
 
     /*
      * Valores iniciais
      */
     if (params) {
-        this.groups.add(params.groups);
+        this.items.add(params.items);
         if (params.header) {
             this.header.title(params.header.title);
-            if (params.header.icons) {
-                this.header.icons.add(params.header.icons);
-            }
-            if (params.header.actions) {
-                this.header.actions.add(params.header.actions);
-            }
+            this.header.icons.add(params.header.icons);
+            this.header.actions.add(params.header.actions);
         }
         if (params.footer) {
             this.footer.title(params.footer.title);
-            if (params.footer.icons) {
-                this.footer.icons.add(params.footer.icons);
-            }
+            this.footer.icons.add(params.footer.icons);
 //            if (params.footer.helper) {
 //                this.footer.helper.description(params.footer.helper.description);
 //                this.footer.helper.example(params.footer.helper.example);
 //            }
         }
+//        this.visibility(params.visibility);
     }
-
 }));

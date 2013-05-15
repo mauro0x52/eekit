@@ -12,7 +12,7 @@ var Element    = module.use('element'),
 module.exports(new Class(function (params) {
     var element,
         anchor, image, legend,
-        clickCb,
+        click_cb,
         that = this;
 
     element = new Element('li', {attributes : {'class' : 'action'}, html : [
@@ -140,9 +140,9 @@ module.exports(new Class(function (params) {
                 });
             }
 
-            clickCb = value;
-        } else if (clickCb) {
-            clickCb.apply(that);
+            click_cb = value;
+        } else if (click_cb) {
+            click_cb.apply(that);
         }
     };
 
@@ -158,8 +158,8 @@ module.exports(new Class(function (params) {
             if (value.constructor !== String) {
                 throw new Error({
                     source    : 'action.js',
-                    method    : 'image',
-                    message   : 'Image value must be a string',
+                    method    : 'href',
+                    message   : 'Href value must be a string',
                     arguments : arguments
                 });
             }

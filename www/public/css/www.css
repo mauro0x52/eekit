@@ -734,6 +734,7 @@ form {
     padding: 6px 0 6px 20px;
     margin: 5px 0 0 100px;
     border-radius: 10px 0 0 0;
+    background-color: #332f2f;
 }
 
 .sheets .body .groups > .group .group > .header > .name {

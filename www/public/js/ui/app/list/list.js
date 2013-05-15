@@ -10,6 +10,8 @@ var Element    = module.use('element'),
     App        = module.use('app'),
     Collection = module.use('collection'),
     GroupSet   = module.use('groupset'),
+    Group      = module.use('group'),
+    Item       = module.use('item'),
     Icon       = module.use('icon'),
     Action     = module.use('action');
 
@@ -46,6 +48,8 @@ module.exports(new Class(function (context) {
 
     this.body = undefined;
     this.groupset = GroupSet;
+    this.group = Group;
+    this.item = Item;
     this.icon = Icon;
     this.action = Action;
 

@@ -21,6 +21,8 @@ new Namespace({
     frame       : folder + 'app/frame/frame.js',
 
     groupset    : folder + 'elements/groupset.js',
+    group       : folder + 'elements/group.js',
+    item        : folder + 'elements/item.js',
     icon        : folder + 'elements/icon.js',
     action      : folder + 'elements/action.js'
 }, function () {

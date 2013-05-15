@@ -34,7 +34,9 @@ module.exports(Element = new Class(function (element, tags) {
      * @since: 2013-05
      */
     this.add = function (elements) {
-        element.html.attach(elements);
+        if (elements) {
+            element.html.attach(elements);
+        }
     };
 
     this.get = function () {
