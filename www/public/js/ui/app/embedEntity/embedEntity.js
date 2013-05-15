@@ -35,12 +35,12 @@ module.exports(new Class(function (context) {
         if (value) {
 
             if (value.constructor != Function) {
-                throw {
+                throw new Error({
                     source     : 'embedEntity.js',
                     method     : 'click',
                     message    : 'Click callback must be a function',
                     arguments : arguments
-                };
+                });
             }
 
             subtitle.event('click').bind(function (evt) {
@@ -62,12 +62,12 @@ module.exports(new Class(function (context) {
         if (value) {
 
             if (value.constructor != String) {
-                throw {
+                throw new Error({
                     source     : 'embedEntity.js',
                     method     : 'subtitle',
                     message    : 'Subtitle value must be a string',
                     arguments : arguments
-                };
+                });
             }
 
             subtitle.html.set(value);
@@ -87,12 +87,12 @@ module.exports(new Class(function (context) {
         if (value) {
 
             if (value.constructor != String) {
-                throw {
+                throw new Error({
                     source     : 'embedEntity.js',
                     method     : 'description',
                     message    : 'Description value must be a string',
                     arguments : arguments
-                };
+                });
             }
 
             description.html.set(value);

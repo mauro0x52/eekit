@@ -59,12 +59,12 @@ module.exports(new Class(function (context) {
         if (value) {
 
             if (value.constructor != String) {
-                throw {
+                throw new Error({
                     source     : 'dialog.js',
                     method     : 'title',
                     message    : 'Title value must be a string',
                     arguments : arguments
-                };
+                });
             }
 
             title.html.set(value);
@@ -84,12 +84,12 @@ module.exports(new Class(function (context) {
         if (value) {
 
             if (value.constructor != String) {
-                throw {
+                throw new Error({
                     source     : 'dialog.js',
                     method     : 'description',
                     message    : 'Description value must be a string',
                     arguments : arguments
-                };
+                });
             }
 
             description.html.set(value);
@@ -109,12 +109,12 @@ module.exports(new Class(function (context) {
         if (value) {
 
             if (value.constructor != String) {
-                throw {
+                throw new Error({
                     source     : 'dialog.js',
                     method     : 'error',
                     message    : 'Error value must be a string',
                     arguments : arguments
-                };
+                });
             }
 
             flash.html.set(value);
@@ -136,12 +136,12 @@ module.exports(new Class(function (context) {
             if (value) {
 
                 if (value.constructor != String) {
-                    throw {
+                    throw new Error({
                         source     : 'dialog.js',
                         method     : 'form.action',
                         message    : 'Action value must be a string',
                         arguments : arguments
-                    };
+                    });
                 }
 
                 action.html.set(value);
@@ -156,12 +156,12 @@ module.exports(new Class(function (context) {
             if (value) {
 
                 if (value.constructor != Function) {
-                    throw {
+                    throw new Error({
                         source     : 'dialog.js',
                         method     : 'form.submit',
                         message    : 'Submit callback must be a function',
                         arguments : arguments
-                    };
+                    });
                 }
 
                 form.event('submit').bind(function (evt) {

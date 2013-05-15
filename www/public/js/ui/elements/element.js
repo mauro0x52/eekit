@@ -14,12 +14,12 @@ module.exports(Element = new Class(function (tag, params) {
         css;
 
     if (!tag) {
-        throw {
+        throw new Error({
             source     : 'element.js',
             method     : 'constructor',
             message    : 'Element tag must be especified',
             arguments : arguments
-        };
+        });
     }
 
     if (tag.constructor === String) {
@@ -54,12 +54,12 @@ module.exports(Element = new Class(function (tag, params) {
     this.attach = function (parent) {
 
         if (!parent || !parent.appendChild) {
-            throw {
+            throw new Error({
                 source     : 'element.js',
                 method     : 'attach',
                 message    : 'Parent element must exist',
                 arguments : arguments
-            };
+            });
         }
 
         parent.appendChild(element);
@@ -74,12 +74,12 @@ module.exports(Element = new Class(function (tag, params) {
     this.detach = function () {
 
         if (!element.parentNode || !element.parentNode.removeChild) {
-            throw {
+            throw new Error({
                 source     : 'element.js',
                 method     : 'detach',
                 message    : 'Parent element must exist',
                 arguments : arguments
-            };
+            });
         }
 
         element.parentNode.removeChild(element);
@@ -94,21 +94,21 @@ module.exports(Element = new Class(function (tag, params) {
     this.attribute = function (name) {
 
         if (!name) {
-            throw {
+            throw new Error({
                 source     : 'element.js',
                 method     : 'attribute',
                 message    : 'Attribute name must be especified',
                 arguments : arguments
-            };
+            });
         }
 
         if (name === 'id') {
-            throw {
+            throw new Error({
                 source     : 'element.js',
                 method     : 'attribute',
                 message    : 'You cannot control the object id',
                 arguments : arguments
-            };
+            });
         }
 
         this.get = function () {
@@ -124,12 +124,12 @@ module.exports(Element = new Class(function (tag, params) {
         this.set = function (value) {
 
             if (!value) {
-                throw {
+                throw new Error({
                     source     : 'element.js',
                     method     : 'attribute.set',
                     message    : 'Attribute value must be especified',
                     arguments : arguments
-                };
+                });
             }
 
             element.setAttribute(name, value);
@@ -148,23 +148,23 @@ module.exports(Element = new Class(function (tag, params) {
     this.event = function (name) {
 
         if (!name) {
-            throw {
+            throw new Error({
                 source     : 'element.js',
                 method     : 'event',
                 message    : 'Event name must be especified',
                 arguments : arguments
-            };
+            });
         }
 
         this.bind = function (cb, capture) {
 
             if (!cb || cb.constructor != Function) {
-                throw {
+                throw new Error({
                     source     : 'element.js',
                     method     : 'event.bind',
                     message    : 'Event callback must be a function',
                     arguments : arguments
-                };
+                });
             }
 
             element.addEventListener(name, cb, capture);
@@ -217,12 +217,12 @@ module.exports(Element = new Class(function (tag, params) {
 
         attach : function (value) {
             if (!value) {
-                throw {
+                throw new Error({
                     source     : 'element.js',
                     method     : 'html.attach',
                     message    : 'Attach element must exist',
                     arguments : arguments
-                };
+                });
             } else if (value.constructor === Array) {
                 for (var i in value) {
                     if (value.hasOwnProperty(i)) {
@@ -234,12 +234,12 @@ module.exports(Element = new Class(function (tag, params) {
             } else if (value.attach) {
                 value.attach(element);
             } else {
-                throw {
+                throw new Error({
                     source     : 'element.js',
                     method     : 'html.attach',
                     message    : 'Attach element must be valid',
                     arguments : arguments
-                };
+                });
             }
 
         },
@@ -257,12 +257,12 @@ module.exports(Element = new Class(function (tag, params) {
             } else if (value.detach) {
                 value.detach();
             } else {
-                throw {
+                throw new Error({
                     source     : 'element.js',
                     method     : 'html.detach',
                     message    : 'Detach element must be valid',
                     arguments : arguments
-                };
+                });
             }
 
         }

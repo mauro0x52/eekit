@@ -38,12 +38,12 @@ module.exports(new Class(function (context) {
         if (value) {
 
             if (value.constructor != String) {
-                throw {
+                throw new Error({
                     source     : 'entity.js',
                     method     : 'subtitle',
                     message    : 'Subtitle value must be a string',
                     arguments : arguments
-                };
+                });
             }
 
             subtitle.html.set(value);
@@ -63,12 +63,12 @@ module.exports(new Class(function (context) {
         if (value) {
 
             if (value.constructor != String) {
-                throw {
+                throw new Error({
                     source     : 'entity.js',
                     method     : 'description',
                     message    : 'Description value must be a string',
                     arguments : arguments
-                };
+                });
             }
 
             description.html.set(value);
