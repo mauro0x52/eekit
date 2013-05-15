@@ -18,30 +18,21 @@ module.exports({
     get : function (path, cb, app) {
 
         if (!path) {
-            throw {
+            throw new Error({
                 source     : 'ajax.js',
                 method     : 'get',
                 message    : 'Path must be especified',
                 arguments : arguments
-            };
+            });
         }
 
         if (!path.url || path.url.constructor !== String) {
-            throw {
+            throw new Error({
                 source     : 'ajax.js',
                 method     : 'get',
                 message    : 'Url must be a string',
                 arguments : arguments
-            };
-        }
-
-        if (!cb || cb.constructor !== Function) {
-            throw {
-                source     : 'ajax.js',
-                method     : 'get',
-                message    : 'Callback must be a function',
-                arguments : arguments
-            };
+            });
         }
 
         var host = path.url.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[2];
@@ -53,7 +44,9 @@ module.exports({
             ajax.get(path.url, {
                 data : path.data,
                 onsuccess : function (data) {
-                    cb(eval('(' + data + ')'));
+                    if (cb) {
+                        cb(eval('(' + data + ')'));
+                    }
                 }
             });
         });
@@ -68,30 +61,21 @@ module.exports({
     post : function (path, cb, app) {
 
         if (!path) {
-            throw {
+            throw new Error({
                 source     : 'ajax.js',
                 method     : 'post',
                 message    : 'Path must be especified',
                 arguments : arguments
-            };
+            });
         }
 
         if (!path.url || path.url.constructor !== String) {
-            throw {
+            throw new Error({
                 source     : 'ajax.js',
                 method     : 'post',
                 message    : 'Url must be a string',
                 arguments : arguments
-            };
-        }
-
-        if (!cb || cb.constructor !== Function) {
-            throw {
-                source     : 'ajax.js',
-                method     : 'post',
-                message    : 'Callback must be a function',
-                arguments : arguments
-            };
+            });
         }
 
         var host = path.url.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[2];
@@ -103,7 +87,9 @@ module.exports({
             ajax.post(path.url, {
                 data : path.data,
                 onsuccess : function (data) {
-                    cb(eval('(' + data + ')'));
+                    if (cb) {
+                        cb(eval('(' + data + ')'));
+                    }
                 }
             });
         });
@@ -118,30 +104,21 @@ module.exports({
     put : function (path, cb, app) {
 
         if (!path) {
-            throw {
+            throw new Error({
                 source     : 'ajax.js',
                 method     : 'put',
                 message    : 'Path must be especified',
                 arguments : arguments
-            };
+            });
         }
 
         if (!path.url || path.url.constructor !== String) {
-            throw {
+            throw new Error({
                 source     : 'ajax.js',
                 method     : 'put',
                 message    : 'Url must be a string',
                 arguments : arguments
-            };
-        }
-
-        if (!cb || cb.constructor !== Function) {
-            throw {
-                source     : 'ajax.js',
-                method     : 'put',
-                message    : 'Callback must be a function',
-                arguments : arguments
-            };
+            });
         }
 
         var host = path.url.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[2];
@@ -153,7 +130,9 @@ module.exports({
             ajax.put(path.url, {
                 data : path.data,
                 onsuccess : function (data) {
-                    cb(eval('(' + data + ')'));
+                    if (cb) {
+                        cb(eval('(' + data + ')'));
+                    }
                 }
             });
         });
@@ -168,30 +147,21 @@ module.exports({
     del : function (path, cb, app) {
 
         if (!path) {
-            throw {
+            throw new Error({
                 source     : 'ajax.js',
                 method     : 'del',
                 message    : 'Path must be especified',
                 arguments : arguments
-            };
+            });
         }
 
         if (!path.url || path.url.constructor !== String) {
-            throw {
+            throw new Error({
                 source     : 'ajax.js',
                 method     : 'del',
                 message    : 'Url must be a string',
                 arguments : arguments
-            };
-        }
-
-        if (!cb || cb.constructor !== Function) {
-            throw {
-                source     : 'ajax.js',
-                method     : 'del',
-                message    : 'Callback must be a function',
-                arguments : arguments
-            };
+            });
         }
 
         var host = path.url.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[2];
@@ -203,7 +173,9 @@ module.exports({
             ajax.del(path.url, {
                 data : path.data,
                 onsuccess : function (data) {
-                    cb(eval('(' + data + ')'));
+                    if (cb) {
+                        cb(eval('(' + data + ')'));
+                    }
                 }
             });
         });

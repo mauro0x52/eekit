@@ -105,12 +105,12 @@ module.exports(new Class(function (context) {
         if (value) {
 
             if (value.constructor != String) {
-                throw {
+                throw new Error({
                     source     : 'app.js',
                     method     : 'title',
                     message    : 'Title value must be a string',
                     arguments : arguments
-                };
+                });
             }
 
             title.html.set(value);

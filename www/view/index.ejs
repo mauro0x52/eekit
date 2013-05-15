@@ -16,14 +16,16 @@
             var folder = '/js/',
                 auth = '<%=config.services.auth.url%>:<%=config.services.auth.port%>';
 
+            var Error = new Class(function (params) {
+                console.log(params);
+            })
+
             var Empreendekit = new Namespace({
                 config  : folder + 'configuration/configuration.js',
                 ajax    : folder + 'ajax/ajax.js',
                 apps    : folder + 'apps/apps.js',
                 auth    : folder + 'auth/auth.js',
-                events  : folder + 'events/events.js',
-                routes  : folder + 'routes/routes.js',
-                tracker : folder + 'tracker/tracker.js',
+                path    : folder + 'path/path.js',
                 ui      : folder + 'ui/ui.js'
             }, function () {
                 var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'],

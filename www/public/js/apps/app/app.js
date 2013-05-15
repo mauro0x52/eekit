@@ -7,42 +7,46 @@
 
 module.exports(new Class (function (params) {
 
-    var that = this;
+    var that       = this,
+        app        = this,
+        route      = null,
+        type       = null,
+        parameters = null;
 
     if (!params) {
-        throw {
+        throw new Error({
             source    : 'app.js',
             method    : 'constructor',
             message   : 'Params must be a object',
             arguments : arguments
-        };
+        });
     }
 
     if (!params.name || params.name.constructor !== String) {
-        throw {
+        throw new Error({
             source    : 'app.js',
             method    : 'constructor',
             message   : 'Name must be a string',
             arguments : arguments
-        };
+        });
     }
 
     if (!params.slug || params.slug.constructor !== String) {
-        throw {
+        throw new Error({
             source    : 'app.js',
             method    : 'constructor',
             message   : 'Slug must be a string',
             arguments : arguments
-        };
+        });
     }
 
     if (!params.source || params.source.constructor !== String) {
-        throw {
+        throw new Error({
             source    : 'app.js',
             method    : 'constructor',
             message   : 'Source must be a string',
             arguments : arguments
-        };
+        });
     }
 
     this.name = function () {
@@ -65,19 +69,19 @@ module.exports(new Class (function (params) {
 
     this.route = function () {
 
-        return null;
+        return route;
 
     };
 
     this.type = function () {
 
-        return null;
+        return type;
 
     };
 
     this.params = function () {
 
-        return null
+        return parameters;
 
     };
 
@@ -88,6 +92,7 @@ module.exports(new Class (function (params) {
      */
     this.close = function () {
         this.ui.detach();
+        delete this;
     }
 
     /* Controla a biblioteca de ajax do app
@@ -145,15 +150,42 @@ module.exports(new Class (function (params) {
      */
     this.events = {
 
-        bind : function (event, callback) {
+        bind : function (label, callback) {
 
-            Empreendekit.events.bind(event, callback, that);
+            if (!label || label.constructor !== String) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'bind',
+                    message   : 'Label must be a string',
+                    arguments : arguments
+                });
+            }
+
+            if (!callback || callback.constructor !== Function) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'bind',
+                    message   : 'Callback must be a function',
+                    arguments : arguments
+                });
+            }
+
+            that.addEventListener(label, callback, true);
 
         },
 
-        trigger : function (event, data) {
+        trigger : function (label, data) {
 
-            Empreendekit.events.trigger(event, data, that);
+            if (!label || label.constructor !== String) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'trigger',
+                    message   : 'Label must be a string',
+                    arguments : arguments
+                });
+            }
+
+            that.dispatchEvent(new CustomEvent(label, data));
 
         }
 
@@ -166,39 +198,171 @@ module.exports(new Class (function (params) {
      */
     this.routes = {
 
-        list : function (route, callback) {
+        list : function (path, callback) {
 
-            Empreendekit.routes.list(route, callback, that);
+            if (!path || path.constructor !== String) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'list',
+                    message   : 'Path must be a string',
+                    arguments : arguments
+                });
+            }
 
-        },
+            if (!callback || callback.constructor !== Function) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'list',
+                    message   : 'Callback must be a function',
+                    arguments : arguments
+                });
+            }
 
-        entity : function (route, callback) {
-
-            Empreendekit.routes.entity(route, callback, that);
-
-        },
-
-        embedList : function (route, callback) {
-
-            Empreendekit.routes.embedList(route, callback, that);
-
-        },
-
-        embedEntity : function (route, callback) {
-
-            Empreendekit.routes.embedEntity(route, callback, that);
-
-        },
-
-        dialog : function (route, callback) {
-
-            Empreendekit.routes.dialog(route, callback, that);
+            if (Empreendekit.path.match('/' + that.slug() + path)) {
+                route = callback;
+                type = 'list';
+                parameters = Empreendekit.path.params('/' + that.slug() + path);
+            }
 
         },
 
-        frame : function (route, callback) {
+        entity : function (path, callback) {
 
-            Empreendekit.routes.frame(route, callback, that);
+            if (!path || path.constructor !== String) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'entity',
+                    message   : 'Route must be a string',
+                    arguments : arguments
+                });
+            }
+
+            if (!callback || callback.constructor !== Function) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'entity',
+                    message   : 'Callback must be a function',
+                    arguments : arguments
+                });
+            }
+
+            if (Empreendekit.path.match('/' + that.slug() + path)) {
+                route = callback;
+                type = 'entity';
+                parameters = Empreendekit.path.params('/' + that.slug() + path);
+            }
+
+        },
+
+        embedList : function (path, callback) {
+
+            if (!path || path.constructor !== String) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'embedList',
+                    message   : 'Route must be a string',
+                    arguments : arguments
+                });
+            }
+
+            if (!callback || callback.constructor !== Function) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'embedList',
+                    message   : 'Callback must be a function',
+                    arguments : arguments
+                });
+            }
+
+            if (Empreendekit.path.match('/' + that.slug() + path)) {
+                route = callback;
+                type = 'embedList';
+                parameters = Empreendekit.path.params('/' + that.slug() + path);
+            }
+
+        },
+
+        embedEntity : function (path, callback) {
+
+            if (!path || path.constructor !== String) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'embedEntity',
+                    message   : 'Route must be a string',
+                    arguments : arguments
+                });
+            }
+
+            if (!callback || callback.constructor !== Function) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'embedEntity',
+                    message   : 'Callback must be a function',
+                    arguments : arguments
+                });
+            }
+
+            if (Empreendekit.path.match('/' + that.slug() + path)) {
+                route = callback;
+                type = 'embedEntity';
+                parameters = Empreendekit.path.params('/' + that.slug() + path);
+            }
+
+        },
+
+        dialog : function (path, callback) {
+
+            if (!path || path.constructor !== String) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'dialog',
+                    message   : 'Route must be a string',
+                    arguments : arguments
+                });
+            }
+
+            if (!callback || callback.constructor !== Function) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'dialog',
+                    message   : 'Callback must be a function',
+                    arguments : arguments
+                });
+            }
+
+            if (Empreendekit.path.match('/' + that.slug() + path)) {
+                route = callback;
+                type = 'dialog';
+                parameters = Empreendekit.path.params('/' + that.slug() + path);
+            }
+
+        },
+
+        frame : function (path, callback) {
+
+            if (!path || path.constructor !== String) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'frame',
+                    message   : 'Route must be a string',
+                    arguments : arguments
+                });
+            }
+
+            if (!callback || callback.constructor !== Function) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'frame',
+                    message   : 'Callback must be a function',
+                    arguments : arguments
+                });
+            }
+
+            if (Empreendekit.path.match('/' + that.slug() + path)) {
+                route = callback;
+                type = 'frame';
+                parameters = Empreendekit.path.params('/' + that.slug() + path);
+            }
 
         }
 
@@ -213,7 +377,40 @@ module.exports(new Class (function (params) {
 
         event : function (label) {
 
-            Empreendekit.tracker.event(label, that);
+            var query = {/* PEGAR UTMS NAS ROTAS */},
+                data = {
+                    app : app.name(),
+                    label : label,
+                    utm_source : query.utm_source,
+                    utm_medium : query.utm_medium,
+                    utm_content : query.utm_content,
+                    utm_campaign : query.utm_campaign
+                };
+
+            if (!label || label.constructor !== String) {
+                throw new Error({
+                    source     : 'tracker.js',
+                    method     : 'event',
+                    message    : 'Label must be a string',
+                    arguments : arguments
+                });
+            }
+
+            if (
+                that.caller() &&
+                (
+                    that.type() === 'embbed list'   ||
+                    that.type() === 'embbed entity' ||
+                    that.type() === 'dialog'
+                )
+            ) {
+                data.source = that.caller().name();
+            }
+
+            Empreendekit.ajax.post({
+                url : 'http://' + Empreendekit.config.services.tracker.host + ':' + Empreendekit.config.services.tracker.port + '/event',
+                data : data
+            });
 
         }
 
@@ -225,12 +422,12 @@ module.exports(new Class (function (params) {
 
     if (!this.route()) {
 
-        throw {
+        throw new Error({
             source    : 'app.js',
             method    : 'constructor',
             message   : 'Route not found',
             arguments : arguments
-        };
+        });
 
     }
 

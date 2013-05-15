@@ -11,21 +11,21 @@ var instances = 0,
 module.exports(Element = new Class(function (element, tags) {
 
     if (!element) {
-        throw {
-            source     : 'collection.js',
-            method     : 'constructor',
-            message    : 'Element must be defined',
+        throw new Error({
+            source    : 'collection.js',
+            method    : 'constructor',
+            messag    : 'Element must be defined',
             arguments : arguments
-        };
+        });
     }
 
     if (!tags || tags.constructor != Array) {
-        throw {
-            source     : 'collection.js',
-            method     : 'constructor',
-            message    : 'Tags must be a array',
+        throw new Error({
+            source    : 'collection.js',
+            method    : 'constructor',
+            message   : 'Tags must be a array',
             arguments : arguments
-        };
+        });
     }
 
     /* Adiciona coleção de elementos no objeto

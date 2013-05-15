@@ -102,12 +102,12 @@ new Namespace({
             if (value) {
 
                 if (value.constructor != String) {
-                    throw {
+                    throw new Error({
                         source     : 'ui.js',
                         method     : 'user.name',
                         message    : 'User name must be a string',
                         arguments : arguments
-                    };
+                    });
                 }
                 name.html.set(value);
             } else {

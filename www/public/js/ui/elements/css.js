@@ -28,12 +28,12 @@ module.exports(Css = new Class(function (properties) {
         var position;
 
         if (!name) {
-            throw {
+            throw new Error({
                 source     : 'css.js',
                 method     : 'selector',
                 message    : 'Selector name must be especified',
                 arguments : arguments
-            };
+            });
         }
 
         for (var i in selectors) {
@@ -68,12 +68,12 @@ module.exports(Css = new Class(function (properties) {
     this.property = function (name) {
 
         if (!name) {
-            throw {
+            throw new Error({
                 source     : 'css.js',
                 method     : 'property',
                 message    : 'Property name must be especified',
                 arguments : arguments
-            };
+            });
         }
 
         this.get = function () {
@@ -83,12 +83,12 @@ module.exports(Css = new Class(function (properties) {
         this.set = function (value) {
 
             if (!value) {
-                throw {
+                throw new Error({
                     source     : 'css.js',
                     method     : 'property',
                     message    : 'Property name must be especified',
                     arguments : arguments
-                };
+                });
             }
 
             properties[name] = value;
@@ -107,12 +107,12 @@ module.exports(Css = new Class(function (properties) {
     this.apply = function (value) {
 
         if (!value) {
-            throw {
+            throw new Error({
                 source     : 'css.js',
                 method     : 'apply',
                 message    : 'Value must be a valid element',
                 arguments : arguments
-            };
+            });
         }
 
         value.className = name;

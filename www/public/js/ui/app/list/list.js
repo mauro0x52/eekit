@@ -53,12 +53,12 @@ module.exports(new Class(function (context) {
             if (value) {
 
                 if (value.constructor != String) {
-                    throw {
+                    throw new Error({
                         source     : 'list.js',
                         method     : 'filter.action',
                         message    : 'Action value must be a string',
                         arguments : arguments
-                    };
+                    });
                 }
 
                 action.html.set(value);
@@ -73,12 +73,12 @@ module.exports(new Class(function (context) {
             if (value) {
 
                 if (value.constructor != Function) {
-                    throw {
+                    throw new Error({
                         source     : 'list.js',
                         method     : 'filter.submit',
                         message    : 'Submit callback must be a function',
                         arguments : arguments
-                    };
+                    });
                 }
 
                 form.event('submit').bind(function (evt) {

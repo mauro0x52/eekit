@@ -24,30 +24,30 @@ new Namespace({
     this.open = function (params, app) {
 
         if (!params) {
-            throw {
+            throw new Error({
                 source     : 'apps.js',
                 method     : 'open',
                 message    : 'Params must be especified',
                 arguments  : arguments
-            };
+            });
         }
 
         if (!params.app || params.app.constructor !== String) {
-            throw {
+            throw new Error({
                 source     : 'apps.js',
                 method     : 'open',
                 message    : 'App must be a string',
                 arguments  : arguments
-            };
+            });
         }
 
         if (!params.route || params.route.constructor !== String) {
-            throw {
+            throw new Error({
                 source     : 'apps.js',
                 method     : 'open',
                 message    : 'Route must be a string',
                 arguments  : arguments
-            };
+            });
         }
 
         ajax.get({
