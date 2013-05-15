@@ -15,8 +15,8 @@ module.exports(new Class(function (context) {
         close,
         body,
         load;
-
-    element = new Element('div', {attributes : {'class' : 'sheet'}, html : [
+        
+    element = new Element('div', {attributes : {'class' : 'sheet '+context.type()}, html : [
         /* Header */
         new Element('div', {attributes : {'class' : 'header'}, html : [
             title = new Element('h4', {attributes : {'class' : 'title'}}),

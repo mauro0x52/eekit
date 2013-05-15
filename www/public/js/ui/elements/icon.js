@@ -10,96 +10,76 @@ var Element    = module.use('element'),
     Collection = module.use('collection');
 
 module.exports(new Class(function (params) {
+    var element, image, legend;
 
-        var parent,
-            element = document.createElement('li'),
-            image = document.createElement('div'),
-            legend = document.createElement('div');
+    element = new Element('li', {attributes : {'class' : 'icon'}, html : [
+        image = new Element('div', {attributes : {'class' : 'hide'}}),
+        legend = new Element('div', {attributes : {'class' : 'hide'}})
+    ]});
 
-        /* CSS */
-        element.setAttribute('class', 'icon');
-        image.setAttribute('class', 'hide');
-        legend.setAttribute('class', 'hide');
+    this.attach = element.attach;
+    this.detach = element.detach;
 
-        /* Hierarquia */
-        element.appendChild(image);
-        element.appendChild(legend);
+    /**
+     * Controla o nome da legenda do ícone
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-05
+     */
+    this.legend = function (value) {
+        if (value === '') {
+            legend.attribute('class').set('hide');
+        }
+        if (value) {
 
-    var element;
-
-    element = new Element('li', { html : [
-        new Element('div')
-    ]})
-}));
-
-/** Icon
- *
- * @autor : Rafael Erthal
- * @since : 2012-10
- *
- * @description : implementa icone
- */
-
-sdk.modules.ui.icon = function (app) {
-    return function (params) {
-        var parent,
-            element = document.createElement('li'),
-            image = document.createElement('div'),
-            legend = document.createElement('div');
-
-        /* CSS */
-        element.setAttribute('class', 'icon');
-        image.setAttribute('class', 'hide');
-        legend.setAttribute('class', 'hide');
-
-        /* Hierarquia */
-        element.appendChild(image);
-        element.appendChild(legend);
-
-        /* Métodos protegidos */
-        this.attach = function (HTMLobject, collection) {
-            if (HTMLobject && collection && HTMLobject.appendChild) {
-                parent = collection
-                HTMLobject.appendChild(element);
+            if (value.constructor !== String) {
+                throw new Error({
+                    source    : 'icon.js',
+                    method    : 'legend',
+                    message   : 'Legend value must be a string',
+                    arguments : arguments
+                });
             }
-        };
-        this.detach = function (HTMLobject, collection) {
-            if (HTMLobject && collection && HTMLobject.removeChild) {
-                HTMLobject.removeChild(element);
-            } else {
-                parent.remove(this);
-            }
-        };
-        /* Métodos públicos */
-        this.legend = function (value) {
-            if (value === '') {
-                legend.setAttribute('class', 'hide');
-            }
-            if (value) {
-                legend.setAttribute('class', 'legend');
-                legend.innerHTML = value;
-            } else {
-                return legend.innerHTML
-            }
-        };
-        this.image = function (value) {
-            if (value === '') {
-                image.setAttribute('class', 'hide');
-            }
-            if (value) {
-                image.setAttribute('class', 'image icon ' + value);
-            } else {
-                return image.getAttribute('class').replace('image icon ', '');
-            }
-        };
-        this.visibility = function (value) {
-            //@TODO implementar método
-        };
-        /* Setando valores iniciais */
-        if (params) {
-            this.legend(params.legend);
-            this.image(params.image);
-            this.visibility(params.visibility);
+
+            legend.attribute('class').set('legend');
+            legend.html.set(value);
+        } else {
+            return legend.attribute('class').get();
         }
     };
-}
+
+    /**
+     * Controla a imagem de um ícone
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-05
+     */
+    this.image = function (value) {
+        if (value === '') {
+            image.attribute('class').set('hide');
+        }
+        if (value) {
+
+            if (value.constructor !== String) {
+                throw new Error({
+                    source    : 'icon.js',
+                    method    : 'image',
+                    message   : 'Image value must be a string',
+                    arguments : arguments
+                });
+            }
+
+            image.attribute('class').set('image icon ' + value);
+        } else {
+            return image.attribute('class').get().replace('image icon ', '');
+        }
+    };
+
+    /*
+     * Valores iniciais
+     */
+    if (params) {
+        this.legend(params.legend);
+        this.image(params.image);
+    }
+}));

@@ -40,8 +40,8 @@ module.exports(new Class(function (params) {
         that.change();
     });
     input.event('keyup').bind(function () {
-        if (cb) {
-            cb.apply(app);
+        if (change_cb) {
+            change_cb.apply(that);
         }
     });
 

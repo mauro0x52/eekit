@@ -5,17 +5,20 @@
  * @since: 2013-05
  */
 
-var Element   = module.use('element'),
-    Css       = module.use('css'),
-    App       = module.use('app'),
-    Collection= module.use('collection'),
-    Groupset  = module.use('groupset');
+var Element    = module.use('element'),
+    Css        = module.use('css'),
+    App        = module.use('app'),
+    Collection = module.use('collection'),
+    GroupSet   = module.use('groupset'),
+    Icon       = module.use('icon'),
+    Action     = module.use('action');
 
 module.exports(new Class(function (context) {
 
     this.inherit(App);
 
-    var groups,
+    var element,
+        groups,
         filter,
         form,
         fieldsets,
@@ -42,7 +45,9 @@ module.exports(new Class(function (context) {
     ]);
 
     this.body = undefined;
-    this.groupset = Groupset;
+    this.groupset = GroupSet;
+    this.icon = Icon;
+    this.action = Action;
 
     /* Controla o filtro do app
      *
@@ -117,6 +122,6 @@ module.exports(new Class(function (context) {
      * @author: rafael erthal
      * @since: 2013-05
      */
-    this.groups = new Collection(groups, [Groupset]);
+    this.groups = new Collection(groups, [GroupSet]);
 
 }));

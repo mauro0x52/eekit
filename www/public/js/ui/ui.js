@@ -20,7 +20,9 @@ new Namespace({
     dialog      : folder + 'app/dialog/dialog.js',
     frame       : folder + 'app/frame/frame.js',
 
-    groupset    : folder + 'elements/groupset.js'
+    groupset    : folder + 'elements/groupset.js',
+    icon        : folder + 'elements/icon.js',
+    action      : folder + 'elements/action.js'
 }, function () {
 
     var element,

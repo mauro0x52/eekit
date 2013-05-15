@@ -8,24 +8,26 @@
 var Element    = module.use('element'),
     Css        = module.use('css'),
     Collection = module.use('collection'),
+    Icon       = module.use('icon'),
+    Action     = module.use('action'),
     GroupSet;
 
 module.exports(GroupSet = new Class(function (params) {
     var element,
-        headerTitle,
-        footer, footerTitle,
+        headerTitle, headerIcons, headerActions,
+        footer, footerTitle, footerIcons,
         groups;
 
     element = new Element('div', {attributes : {'class' : 'group'}, html : [
         new Element('div', {attributes : {'class' : 'header'}, html : [
             headerTitle = new Element('h3', {attributes : {'class' : 'hide'}}),
-            new Element('ul', {attributes : {'class' : 'icons'}}),
-            new Element('menu', {attributes : {'class' : 'actions'}})
+            headerIcons = new Element('ul', {attributes : {'class' : 'icons'}}),
+            headerActions = new Element('menu', {attributes : {'class' : 'actions'}})
         ]}),
         groups = new Element('ol', {attributes : {'class' : 'groups'}}),
         footer = new Element('div', {attributes : {'class' : 'hide'}, html : [
             footerTitle = new Element('div', {attributes : {'class' : 'name'}}),
-            new Element('ul', {attributes : {'class' : 'icons'}})
+            footerIcons = new Element('ul', {attributes : {'class' : 'icons'}})
         ]})
     ]});
 
@@ -60,8 +62,8 @@ module.exports(GroupSet = new Class(function (params) {
                 return headerTitle.html.get();
             }
         },
-        //icons : new Collection(headerIcons, [Icon]),
-        //actions : new Collection(headerActions, [Action])
+        icons : new Collection(headerIcons, [Icon]),
+        actions : new Collection(headerActions, [Action])
     };
 
     /**
@@ -93,7 +95,7 @@ module.exports(GroupSet = new Class(function (params) {
                 return footerTitle.html.get();
             }
         },
-        //icons : new Collection(footerIcons, [Icon]),
+        icons : new Collection(footerIcons, [Icon]),
         //helper : new Helper(footer)
     };
 
@@ -148,18 +150,18 @@ module.exports(GroupSet = new Class(function (params) {
         //}
         if (params.header) {
             this.header.title(params.header.title);
-        //    if (params.header.icons) {
-        //        this.header.icons.add(params.header.icons);
-        //    }
-        //    if (params.header.actions) {
-        //        this.header.actions.add(params.header.actions);
-        //    }
+            if (params.header.icons) {
+                this.header.icons.add(params.header.icons);
+            }
+            if (params.header.actions) {
+                this.header.actions.add(params.header.actions);
+            }
         }
         if (params.footer) {
             this.footer.title(params.footer.title);
-        //    if (params.footer.icons) {
-        //        this.footer.icons.add(params.footer.icons);
-        //    }
+            if (params.footer.icons) {
+                this.footer.icons.add(params.footer.icons);
+            }
         //    if (params.footer.helper) {
         //        this.footer.helper.description(params.footer.helper.description);
         //        this.footer.helper.example(params.footer.helper.example);
