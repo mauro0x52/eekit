@@ -99,19 +99,62 @@ eventSchema.statics.groupByUser = function (cb) {
 };
 
 eventSchema.statics.user = function (user, cb) {
-	Event.groupByUser(function (error, users) {
-		if (error) {
-			cb(error, null);
-		} else {
-			var obj;
-			for (var i in users) {
-				if (users[i].id === user) {
-					obj = users[i];
-				}
-			}
-			cb(null, obj);	
-		}
-	})
+	Event.find({user : user}, function (error, events) {
+	    var users = {};
+
+        if (error) {
+        	cb(error, null)
+        } else {
+	        for (var i = 0; i < events.length; i += 1) {
+            	var id = events[i].user ? events[i].user.toString() : events[i].ip.toString().replace(/\./g, '_');
+                if (users[id]) {
+                    users[id].events.push(events[i]);
+                    if (users[id].date < events[i].date) {
+                        users[id].firstEvent = events[i].date;
+                    }
+                } else {
+                    users[id] = {
+                    	id : id,
+                        firstEvent : events[i].date,
+                        events : [events[i]] ,
+                        utm : {},
+                        ocurrences : function (app, labels, from, to) {
+		                    var dateFrom = new Date(from),
+			                    dateTo   = new Date(to),
+			                    ocurrences = 0;
+
+							for (var i in this.events) {
+	                            if (
+	                                (
+	                                	this.events[i].date >= dateFrom ||
+	                                	!from
+                                	) && (
+	                                	this.events[i].date <= dateTo ||
+	                                	!to
+                                	) && (
+	                                	this.events[i].app === app ||
+	                                	this.events[i].source === app ||
+	                                	!app
+                                	) && (
+	                                	labels.indexOf(this.events[i].label) >= 0 ||
+	                                	!labels ||
+	                                	labels.length === 0
+                                	)
+	                            ) {
+	                                ocurrences += 1;
+	                            }
+		                    }
+		                    return ocurrences;
+		                }
+                    };
+                }
+                if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
+                	users[id].utm = events[i].utm;
+                }
+	        }
+	        cb(null, users[id]);
+	    }
+	});
 };
 
 eventSchema.statics.lifeCycle = function (required, forbidden, cb) {
