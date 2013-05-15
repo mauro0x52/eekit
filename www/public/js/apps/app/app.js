@@ -432,6 +432,7 @@ module.exports(new Class (function (params) {
     }
 
     this.ui = new Empreendekit.ui[this.type()](this);
+
     this.route().apply(this, [this.params()]);
 
 }));

@@ -28,17 +28,13 @@
                 path    : folder + 'path/path.js',
                 ui      : folder + 'ui/ui.js'
             }, function () {
-                var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'],
-                    route = location.pathname.replace(current_path[0], '') || '/';
-
-                var app = '',
-                    route = '';
+                var app =  location.pathname.match(/^\/([^\/]+)/) || [],
+                    route = location.pathname.match(/^\/[^\/]+(.*)/) || [];
 
                 this.apps.open({
-                    app   : app,
-                    route : route,
+                    app   : app[1] || 'ee',
+                    route : route[1] || '/',
                     open  : function (app) {
-                        console.log(app)
                     }
                 });
             });

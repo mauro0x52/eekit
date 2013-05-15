@@ -54,7 +54,7 @@ new Namespace({
         ajax.get({
             url : 'http://' + config.services.apps.host + ':' + config.services.apps.port + '/app/' + params.app + '/source'
         }, function (response) {
-            path.redirect('/' + app + route);
+            path.redirect('/' + params.app + params.route);
 
             var newapp = new App({
                 name   : response.name,

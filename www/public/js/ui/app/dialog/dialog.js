@@ -60,9 +60,9 @@ module.exports(new Class(function (context) {
 
             if (value.constructor != String) {
                 throw new Error({
-                    source     : 'dialog.js',
-                    method     : 'title',
-                    message    : 'Title value must be a string',
+                    source    : 'dialog.js',
+                    method    : 'title',
+                    message   : 'Title value must be a string',
                     arguments : arguments
                 });
             }

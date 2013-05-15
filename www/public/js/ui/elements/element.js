@@ -256,6 +256,12 @@ module.exports(Element = new Class(function (tag, params) {
                 }
             } else if (value.detach) {
                 value.detach();
+            } else if (value.constructor === String) {
+                for (i = 0; i < element.childNodes.length; i++) {
+                    if (element.childNodes[i].nodeType === 3 && element.childNodes[i].nodeValue === value) {
+                        element.removeChild(element.childNodes[i]);
+                    }
+                }
             } else {
                 throw new Error({
                     source     : 'element.js',

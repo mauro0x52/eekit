@@ -5,9 +5,11 @@
  * @since: 2013-05
  */
 
-var Element = module.use('element'),
-    Css     = module.use('css'),
-    App     = module.use('app');
+var Element   = module.use('element'),
+    Css       = module.use('css'),
+    App       = module.use('app'),
+    Collection= module.use('collection'),
+    Groupset  = module.use('groupset');
 
 module.exports(new Class(function (context) {
 
@@ -40,6 +42,7 @@ module.exports(new Class(function (context) {
     ]);
 
     this.body = undefined;
+    this.groupset = Groupset;
 
     /* Controla o filtro do app
      *
@@ -114,20 +117,6 @@ module.exports(new Class(function (context) {
      * @author: rafael erthal
      * @since: 2013-05
      */
-    this.groups = {
-
-        get : function () {
-
-        },
-
-        add : function () {
-
-        },
-
-        remove : function () {
-
-        }
-
-    };
+    this.groups = new Collection(groups, [Groupset]);
 
 }));

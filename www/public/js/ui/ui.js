@@ -18,7 +18,9 @@ new Namespace({
     embedEntity : folder + 'app/embedEntity/embedEntity.js',
     embedList   : folder + 'app/embedList/embedList.js',
     dialog      : folder + 'app/dialog/dialog.js',
-    frame       : folder + 'app/frame/frame.js'
+    frame       : folder + 'app/frame/frame.js',
+
+    groupset    : folder + 'elements/groupset.js'
 }, function () {
 
     var element,

@@ -1,146 +1,225 @@
 /**
- * InputText
+ * Inputs text do eekit
  *
- * @author Rafael Erthal
- * @since  2012-10
- *
- * @description : implementa inputs
+ * @author rafael erthal
+ * @since 2013-05
  */
 
-module.exports(InputText = new Class(function (params) {
-    var parent,
-        element = document.createElement('li'),
-        legend_div = document.createElement('div'),
-        text_label = document.createElement('label'),
-        data_div = document.createElement('div'),
-        input_text = document.createElement('input'),
-        error_ul = document.createElement('ul'),
-        cb,
-        rules = [],
-        that = this;
+var Element    = module.use('element'),
+    Css        = module.use('css'),
+    Collection = module.use('collection'),
+    InputError = module.use('inputError'),
+    Helper     = module.use('helper');
 
-    /* CSS */
-    element.setAttribute('class', 'field text');
-    legend_div.setAttribute('class', 'legend');
-    text_label.setAttribute('class', 'text');
-    data_div.setAttribute('class', 'data');
-    input_text.setAttribute('class', 'input');
-    input_text.setAttribute('type', 'text');
-    input_text.setAttribute('autocomplete', 'off');
-    error_ul.setAttribute('class', 'errors hide');
+module.exports(new Class(function (params) {
 
-    /* Hierarquia */
-    element.appendChild(legend_div);
-    legend_div.appendChild(text_label);
-    element.appendChild(data_div);
-    data_div.appendChild(input_text);
-    data_div.appendChild(error_ul);
+    var element,
+        input,
+        errors,
+        legend,
+        rules,
+        that = this,
+        change_cb;
 
-    /* Eventos */
-    input_text.addEventListener('change', function () {
-        that.validate();
+    element = new Element('li', {attributes : {'class' : 'field text'}, html : [
+        new Element('div', {attributes : {'class' : 'legend'}, html : [
+            legend = new Element('label', {attributes : {'class' : 'text'}})
+        ]}),
+        new Element('div', {attributes : {'class' : 'data'}, html : [
+            input  = new Element('input', {attributes : {'class' : 'input', 'type' : 'text', 'autocomplete' : 'off'}}),
+            errors = new Element('ul', {attributes : {'class' : 'errors hide'}})
+        ]})
+    ]});
+
+    this.errors = new Collection(errors, [InputError]);
+
+    this.attach = element.attach;
+    this.detach = element.detach;
+
+    input.event('change').bind(function () {
+        that.change();
+    });
+    input.event('keyup').bind(function () {
         if (cb) {
             cb.apply(app);
         }
-    }, true);
-    input_text.addEventListener('keyup', function () {
-        if (cb) {
-            cb.apply(app);
-        }
-    }, true);
+    });
 
-    /* Métodos protegidos */
-    this.attach = function (HTMLobject, collection) {
-        if (HTMLobject && collection && HTMLobject.appendChild) {
-            parent = collection
-            HTMLobject.appendChild(element);
-        }
-    };
-    this.detach = function (HTMLobject, collection) {
-        if (HTMLobject && collection && HTMLobject.removeChild) {
-            HTMLobject.removeChild(element);
-        } else {
-            parent.remove(this);
-        }
-    };
-    /* Métodos públicos */
+    /**
+     * Valida o input
+     *
+     * @author Mauro Ribeiro, Rafael Erthal
+     * @since  2013-05
+     */
     this.validate = function () {
         var valid = true;
-            this.errors.remove();
+
+        this.errors.remove();
         for (var i in rules) {
             if (!rules[i].rule.test(input_text.value)) {
-                this.errors.add(new app.ui.inputError({message : rules[i].message}));
+                this.errors.add(new InputError({message : rules[i].message}));
                 valid = false;
             }
         }
         return valid;
-    }
+    };
+
+    /**
+     * Controla regras de validação
+     *
+     * @author Mauro Ribeiro, Rafael Erthal
+     * @since  2013-05
+     */
     this.rules = function (value) {
         if (value) {
+
+            if (value.constructor !== Array) {
+                throw new Error({
+                    source    : 'inputText.js',
+                    method    : 'rules',
+                    message   : 'Rules value must be an array',
+                    arguments : arguments
+                });
+            }
+
             rules = value;
         } else {
             return rules;
         }
     };
+
+    /**
+     * Controla a legenda do input
+     *
+     * @author Mauro Ribeiro, Rafael Erthal
+     * @since  2013-05
+     */
     this.legend = function (value) {
         if (value) {
-            text_label.innerHTML = value;
+
+            if (value.constructor !== String) {
+                throw new Error({
+                    source    : 'inputText.js',
+                    method    : 'legend',
+                    message   : 'Legend value must be a string',
+                    arguments : arguments
+                });
+            }
+
+            label.html.set(value);
         } else {
-            return text_label.innerHTML;
+            return label.html.get();
         }
     };
-    this.name = function (value) {
-        if (value) {
-            input_text.setAttribute('name', value);
-            text_label.setAttribute('for', value);
-        } else {
-            return input_text.getAttribute('name');
-        }
-    };
+
+    /**
+     * Controla o valor do input
+     *
+     * @author Mauro Ribeiro, Rafael Erthal
+     * @since  2013-05
+     */
     this.value = function (value) {
         if (value) {
-            input_text.value = value;
+
+            if (value.constructor !== String && value.constructor !== Number) {
+                throw new Error({
+                    source    : 'inputText.js',
+                    method    : 'value',
+                    message   : 'Value value must be a string or number',
+                    arguments : arguments
+                });
+            }
+
+            input.attribute('value').set(value);
             this.change();
         } else {
-            return input_text.value;
+            return input.attribute('value').get();
         }
     };
+
+    /**
+     * Controla o callback de change
+     *
+     * @author Mauro Ribeiro, Rafael Erthal
+     * @since  2013-05
+     */
     this.change = function (value) {
         if (value) {
-            cb = value;
-        } else {
-            if (cb) {
-                cb.apply(app);
+
+            if (value.constructor !== Function) {
+                throw new Error({
+                    source    : 'inputText.js',
+                    method    : 'change',
+                    message   : 'Change value must be a function',
+                    arguments : arguments
+                });
             }
+
+            change_cb = value;
+        } else if (change_cb) {
+            this.validate();
+            change_cb.apply(app);
         }
     };
+
+    /**
+     * Dá focus no input
+     *
+     * @author Mauro Ribeiro, Rafael Erthal
+     * @since  2013-05
+     */
     this.focus = function () {
-        setTimeout(function () {input_text.focus()}, 100);
+        setTimeout(function () {input.event('focus').trigger()}, 100);
     }
-    this.errors = new Collection(error_ul, [app.ui.inputError])
-    this.helper = new empreendemia.ui.helper(element);
+
+    /**
+     * Controla orientador
+     *
+     * @author Mauro Ribeiro, Rafael Erthal
+     * @since  2013-05
+     */
+    this.helper = new Helper(element);
+
+    /**
+     * Controla a visibilidade do input
+     *
+     * @author Mauro Ribeiro, Rafael Erthal
+     * @since  2013-05
+     */
     this.visibility = function (value) {
         if (value) {
+
+            if (value.constructor !== String) {
+                throw new Error({
+                    source    : 'inputText.js',
+                    method    : 'visibility',
+                    message   : 'Visibility value must be a string',
+                    arguments : arguments
+                });
+            }
+
             switch (value) {
                 case 'hide' :
-                    element.setAttribute('class', 'field text hide');
+                    element.attribute('class').set('field text hide');
                     break;
                 case 'show' :
-                    element.setAttribute('class', 'field text');
+                    element.attribute('class').set('field text');
                     break;
                 case 'fade' :
-                    element.setAttribute('class', 'field text fade');
+                    element.attribute('class').set('field text fade');
                     break;
             }
         } else {
-            return element.getAttribute('class').replace('field text', '');
+            return element.attribute('class').get().replace('field text', '');
         }
     };
-    /* Setando valores iniciais */
+
+    /*
+     * Valores iniciais
+     */
     if (params) {
         this.legend(params.legend);
         this.rules(params.rules);
-        this.name(params.name);
         this.value(params.value);
         this.change(params.change);
         this.visibility(params.visibility);

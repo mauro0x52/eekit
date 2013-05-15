@@ -12,9 +12,9 @@ module.exports({
      * @author: rafael erthal
      * @since: 2013-05
      */
-    redirect = function (path) {
+    redirect : function (path) {
         history.pushState({}, 'EmpreendeKit', path);
-    };
+    },
 
     /* Cerifica se o path é compatível com o address bar
      *
