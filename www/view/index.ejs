@@ -31,25 +31,16 @@
                 var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'],
                     route = location.pathname.replace(current_path[0], '') || '/';
 
-                if (current_path[0] === '/') {
-                    this.apps.open({
-                        app   : 'ee',
-                        route : '/',
-                        open  : function (app) {
-                            console.log(app)
-                        }
-                    });
-                } else {
-                    history.pushState({}, 'EmpreendeKit', '/');
+                var app = '',
+                    route = '';
 
-                    this.apps.open({
-                        app   : current_path[0].replace('/', ''),
-                        route : route,
-                        open  : function (app) {
-                            console.log(app)
-                        }
-                    });
-                }
+                this.apps.open({
+                    app   : app,
+                    route : route,
+                    open  : function (app) {
+                        console.log(app)
+                    }
+                });
             });
         </script>
     </body>
