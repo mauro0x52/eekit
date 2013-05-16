@@ -177,6 +177,6 @@ module.exports(new Class(function (params) {
 //                this.footer.helper.example(params.footer.helper.example);
 //            }
         }
-//        this.visibility(params.visibility);
+       this.visibility(params.visibility);
     }
 }));

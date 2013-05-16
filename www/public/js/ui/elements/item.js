@@ -282,8 +282,7 @@ module.exports(new Class(function (params) {
         this.title(params.title);
         this.description(params.description);
         this.href(params.href);
-        this.draggable(params.draggable)
-//        this.visibility(params.visibility);
+        this.visibility(params.visibility);
         this.icons.add(params.icons);
         this.actions.add(params.actions);
 //        this.droppableGroups(params.droppableGroups);

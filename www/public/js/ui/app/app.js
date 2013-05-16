@@ -20,20 +20,22 @@ module.exports(new Class(function (context) {
         /* Header */
         new Element('div', {attributes : {'class' : 'header'}, html : [
             title = new Element('h4', {attributes : {'class' : 'title'}}),
-            close = new Element('div', {html : [
-                new Element('div'),
-                new Element('div', {html : 'fechar'})
-            ],events : {
+            close = new Element('div', {attributes : {'class' : 'close'}, html : [
+                new Element('div', {attributes : {'class' : 'image'}}),
+                new Element('div', {attributes : {'class' : 'legend'}, html : 'fechar'})
+            ],
+            events : {
                 click : function () {
 
                 }
-            }}),
-            load = new Element('div', {html : [
-                new Element('div'),
-                new Element('div', {html : 'carregando'})
-            ]})
+            }})
+        ]}),
+        load = new Element('div', {attributes : {'class' : 'loading'}, html : [
+            new Element('div', {attributes : {'class' : 'image'}}),
+            new Element('div', {attributes : {'class' : 'legend'}, html : 'carregando'})
         ]})
-    ], events : {
+    ],
+    events : {
         click : function () {
 
         }

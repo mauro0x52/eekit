@@ -1,14 +1,13 @@
 /**
  * Inputs text do eekit
  *
- * @author rafael erthal
- * @since 2013-05
+ * @author Mauro Ribeiro
+ * @since  2013-05
  */
 
 var Element    = module.use('element'),
     Css        = module.use('css'),
     Collection = module.use('collection'),
-    InputError = module.use('inputError'),
     Helper     = module.use('helper');
 
 module.exports(new Class(function (params) {
@@ -30,8 +29,6 @@ module.exports(new Class(function (params) {
             errors = new Element('ul', {attributes : {'class' : 'errors hide'}})
         ]})
     ]});
-
-    this.errors = new Collection(errors, [InputError]);
 
     this.attach = element.attach;
     this.detach = element.detach;
@@ -106,9 +103,9 @@ module.exports(new Class(function (params) {
                 });
             }
 
-            label.html.set(value);
+            legend.html.set(value);
         } else {
-            return label.html.get();
+            return legend.html.get();
         }
     };
 
@@ -173,14 +170,6 @@ module.exports(new Class(function (params) {
     }
 
     /**
-     * Controla orientador
-     *
-     * @author Mauro Ribeiro, Rafael Erthal
-     * @since  2013-05
-     */
-    this.helper = new Helper(element);
-
-    /**
      * Controla a visibilidade do input
      *
      * @author Mauro Ribeiro, Rafael Erthal
@@ -213,6 +202,22 @@ module.exports(new Class(function (params) {
             return element.attribute('class').get().replace('field text', '');
         }
     };
+
+    /**
+     * Controla orientador
+     *
+     * @author Mauro Ribeiro, Rafael Erthal
+     * @since  2013-05
+     */
+    this.helper = new Helper(element);
+
+    /**
+     * Controla os erros
+     *
+     * @author Mauro Ribeiro, Rafael Erthal
+     * @since  2013-05
+     */
+    //this.errors = new Collection(errors, [InputError]);
 
     /*
      * Valores iniciais

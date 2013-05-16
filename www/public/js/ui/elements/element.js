@@ -123,7 +123,7 @@ module.exports(Element = new Class(function (tag, params) {
 
         this.get = function () {
 
-            if (name === 'value') {
+            if (name !== 'value') {
                 return element.getAttribute(name);
             } else {
                 return element.value;
