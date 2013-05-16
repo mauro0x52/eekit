@@ -16,15 +16,16 @@ module.exports(new Class(function (context) {
     var actions,
         subtitle,
         description,
-        datasets;
+        datasets,
+        embeds;
 
-    this.body.html.attach([
+    this.body.html.attach(new Element('div', {attributes : {'class' : 'body'}, html : [
         actions     = new Element('div'),
         subtitle    = new Element('h5'),
         description = new Element('p'),
         datasets    = new Element('div'),
         embeds      = new Element('div')
-    ]);
+    ]}));
 
     this.body = undefined;
 

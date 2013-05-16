@@ -24,9 +24,10 @@ module.exports(new Class(function (context) {
         filter,
         form,
         fieldsets,
+        body,
         action;
 
-    this.body.html.attach([
+    this.sheet.html.attach([
         /* Filtro */
         filter  = new Element('div', {attributes : {'class' : 'filter'}, html : [
             new Element('form', {attributes : {'class' : 'form'}, html : [
@@ -42,11 +43,14 @@ module.exports(new Class(function (context) {
                 }
             }})
         ]}),
-        /* Grupos */
-        groups  = new Element('ol', {attributes : {'class' : 'groups'}})
+        /* Body */
+        new Element('div', {attributes : {'class' : 'body'}, html : [
+            /* Grupos */
+            groups  = new Element('ol', {attributes : {'class' : 'groups'}})
+        ]})
     ]);
 
-    this.body = undefined;
+    this.sheet = undefined;
     this.groupset = GroupSet;
     this.group = Group;
     this.item = Item;

@@ -10,12 +10,12 @@ var Element = module.use('element'),
 
 module.exports(new Class(function (context) {
 
-    var element,
+    var that = this,
+        element,
         title,
         close,
-        body,
         load;
-        
+
     element = new Element('div', {attributes : {'class' : 'sheet '+context.type()}, html : [
         /* Header */
         new Element('div', {attributes : {'class' : 'header'}, html : [
@@ -32,16 +32,14 @@ module.exports(new Class(function (context) {
                 new Element('div'),
                 new Element('div', {html : 'carregando'})
             ]})
-        ]}),
-        /* Body */
-        body = new Element('div', {attributes : {'class' : 'body'}}),
+        ]})
     ], events : {
         click : function () {
 
         }
     }});
 
-    this.body = body;
+    this.sheet = element;
     this.attach = element.attach;
     this.detach = element.detach;
 
@@ -53,7 +51,7 @@ module.exports(new Class(function (context) {
     this.adjust = function () {
 
         var height = 460,
-            offset = 155;
+            offset = 40;
 
         if (
             document.body &&
@@ -119,5 +117,10 @@ module.exports(new Class(function (context) {
         }
 
     };
+
+    window.addEventListener('resize', function () {
+        that.adjust();
+    });
+    this.adjust();
 
 }));

@@ -5,6 +5,9 @@
  * @since 2012-12
  */
 app.routes.list('/sandbox-list', function (params, data) {
+
+    app.ui.title('Titulo do list sheet');
+
     var icon;
     var groupset = new app.ui.groupset({
         header : {
@@ -63,6 +66,15 @@ app.routes.list('/sandbox-list', function (params, data) {
                 new app.ui.icon({
                     legend : 'B',
                     image : 'add'
+                })
+            ],
+            actions : [
+                new app.ui.action({
+                    legend : 'ação',
+                    image : 'add',
+                    click : function () {
+                        console.log('aew')
+                    }
                 })
             ]
         },

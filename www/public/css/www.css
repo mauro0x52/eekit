@@ -464,8 +464,11 @@ form {
 }
 
 .sheets  > .sheet > .body {
-    position: relative;
-    height: 100%;
+    position: absolute;
+    top: 32px;
+    bottom: 0;
+    right: 0;
+    height: auto;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -1169,6 +1172,7 @@ form {
     width: 260px;
     top: 32px;
     left: 0;
+    bottom: 0;
     overflow-y: auto;
     overflow-x: hidden;
     border-left: none;
