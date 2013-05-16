@@ -15,7 +15,9 @@ module.exports(new Class(function (params) {
     var element,
         label, legend, title, titleAnchor, description, icons, actions,
         click_cb,
-        that = this;
+        that = this,
+        draggable = false,
+        drag_button;
 
     element = new Element('li', {attributes : {'class' : 'item'}, html : [
         label = new Element('div', {attributes : {'class' : 'label'}, html : [
@@ -33,57 +35,25 @@ module.exports(new Class(function (params) {
                 new Element('div', {attributes : {'class' : 'fill'}})
             ]})
         ]})
-    ]})
+    ]});
 
-//    element.addEventListener('click', function (e) {
-//        var releasable = app.ui.releasable(),
-//            receptive =  app.ui.receptive();
-//
-//        if (releasable && releasable.constructor === app.ui.item && receptive && receptive.constructor === app.ui.group) {
-//
-//            e.preventDefault();
-//            e.stopPropagation();
-//
-//            releasable.detach(document.body, ['aaa']);
-//
-//            var items = receptive.items.get(),
-//                position = 1;
-//
-//            receptive.items.remove();
-//            for (var j in items) {
-//                if (items[j] === that) {
-//                    releasable.drop(receptive, position);
-//                    position++;
-//                }
-//                items[j].drop(receptive, position);
-//                position++;
-//            }
-//        }
-//    }, true);
+    element.event('click').bind(function () {
 
-
-//    title_anchor.addEventListener('click', function (e) {
-//        if (click_cb) {
-//            click_cb.apply(app);
-//        }
-//
-//        return false;
-//    }, true);
+    });
 
     this.attach = element.attach;
     this.detach = element.detach;
 
     /**
-     * Define os grupos que posso dropar este item
-     * @TODO implementar
+     * Inicia o drag'n drop
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-05
      */
-//    this.droppableGroups = function (value) {
-//        if (value && value.constructor === Array) {
-//            droppableGroups = value;
-//        } else {
-//            return droppableGroups;
-//        }
-//    };
+    this.drag = function (value) {
+        element.detach();
+        document.addEventListener('', listener)
+    };
 
     /**
      * Controla a label do item
@@ -244,63 +214,6 @@ module.exports(new Class(function (params) {
     }
 
     /**
-     * Drop
-     * @TODO implementar
-     */
-//    this.drop = function (value, position) {
-//        if (value && !position) {
-//            drop_cb = value;
-//        } else {
-//            if (position) {
-//                var droppableGroups = that.droppableGroups();
-//                for (var i = 0; i < droppableGroups.length; i++) {
-//                    droppableGroups[i].droppable(false);
-//                }
-//
-//                app.ui.receptive(null);
-//                app.ui.releasable(null);
-//                value.items.add(that);
-//                document.stopDrag();
-//                element.setAttribute('style', '');
-//                if (that.visibility() === ' hide') {
-//                    element.attribute('class').set('item hide');
-//                } else if (click_cb) {
-//                    element.attribute('class').set('item clickable');
-//                } else {
-//                    element.attribute('class').set('item');
-//                }
-//                if (drop_cb) {
-//                    drop_cb(value, position);
-//                }
-//            }
-//        }
-//    };
-    /**
-     * Drag
-     * @TODO implementar
-     */
-//    this.drag = function (value) {
-//        if (value) {
-//            drag_cb = value;
-//        } else {
-//            if (app.ui.releasable && !app.ui.releasable()) {
-//                var droppableGroups = that.droppableGroups();
-//                for (var i in droppableGroups) {
-//                    droppableGroups[i].droppable(true);
-//                }
-//
-//                app.ui.receptive(null);
-//                app.ui.releasable(that);
-//                that.detach();
-//                document.startDrag(element);
-//                if (drag_cb) {
-//                    drag_cb();
-//                }
-//            }
-//        }
-//    };
-
-    /**
      * Controla a visibilidade do item
      *
      * @author Mauro Ribeiro
@@ -369,6 +282,7 @@ module.exports(new Class(function (params) {
         this.title(params.title);
         this.description(params.description);
         this.href(params.href);
+        this.draggable(params.draggable)
 //        this.visibility(params.visibility);
         this.icons.add(params.icons);
         this.actions.add(params.actions);

@@ -16,7 +16,7 @@ module.exports(new Class(function (params) {
         that = this;
 
     element = new Element('li', {attributes : {'class' : 'action'}, html : [
-        anchor = new Element('a', {attributes : {'class' : 'anchor', 'target' : '_blank', 'href' : '#'}, html : [
+        anchor = new Element('a', {attributes : {'class' : 'anchor', 'target' : '_blank', 'href' : '#', 'draggable' : 'false'}, html : [
             image = new Element('div', {attributes : {'class' : 'hide'}}),
             legend = new Element('div', {attributes : {'class' : 'hide'}})
         ]})

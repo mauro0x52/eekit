@@ -32,31 +32,6 @@ module.exports(new Class(function (params) {
         ]})
     ]});
 
-
-//    element.addEventListener('click', function () {
-//        var releasable = app.ui.releasable();
-//
-//        /* Marca o grupo para receber o item */
-//        if (releasable && releasable.constructor === app.ui.item && that.droppable()) {
-//            app.ui.receptive(that);
-//
-//            setTimeout(function () {
-//                var releasable = app.ui.releasable(),
-//                    receptive =  app.ui.receptive();
-//
-//                if (releasable && releasable.constructor === app.ui.item && receptive && receptive.constructor === app.ui.group) {
-//                    releasable.detach(document.body, ['aaa']);
-//
-//                    var position = receptive.items.get().length + 1;
-//                    if (receptive.droppable && receptive.droppable()) {
-//                        releasable.drop(receptive, position);
-//                    }
-//                }
-//            }, 10);
-//        }
-//    }, true);
-
-
     this.attach = element.attach;
     this.detach = element.detach;
 

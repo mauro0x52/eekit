@@ -26,10 +26,20 @@ module.exports(Element = new Class(function (tag, params) {
         /* Construir um novo objeto */
         element = document.createElement(tag);
         element.setAttribute('id', 'sdk-element-' + instances);
+        element.sdk = this;
         instances++;
     } else {
         /* Objeto ja esta construido */
         element = tag;
+    }
+
+    /* Retorna o id do objeto
+     *
+     * @author: rafael erthal
+     * @since: 2013-05
+     */
+    this.id = function () {
+        return element.getAttribute('id');
     }
 
     /* Controla o css do elemento

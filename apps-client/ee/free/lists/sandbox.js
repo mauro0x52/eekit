@@ -9,6 +9,7 @@ app.routes.list('/sandbox-list', function (params, data) {
     app.ui.title('Titulo do list sheet');
 
     var icon;
+    var test;
     var groupset = new app.ui.groupset({
         header : {
             title : 'Primeiro titulo',
@@ -79,8 +80,8 @@ app.routes.list('/sandbox-list', function (params, data) {
             ]
         },
         items : [
-            new app.ui.item({
-                title : 'Titulo do item',
+            test = new app.ui.item({
+                title : 'Titulo do item teste',
                 description : 'descrição do item',
                 label : {
                     color : 'blue',
@@ -93,16 +94,14 @@ app.routes.list('/sandbox-list', function (params, data) {
                     new app.ui.action({
                         legend : 'ação',
                         image : 'trash',
-                        tip : 'tooltip',
-                        click : function () {
-                            console.log('aew')
-                        }
+                        tip : 'tooltip'
                     }),
                     new app.ui.action({
                         legend : 'outra ação',
                         image : 'download',
                         tip : 'tooltip 2',
                         click : function () {
+                            test.drag();
                             console.log('aew')
                         }
                     })
