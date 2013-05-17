@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.8 (2013-05-17)
+
+Melhorias
+- Performance do Life Cycle
+
 ## 1.0.7 (2013-05-13)
 
 Melhorias

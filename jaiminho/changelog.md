@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.1.3 (2013-05-17)
+
+Melhorias
+- Botando Lucas como bcc dos emails
+
 ## 1.1.2 (2013-05-13)
 
 Melhorias
