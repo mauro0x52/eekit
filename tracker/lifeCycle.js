@@ -3,18 +3,20 @@ var Event = require('./model/Model').Event,
 	needle = require('needle');
 
 var send = function (user, params) {
-    needle.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + user.id + '?secret=' + config.security.secret,function (error, response, data) {
-        needle.post('http://'+config.services.jaiminho.url+':'+config.services.jaiminho.port+'/mail/self',{
-            token : data.user.tokens[0].token,
-            from : 'lucas@empreendemia.com.br',
-            subject : params.subject,
-            html :  '' +
-                    'Olá ' + data.user.name + ', tudo bom?<br />' +
-                    params.html +
-                    'Lucas<br /><br />',
-            name : params.name,
-            service : 'tracker'
-        }, function () {console.log(arguments[2])});
+    needle.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + user.id + '?secret=' + require('querystring').escape(config.security.secret),function (error, response, data) {
+        if (data && data.user && data.user.tokens && data.user.tokens[0] && data.user.tokens[0].token) {
+            needle.post('http://'+config.services.jaiminho.url+':'+config.services.jaiminho.port+'/mail/self',{
+                token : data.user.tokens[0].token,
+                from : 'lucas@empreendemia.com.br',
+                subject : params.subject,
+                html :  '' +
+                        'Olá ' + data.user.name + ', tudo bom?<br />' +
+                        params.html +
+                        'Lucas<br /><br />',
+                name : params.name,
+                service : 'tracker'
+            }, function () {console.log(arguments[2])});
+        }
     });
 };
 
