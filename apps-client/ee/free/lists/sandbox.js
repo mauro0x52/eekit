@@ -111,6 +111,10 @@ app.routes.list('/sandbox/list', function (params, data) {
                 click : function () {
                     console.log('aew')
                 },
+                drop : function (group, position) {
+                    console.log(group);
+                    console.log(position);
+                },
                 actions : [
                     new app.ui.action({
                         legend : 'ação',
@@ -123,7 +127,6 @@ app.routes.list('/sandbox/list', function (params, data) {
                         tip : 'tooltip 2',
                         click : function () {
                             test.drag();
-                            console.log('aew')
                         }
                     })
                 ]

@@ -16,7 +16,12 @@ module.exports(new Class(function (params) {
         label, legend, title, titleAnchor, description, icons, actions,
         click_cb,
         drop_cb,
-        that = this;
+        that = this,
+        style = {
+            "click"      : "",
+            "dragg"      : "",
+            "visibility" : "show"
+        };
 
     element = new Element('li', {attributes : {'class' : 'item'}, html : [
         label = new Element('div', {attributes : {'class' : 'label'}, html : [
@@ -47,9 +52,14 @@ module.exports(new Class(function (params) {
     }, true);
 
     element.event('release').bind(function (e) {
+        style.dragg = '';
+        css();
+
         Empreendekit.ui.dragging = null;
-        element.attribute('class').set('item');
-        
+
+        if (drop_cb && e.detail) {
+            drop_cb(e.detail.group, e.detail.position);
+        }
     });
 
     element.event('mouseover').bind(function (e) {
@@ -82,13 +92,25 @@ module.exports(new Class(function (params) {
     this.detach = element.detach;
 
     /**
+     * altera o status do css do objeto
+     *
+     * @author Rafael Erthal
+     * @since  2013-05
+     */    
+    var css = function () {
+        element.attribute('class').set('item ' + style.click + ' ' + style.dragg  + ' ' + style.visibility);
+    }
+
+    /**
      * Inicia o drag'n drop
      *
      * @author Rafael Erthal
      * @since  2013-05
      */
     this.drag = function () {
-        element.attribute('class').set('item dragging');
+        style.dragg = 'dragging';
+        css();
+
         Empreendekit.ui.dragging = element;
     };
 
@@ -110,11 +132,9 @@ module.exports(new Class(function (params) {
                 });
             }
 
-            drop_cb = value
+            drop_cb = value;
         } else {
-            if (drop_cb) {
-                drop_cb.apply(that);
-            }
+            element.event('release').trigger();
         }
     };
 
@@ -136,7 +156,9 @@ module.exports(new Class(function (params) {
                 });
             }
 
-            element.attribute('class').set('item clickable');
+            style.click = 'clickable';
+            css();
+
             click_cb = value;
         } else {
             if (click_cb) {
@@ -295,21 +317,25 @@ module.exports(new Class(function (params) {
 
             switch (value) {
                 case 'hide' :
-                    element.attribute('class').set('item hide');
+                    style.visibility = 'hide';
                     break;
                 case 'show' :
-                    if (click_cb) {
-                        element.attribute('class').set('item clickable');
-                    } else {
-                        element.attribute('class').set('item');
-                    }
+                    style.visibility = '';
                     break;
                 case 'fade' :
-                    element.attribute('class').set('item fade');
+                    style.visibility = 'fade';
                     break;
             }
+            css();
         } else {
-            return element.attribute('class').get().replace('item', '');
+            switch (style.visibility) {
+                case 'hide' :
+                     return 'hide';
+                case 'fade' :
+                    return 'fade';
+                default : 
+                    return 'show';
+            }
         }
     };
 
@@ -350,6 +376,9 @@ module.exports(new Class(function (params) {
 //        this.droppableGroups(params.droppableGroups);
 //        this.drop(params.drop);
         this.click(params.click);
+        if (params.drop) {
+            this.drop(params.drop);
+        }
         if (params.label) {
             this.label.color(params.label.color);
             this.label.legend(params.label.legend);
