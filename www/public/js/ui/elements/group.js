@@ -17,7 +17,8 @@ module.exports(new Class(function (params) {
     var element,
         headerTitle, headerIcons, headerActions,
         footer, footerTitle, footerIcons,
-        items;
+        items,
+        that = this;
 
     element = new Element('div', {attributes : {'class' : 'group'}, html : [
         new Element('div', {attributes : {'class' : 'header'}, html : [
@@ -34,6 +35,17 @@ module.exports(new Class(function (params) {
 
     this.attach = element.attach;
     this.detach = element.detach;
+
+    element.event('drop').bind(function () {
+        var elements = items.html.get();
+
+        for (var i in elements) {
+            elements[i].event('release').trigger({
+                group    : that,
+                position : i
+            });
+        }
+    });
 
     /**
      * Controla o cabeçalho do grupo
@@ -99,23 +111,6 @@ module.exports(new Class(function (params) {
         icons : new Collection(footerIcons, [Icon]),
         //helper : new Helper(footer)
     };
-
-    /**
-     * Define grupo como dropável ou não
-     * @TODO implementar
-     */
-//    this.droppable = function (value) {
-//        if (value === true || value === false) {
-//            if (value) {
-//                element.setAttribute('class', 'group droppable');
-//            } else {
-//                element.setAttribute('class', 'group');
-//            }
-//        } else {
-//            return element.getAttribute('class') === 'group droppable';
-//        }
-//    }
-
 
     /**
      * Controla a visibilidade do grupo

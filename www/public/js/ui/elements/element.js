@@ -11,7 +11,8 @@ var instances = 0,
 module.exports(Element = new Class(function (tag, params) {
 
     var element,
-        css;
+        css,
+        parentElement = null;
 
     if (!tag) {
         throw new Error({
@@ -40,6 +41,15 @@ module.exports(Element = new Class(function (tag, params) {
      */
     this.id = function () {
         return element.getAttribute('id');
+    }
+
+    /* Retorna o pai do objeto
+     *
+     * @author: rafael erthal
+     * @since: 2013-05
+     */
+    this.parent = function () {
+        return parentElement;
     }
 
     /* Controla o css do elemento
@@ -72,8 +82,50 @@ module.exports(Element = new Class(function (tag, params) {
             });
         }
 
+        parentElement = parent.sdk;
         parent.appendChild(element);
 
+    };
+
+    /* Coloca elemento no nó pai  antes do irmão
+     *
+     * @author: rafael erthal
+     * @since: 2013-05
+     */
+    this.attachAfter = function (brother) {
+
+        if (!brother || !brother.parentNode || !brother.parentNode.insertBefore) {
+            throw new Error({
+                source     : 'element.js',
+                method     : 'attachAfter',
+                message    : 'Parent element must exist',
+                arguments : arguments
+            });
+        }
+
+        parentElement = brother.parentNode.sdk;
+        brother.parentNode.insertBefore(element, brother);
+
+    };
+
+    /* Coloca elemento no nó pai depois do irmão
+     *
+     * @author: rafael erthal
+     * @since: 2013-05
+     */
+    this.attachBefore = function (brother) {
+
+        if (!brother || !brother.parentNode || !brother.parentNode.insertBefore) {
+            throw new Error({
+                source     : 'element.js',
+                method     : 'attachBefore',
+                message    : 'Parent element must exist',
+                arguments : arguments
+            });
+        }
+
+        parentElement = brother.parentNode.sdk;
+        brother.parentNode.insertBefore(brother, element);
     };
 
     /* Remove elemento do nó pai
@@ -185,8 +237,8 @@ module.exports(Element = new Class(function (tag, params) {
             element.removeEventListener(name, cb, capture);
         };
 
-        this.trigger = function () {
-            element.dispatchEvent(name);
+        this.trigger = function (data) {
+            element.dispatchEvent(new CustomEvent(name, {detail : data}));
         };
 
         return this;
@@ -199,6 +251,14 @@ module.exports(Element = new Class(function (tag, params) {
      * @since: 2013-05
      */
     this.html = {
+
+        attachAfter : function (value) {
+            value.attachAfter(element);
+        },
+
+        attachBefore : function (value) {
+            value.attachBefore(element);
+        },
 
         set : function (value) {
             this.detach();

@@ -15,9 +15,8 @@ module.exports(new Class(function (params) {
     var element,
         label, legend, title, titleAnchor, description, icons, actions,
         click_cb,
-        that = this,
-        draggable = false,
-        drag_button;
+        drop_cb,
+        that = this;
 
     element = new Element('li', {attributes : {'class' : 'item'}, html : [
         label = new Element('div', {attributes : {'class' : 'label'}, html : [
@@ -37,8 +36,46 @@ module.exports(new Class(function (params) {
         ]})
     ]});
 
-    element.event('click').bind(function () {
+    element.event('click').bind(function (e) {
+        e.preventDefault();
 
+        if (Empreendekit.ui.dragging === element) {
+            element.parent().parent().event('drop').trigger();
+        } else {
+            that.click();
+        }
+    }, true);
+
+    element.event('release').bind(function (e) {
+        Empreendekit.ui.dragging = null;
+        element.attribute('class').set('item');
+        
+    });
+
+    element.event('mouseover').bind(function (e) {
+        if (Empreendekit.ui.dragging) {
+
+            e.preventDefault(); 
+
+            var elements = element.parent().html.get(),
+                hovered_poisition,
+                dragging_poisition;
+
+            for (var i in elements) {
+                if (elements[i].id() === element.id()) {
+                    hovered_poisition = i;
+                }
+                if (elements[i].id() === Empreendekit.ui.dragging.id()) {
+                    dragging_poisition = i;
+                }
+            }
+
+            if (hovered_poisition > dragging_poisition) {
+                Empreendekit.ui.dragging.html.attachAfter(element);
+            } else {
+                Empreendekit.ui.dragging.html.attachBefore(element);
+            }
+        }
     });
 
     this.attach = element.attach;
@@ -47,13 +84,66 @@ module.exports(new Class(function (params) {
     /**
      * Inicia o drag'n drop
      *
+     * @author Rafael Erthal
+     * @since  2013-05
+     */
+    this.drag = function () {
+        element.attribute('class').set('item dragging');
+        Empreendekit.ui.dragging = element;
+    };
+
+    /**
+     * Controla a ação de drop do item
+     *
+     * @author Rafael Erthal
+     * @since  2013-05
+     */
+    this.drop = function (value) {
+        if (value) {
+
+            if (value.constructor !== Function) {
+                throw new Error({
+                    source    : 'item.js',
+                    method    : 'click',
+                    message   : 'Click value must be a function',
+                    arguments : arguments
+                });
+            }
+
+            drop_cb = value
+        } else {
+            if (drop_cb) {
+                drop_cb.apply(that);
+            }
+        }
+    };
+
+    /**
+     * Controla a ação do click no item
+     *
      * @author Mauro Ribeiro
      * @since  2013-05
      */
-    this.drag = function (value) {
-        element.detach();
-        document.addEventListener('', listener)
-    };
+    this.click = function (value) {
+        if (value) {
+
+            if (value.constructor !== Function) {
+                throw new Error({
+                    source    : 'item.js',
+                    method    : 'click',
+                    message   : 'Click value must be a function',
+                    arguments : arguments
+                });
+            }
+
+            element.attribute('class').set('item clickable');
+            click_cb = value;
+        } else {
+            if (click_cb) {
+                click_cb.apply(that);
+            }
+        }
+    }
 
     /**
      * Controla a label do item
@@ -186,34 +276,6 @@ module.exports(new Class(function (params) {
     }
 
     /**
-     * Controla a ação do click no item
-     *
-     * @author Mauro Ribeiro
-     * @since  2013-05
-     */
-    this.click = function (value) {
-        if (value) {
-
-            if (value.constructor !== Function) {
-                throw new Error({
-                    source    : 'item.js',
-                    method    : 'click',
-                    message   : 'Click value must be a function',
-                    arguments : arguments
-                });
-            }
-
-            element.attribute('class').set('item clickable');
-            click_cb = value;
-        } else {
-            element.attribute('class').set('item');
-            if (click_cb) {
-                click_cb.apply(that);
-            }
-        }
-    }
-
-    /**
      * Controla a visibilidade do item
      *
      * @author Mauro Ribeiro
@@ -282,7 +344,6 @@ module.exports(new Class(function (params) {
         this.title(params.title);
         this.description(params.description);
         this.href(params.href);
-        this.draggable(params.draggable)
 //        this.visibility(params.visibility);
         this.icons.add(params.icons);
         this.actions.add(params.actions);
