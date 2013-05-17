@@ -19,6 +19,7 @@ module.exports(new Class(function (params) {
         fields = new Element('ul', {attributes : {'class' : 'fields'}})
     ]});
 
+    element.template = this;
     this.attach = element.attach;
     this.detach = element.detach;
 

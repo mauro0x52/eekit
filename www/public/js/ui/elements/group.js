@@ -33,6 +33,7 @@ module.exports(new Class(function (params) {
         ]})
     ]});
 
+    element.template = this;
     this.attach = element.attach;
     this.detach = element.detach;
 

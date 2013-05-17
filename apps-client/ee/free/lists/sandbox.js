@@ -243,6 +243,7 @@ app.routes.list('/sandbox/list', function (params, data) {
         ]
     })
 
+    console.log(group.items.get());
 
     var fieldset = new app.ui.fieldset({
         legend : 'Fieldset =D',

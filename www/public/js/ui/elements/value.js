@@ -17,6 +17,7 @@ module.exports(GroupSet = new Class(function (params) {
         data = new Element('div', {attributes : {'class' : 'data'}})
     ]});
 
+    element.template = this;
     this.attach = element.attach;
     this.detach = element.detach;
 

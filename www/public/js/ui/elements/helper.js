@@ -43,6 +43,10 @@ module.exports(new Class(function (parent) {
         });
     }
 
+    element.template = this;
+    this.attach = element.attach;
+    this.detach = element.detach;
+
     /**
      * Controla a descrição
      *

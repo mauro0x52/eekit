@@ -17,6 +17,7 @@ module.exports(new Class(function (params) {
         legend = new Element('div', {attributes : {'class' : 'hide'}})
     ]});
 
+    element.template = this;
     this.attach = element.attach;
     this.detach = element.detach;
 

@@ -132,7 +132,7 @@ new Namespace({
 
     this.menu = new this.collection(appsmenu, []);
 
-    this.apps = new this.collection(sheets, []);
+    this.apps = new this.collection(sheets, [this.list, this.entity]);
 
     module.exports(this);
 });

@@ -274,7 +274,15 @@ module.exports(Element = new Class(function (tag, params) {
                 if (element.childNodes[i].nodeType === 3) {
                     result.push(element.childNodes[i].nodeValue);
                 } else if (element.childNodes[i].nodeType === 1) {
-                    result.push(new Element(element.childNodes[i]));
+                    if (element.childNodes[i].sdk) {
+                        if (element.childNodes[i].sdk.template) {
+                            result.push(element.childNodes[i].sdk.template);
+                        } else {
+                            result.push(element.childNodes[i].sdk);
+                        }
+                    } else {
+                        result.push(new Element(element.childNodes[i]));
+                    }
                 }
             }
             if (result.length === 1) {
