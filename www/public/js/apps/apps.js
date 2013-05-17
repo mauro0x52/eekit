@@ -1,8 +1,8 @@
 /*
  * Biblioteca de controle de aplicativos do eeKit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 var folder = '/js/apps/',
@@ -19,8 +19,8 @@ new Namespace({
 
     /* abre um aplicativo
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.open = function (params, app) {
 

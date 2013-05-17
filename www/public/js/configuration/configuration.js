@@ -1,8 +1,8 @@
 /*
  * COnfigurações do eekit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 var ajax = module.use('ajax');

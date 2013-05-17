@@ -395,10 +395,6 @@ form {
 }
 
 .tool > .sheets > .sheet:first-child {
-    width: 900px;
-}
-
-.tool > .sheets > .sheet:first-child {
     margin-left: 100px;
 }
 
@@ -471,6 +467,7 @@ form {
     height: auto;
     overflow-y: auto;
     overflow-x: hidden;
+    width: 660px;
 }
 
 /* close */
@@ -542,10 +539,12 @@ form {
 }
 
 .sheet.list:first-child > .body {
-    float: right;
     background-color: #fdfdeb;
     border-left: 1px dotted #b9ac9f;
-    width: 660px;
+}
+
+.sheet.list:first-child {
+    width: 900px;
 }
 
 .sheet.list > .body .groups,
@@ -1725,6 +1724,7 @@ form {
     background-color: #fff;
     border-bottom: 1px solid #b9ac9f;
     padding: 10px 20px;
+    height: 16px;
     text-align: right;
 }
 
@@ -1805,7 +1805,7 @@ form {
 }
 
 .sheets > .entity >  .body > .data-sets > .data-set  > .fields > .field {
-
+    min-height: 26px;
 }
 
 .sheets > .entity >  .body > .data-sets > .data-set  > .fields  .legend {

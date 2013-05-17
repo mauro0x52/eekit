@@ -1,8 +1,8 @@
 /*
  * Interface padrão de aplicativos do eekit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 var Element = module.use('element'),
@@ -47,8 +47,8 @@ module.exports(new Class(function (context) {
 
     /* Ajusta ao tamanho da janela
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.adjust = function () {
 
@@ -78,8 +78,8 @@ module.exports(new Class(function (context) {
 
     /* Controla o estado de load
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.loading = function (value) {
 
@@ -97,8 +97,8 @@ module.exports(new Class(function (context) {
 
     /* Controla o titulo do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.title = function (value) {
 

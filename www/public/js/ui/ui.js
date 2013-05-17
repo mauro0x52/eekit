@@ -1,8 +1,8 @@
 /*
  * Biblioteca de UI do eeKit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 var folder = '/js/ui/';
@@ -21,6 +21,9 @@ new Namespace({
     frame       : folder + 'app/frame/frame.js',
 
     helper      : folder + 'elements/helper.js',
+    dataset     : folder + 'elements/dataset.js',
+    data        : folder + 'elements/data.js',
+    value       : folder + 'elements/value.js',
     fieldset    : folder + 'elements/fieldset.js',
     inputText   : folder + 'elements/inputText.js',
     groupset    : folder + 'elements/groupset.js',

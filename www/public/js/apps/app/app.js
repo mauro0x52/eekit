@@ -1,8 +1,8 @@
 /*
  * Classe que representa um aplicativo do eekit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 module.exports(new Class (function (params) {
@@ -87,8 +87,8 @@ module.exports(new Class (function (params) {
 
     /* Encerra a execução do app e remove-o da ui
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.close = function () {
         this.ui.detach();
@@ -97,8 +97,8 @@ module.exports(new Class (function (params) {
 
     /* Controla a biblioteca de ajax do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.ajax = {
 
@@ -130,8 +130,8 @@ module.exports(new Class (function (params) {
 
     /* Controla a biblioteca de embeds e acionadores do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.apps = {
 
@@ -145,8 +145,8 @@ module.exports(new Class (function (params) {
 
     /* Controla a biblioteca de eventos do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.events = {
 
@@ -193,8 +193,8 @@ module.exports(new Class (function (params) {
 
     /* Controla a biblioteca de rotas do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.routes = {
 
@@ -370,8 +370,8 @@ module.exports(new Class (function (params) {
 
     /* Controla a biblioteca de web analytics do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.tracker = {
 

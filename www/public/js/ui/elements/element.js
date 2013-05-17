@@ -1,8 +1,8 @@
 /*
  * Elemento base de interface do eekit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 var instances = 0,
@@ -35,8 +35,8 @@ module.exports(Element = new Class(function (tag, params) {
 
     /* Retorna o id do objeto
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.id = function () {
         return element.getAttribute('id');
@@ -44,8 +44,8 @@ module.exports(Element = new Class(function (tag, params) {
 
     /* Controla o css do elemento
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.css = function (value) {
         if (value) {
@@ -58,8 +58,8 @@ module.exports(Element = new Class(function (tag, params) {
 
     /* Coloca elemento no nó pai
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.attach = function (parent) {
 
@@ -78,8 +78,8 @@ module.exports(Element = new Class(function (tag, params) {
 
     /* Remove elemento do nó pai
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.detach = function () {
 
@@ -98,8 +98,8 @@ module.exports(Element = new Class(function (tag, params) {
 
     /* Controla um atributo do objeto
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.attribute = function (name) {
 
@@ -152,8 +152,8 @@ module.exports(Element = new Class(function (tag, params) {
 
     /* Controla um evento do objeto
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.event = function (name) {
 
@@ -195,8 +195,8 @@ module.exports(Element = new Class(function (tag, params) {
 
     /* Controla o conteudo html do objeto
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.html = {
 

@@ -1,8 +1,8 @@
 /*
  * Interface de dialogo de aplicativos do eekit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 var Element = module.use('element'),
@@ -51,8 +51,8 @@ module.exports(new Class(function (context) {
 
     /* Controla o titulo do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.title = function (value) {
 
@@ -76,8 +76,8 @@ module.exports(new Class(function (context) {
 
     /* Controla a descrição do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.description = function (value) {
 
@@ -101,8 +101,8 @@ module.exports(new Class(function (context) {
 
     /* Controla o flash do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.error = function (value) {
 
@@ -126,8 +126,8 @@ module.exports(new Class(function (context) {
 
     /* Controla o formulário do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.form = {
 

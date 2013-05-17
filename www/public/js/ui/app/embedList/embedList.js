@@ -1,8 +1,8 @@
 /*
  * Interface de listagem embedada de aplicativos do eekit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 var Element  = module.use('element'),
@@ -23,8 +23,8 @@ module.exports(new Class(function (context) {
 
     /* Controla os grupos do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.groups = {
 

@@ -1,8 +1,8 @@
 /*
  * Interface de listagem de aplicativos do eekit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 var Element    = module.use('element'),
@@ -70,8 +70,8 @@ module.exports(new Class(function (context) {
 
     /* Controla o filtro do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.filter = {
 
@@ -124,15 +124,15 @@ module.exports(new Class(function (context) {
 
     /* Controla os grupos do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.actions = new Collection(actions, [Action]);
 
     /* Controla os grupos do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.groups = new Collection(groups, [GroupSet]);
 

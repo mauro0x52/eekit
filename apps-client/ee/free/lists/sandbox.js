@@ -4,7 +4,7 @@
  * @author Mauro Ribeiro
  * @since 2012-12
  */
-app.routes.list('/sandbox-list', function (params, data) {
+app.routes.list('/sandbox/list', function (params, data) {
 
     app.ui.title('Titulo do list sheet');
 
