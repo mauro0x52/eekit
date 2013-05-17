@@ -52,27 +52,32 @@ module.exports(new Class(function (params) {
     }, true);
 
     element.event('mouseover').bind(function (e) {
-        if (Empreendekit.ui.dragging) {
-
+        if (Empreendekit.ui.dragging && element.parent().parent().attribute('droppable').get() === 'true') {
             e.preventDefault();
 
-            var elements = element.parent().html.get(),
-                hovered_poisition,
-                dragging_poisition;
+            if (element.parent() === Empreendekit.ui.dragging.parent()) {
+                /* Elementos do mesmo grupo */
+                var elements = element.parent().html.get(),
+                    hovered_poisition,
+                    dragging_poisition;
 
-            for (var i in elements) {
-                if (elements[i].id() === element.id()) {
-                    hovered_poisition = i;
+                for (var i in elements) {
+                    if (elements[i] === element.template) {
+                        hovered_poisition = i;
+                    }
+                    if (elements[i] === Empreendekit.ui.dragging.template) {
+                        dragging_poisition = i;
+                    }
                 }
-                if (elements[i].id() === Empreendekit.ui.dragging.id()) {
-                    dragging_poisition = i;
-                }
-            }
 
-            if (hovered_poisition > dragging_poisition) {
-                Empreendekit.ui.dragging.html.attachAfter(element);
+                if (hovered_poisition > dragging_poisition) {
+                    Empreendekit.ui.dragging.html.attachAfter(element);
+                } else {
+                    Empreendekit.ui.dragging.html.attachBefore(element);
+                }
             } else {
-                Empreendekit.ui.dragging.html.attachBefore(element);
+                /* Elementos de grupos distintos */
+                element.html.attachAfter(Empreendekit.ui.dragging)
             }
         }
     });
@@ -90,7 +95,7 @@ module.exports(new Class(function (params) {
      */
     var css = function () {
         element.attribute('class').set('item ' + style.click + ' ' + style.dragg  + ' ' + style.visibility);
-    }
+    };
 
     /**
      * Inicia o drag'n drop
@@ -162,7 +167,7 @@ module.exports(new Class(function (params) {
                 click_cb.apply(that);
             }
         }
-    }
+    };
 
     /**
      * Controla a label do item
@@ -292,7 +297,7 @@ module.exports(new Class(function (params) {
         } else {
             return titleAnchor.attribute('href').get();
         }
-    }
+    };
 
     /**
      * Controla a visibilidade do item
@@ -370,8 +375,6 @@ module.exports(new Class(function (params) {
         this.visibility(params.visibility);
         this.icons.add(params.icons);
         this.actions.add(params.actions);
-//        this.droppableGroups(params.droppableGroups);
-//        this.drop(params.drop);
         this.click(params.click);
         if (params.drop) {
             this.drop(params.drop);

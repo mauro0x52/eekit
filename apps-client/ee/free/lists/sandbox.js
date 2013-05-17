@@ -81,9 +81,10 @@ app.routes.list('/sandbox/list', function (params, data) {
         header : {
             title : 'grupo vazio'
         },
+        droppable : true,
         items : [
-            new app.ui.item({
-                title : 'Titulo do item teste',
+            teste2 = new app.ui.item({
+                title : 'Titulo do item teste 2',
                 description : 'descrição do item',
                 label : {
                     color : 'blue',
@@ -93,8 +94,6 @@ app.routes.list('/sandbox/list', function (params, data) {
                     console.log('aew')
                 },
                 drop : function (group, position) {
-                    console.log(group);
-                    console.log(position);
                 },
                 actions : [
                     new app.ui.action({
@@ -107,7 +106,7 @@ app.routes.list('/sandbox/list', function (params, data) {
                         image : 'download',
                         tip : 'tooltip 2',
                         click : function () {
-                            test.drag();
+                            teste2.drag();
                         }
                     })
                 ]
@@ -140,7 +139,7 @@ app.routes.list('/sandbox/list', function (params, data) {
         },
         items : [
             test = new app.ui.item({
-                title : 'Titulo do item teste',
+                title : 'Titulo do item teste 1',
                 description : 'descrição do item',
                 label : {
                     color : 'blue',
@@ -150,8 +149,6 @@ app.routes.list('/sandbox/list', function (params, data) {
                     console.log('aew')
                 },
                 drop : function (group, position) {
-                    console.log(group);
-                    console.log(position);
                 },
                 actions : [
                     new app.ui.action({

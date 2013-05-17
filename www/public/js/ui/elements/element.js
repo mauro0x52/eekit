@@ -285,11 +285,8 @@ module.exports(Element = new Class(function (tag, params) {
                     }
                 }
             }
-            if (result.length === 1) {
-                return result[0];
-            } else {
-                return result;
-            }
+            
+            return result;
 
         },
 

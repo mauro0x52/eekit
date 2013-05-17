@@ -41,7 +41,8 @@ module.exports(new Class(function (params) {
     element.event('drop').bind(function () {
         var elements = items.html.get();
 
-        for (var i in elements) {
+        for (var i = 0; i < elements.length; i++) {
+            console.log(elements[i])
             elements[i].drop({
                 group    : that,
                 position : i
@@ -57,7 +58,7 @@ module.exports(new Class(function (params) {
             var elements = that.items.get();
 
             if (elements.length === 0) {
-                that.items.add(Empreendekit.ui.dragging.template)
+                items.html.attach(Empreendekit.ui.dragging);
             }
         }
     });
@@ -159,6 +160,24 @@ module.exports(new Class(function (params) {
         } else {
             return element.attribute('class').get().replace('group', '');
         }
+    };
+
+    /**
+     * Controla os status de drop
+     *
+     * @author Rafael Erthal
+     * @since  2013-05
+     */
+    this.droppable = function (value) {
+        if (value === true || value === false) {
+            if (value) {
+                element.attribute('droppable').set('true')
+            } else {
+                element.attribute('droppable').set('false')
+            }
+        } else {
+            return element.attribute('droppable').get() === 'true';
+        }
     }
 
     /**
@@ -174,6 +193,7 @@ module.exports(new Class(function (params) {
      */
     if (params) {
         this.items.add(params.items);
+        this.droppable(params.droppable);
         if (params.header) {
             this.header.title(params.header.title);
             this.header.icons.add(params.header.icons);
