@@ -38,6 +38,7 @@ module.exports(new Class(function (context) {
     ]);
 
     this.sheet = undefined;
+    this.action = Action;
     this.dataset = DataSet;
     this.data = Data;
     this.value = Value;
