@@ -4,9 +4,20 @@
  * @author Mauro Ribeiro
  * @since 2012-12
  */
-app.routes.list('/sandbox-list', function (params, data) {
+app.routes.list('/sandbox/list', function (params, data) {
 
     app.ui.title('Titulo do list sheet');
+
+    app.ui.actions.add([
+        new app.ui.action({
+            legend : 'ação',
+            image : 'add'
+        }),
+        new app.ui.action({
+            legend : 'ação',
+            image : 'add'
+        })
+    ]);
 
     var icon;
     var test;
@@ -34,7 +45,17 @@ app.routes.list('/sandbox-list', function (params, data) {
             ]
         },
         footer : {
-            title : 'Primeiro footer'
+            title : 'Primeiro footer',
+            icons : [
+                new app.ui.icon({
+                    legend : 'A',
+                    image : 'add'
+                }),
+                new app.ui.icon({
+                    legend : 'B',
+                    image : 'add'
+                })
+            ],
         }
     });
     setTimeout(function() {
@@ -218,6 +239,23 @@ app.routes.list('/sandbox-list', function (params, data) {
             })
         ]
     })
+
+
+    var fieldset = new app.ui.fieldset({
+        legend : 'Fieldset =D',
+        fields : [
+            input = new app.ui.inputText({
+                legend : 'aew'
+            })
+        ]
+    });
+    app.ui.filter.fieldsets.add(fieldset);
+
+
+    setTimeout(function() {
+        input.helper.description('Descrição do helper');
+        input.helper.example('Ex. Clique na verdura e compre uma alface.');
+    }, 1000)
 
     groupset.groups.add(group);
     app.ui.groups.add(groupset);

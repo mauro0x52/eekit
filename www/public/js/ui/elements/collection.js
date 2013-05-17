@@ -1,8 +1,8 @@
 /*
  * Coleção de elementos HTML dentro de um elemento no sdk
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 var instances = 0,
@@ -30,8 +30,8 @@ module.exports(Element = new Class(function (element, tags) {
 
     /* Adiciona coleção de elementos no objeto
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.add = function (elements) {
         if (elements) {

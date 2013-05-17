@@ -1,41 +1,54 @@
-/*
+/**
  * Interface de entidade de aplicativos do eekit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
-var Element = module.use('element'),
-    Css     = module.use('css'),
-    App     = module.use('app');
+var Element    = module.use('element'),
+    Css        = module.use('css'),
+    App        = module.use('app'),
+    Collection = module.use('collection'),
+    Action     = module.use('action'),
+    DataSet    = module.use('dataset'),
+    Data       = module.use('data'),
+    Value      = module.use('value');
 
 module.exports(new Class(function (context) {
 
     this.inherit(App);
 
-    var actions,
-        subtitle,
-        description,
-        datasets,
-        embeds;
+    var actions, subtitle, description, datasets, relateds;
 
-    this.body.html.attach(new Element('div', {attributes : {'class' : 'body'}, html : [
-        actions     = new Element('div'),
-        subtitle    = new Element('h5'),
-        description = new Element('p'),
-        datasets    = new Element('div'),
-        embeds      = new Element('div')
-    ]}));
+    this.sheet.html.attach([
+        new Element('div', {attributes : {'class' : 'body'}, html : [
+            /* Actions */
+            new Element('div', {attributes : {'class' : 'menu'}, html : [
+                actions  = new Element('menu', {attributes : {'class' : 'actions'}})
+            ]}),
+            /* Subtitle */
+            subtitle = new Element('h5', {attributes : {'class' : 'title'}}),
+            /* Description */
+            description = new Element('p', {attributes : {'class' : 'description'}}),
+            /* Datasets */
+            datasets = new Element('div', {attributes : {'class' : 'data-sets'}}),
+            /* Relateds */
+            relateds = new Element('div', {attributes : {'class' : 'relateds'}})
+        ]})
+    ]);
 
-    this.body = undefined;
+    this.sheet = undefined;
+    this.dataset = DataSet;
+    this.data = Data;
+    this.value = Value;
 
-    /* Controla o subtitulo do app
+    /**
+     * Controla o subtitulo do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author rafael erthal
+     * @since  2013-05
      */
     this.subtitle = function (value) {
-
         if (value) {
 
             if (value.constructor != String) {
@@ -51,16 +64,14 @@ module.exports(new Class(function (context) {
         } else {
             subtitle.html.get();
         }
-
     };
 
     /* Controla a descrição do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.description = function (value) {
-
         if (value) {
 
             if (value.constructor != String) {
@@ -76,70 +87,30 @@ module.exports(new Class(function (context) {
         } else {
             description.html.get();
         }
-
     };
 
-    /* Controla os botões de ação do app
+    /**
+     * Controla os botões de ação do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Mauro Ribeiro
+     * @since  2013-05
      */
-    this.actions = {
+    this.actions = new Collection(actions, [Action]);
 
-        get : function () {
-
-        },
-
-        add : function () {
-
-        },
-
-        remove : function () {
-
-        }
-
-    };
-
-    /* Controla os datasets do app
+    /**
+     * Controla os datasets do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Mauro Ribeiro
+     * @since  2013-05
      */
-    this.datasets = {
+    this.datasets = new Collection(datasets, [DataSet]);
 
-        get : function () {
-
-        },
-
-        add : function () {
-
-        },
-
-        remove : function () {
-
-        }
-
-    };
-
-    /* Controla os embeds do app
+    /**
+     * Controla os relacionados do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
-    this.embeds = {
-
-        get : function () {
-
-        },
-
-        add : function () {
-
-        },
-
-        remove : function () {
-
-        }
-
-    };
+    //this.relateds = new Collection(relateds, [EmbeddedList, EmbeddedEntity]);
 
 }));

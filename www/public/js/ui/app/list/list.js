@@ -1,14 +1,17 @@
 /*
  * Interface de listagem de aplicativos do eekit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 var Element    = module.use('element'),
     Css        = module.use('css'),
     App        = module.use('app'),
     Collection = module.use('collection'),
+    Helper     = module.use('helper'),
+    FieldSet   = module.use('fieldset'),
+    InputText  = module.use('inputText'),
     GroupSet   = module.use('groupset'),
     Group      = module.use('group'),
     Item       = module.use('item'),
@@ -25,7 +28,8 @@ module.exports(new Class(function (context) {
         form,
         fieldsets,
         body,
-        action;
+        action,
+        actions;
 
     this.sheet.html.attach([
         /* Filtro */
@@ -45,12 +49,19 @@ module.exports(new Class(function (context) {
         ]}),
         /* Body */
         new Element('div', {attributes : {'class' : 'body'}, html : [
+            /* Actions */
+            new Element('div', {attributes : {'class' : 'menu'}, html : [
+                actions  = new Element('menu', {attributes : {'class' : 'actions'}})
+            ]}),
             /* Grupos */
             groups  = new Element('ol', {attributes : {'class' : 'groups'}})
         ]})
     ]);
 
     this.sheet = undefined;
+    this.helper = Helper;
+    this.fieldset = FieldSet;
+    this.inputText = InputText;
     this.groupset = GroupSet;
     this.group = Group;
     this.item = Item;
@@ -59,8 +70,8 @@ module.exports(new Class(function (context) {
 
     /* Controla o filtro do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.filter = {
 
@@ -107,28 +118,21 @@ module.exports(new Class(function (context) {
 
         },
 
-        fieldsets : {
-
-            get : function () {
-
-            },
-
-            add : function () {
-
-            },
-
-            remove : function () {
-
-            }
-
-        }
+        fieldsets : new Collection(fieldsets, [FieldSet])
 
     };
 
     /* Controla os grupos do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
+     */
+    this.actions = new Collection(actions, [Action]);
+
+    /* Controla os grupos do app
+     *
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.groups = new Collection(groups, [GroupSet]);
 

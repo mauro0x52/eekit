@@ -11,6 +11,7 @@ var Element    = module.use('element'),
     Icon       = module.use('icon'),
     Group      = module.use('group'),
     Action     = module.use('action'),
+    Helper     = module.use('helper'),
     GroupSet;
 
 module.exports(GroupSet = new Class(function (params) {
@@ -97,7 +98,7 @@ module.exports(GroupSet = new Class(function (params) {
             }
         },
         icons : new Collection(footerIcons, [Icon]),
-        //helper : new Helper(footer)
+        helper : new Helper(footer)
     };
 
     /**
@@ -161,11 +162,12 @@ module.exports(GroupSet = new Class(function (params) {
             if (params.footer.icons) {
                 this.footer.icons.add(params.footer.icons);
             }
-//            if (params.footer.helper) {
-//                this.footer.helper.description(params.footer.helper.description);
-//                this.footer.helper.example(params.footer.helper.example);
-//            }
+            if (params.footer.helper) {
+                this.footer.helper.description(params.footer.helper.description);
+                this.footer.helper.example(params.footer.helper.example);
+            }
         }
+        this.visibility(params.visibility);
     }
 
 }));

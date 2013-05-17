@@ -1,8 +1,8 @@
 /*
  * Define os estilos dos elementos do eekit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 var instances = 0,
@@ -21,8 +21,8 @@ module.exports(Css = new Class(function (properties) {
 
     /* Controla um seletor do objeto
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.selector = function (name) {
         var position;
@@ -62,8 +62,8 @@ module.exports(Css = new Class(function (properties) {
 
     /* Controla um atributo do objeto
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.property = function (name) {
 
@@ -101,8 +101,8 @@ module.exports(Css = new Class(function (properties) {
 
     /* Método que coloca a classe css no elemento
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.apply = function (value) {
 
@@ -121,8 +121,8 @@ module.exports(Css = new Class(function (properties) {
 
     /* Método que implementa a classe css no dom
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     var render = function () {
         var css = '.' + name + ' {';

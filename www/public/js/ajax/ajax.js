@@ -1,8 +1,8 @@
 /*
  * Biblioteca de ajax do eeKit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 var auth = module.use('auth'),
@@ -12,8 +12,8 @@ module.exports({
 
     /* realiza chamada CORS com método GET
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     get : function (path, cb, app) {
 
@@ -55,8 +55,8 @@ module.exports({
 
     /* realiza chamada CORS com método POST
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     post : function (path, cb, app) {
 
@@ -98,8 +98,8 @@ module.exports({
 
     /* realiza chamada CORS com método PUT
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     put : function (path, cb, app) {
 
@@ -141,8 +141,8 @@ module.exports({
 
     /* realiza chamada CORS com método DELETE
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     del : function (path, cb, app) {
 

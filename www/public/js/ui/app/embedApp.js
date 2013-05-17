@@ -1,8 +1,8 @@
 /*
  * Interface padrão de aplicativos embedados do eekit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 var Element = module.use('element'),
@@ -31,8 +31,8 @@ module.exports(new Class(function (context) {
 
     /* Controla o titulo do app
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     this.title = function (value) {
 

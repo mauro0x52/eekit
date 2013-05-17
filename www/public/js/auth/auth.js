@@ -1,8 +1,8 @@
 /*
  * Biblioteca de autenticação do eeKit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 module.exports({

@@ -1,16 +1,16 @@
 /*
  * Biblioteca de controle de rotas do eeKit
  *
- * @author: rafael erthal
- * @since: 2013-05
+ * @author Rafael Erthal
+ * @since  2013-05
  */
 
 module.exports({
 
     /* Altera o path
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     redirect : function (path) {
         history.pushState({}, 'EmpreendeKit', path);
@@ -18,8 +18,8 @@ module.exports({
 
     /* Cerifica se o path é compatível com o address bar
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     match : function (path) {
         var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'],
@@ -43,8 +43,8 @@ module.exports({
 
     /* Retorna os paramêtros do path compatíveis com o address bar
      *
-     * @author: rafael erthal
-     * @since: 2013-05
+     * @author Rafael Erthal
+     * @since  2013-05
      */
     params : function (path) {
         var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'],
