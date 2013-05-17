@@ -77,6 +77,44 @@ app.routes.list('/sandbox/list', function (params, data) {
     }, 1200)
 
 
+    var emptyGroup = new app.ui.group({
+        header : {
+            title : 'grupo vazio'
+        },
+        items : [
+            new app.ui.item({
+                title : 'Titulo do item teste',
+                description : 'descrição do item',
+                label : {
+                    color : 'blue',
+                    legend : 'label'
+                },
+                click : function () {
+                    console.log('aew')
+                },
+                drop : function (group, position) {
+                    console.log(group);
+                    console.log(position);
+                },
+                actions : [
+                    new app.ui.action({
+                        legend : 'ação',
+                        image : 'trash',
+                        tip : 'tooltip'
+                    }),
+                    new app.ui.action({
+                        legend : 'outra ação',
+                        image : 'download',
+                        tip : 'tooltip 2',
+                        click : function () {
+                            test.drag();
+                        }
+                    })
+                ]
+            })
+        ]
+    })
+
     var group = new app.ui.group({
         header : {
             title : 'Titulo do grupo',
@@ -243,8 +281,6 @@ app.routes.list('/sandbox/list', function (params, data) {
         ]
     })
 
-    console.log(group.items.get());
-
     var fieldset = new app.ui.fieldset({
         legend : 'Fieldset =D',
         fields : [
@@ -261,6 +297,6 @@ app.routes.list('/sandbox/list', function (params, data) {
         input.helper.example('Ex. Clique na verdura e compre uma alface.');
     }, 1000)
 
-    groupset.groups.add(group);
+    groupset.groups.add([emptyGroup, group]);
     app.ui.groups.add(groupset);
 });

@@ -34,6 +34,7 @@ module.exports(new Class(function (params) {
     ]});
 
     element.template = this;
+    this.id     = element.id;
     this.attach = element.attach;
     this.detach = element.detach;
 
@@ -41,10 +42,23 @@ module.exports(new Class(function (params) {
         var elements = items.html.get();
 
         for (var i in elements) {
-            elements[i].event('release').trigger({
+            elements[i].drop({
                 group    : that,
                 position : i
             });
+        }
+    });
+
+    element.event('mouseover').bind(function (e) {
+        if (Empreendekit.ui.dragging) {
+
+            e.preventDefault();
+
+            var elements = that.items.get();
+
+            if (elements.length === 0) {
+                that.items.add(Empreendekit.ui.dragging.template)
+            }
         }
     });
 

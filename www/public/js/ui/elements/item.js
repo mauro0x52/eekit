@@ -51,21 +51,10 @@ module.exports(new Class(function (params) {
         }
     }, true);
 
-    element.event('release').bind(function (e) {
-        style.dragg = '';
-        css();
-
-        Empreendekit.ui.dragging = null;
-
-        if (drop_cb && e.detail) {
-            drop_cb(e.detail.group, e.detail.position);
-        }
-    });
-
     element.event('mouseover').bind(function (e) {
         if (Empreendekit.ui.dragging) {
 
-            e.preventDefault(); 
+            e.preventDefault();
 
             var elements = element.parent().html.get(),
                 hovered_poisition,
@@ -87,8 +76,9 @@ module.exports(new Class(function (params) {
             }
         }
     });
-    
+
     element.template = this;
+    this.id     = element.id;
     this.attach = element.attach;
     this.detach = element.detach;
 
@@ -97,7 +87,7 @@ module.exports(new Class(function (params) {
      *
      * @author Rafael Erthal
      * @since  2013-05
-     */    
+     */
     var css = function () {
         element.attribute('class').set('item ' + style.click + ' ' + style.dragg  + ' ' + style.visibility);
     }
@@ -122,20 +112,26 @@ module.exports(new Class(function (params) {
      * @since  2013-05
      */
     this.drop = function (value) {
-        if (value) {
+        if (!value) {
+            throw new Error({
+                source    : 'item.js',
+                method    : 'click',
+                message   : 'Drop value must be defined',
+                arguments : arguments
+            });
+        }
 
-            if (value.constructor !== Function) {
-                throw new Error({
-                    source    : 'item.js',
-                    method    : 'click',
-                    message   : 'Click value must be a function',
-                    arguments : arguments
-                });
-            }
-
+        if (value.constructor === Function) {
             drop_cb = value;
         } else {
-            element.event('release').trigger();
+            style.dragg = '';
+            css();
+
+            Empreendekit.ui.dragging = null;
+
+            if (drop_cb && value) {
+                drop_cb(value.group, value.position);
+            }
         }
     };
 
@@ -334,7 +330,7 @@ module.exports(new Class(function (params) {
                      return 'hide';
                 case 'fade' :
                     return 'fade';
-                default : 
+                default :
                     return 'show';
             }
         }

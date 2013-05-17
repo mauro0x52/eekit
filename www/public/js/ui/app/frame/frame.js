@@ -27,6 +27,6 @@ module.exports(new Class(function (context) {
      * @author Rafael Erthal
      * @since  2013-05
      */
-    this.html = new Collection(element, []);
+    this.html = new Collection(element, [Element]);
 
 }));

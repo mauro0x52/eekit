@@ -44,6 +44,7 @@ module.exports(new Class(function (parent) {
     }
 
     element.template = this;
+    this.id     = element.id;
     this.attach = element.attach;
     this.detach = element.detach;
 

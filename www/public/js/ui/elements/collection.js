@@ -59,7 +59,6 @@ module.exports(Element = new Class(function (element, tags) {
                     }
                 }
             }
-
             if (!valid) {
                 throw new Error({
                     source    : 'collection.js',
@@ -68,7 +67,6 @@ module.exports(Element = new Class(function (element, tags) {
                     arguments : arguments
                 })
             }
-
             element.html.attach(elements);
         }
     };
