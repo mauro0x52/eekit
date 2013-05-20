@@ -58,23 +58,6 @@ app.routes.list('/sandbox/list', function (params, data) {
             ],
         }
     });
-    setTimeout(function() {
-        groupset.header.title('Titulo!!!');
-        groupset.footer.title('Footer!!!');
-        groupset.visibility('hide')
-    }, 500)
-    setTimeout(function() {
-        groupset.visibility('show')
-    }, 1000)
-
-    icon = new app.ui.icon({
-        legend : 'icone',
-        image : 'add'
-    });
-    groupset.header.icons.add(icon);
-    setTimeout(function() {
-        icon.legend('segundo icone');
-    }, 1200)
 
 
     var emptyGroup = new app.ui.group({
@@ -91,7 +74,10 @@ app.routes.list('/sandbox/list', function (params, data) {
                     legend : 'label'
                 },
                 click : function () {
-                    console.log('aew')
+                    app.apps.open({
+                        app   : 'ee',
+                        route : '/sandbox/list'
+                    });
                 },
                 drop : function (group, position) {
                 },

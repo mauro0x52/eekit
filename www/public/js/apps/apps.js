@@ -68,8 +68,23 @@ new Namespace({
             } else if (newapp.type() !== 'embedList' && newapp.type() !== 'embedEntity') {
                 if (!newapp.caller()) {
                     ui.apps.remove();
+                    ui.appMenu.remove();
+                    /* Renderiza o menu do app */
+                    for (var i in newapp.menu) {
+                        ui.appMenu.add(new ui.appMenuItem({
+                            legend : newapp.menu[i].legend,
+                            image  : newapp.menu[i].image,
+                            href   : newapp.menu[i].href,
+                            tip    : newapp.menu[i].tip
+                        }))
+                    }
                 }
+
                 ui.apps.add(newapp.ui);
+                ui.navigation.add(newapp.ui.navigation);
+
+                newapp.ui.click();
+
                 if (newapp.type() === 'frame') {
                     ui.collapse(true);
                 } else {

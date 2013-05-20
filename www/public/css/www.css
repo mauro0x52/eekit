@@ -388,10 +388,10 @@ form {
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
     width: 660px;
     background-color: #fdfdeb;
-    transition: all 0.2s ease;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    -o-transition: all 0.2s ease;
+    transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
 }
 
 .tool > .sheets > .sheet:first-child {
@@ -402,10 +402,6 @@ form {
     position: relative;
     background-color: #6096ae;
     height: 32px;
-    transition: all 0.2s linear;
-    -webkit-transition: all 0.2s linear;
-    -moz-transition: all 0.2s linear;
-    -o-transition: all 0.2s linear;
 }
 .tool > .sheets > .sheet > .header > .title {
     position: absolute;
@@ -413,7 +409,7 @@ form {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
-    top: 6px;
+    top: 8px;
     left: 20px;
     font-size: 16px;
 }
@@ -421,15 +417,21 @@ form {
 
 /* colapsado */
 .tool > .sheets > .sheet.collapsed {
-    width: 80px;
-    margin-right: -45px;
+    width: 60px;
+    margin-right: -25px;
+}
+.tool > .sheets > .sheet.collapsed:last-child {
+    width: 40px;
 }
 
-.tool > .sheets > .sheet.collapsed:hover,
 .tool > .sheets > .sheet.collapsed:hover {
     margin-left: -5px;
-    margin-right: -40px;
+    margin-right: -20px;
     box-shadow: 0 0 15px rgba(0,0,0,0.6);
+}
+
+.tool > .sheets > .sheet.collapsed:last-child:hover {
+    width: 45px;
 }
 
 .tool > .sheets > .sheet.collapsed:first-child:hover {
@@ -474,8 +476,12 @@ form {
 .sheets > .sheet > .header > .close {
     position: absolute;
     right: 8px;
-    top: 5px;
+    top: 10px;
     cursor: pointer;
+}
+
+.sheets > .sheet.collapsed > .header > .close {
+    display: none;
 }
 
 .sheets > .sheet > .header > .close > .image {
@@ -1161,6 +1167,7 @@ form {
     -moz-transition: all 0.2s linear;
     -o-transition: all 0.2s linear;
     z-index: 1000;
+    display: none;
 }
 
 .sheet .related.list > .filter {
@@ -1168,6 +1175,7 @@ form {
 }
 
 .sheet.list:first-child > .filter {
+    display: block;
     width: 260px;
     top: 32px;
     left: 0;

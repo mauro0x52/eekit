@@ -11,26 +11,31 @@ new Namespace({
     element     : folder + 'elements/element.js',
     css         : folder + 'elements/css.js',
     collection  : folder + 'elements/collection.js',
-    app         : folder + 'app/app.js',
-    embedApp    : folder + 'app/embedApp.js',
-    entity      : folder + 'app/entity/entity.js',
-    list        : folder + 'app/list/list.js',
-    embedEntity : folder + 'app/embedEntity/embedEntity.js',
-    embedList   : folder + 'app/embedList/embedList.js',
-    dialog      : folder + 'app/dialog/dialog.js',
-    frame       : folder + 'app/frame/frame.js',
 
-    helper      : folder + 'elements/helper.js',
-    dataset     : folder + 'elements/dataset.js',
-    data        : folder + 'elements/data.js',
-    value       : folder + 'elements/value.js',
-    fieldset    : folder + 'elements/fieldset.js',
-    inputText   : folder + 'elements/inputText.js',
-    groupset    : folder + 'elements/groupset.js',
-    group       : folder + 'elements/group.js',
-    item        : folder + 'elements/item.js',
-    icon        : folder + 'elements/icon.js',
-    action      : folder + 'elements/action.js'
+    app          : folder + 'app/app.js',
+    embedApp     : folder + 'app/embedApp.js',
+    entity       : folder + 'app/entity/entity.js',
+    list         : folder + 'app/list/list.js',
+    embedEntity  : folder + 'app/embedEntity/embedEntity.js',
+    embedList    : folder + 'app/embedList/embedList.js',
+    dialog       : folder + 'app/dialog/dialog.js',
+    frame        : folder + 'app/frame/frame.js',
+
+    appIcon      : folder + 'elements/appIcon.js',
+    appMenuItem  : folder + 'elements/appMenuItem.js',
+    appNavigation: folder + 'elements/appNavigation.js',
+
+    helper       : folder + 'elements/helper.js',
+    dataset      : folder + 'elements/dataset.js',
+    data         : folder + 'elements/data.js',
+    value        : folder + 'elements/value.js',
+    fieldset     : folder + 'elements/fieldset.js',
+    inputText    : folder + 'elements/inputText.js',
+    groupset     : folder + 'elements/groupset.js',
+    group        : folder + 'elements/group.js',
+    item         : folder + 'elements/item.js',
+    icon         : folder + 'elements/icon.js',
+    action       : folder + 'elements/action.js'
 }, function () {
 
     var element,
@@ -41,6 +46,7 @@ new Namespace({
         appsmenu,
         navigation,
         appmenu,
+        dialogs,
         sheets;
 
     element = new this.element('div', {attributes : {'class' : 'body'}, html : [
@@ -130,9 +136,15 @@ new Namespace({
 
     };
 
-    this.menu = new this.collection(appsmenu, []);
+    this.navigation = new this.collection(navigation, [this.appNavigation]);
+
+    this.appMenu = new this.collection(appmenu, [this.appMenuItem])
+
+    this.menu = new this.collection(appsmenu, [this.appIcon]);
 
     this.apps = new this.collection(sheets, [this.list, this.entity]);
+
+    //this.dialogs = new this.collection(dialogs, [this.dialog])
 
     module.exports(this);
 });

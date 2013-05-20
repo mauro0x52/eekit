@@ -43,15 +43,13 @@
                 /* Exibe lista de apps no menu do usuário */
                 for (var i in this.config.apps) {
                     if (this.config.apps[i].slug !== 'ee') {
-                        this.ui.menu.add(return new this.ui.appIcon({
-                            legend : app.name,
-                            image  : app.slug,
-                            title  : app.name,
-                            href   : app.slug
+                        this.ui.menu.add(new this.ui.appIcon({
+                            legend : this.config.apps[i].name,
+                            image  : this.config.apps[i].slug
                         }))
                     }
                 }
-                
+
             });
         </script>
     </body>

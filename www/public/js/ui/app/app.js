@@ -10,11 +10,12 @@ var Element = module.use('element'),
 
 module.exports(new Class(function (context) {
 
-    var that = this,
+    var self = this,
         element,
         title,
         close,
-        load;
+        load,
+        click_cb;
 
     element = new Element('div', {attributes : {'class' : 'sheet '+context.type()}, html : [
         /* Header */
@@ -34,16 +35,57 @@ module.exports(new Class(function (context) {
             new Element('div', {attributes : {'class' : 'image'}}),
             new Element('div', {attributes : {'class' : 'legend'}, html : 'carregando'})
         ]})
-    ],
-    events : {
-        click : function () {
+    ]});
 
-        }
-    }});
+    element.event('click').bind(function (evt) {
+        self.click();
+    });
 
+    element.template = this;
+    this.id     = element.id;
     this.sheet = element;
     this.attach = element.attach;
     this.detach = element.detach;
+
+    this.navigation = new Empreendekit.ui.appNavigation();
+
+    this.navigation.click(function () {
+        element.event('click').trigger();
+    });
+
+    this.click = function (value) {
+        if (value) {
+
+            if (value.constructor === Function) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'click',
+                    message   : 'Click value must be a function',
+                    arguments : arguments
+                });
+            }
+
+            click_cb = value;
+        } else {
+            var apps = Empreendekit.ui.apps.get(),
+                navigations = Empreendekit.ui.navigation.get(),
+                i;
+
+            for (i = 0; i < apps.length; i++) {
+                if (apps[i] === self) {
+                    apps[i].collapse(false);
+                    navigations[i].select(true);
+                } else {
+                    apps[i].collapse(true);
+                    navigations[i].select(false);
+                }
+            }
+
+            if (click_cb) {
+                click_cb.apply(self);
+            }
+        }
+    };
 
     /* Ajusta ao tamanho da janela
      *
@@ -73,6 +115,25 @@ module.exports(new Class(function (context) {
         }
 
         element.attribute('style').set('height : ' + height);
+
+    };
+
+    /* Controla o estado de abertura do app
+     *
+     * @author Rafael Erthal
+     * @since  2013-05
+     */
+    this.collapse = function (value) {
+
+        if (value === true || value === false) {
+            if (value) {
+                element.attribute('class').set('sheet '+context.type() + ' collapsed');
+            } else {
+                element.attribute('class').set('sheet '+context.type() + ' selected');
+            }
+        } else {
+            return element.attribute('class').get().indexOf('collapsed') > -1;
+        }
 
     };
 
@@ -113,6 +174,7 @@ module.exports(new Class(function (context) {
                 });
             }
 
+            self.navigation.legend(value);
             title.html.set(value);
         } else {
             title.html.get();
@@ -120,9 +182,8 @@ module.exports(new Class(function (context) {
 
     };
 
-    window.addEventListener('resize', function () {
-        that.adjust();
-    });
+    window.addEventListener('resize', self.adjust);
+
     this.adjust();
 
 }));
