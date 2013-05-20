@@ -28,6 +28,8 @@
                 path    : folder + 'path/path.js',
                 ui      : folder + 'ui/ui.js'
             }, function () {
+
+                /* Abre o app da rota ou a home */
                 var app =  location.pathname.match(/^\/([^\/]+)/) || [],
                     route = location.pathname.match(/^\/[^\/]+(.*)/) || [];
 
@@ -37,6 +39,19 @@
                     open  : function (app) {
                     }
                 });
+
+                /* Exibe lista de apps no menu do usuário */
+                for (var i in this.config.apps) {
+                    if (this.config.apps[i].slug !== 'ee') {
+                        this.ui.menu.add(return new this.ui.appIcon({
+                            legend : app.name,
+                            image  : app.slug,
+                            title  : app.name,
+                            href   : app.slug
+                        }))
+                    }
+                }
+                
             });
         </script>
     </body>
