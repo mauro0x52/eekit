@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.1.4 (2013-05-20)
+
+Correções
+- BCC do Sengrid
+
 ## 1.1.3 (2013-05-17)
 
 Melhorias
