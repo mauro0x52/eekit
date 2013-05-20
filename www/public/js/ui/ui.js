@@ -144,7 +144,7 @@ new Namespace({
 
     this.apps = new this.collection(sheets, [this.list, this.entity]);
 
-    //this.dialogs = new this.collection(dialogs, [this.dialog])
+    this.dialogs = new this.collection(dialogs, [this.dialog])
 
     module.exports(this);
 });

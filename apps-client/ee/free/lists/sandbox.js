@@ -11,11 +11,23 @@ app.routes.list('/sandbox/list', function (params, data) {
     app.ui.actions.add([
         new app.ui.action({
             legend : 'ação',
-            image : 'add'
+            image : 'add',
+            click : function() {
+                app.apps.open({
+                    app   : 'ee',
+                    route : '/sandbox/dialog'
+                });
+            }
         }),
         new app.ui.action({
             legend : 'ação',
-            image : 'add'
+            image : 'add',
+            click : function() {
+                app.apps.open({
+                    app   : 'ee',
+                    route : '/sandbox/dialog'
+                });
+            }
         })
     ]);
 

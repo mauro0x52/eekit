@@ -19,23 +19,23 @@ module.exports(new Class(function (context) {
         fieldsets,
         action;
 
-    element = new Element('div', {html : [
-        new Element('div'),
-        new Element('div', {html : [
-            new Element('div', {html : [
-                new Element('div', {html : [
-                    title = new Element('h1'),
-                    close = new Element('div', {html : [
-                        new Element('div'),
-                        new Element('div', {html : 'fechar'})
-                    ]})
+    element = new Element('div', {attributes : {'class' : 'modal-wrapper'}, html : [
+        new Element('div', {attributes : {'class' : 'background'}}),
+        new Element('div', {attributes : {'class' : 'centralizer'}, html : [
+            new Element('div', {attributes : {'class' : 'modal'}, html : [
+                new Element('div', {attributes : {'class' : 'header'}, html : [
+                    title = new Element('h1', {attributes : {'class' : 'title'}})
                 ]}),
-                flash       = new Element('div'),
-                description = new Element('p'),
-                form        = new Element('form', {html : [
-                    fieldsets = new Element('div'),
-                    new Element('div', { html : [
-                        action = new Element('input', {attributes : {type : 'submit'}})
+                close = new Element('div', {html : [
+                    new Element('div', {attributes : {'class' : 'image'}}),
+                    new Element('div', {attributes : {'class' : 'legend'}, html : 'fechar'})
+                ]}),
+                flash       = new Element('div', {attributes : {'class' : 'flash hide'}}),
+                description = new Element('p', {attributes : {'class' : 'description hide'}}),
+                form        = new Element('form', {attributes : {'class' : 'form'}}, {html : [
+                    fieldsets = new Element('div', {attributes : {'class' : 'field-sets'}}),
+                    new Element('div', {attributes : {'class' : 'submit'}, html : [
+                        action = new Element('input', {attributes : {'class' : 'input', type : 'submit'}})
                     ]})
                 ], events : {
                     submit : function (evt) {
