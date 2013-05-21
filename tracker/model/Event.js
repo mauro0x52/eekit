@@ -99,7 +99,15 @@ eventSchema.statics.groupByUser = function (cb) {
 };
 
 eventSchema.statics.user = function (user, cb) {
-	Event.find({user : user}, function (error, events) {
+	var query = {};
+
+	if (user.indexOf('_') > -1) {
+		query = {ip : user.replace(/\_/g, '.')};
+	} else {
+		query = {user : user};
+	}
+
+	Event.find(query, function (error, events) {
 	    var users = {};
 
         if (error) {
