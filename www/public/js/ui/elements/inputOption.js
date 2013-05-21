@@ -12,7 +12,7 @@ var Element     = module.use('element'),
 module.exports(new Class(function (params) {
     var element,
         checkbox, label, image, legend,
-        status, click_cb, option_value,
+        status = false, click_cb, option_value,
         self = this;
 
     element = new Element('li', {attributes : {'class' : 'option'}, html : [
@@ -29,15 +29,17 @@ module.exports(new Class(function (params) {
     this.detach = element.detach;
 
     element.event('click').bind(function () {
-        status = !status;
-        if (status) {
-            element.attribute('class').set('option selected');
-        } else {
-            element.attribute('class').set('option');
-        }
-        if (click_cb) {
-            click_cb.apply(click_cb);
-        }
+        setTimeout(function () {
+            status = !status;
+            if (status) {
+                element.attribute('class').set('option selected');
+            } else {
+                element.attribute('class').set('option');
+            }
+            if (click_cb) {
+                click_cb.apply(click_cb);
+            }
+        }, 50);
     });
 
     /**
@@ -60,7 +62,7 @@ module.exports(new Class(function (params) {
 
             legend.html.set(value);
         } else {
-            return legend.html.get();
+            return legend.html.get()[0];
         }
     };
 

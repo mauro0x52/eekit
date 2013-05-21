@@ -12,7 +12,7 @@ var Element     = module.use('element'),
 
 module.exports(new Class(function (params) {
     var element,
-        legend, input, arrow, selected, options, actions, markall, unmarkall,
+        legend, input, arrow, selected, selected_list, options, actions, markall, unmarkall,
         type, change_cb,
         self = this;
 
@@ -25,9 +25,9 @@ module.exports(new Class(function (params) {
             arrow = new Element('div', {attributes : {'class' : 'arrow hide'}, html : [
                 new Element('div', {attributes : {'class' : 'fill'}})
             ]}),
-            new Element('div', {attributes : {'class' : 'selected-list hide'}, html : [
-                new Element('div', {attributes : {'class' : 'legend'}}),
-                selected = new Element('ul', {attributes : {'class' : 'list'}})
+            selected = new Element('div', {attributes : {'class' : 'selected-list hide'}, html : [
+                new Element('div', {attributes : {'class' : 'legend'}, html : 'selecionados:'}),
+                selected_list = new Element('ul', {attributes : {'class' : 'list hide'}})
             ]}),
             options = new Element('ul', {attributes : {'class' : 'options hide'}})
         ]}),
@@ -46,22 +46,19 @@ module.exports(new Class(function (params) {
     this.listSelected = function () {
         var options = self.options.get(),
             i,
-            html;
+            html = [];
 
-        html = '<div class="legend">selecionados:</div><ul class="list">';
         for (i in options) {
             if (options[i].clicked()) {
-                html += '<li class="item">' + options[i].legend() + '</li>';
+                html.push(new Element('li', {attributes : {'class' : 'item'}, html : options[i].legend()}));
             }
         }
-        html += '</ul>';
-        selected.html.set(html);
+        selected_list.html.set(html);
     }
 
     options.event('click').bind(function () {
         if (type === 'single') {
             var options = self.options.get();
-
             for (var i in options) {
                 if (options[i]) {
                     options[i].clicked(false);
@@ -71,7 +68,7 @@ module.exports(new Class(function (params) {
         setTimeout(function () {
             self.change();
             self.listSelected();
-        }, 10);
+        }, 100);
     });
 
     markall.event('click').bind(function () {
@@ -107,7 +104,7 @@ module.exports(new Class(function (params) {
             i;
 
         for (i in options) {
-            if ((options[i] && options[i].legend && options[i].legend().toLowerCase().indexOf(input_text.value.toLowerCase()) >= 0) || input_text.value === '') {
+            if ((options[i] && options[i].legend && options[i].legend().toLowerCase().indexOf(input.attribute('value').get().toLowerCase()) >= 0) || input.attribute('value').get() === '') {
                 options[i].visibility('show');
             } else {
                 options[i].visibility('hide');
@@ -125,8 +122,22 @@ module.exports(new Class(function (params) {
     arrow.event('blur').bind(function () {
         if (self.filterable()) {
             setTimeout(function () {
-                options.setAttribute('class', 'options filterable hide');
+                options.attribute('class').set('options filterable hide');
             }, 100);
+        }
+    });
+
+    input.event('focus').bind(function () {
+        if (self.filterable()) {
+            options.attribute('class').set('options filterable');
+        }
+    });
+
+    input.event('blur').bind(function () {
+        if (self.filterable()) {
+            setTimeout(function () {
+                options.attribute('class').set('options filterable hide');
+            }, 200);
         }
     });
 
