@@ -8,9 +8,10 @@
 var ajax   = module.use('ajax'),
     config = module.use('config'),
     ui     = module.use('ui'),
-    App    = module.use('app');
+    App    = module.use('app'),
+    Path;
 
-module.exports({
+module.exports(Path = {
 
     /* Altera o path
      *
@@ -33,8 +34,18 @@ module.exports({
         var app = path.match(/^\/([^\/]+)/) || [],
             route = path.match(/^\/[^\/]+(.*)/) || [];
 
+        /* Verifico se o app ja não esta aberto */
+        var apps = ui.apps.get();
+        for (var i in apps) {
+            if (apps[i].context().route() === path) {
+                apps[i].click();
+                return;
+            }
+        }
+
         history.pushState({}, 'EmpreendeKit', path);
 
+        /* Abro o app */
         ajax.get({
             url : 'http://' + config.services.apps.host + ':' + config.services.apps.port + '/app/' + app[1] + '/source'
         }, function (response) {
@@ -47,33 +58,38 @@ module.exports({
             });
 
             if (newapp.type() === 'dialog') {
+                /* Renderizo o dialogo */
                 ui.dialogs.add(newapp.ui);
-            } else {
-                if (newapp.type() !== 'embedList' && newapp.type() !== 'embedEntity') {
-                    if (!newapp.caller()) {
-                        ui.apps.remove();
-                        ui.appMenu.remove();
-                        /* Renderiza o menu do app */
-                        for (var i in newapp.menu) {
-                            ui.appMenu.add(new ui.appMenuItem({
-                                legend : newapp.menu[i].legend,
-                                image  : newapp.menu[i].image,
-                                href   : newapp.menu[i].href,
-                                tip    : newapp.menu[i].tip
-                            }))
-                        }
-                    }
-
-                    ui.apps.add(newapp.ui);
-                    ui.navigation.add(newapp.ui.navigation);
-
-                    if (newapp.type() === 'frame') {
-                        ui.collapse(true);
-                    } else {
-                        newapp.ui.click();
-                        ui.collapse(false);
+            } else if (newapp.type() !== 'embedList' && newapp.type() !== 'embedEntity') {
+                
+                if (!newapp.caller()) {
+                    /* Se o app tiver sido chamado pelo eekit, removo todos os apps ativos */
+                    ui.apps.remove();
+                    ui.appMenu.remove();
+                    ui.navigation.remove();
+                    /* Renderiza o menu do app */
+                    for (var i in newapp.menu) {
+                        ui.appMenu.add(new ui.appMenuItem({
+                            legend : newapp.menu[i].legend,
+                            image  : newapp.menu[i].image,
+                            href   : newapp.slug() + newapp.menu[i].href
+                        }))
                     }
                 }
+
+                /* Renderizo o app no corpo principal */
+                ui.apps.add(newapp.ui);
+                ui.navigation.add(newapp.ui.navigation);
+
+                /* Controlo o header do eekit */
+                if (newapp.type() === 'frame') {
+                    ui.collapse(true);
+                } else {
+                    newapp.ui.click();
+                    ui.collapse(false);
+                }
+            } else {
+
             }
         });
     },

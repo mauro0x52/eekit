@@ -15,7 +15,7 @@ module.exports(new Class(function (context) {
         title,
         close,
         load,
-        click_cb;
+        click_cb, close_cb;
 
     element = new Element('div', {attributes : {'class' : 'sheet '+context.type()}, html : [
         /* Header */
@@ -32,18 +32,22 @@ module.exports(new Class(function (context) {
         ]})
     ]});
 
+    close.event('click').bind(function () {
+        context.close();
+    });
+
     element.event('click').bind(function (evt) {
         if (self.collapse()) {
             evt.preventDefault();
             self.click();
         }
-    });
+    }, true);
 
     element.template = this;
-    this.id     = element.id;
-    this.sheet  = element;
-    this.attach = element.attach;
-    this.detach = element.detach;
+    this.id          = element.id;
+    this.sheet       = element;
+    this.attach      = element.attach;
+    this.detach      = element.detach;
 
     this.navigation = new Empreendekit.ui.appNavigation();
 
@@ -51,6 +55,58 @@ module.exports(new Class(function (context) {
         element.event('click').trigger();
     });
 
+    this.context = function () {
+
+        return context;
+
+    };
+
+    /* Controla o fechamento da ui
+     *
+     * @author Rafael Erthal
+     * @since  2013-05
+     */
+    this.close = function (value) {
+        if (value) {
+
+            if (value.constructor === Function) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'click',
+                    message   : 'Click value must be a function',
+                    arguments : arguments
+                });
+            }
+
+            close_cb = value;
+        } else {
+
+            var apps = Empreendekit.ui.apps.get(),
+                navigations = Empreendekit.ui.navigation.get(),
+                i,
+                found = false;
+            for (i = 0; i < apps.length; i++) {
+                if (apps[i] === self) {
+                    apps[i-1].click();
+                    found = true;
+                }
+                if (found) {
+                    navigations[i].detach();
+                    apps[i].detach();
+                }
+            }
+
+            if (close_cb) {
+                close_cb();
+            }
+        }
+    }
+
+    /* Controla o click no app
+     *
+     * @author Rafael Erthal
+     * @since  2013-05
+     */
     this.click = function (value) {
         if (value) {
 
@@ -65,14 +121,23 @@ module.exports(new Class(function (context) {
 
             click_cb = value;
         } else {
+            history.pushState({}, 'EmpreendeKit', context.route());
+
             var apps = Empreendekit.ui.apps.get(),
                 navigations = Empreendekit.ui.navigation.get(),
-                i;
-
+                appMenuItems = Empreendekit.ui.appMenu.get(),
+                i,j;
             for (i = 0; i < apps.length; i++) {
                 if (apps[i] === self) {
                     apps[i].collapse(false);
                     navigations[i].select(true);
+                    for (j = 0; j < appMenuItems.length; j++) {
+                        if ('/' + appMenuItems[j].href() === apps[i].context().route()) {
+                            appMenuItems[j].select(true);
+                        } else {
+                            appMenuItems[j].select(false);
+                        }
+                    }
                 } else {
                     apps[i].collapse(true);
                     navigations[i].select(false);

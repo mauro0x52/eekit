@@ -7,15 +7,13 @@
 
 [
     {
-        legend : 'contatos',
-        tip    : 'lista dos meus contatos',
-        image  : 'person',
-        href   : '/'
+        legend : 'sandbox list',
+        image  : 'tag',
+        href   : '/sandbox/list'
     },
     {
-        legend : 'categorias',
-        tip    : 'gerenciar minhas categorias de contatos',
+        legend : 'sandbox entity',
         image  : 'tag',
-        href   : '/categorias'
+        href   : '/sandbox/entity'
     }
 ]

@@ -42,7 +42,6 @@ module.exports(new Class(function (params) {
         var elements = items.html.get();
 
         for (var i = 0; i < elements.length; i++) {
-            console.log(elements[i])
             elements[i].drop({
                 group    : that,
                 position : i

@@ -24,10 +24,7 @@ module.exports(new Class(function (params) {
     ]});
 
     anchor.event('click').bind(function () {
-        Empreendekit.apps.open({
-            app   : self.image(),
-            route : href
-        });
+        Empreendekit.path.redirect(href);
     });
 
     element.template = this;
@@ -86,30 +83,6 @@ module.exports(new Class(function (params) {
     }
 
     /**
-     * Controla a tooltip do item
-     *
-     * @author Mauro Ribeiro
-     * @since  2013-05
-     */
-    this.tip = function(value) {
-        if (value){
-
-            if (value.constructor !== String) {
-                throw new Error({
-                    source    : 'appMenuItem.js',
-                    method    : 'tip',
-                    message   : 'Tip value must be a string',
-                    arguments : arguments
-                });
-            }
-
-            anchor.attribute('title').set(value);
-        } else {
-            return anchor.attribute('title').get();
-        }
-    }
-
-    /**
      * Controla a âncora do item
      *
      * @author Mauro Ribeiro
@@ -133,13 +106,30 @@ module.exports(new Class(function (params) {
         }
     }
 
+    /**
+     * Controla o estado de seleção do item
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-05
+     */
+    this.select = function(value) {
+        if (value === true || value === false) {
+            if (value) {
+                element.attribute('class').set('option selected');
+            } else {
+                element.attribute('class').set('option');
+            }
+        } else {
+            return element.attribute('class').get().indexOf('selected') > -1;
+        }
+    }
+
     /*
      * Valores iniciais
      */
     if (params) {
         this.legend(params.legend);
         this.image(params.image);
-        this.href(href);
-        this.tip(params.tip);
+        this.href(params.href);
     }
 }));

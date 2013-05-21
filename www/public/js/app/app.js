@@ -98,7 +98,7 @@ module.exports(new Class (function (params) {
      * @since  2013-05
      */
     this.close = function () {
-        this.ui.detach();
+        this.ui.close();
         delete this;
     }
 

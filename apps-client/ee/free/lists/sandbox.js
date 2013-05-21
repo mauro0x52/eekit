@@ -139,12 +139,15 @@ app.routes.list('/sandbox/list', function (params, data) {
             test = new app.ui.item({
                 title : 'Titulo do item teste 1',
                 description : 'descrição do item',
+                click : function () {
+                    app.apps.open({
+                        app   : 'ee',
+                        route : '/sandbox/list'
+                    });
+                },
                 label : {
                     color : 'blue',
                     legend : 'label'
-                },
-                click : function () {
-                    console.log('aew')
                 },
                 drop : function (group, position) {
                 },

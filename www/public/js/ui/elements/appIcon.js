@@ -24,10 +24,7 @@ module.exports(new Class(function (params) {
     ]});
 
     anchor.event('click').bind(function () {
-        Empreendekit.apps.open({
-            app   : self.image(),
-            route : '/'
-        });
+        Empreendekit.path.redirect(self.image() + '/');
     });
 
     element.template = this;
@@ -91,11 +88,5 @@ module.exports(new Class(function (params) {
     if (params) {
         this.legend(params.legend);
         this.image(params.image);
-        //this.href(params.href);
-
-//        var route = (empreendemia.routes.get() + '/').split('/');
-//        if (route[0] == params.href) {
-//            this.selected(true);
-//        }
     }
 }));
