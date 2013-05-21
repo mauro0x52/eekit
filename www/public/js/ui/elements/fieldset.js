@@ -9,21 +9,30 @@ var Element       = module.use('element'),
     Css           = module.use('css'),
     Collection    = module.use('collection'),
     InputText     = module.use('inputText'),
-    InputTextArea = module.use('inputTextArea');
+    InputTextArea = module.use('inputTextArea'),
+    InputSelector = module.use('inputSelector');
 
 module.exports(new Class(function (params) {
     var element,
-        legend, fields;
+        legend, fields, arrow,
+        self = this;
 
     element = new Element('fieldset', {attributes : {'class' : 'field-set'}, html : [
         legend = new Element('legend', {attributes : {'class' : 'legend'}}),
-        fields = new Element('ul', {attributes : {'class' : 'fields'}})
+        fields = new Element('ul', {attributes : {'class' : 'fields'}}),
+        arrow = new Element('div', {attributes : {'class' : 'arrow'}, html : [
+            new Element('div', {attributes : {'class' : 'fill'}})
+        ]})
     ]});
 
     element.template = this;
     this.id     = element.id;
     this.attach = element.attach;
     this.detach = element.detach;
+
+    legend.event('click').bind(function () {
+        self.collapsed(!self.collapsed());
+    });
 
     /**
      * Valida campos
@@ -85,8 +94,9 @@ module.exports(new Class(function (params) {
      */
     this.collapsed = function (value) {
         var css = '';
+
+        css = element.attribute('class').get();
         if (value === true || value === false) {
-            css = element.attribute('class').get();
             if (value) {
                 css += ' collapsed';
             } else {
@@ -135,7 +145,7 @@ module.exports(new Class(function (params) {
      *
      */
     //inputText, inputTextarea, inputPassword, inputDate, inputSelector
-    this.fields = new Collection(fields, [InputText, InputTextArea]);
+    this.fields = new Collection(fields, [InputText, InputTextArea, InputSelector]);
 
     /*
      * Valores iniciais
