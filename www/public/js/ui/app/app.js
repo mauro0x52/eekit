@@ -24,12 +24,7 @@ module.exports(new Class(function (context) {
             close = new Element('div', {attributes : {'class' : 'close'}, html : [
                 new Element('div', {attributes : {'class' : 'image'}}),
                 new Element('div', {attributes : {'class' : 'legend'}, html : 'fechar'})
-            ],
-            events : {
-                click : function () {
-
-                }
-            }})
+            ]})
         ]}),
         load = new Element('div', {attributes : {'class' : 'loading'}, html : [
             new Element('div', {attributes : {'class' : 'image'}}),
@@ -38,12 +33,15 @@ module.exports(new Class(function (context) {
     ]});
 
     element.event('click').bind(function (evt) {
-        self.click();
+        if (self.collapse()) {
+            evt.preventDefault();
+            self.click();
+        }
     });
 
     element.template = this;
     this.id     = element.id;
-    this.sheet = element;
+    this.sheet  = element;
     this.attach = element.attach;
     this.detach = element.detach;
 

@@ -13,7 +13,7 @@ var Element    = module.use('element'),
 
 module.exports(new Class(function (params) {
     var element,
-        label, legend, title, titleAnchor, description, icons, actions,
+        label, legend, title, titleAnchor, description, icons, actions, arrow,
         click_cb,
         drop_cb,
         that = this,
@@ -34,20 +34,21 @@ module.exports(new Class(function (params) {
         icons = new Element('ul', {attributes : {'class' : 'icons hide'}}),
         description = new Element('p', {attributes : {'class' : 'description hide'}}),
         actions = new Element('menu', {attributes : {'class' : 'actions hide'}}),
-        new Element('div', {attributes : {'class' : 'click'}, html : [
+        arrow = new Element('div', {attributes : {'class' : 'click'}, html : [
             new Element('div', {attributes : {'class' : 'arrow'}, html : [
                 new Element('div', {attributes : {'class' : 'fill'}})
             ]})
         ]})
     ]});
 
+    titleAnchor.event('click').bind(function () {that.click();});
+    arrow.event('click').bind(function () {that.click();});
+
     element.event('click').bind(function (e) {
         e.preventDefault();
 
         if (Empreendekit.ui.dragging === element) {
             element.parent().parent().event('drop').trigger();
-        } else {
-            that.click();
         }
     }, true);
 

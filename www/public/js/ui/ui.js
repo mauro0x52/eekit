@@ -46,7 +46,7 @@ new Namespace({
         appsmenu,
         navigation,
         appmenu,
-        dialogs,
+        modals,
         sheets;
 
     element = new this.element('div', {attributes : {'class' : 'body'}, html : [
@@ -97,7 +97,9 @@ new Namespace({
             ]}),
             /* Sheets */
             sheets = new this.element('div', {attributes : {'class' : 'sheets'}})
-        ]})
+        ]}),
+        /* modal */
+        modals = new this.element('div', {attributes : {'class' : 'modals'}})
     ]});
 
     this.attach = element.attach;
@@ -142,9 +144,9 @@ new Namespace({
 
     this.menu = new this.collection(appsmenu, [this.appIcon]);
 
-    this.apps = new this.collection(sheets, [this.list, this.entity]);
+    this.apps = new this.collection(sheets, [this.list, this.entity, this.frame]);
 
-    this.dialogs = new this.collection(dialogs, [this.dialog])
+    this.dialogs = new this.collection(modals, [this.dialog]);
 
     module.exports(this);
 });

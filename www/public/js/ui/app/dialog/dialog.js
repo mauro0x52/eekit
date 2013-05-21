@@ -5,8 +5,10 @@
  * @since  2013-05
  */
 
-var Element = module.use('element'),
-    Css     = module.use('css');
+var Element    = module.use('element'),
+    Css        = module.use('css'),
+    Collection = module.use('collection'),
+    FieldSet   = module.use('fieldset');
 
 module.exports(new Class(function (context) {
 
@@ -26,13 +28,13 @@ module.exports(new Class(function (context) {
                 new Element('div', {attributes : {'class' : 'header'}, html : [
                     title = new Element('h1', {attributes : {'class' : 'title'}})
                 ]}),
-                close = new Element('div', {html : [
+                close = new Element('div', {attributes : {'class' : 'close'}, html : [
                     new Element('div', {attributes : {'class' : 'image'}}),
                     new Element('div', {attributes : {'class' : 'legend'}, html : 'fechar'})
                 ]}),
                 flash       = new Element('div', {attributes : {'class' : 'flash hide'}}),
                 description = new Element('p', {attributes : {'class' : 'description hide'}}),
-                form        = new Element('form', {attributes : {'class' : 'form'}}, {html : [
+                form        = new Element('form', {attributes : {'class' : 'form'}, html : [
                     fieldsets = new Element('div', {attributes : {'class' : 'field-sets'}}),
                     new Element('div', {attributes : {'class' : 'submit'}, html : [
                         action = new Element('input', {attributes : {'class' : 'input', type : 'submit'}})
@@ -48,8 +50,10 @@ module.exports(new Class(function (context) {
 
     this.attach = element.attach;
     this.detach = element.detach;
+    this.fieldset = FieldSet;
 
-    /* Controla o titulo do app
+    /**
+     * Controla o titulo do app
      *
      * @author Rafael Erthal
      * @since  2013-05
@@ -74,7 +78,8 @@ module.exports(new Class(function (context) {
 
     };
 
-    /* Controla a descrição do app
+    /**
+     * Controla a descrição do app
      *
      * @author Rafael Erthal
      * @since  2013-05
@@ -99,7 +104,8 @@ module.exports(new Class(function (context) {
 
     };
 
-    /* Controla o flash do app
+    /**
+     * Controla o flash do app
      *
      * @author Rafael Erthal
      * @since  2013-05
@@ -124,7 +130,8 @@ module.exports(new Class(function (context) {
 
     };
 
-    /* Controla o formulário do app
+    /**
+     * Controla o formulário do app
      *
      * @author Rafael Erthal
      * @since  2013-05
@@ -174,21 +181,7 @@ module.exports(new Class(function (context) {
 
         },
 
-        fieldsets : {
-
-            get : function () {
-
-            },
-
-            add : function () {
-
-            },
-
-            remove : function () {
-
-            }
-
-        }
+        fieldsets : new Collection(fieldsets, [FieldSet])
 
     }
 

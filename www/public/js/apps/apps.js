@@ -55,7 +55,6 @@ new Namespace({
             url : 'http://' + config.services.apps.host + ':' + config.services.apps.port + '/app/' + params.app + '/source'
         }, function (response) {
             path.redirect('/' + params.app + params.route);
-
             var newapp = new App({
                 name   : response.name,
                 slug   : response.slug,
@@ -64,37 +63,38 @@ new Namespace({
             });
 
             if (newapp.type() === 'dialog') {
-                ui.dialogs.add(newapp);
-            } else if (newapp.type() !== 'embedList' && newapp.type() !== 'embedEntity') {
-                if (!newapp.caller()) {
-                    ui.apps.remove();
-                    ui.appMenu.remove();
-                    /* Renderiza o menu do app */
-                    for (var i in newapp.menu) {
-                        ui.appMenu.add(new ui.appMenuItem({
-                            legend : newapp.menu[i].legend,
-                            image  : newapp.menu[i].image,
-                            href   : newapp.menu[i].href,
-                            tip    : newapp.menu[i].tip
-                        }))
+                ui.dialogs.add(newapp.ui);
+            } else {
+                if (newapp.type() !== 'embedList' && newapp.type() !== 'embedEntity') {
+                    if (!newapp.caller()) {
+                        ui.apps.remove();
+                        ui.appMenu.remove();
+                        /* Renderiza o menu do app */
+                        for (var i in newapp.menu) {
+                            ui.appMenu.add(new ui.appMenuItem({
+                                legend : newapp.menu[i].legend,
+                                image  : newapp.menu[i].image,
+                                href   : newapp.menu[i].href,
+                                tip    : newapp.menu[i].tip
+                            }))
+                        }
+                    }
+
+                    ui.apps.add(newapp.ui);
+                    ui.navigation.add(newapp.ui.navigation);
+
+                    newapp.ui.click();
+
+                    if (newapp.type() === 'frame') {
+                        ui.collapse(true);
+                    } else {
+                        ui.collapse(false);
                     }
                 }
-
-                ui.apps.add(newapp.ui);
-                ui.navigation.add(newapp.ui.navigation);
-
-                newapp.ui.click();
-
-                if (newapp.type() === 'frame') {
-                    ui.collapse(true);
-                } else {
-                    ui.collapse(false);
+                if (params.open) {
+                    params.open(newapp)
                 }
             }
-            if (params.open) {
-                params.open(newapp)
-            }
-
         });
 
     }
