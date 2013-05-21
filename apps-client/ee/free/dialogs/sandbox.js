@@ -3,13 +3,22 @@ app.routes.dialog('/sandbox/dialog', function (params, data) {
 
     var fieldset = new app.ui.fieldset({
         legend : 'Fieldset',
+        fields : [
+            new app.ui.inputText({
+                legend : 'Input Text',
+                value : 'valor do input'
+            })
+        ]
+    })
+
+    var fieldset2 = new app.ui.fieldset({
+        legend : 'Fieldset 2',
         fields : []
     })
 
-    console.log(fieldset)
-
     app.ui.form.fieldsets.add([
-        fieldset
+        fieldset,
+        fieldset2
     ]);
 
 });
