@@ -7,7 +7,8 @@
 
 var Element    = module.use('element'),
     Css        = module.use('css'),
-    Collection = module.use('collection');
+    Collection = module.use('collection'),
+    Helper     = module.use('helper');
 
 module.exports(new Class(function (params) {
     var element,
@@ -42,7 +43,7 @@ module.exports(new Class(function (params) {
      * @author Mauro Ribeiro
      * @since  2013-05
      */
-    //this.helper = new Helper(element);
+    this.helper = new Helper(element);
 
     /**
      * Controla a legenda da ação

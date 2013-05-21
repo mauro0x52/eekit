@@ -1,6 +1,79 @@
 app.routes.dialog('/sandbox/dialog', function (params, data) {
     app.ui.title('Sandbox Diálogo');
 
+    var selector = new app.ui.inputSelector({
+        legend : 'Expandido multiplo',
+        options : [
+            new app.ui.inputOption({
+                legend : 'Opção A',
+                label : 'red'
+            }),
+            new app.ui.inputOption({
+                legend : 'Opção B',
+                label : 'blue'
+            }),
+            new app.ui.inputOption({
+                legend : 'Opção B',
+                image : 'check'
+            })
+        ]
+    });
+    var selectorb = new app.ui.inputSelector({
+        legend : 'Expandido unico',
+        type : 'single',
+        options : [
+            new app.ui.inputOption({
+                legend : 'Opção A',
+                label : 'red'
+            }),
+            new app.ui.inputOption({
+                legend : 'Opção B',
+                label : 'blue'
+            }),
+            new app.ui.inputOption({
+                legend : 'Opção B',
+                image : 'check'
+            })
+        ]
+    });
+    var selectorc = new app.ui.inputSelector({
+        legend : 'Colapsado multiplo',
+        filterable : true,
+        options : [
+            new app.ui.inputOption({
+                legend : 'Opção A',
+                label : 'red'
+            }),
+            new app.ui.inputOption({
+                legend : 'Opção B',
+                label : 'blue'
+            }),
+            new app.ui.inputOption({
+                legend : 'Opção B',
+                image : 'check'
+            })
+        ]
+    });
+    var selectord = new app.ui.inputSelector({
+        legend : 'Colapsado unico',
+        filterable : true,
+        type : 'single',
+        options : [
+            new app.ui.inputOption({
+                legend : 'Opção A',
+                label : 'red'
+            }),
+            new app.ui.inputOption({
+                legend : 'Opção B',
+                label : 'blue'
+            }),
+            new app.ui.inputOption({
+                legend : 'Opção B',
+                image : 'check'
+            })
+        ]
+    });
+
     var fieldset = new app.ui.fieldset({
         legend : 'Fieldset',
         fields : [
@@ -34,6 +107,8 @@ app.routes.dialog('/sandbox/dialog', function (params, data) {
         legend : 'Fieldset 2',
         fields : []
     })
+
+    fieldset2.fields.add([selector, selectorb, selectorc, selectord]);
 
     app.ui.form.fieldsets.add([
         fieldset,

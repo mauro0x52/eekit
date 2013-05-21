@@ -11,7 +11,9 @@ var Element        = module.use('element'),
     FieldSet       = module.use('fieldset'),
     InputText      = module.use('inputText'),
     InputTextArea  = module.use('inputTextArea'),
-    InputError     = module.use('inputError');
+    InputError     = module.use('inputError'),
+    InputSelector  = module.use('inputSelector'),
+    InputOption    = module.use('inputOption');
 
 module.exports(new Class(function (context) {
 
@@ -57,6 +59,8 @@ module.exports(new Class(function (context) {
     this.inputText = InputText;
     this.inputTextarea = InputTextArea;
     this.inputError = InputError;
+    this.inputSelector = InputSelector;
+    this.inputOption = InputOption;
 
     /**
      * Controla o titulo do app

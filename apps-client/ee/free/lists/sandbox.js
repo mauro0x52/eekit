@@ -17,6 +17,10 @@ app.routes.list('/sandbox/list', function (params, data) {
                     app   : 'ee',
                     route : '/sandbox/dialog'
                 });
+            },
+            helper : {
+                description : 'Descrição do helper',
+                example : 'Ex. WOww hehehehe'
             }
         }),
         new app.ui.action({

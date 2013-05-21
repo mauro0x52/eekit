@@ -29,6 +29,8 @@ new Namespace({
     inputText     : folder + 'elements/inputText.js',
     inputTextArea : folder + 'elements/inputTextArea.js',
     inputError    : folder + 'elements/inputError.js',
+    inputSelector : folder + 'elements/inputSelector.js',
+    inputOption   : folder + 'elements/inputOption.js',
 
     helper        : folder + 'elements/helper.js',
     dataset       : folder + 'elements/dataset.js',
