@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.0.8
+## 1.0.8 (2013-05-21)
 
 Hotfixes
 - Ficha de usuário deslogado
