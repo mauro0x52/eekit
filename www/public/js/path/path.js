@@ -5,6 +5,11 @@
  * @since  2013-05
  */
 
+var ajax   = module.use('ajax'),
+    config = module.use('config'),
+    ui     = module.use('ui'),
+    App    = module.use('app');
+
 module.exports({
 
     /* Altera o path
@@ -12,8 +17,65 @@ module.exports({
      * @author Rafael Erthal
      * @since  2013-05
      */
-    redirect : function (path) {
+    redirect : function (path, caller) {
+        
+        if (!path) {
+            throw new Error({
+                source     : 'path.js',
+                method     : 'redirect',
+                message    : 'Path must be especified',
+                arguments  : arguments
+            });
+        }
+
+        path = '/' + path;
+
+        var app = path.match(/^\/([^\/]+)/) || [],
+            route = path.match(/^\/[^\/]+(.*)/) || [];
+
         history.pushState({}, 'EmpreendeKit', path);
+
+        ajax.get({
+            url : 'http://' + config.services.apps.host + ':' + config.services.apps.port + '/app/' + app[1] + '/source'
+        }, function (response) {
+
+            var newapp = new App({
+                name   : response.name,
+                slug   : response.slug,
+                source : response.source,
+                caller : caller
+            });
+
+            if (newapp.type() === 'dialog') {
+                ui.dialogs.add(newapp.ui);
+            } else {
+                if (newapp.type() !== 'embedList' && newapp.type() !== 'embedEntity') {
+                    if (!newapp.caller()) {
+                        ui.apps.remove();
+                        ui.appMenu.remove();
+                        /* Renderiza o menu do app */
+                        for (var i in newapp.menu) {
+                            ui.appMenu.add(new ui.appMenuItem({
+                                legend : newapp.menu[i].legend,
+                                image  : newapp.menu[i].image,
+                                href   : newapp.menu[i].href,
+                                tip    : newapp.menu[i].tip
+                            }))
+                        }
+                    }
+
+                    ui.apps.add(newapp.ui);
+                    ui.navigation.add(newapp.ui.navigation);
+
+                    if (newapp.type() === 'frame') {
+                        ui.collapse(true);
+                    } else {
+                        newapp.ui.click();
+                        ui.collapse(false);
+                    }
+                }
+            }
+        });
     },
 
     /* Cerifica se o path é compatível com o address bar

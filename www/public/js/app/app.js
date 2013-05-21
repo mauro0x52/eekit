@@ -10,6 +10,7 @@ module.exports(new Class (function (params) {
     var that       = this,
         app        = this,
         route      = null,
+        callback   = null,
         type       = null,
         parameters = null;
 
@@ -70,6 +71,12 @@ module.exports(new Class (function (params) {
     this.route = function () {
 
         return route;
+
+    };
+
+    this.callback = function () {
+
+        return callback;
 
     };
 
@@ -137,7 +144,7 @@ module.exports(new Class (function (params) {
 
         open : function (params) {
 
-            Empreendekit.apps.open(params, that);
+            Empreendekit.path.redirect(params.app + params.route, that);
 
         }
 
@@ -198,7 +205,7 @@ module.exports(new Class (function (params) {
      */
     this.routes = {
 
-        list : function (path, callback) {
+        list : function (path, fn) {
 
             if (!path || path.constructor !== String) {
                 throw new Error({
@@ -209,7 +216,7 @@ module.exports(new Class (function (params) {
                 });
             }
 
-            if (!callback || callback.constructor !== Function) {
+            if (!fn || fn.constructor !== Function) {
                 throw new Error({
                     source    : 'app.js',
                     method    : 'list',
@@ -219,14 +226,15 @@ module.exports(new Class (function (params) {
             }
 
             if (Empreendekit.path.match('/' + that.slug() + path)) {
-                route = callback;
-                type = 'list';
+                route      = location.pathname;
+                callback   = fn;
+                type       = 'list';
                 parameters = Empreendekit.path.params('/' + that.slug() + path);
             }
 
         },
 
-        entity : function (path, callback) {
+        entity : function (path, fn) {
 
             if (!path || path.constructor !== String) {
                 throw new Error({
@@ -237,7 +245,7 @@ module.exports(new Class (function (params) {
                 });
             }
 
-            if (!callback || callback.constructor !== Function) {
+            if (!fn || fn.constructor !== Function) {
                 throw new Error({
                     source    : 'app.js',
                     method    : 'entity',
@@ -247,14 +255,15 @@ module.exports(new Class (function (params) {
             }
 
             if (Empreendekit.path.match('/' + that.slug() + path)) {
-                route = callback;
-                type = 'entity';
+                route      = location.pathname;
+                callback   = fn;
+                type       = 'entity';
                 parameters = Empreendekit.path.params('/' + that.slug() + path);
             }
 
         },
 
-        embedList : function (path, callback) {
+        embedList : function (path, fn) {
 
             if (!path || path.constructor !== String) {
                 throw new Error({
@@ -265,7 +274,7 @@ module.exports(new Class (function (params) {
                 });
             }
 
-            if (!callback || callback.constructor !== Function) {
+            if (!fn || fn.constructor !== Function) {
                 throw new Error({
                     source    : 'app.js',
                     method    : 'embedList',
@@ -275,14 +284,15 @@ module.exports(new Class (function (params) {
             }
 
             if (Empreendekit.path.match('/' + that.slug() + path)) {
-                route = callback;
-                type = 'embedList';
+                route      = location.pathname;
+                callback   = fn;
+                type       = 'embedList';
                 parameters = Empreendekit.path.params('/' + that.slug() + path);
             }
 
         },
 
-        embedEntity : function (path, callback) {
+        embedEntity : function (path, fn) {
 
             if (!path || path.constructor !== String) {
                 throw new Error({
@@ -293,7 +303,7 @@ module.exports(new Class (function (params) {
                 });
             }
 
-            if (!callback || callback.constructor !== Function) {
+            if (!fn || fn.constructor !== Function) {
                 throw new Error({
                     source    : 'app.js',
                     method    : 'embedEntity',
@@ -303,14 +313,15 @@ module.exports(new Class (function (params) {
             }
 
             if (Empreendekit.path.match('/' + that.slug() + path)) {
-                route = callback;
-                type = 'embedEntity';
+                route      = location.pathname;
+                callback   = fn;
+                type       = 'embedEntity';
                 parameters = Empreendekit.path.params('/' + that.slug() + path);
             }
 
         },
 
-        dialog : function (path, callback) {
+        dialog : function (path, fn) {
 
             if (!path || path.constructor !== String) {
                 throw new Error({
@@ -321,7 +332,7 @@ module.exports(new Class (function (params) {
                 });
             }
 
-            if (!callback || callback.constructor !== Function) {
+            if (!fn || fn.constructor !== Function) {
                 throw new Error({
                     source    : 'app.js',
                     method    : 'dialog',
@@ -331,14 +342,15 @@ module.exports(new Class (function (params) {
             }
 
             if (Empreendekit.path.match('/' + that.slug() + path)) {
-                route = callback;
-                type = 'dialog';
+                route      = location.pathname;
+                callback   = fn;
+                type       = 'dialog';
                 parameters = Empreendekit.path.params('/' + that.slug() + path);
             }
 
         },
 
-        frame : function (path, callback) {
+        frame : function (path, fn) {
 
             if (!path || path.constructor !== String) {
                 throw new Error({
@@ -349,7 +361,7 @@ module.exports(new Class (function (params) {
                 });
             }
 
-            if (!callback || callback.constructor !== Function) {
+            if (!fn || fn.constructor !== Function) {
                 throw new Error({
                     source    : 'app.js',
                     method    : 'frame',
@@ -359,8 +371,9 @@ module.exports(new Class (function (params) {
             }
 
             if (Empreendekit.path.match('/' + that.slug() + path)) {
-                route = callback;
-                type = 'frame';
+                route      = location.pathname;
+                callback   = fn;
+                type       = 'frame';
                 parameters = Empreendekit.path.params('/' + that.slug() + path);
             }
 
@@ -420,7 +433,7 @@ module.exports(new Class (function (params) {
         new Function('app', params.source)
     ).apply(this, [this]);
 
-    if (!this.route()) {
+    if (!this.callback()) {
 
         throw new Error({
             source    : 'app.js',
@@ -433,6 +446,6 @@ module.exports(new Class (function (params) {
 
     this.ui = new Empreendekit.ui[this.type()](this);
 
-    this.route().apply(this, [this.params()]);
+    this.callback().apply(this, [this.params()]);
 
 }));

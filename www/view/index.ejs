@@ -23,22 +23,17 @@
             var Empreendekit = new Namespace({
                 config  : folder + 'configuration/configuration.js',
                 ajax    : folder + 'ajax/ajax.js',
-                apps    : folder + 'apps/apps.js',
+                app     : folder + 'app/app.js',
                 auth    : folder + 'auth/auth.js',
                 path    : folder + 'path/path.js',
                 ui      : folder + 'ui/ui.js'
             }, function () {
 
-                /* Abre o app da rota ou a home */
+                /* Abre o app da rota ou a home*/
                 var app =  location.pathname.match(/^\/([^\/]+)/) || [],
                     route = location.pathname.match(/^\/[^\/]+(.*)/) || [];
 
-                this.apps.open({
-                    app   : app[1] || 'ee',
-                    route : route[1] || '/',
-                    open  : function (app) {
-                    }
-                });
+                this.path.redirect((app[1] || 'ee') + (route[1] || '/')) 
 
                 /* Exibe lista de apps no menu do usuário */
                 for (var i in this.config.apps) {

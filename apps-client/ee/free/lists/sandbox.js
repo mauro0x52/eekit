@@ -88,7 +88,7 @@ app.routes.list('/sandbox/list', function (params, data) {
                 click : function () {
                     app.apps.open({
                         app   : 'ee',
-                        route : '/sandbox/list'
+                        route : '/sandbox/entity'
                     });
                 },
                 drop : function (group, position) {
