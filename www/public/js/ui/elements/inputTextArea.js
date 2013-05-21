@@ -1,5 +1,5 @@
 /**
- * Inputs text do eekit
+ * Textarea do eekit
  *
  * @author Mauro Ribeiro
  * @since  2013-05
@@ -8,25 +8,21 @@
 var Element    = module.use('element'),
     Css        = module.use('css'),
     Collection = module.use('collection'),
-    Helper     = module.use('helper'),
     InputError = module.use('inputError');
 
 module.exports(new Class(function (params) {
-
     var element,
-        input,
-        errors,
-        legend,
-        rules,
-        self = this,
-        change_cb;
+        legend, input,
+        rules, errors,
+        change_cb,
+        self = this;
 
-    element = new Element('li', {attributes : {'class' : 'field text'}, html : [
+    element = new Element('li', {attributes : {'class' : 'field textarea'}, html : [
         new Element('div', {attributes : {'class' : 'legend'}, html : [
             legend = new Element('label', {attributes : {'class' : 'text'}})
         ]}),
         new Element('div', {attributes : {'class' : 'data'}, html : [
-            input  = new Element('input', {attributes : {'class' : 'input', 'type' : 'text', 'autocomplete' : 'off'}}),
+            input  = new Element('textarea', {attributes : {'class' : 'input', 'type' : 'text', 'autocomplete' : 'off'}}),
             errors = new Element('ul', {attributes : {'class' : 'errors hide'}})
         ]})
     ]});
@@ -44,9 +40,9 @@ module.exports(new Class(function (params) {
     });
 
     /**
-     * Valida o input
+     * Valida
      *
-     * @author Mauro Ribeiro, Rafael Erthal
+     * @author Mauro Ribeiro
      * @since  2013-05
      */
     this.validate = function () {
@@ -65,7 +61,7 @@ module.exports(new Class(function (params) {
     /**
      * Controla regras de validação
      *
-     * @author Mauro Ribeiro, Rafael Erthal
+     * @author Mauro Ribeiro
      * @since  2013-05
      */
     this.rules = function (value) {
@@ -73,7 +69,7 @@ module.exports(new Class(function (params) {
 
             if (value.constructor !== Array) {
                 throw new Error({
-                    source    : 'inputText.js',
+                    source    : 'inputTextArea.js',
                     method    : 'rules',
                     message   : 'Rules value must be an array',
                     arguments : arguments
@@ -87,9 +83,9 @@ module.exports(new Class(function (params) {
     };
 
     /**
-     * Controla a legenda do input
+     * Controla a legenda
      *
-     * @author Mauro Ribeiro, Rafael Erthal
+     * @author Mauro Ribeiro
      * @since  2013-05
      */
     this.legend = function (value) {
@@ -97,7 +93,7 @@ module.exports(new Class(function (params) {
 
             if (value.constructor !== String) {
                 throw new Error({
-                    source    : 'inputText.js',
+                    source    : 'inputTextArea.js',
                     method    : 'legend',
                     message   : 'Legend value must be a string',
                     arguments : arguments
@@ -111,9 +107,9 @@ module.exports(new Class(function (params) {
     };
 
     /**
-     * Controla o valor do input
+     * Controla o valor
      *
-     * @author Mauro Ribeiro, Rafael Erthal
+     * @author Mauro Ribeiro
      * @since  2013-05
      */
     this.value = function (value) {
@@ -121,15 +117,15 @@ module.exports(new Class(function (params) {
 
             if (value.constructor !== String && value.constructor !== Number) {
                 throw new Error({
-                    source    : 'inputText.js',
+                    source    : 'inputTextArea.js',
                     method    : 'value',
                     message   : 'Value value must be a string or number',
                     arguments : arguments
                 });
             }
 
-            input.attribute('value').set(value);
-            this.change();
+            input.html.set(value);
+            self.change();
         } else {
             return input.attribute('value').get();
         }
@@ -146,7 +142,7 @@ module.exports(new Class(function (params) {
 
             if (value.constructor !== Function) {
                 throw new Error({
-                    source    : 'inputText.js',
+                    source    : 'inputTextArea.js',
                     method    : 'change',
                     message   : 'Change value must be a function',
                     arguments : arguments
@@ -161,56 +157,15 @@ module.exports(new Class(function (params) {
     };
 
     /**
-     * Dá focus no input
+     * Dá focus
      *
-     * @author Mauro Ribeiro, Rafael Erthal
+     * @author Mauro Ribeiro
      * @since  2013-05
      */
     this.focus = function () {
         setTimeout(function () {input.event('focus').trigger()}, 100);
     }
 
-    /**
-     * Controla a visibilidade do input
-     *
-     * @author Mauro Ribeiro, Rafael Erthal
-     * @since  2013-05
-     */
-    this.visibility = function (value) {
-        if (value) {
-
-            if (value.constructor !== String) {
-                throw new Error({
-                    source    : 'inputText.js',
-                    method    : 'visibility',
-                    message   : 'Visibility value must be a string',
-                    arguments : arguments
-                });
-            }
-
-            switch (value) {
-                case 'hide' :
-                    element.attribute('class').set('field text hide');
-                    break;
-                case 'show' :
-                    element.attribute('class').set('field text');
-                    break;
-                case 'fade' :
-                    element.attribute('class').set('field text fade');
-                    break;
-            }
-        } else {
-            return element.attribute('class').get().replace('field text', '');
-        }
-    };
-
-    /**
-     * Controla orientador
-     *
-     * @author Mauro Ribeiro, Rafael Erthal
-     * @since  2013-05
-     */
-    this.helper = new Helper(element);
 
     /**
      * Controla os erros
@@ -228,12 +183,6 @@ module.exports(new Class(function (params) {
         this.rules(params.rules);
         this.value(params.value);
         this.change(params.change);
-        this.visibility(params.visibility);
-        this.errors.add(params.errors);
         this.rules(params.rules);
-        if (params.helper) {
-            this.helper.description(params.helper.description);
-            this.helper.example(params.helper.example);
-        }
     }
 }));

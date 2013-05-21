@@ -67,6 +67,7 @@ module.exports(Element = new Class(function (element, tags) {
                     arguments : arguments
                 })
             }
+            element.attribute('class').set(element.attribute('class').get().replace('hide', ''));
             element.html.attach(elements);
         }
     };

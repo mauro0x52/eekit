@@ -8,34 +8,37 @@
 var folder = '/js/ui/';
 
 new Namespace({
-    element     : folder + 'elements/element.js',
-    css         : folder + 'elements/css.js',
-    collection  : folder + 'elements/collection.js',
+    element       : folder + 'elements/element.js',
+    css           : folder + 'elements/css.js',
+    collection    : folder + 'elements/collection.js',
 
-    app          : folder + 'app/app.js',
-    embedApp     : folder + 'app/embedApp.js',
-    entity       : folder + 'app/entity/entity.js',
-    list         : folder + 'app/list/list.js',
-    embedEntity  : folder + 'app/embedEntity/embedEntity.js',
-    embedList    : folder + 'app/embedList/embedList.js',
-    dialog       : folder + 'app/dialog/dialog.js',
-    frame        : folder + 'app/frame/frame.js',
+    app           : folder + 'app/app.js',
+    embedApp      : folder + 'app/embedApp.js',
+    entity        : folder + 'app/entity/entity.js',
+    list          : folder + 'app/list/list.js',
+    embedEntity   : folder + 'app/embedEntity/embedEntity.js',
+    embedList     : folder + 'app/embedList/embedList.js',
+    dialog        : folder + 'app/dialog/dialog.js',
+    frame         : folder + 'app/frame/frame.js',
 
-    appIcon      : folder + 'elements/appIcon.js',
-    appMenuItem  : folder + 'elements/appMenuItem.js',
-    appNavigation: folder + 'elements/appNavigation.js',
+    appIcon       : folder + 'elements/appIcon.js',
+    appMenuItem   : folder + 'elements/appMenuItem.js',
+    appNavigation : folder + 'elements/appNavigation.js',
 
-    helper       : folder + 'elements/helper.js',
-    dataset      : folder + 'elements/dataset.js',
-    data         : folder + 'elements/data.js',
-    value        : folder + 'elements/value.js',
-    fieldset     : folder + 'elements/fieldset.js',
-    inputText    : folder + 'elements/inputText.js',
-    groupset     : folder + 'elements/groupset.js',
-    group        : folder + 'elements/group.js',
-    item         : folder + 'elements/item.js',
-    icon         : folder + 'elements/icon.js',
-    action       : folder + 'elements/action.js'
+    fieldset      : folder + 'elements/fieldset.js',
+    inputText     : folder + 'elements/inputText.js',
+    inputTextArea : folder + 'elements/inputTextArea.js',
+    inputError    : folder + 'elements/inputError.js',
+
+    helper        : folder + 'elements/helper.js',
+    dataset       : folder + 'elements/dataset.js',
+    data          : folder + 'elements/data.js',
+    value         : folder + 'elements/value.js',
+    groupset      : folder + 'elements/groupset.js',
+    group         : folder + 'elements/group.js',
+    item          : folder + 'elements/item.js',
+    icon          : folder + 'elements/icon.js',
+    action        : folder + 'elements/action.js'
 }, function () {
 
     var element,

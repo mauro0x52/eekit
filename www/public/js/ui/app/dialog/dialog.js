@@ -5,11 +5,13 @@
  * @since  2013-05
  */
 
-var Element    = module.use('element'),
-    Css        = module.use('css'),
-    Collection = module.use('collection'),
-    FieldSet   = module.use('fieldset'),
-    InputText  = module.use('inputText');
+var Element        = module.use('element'),
+    Css            = module.use('css'),
+    Collection     = module.use('collection'),
+    FieldSet       = module.use('fieldset'),
+    InputText      = module.use('inputText'),
+    InputTextArea  = module.use('inputTextArea'),
+    InputError     = module.use('inputError');
 
 module.exports(new Class(function (context) {
 
@@ -53,6 +55,8 @@ module.exports(new Class(function (context) {
     this.detach = element.detach;
     this.fieldset = FieldSet;
     this.inputText = InputText;
+    this.inputTextarea = InputTextArea;
+    this.inputError = InputError;
 
     /**
      * Controla o titulo do app
