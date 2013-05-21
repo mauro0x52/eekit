@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.0.9 (2013-05-21)
+
+Hotfixes
+- Ficha de usuário deslogado
+
 ## 1.0.8 (2013-05-17)
 
 Melhorias
