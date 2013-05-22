@@ -1,16 +1,5 @@
-app.routes.entity('/sandbox/entity', function (params, data) {
+app.routes.embedEntity('/sandbox/embed/entity', function (params, data) {
     app.ui.title('Titulo da entity');
-
-    app.ui.actions.add([
-        new app.ui.action({
-            legend : 'ação',
-            image : 'add'
-        }),
-        new app.ui.action({
-            legend : 'ação',
-            image : 'add'
-        })
-    ]);
 
 
     app.ui.subtitle('Subtítulo da bagaça');
@@ -43,14 +32,4 @@ app.routes.entity('/sandbox/entity', function (params, data) {
             ]
         })
     ])
-
-    app.apps.open({
-        app   : 'ee',
-        route : '/sandbox/embed/list'
-    });
-
-    app.apps.open({
-        app   : 'ee',
-        route : '/sandbox/embed/entity'
-    });
 });

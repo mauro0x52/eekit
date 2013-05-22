@@ -7,7 +7,12 @@
 
 var Element  = module.use('element'),
     Css      = module.use('css'),
-    EmbedApp = module.use('embedApp');
+    Collection = module.use('collection'),
+    EmbedApp = module.use('embedApp'),
+    Action   = module.use('action'),
+    DataSet  = module.use('dataset'),
+    Data     = module.use('data'),
+    Value    = module.use('value');
 
 module.exports(new Class(function (context) {
 
@@ -18,12 +23,21 @@ module.exports(new Class(function (context) {
         datasets;
 
     this.body.html.attach([
-        subtitle    = new Element('h5'),
-        description = new Element('p'),
-        datasets    = new Element('div')
+        subtitle    = new Element('h5', {attributes : {'class' : 'title'}}),
+        description = new Element('p', {attributes : {'class' : 'description'}}),
+        datasets    = new Element('div', {attributes : {'class' : 'data-sets'}}),
+        new Element('div', {attributes : {'class' : 'click'}, html : [
+            new Element('div', {attributes : {'class' : 'arrow'}, html : [
+                new Element('div', {attributes : {'class' : 'fill'}})
+            ]}),
+        ]})
     ]);
 
     this.body = undefined;
+    this.action = Action;
+    this.dataset = DataSet;
+    this.data = Data;
+    this.value = Value;
 
     /* Controla o clique no app
      *
@@ -107,20 +121,6 @@ module.exports(new Class(function (context) {
      * @author Rafael Erthal
      * @since  2013-05
      */
-    this.datasets = {
-
-        get : function () {
-
-        },
-
-        add : function () {
-
-        },
-
-        remove : function () {
-
-        }
-
-    };
+    this.datasets = new Collection(datasets, [DataSet]);
 
 }));

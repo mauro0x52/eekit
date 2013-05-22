@@ -14,16 +14,12 @@ module.exports(new Class(function (context) {
         title,
         body;
 
-    element = new Element('div', {html : [
-        new Element('div', {html : [
-            title = new Element('h4')
+    element = new Element('div', {attributes : {'class' : 'related ' + (context.type() === 'embedList' ? 'list' : 'entity')}, html : [
+        new Element('div', {attributes : {'class' : 'header'}, html : [
+            title = new Element('h4', {attributes : {'class' : 'title'}})
         ]}),
-        body = new Element('div')
-    ], events : {
-        click : function () {
-
-        }
-    }});
+        body = new Element('div', {attributes : {'class' : 'body'}})
+    ]});
 
     this.body = body;
     this.attach = element.attach;

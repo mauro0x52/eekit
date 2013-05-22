@@ -9,7 +9,6 @@ module.exports(new Class (function (params) {
 
     var that       = this,
         app        = this,
-        route      = null,
         callback   = null,
         type       = null,
         parameters = null;
@@ -70,7 +69,7 @@ module.exports(new Class (function (params) {
 
     this.route = function () {
 
-        return route;
+        return params.route;
 
     };
 
@@ -225,11 +224,10 @@ module.exports(new Class (function (params) {
                 });
             }
 
-            if (Empreendekit.path.match('/' + that.slug() + path)) {
-                route      = location.pathname;
+            if (Empreendekit.path.match('/' + that.slug() + path, params.route)) {
                 callback   = fn;
                 type       = 'list';
-                parameters = Empreendekit.path.params('/' + that.slug() + path);
+                parameters = Empreendekit.path.params('/' + that.slug() + path, params.route);
             }
 
         },
@@ -254,11 +252,10 @@ module.exports(new Class (function (params) {
                 });
             }
 
-            if (Empreendekit.path.match('/' + that.slug() + path)) {
-                route      = location.pathname;
+            if (Empreendekit.path.match('/' + that.slug() + path, params.route)) {
                 callback   = fn;
                 type       = 'entity';
-                parameters = Empreendekit.path.params('/' + that.slug() + path);
+                parameters = Empreendekit.path.params('/' + that.slug() + path, params.route);
             }
 
         },
@@ -283,11 +280,10 @@ module.exports(new Class (function (params) {
                 });
             }
 
-            if (Empreendekit.path.match('/' + that.slug() + path)) {
-                route      = location.pathname;
+            if (Empreendekit.path.match('/' + that.slug() + path, params.route)) {
                 callback   = fn;
                 type       = 'embedList';
-                parameters = Empreendekit.path.params('/' + that.slug() + path);
+                parameters = Empreendekit.path.params('/' + that.slug() + path, params.route);
             }
 
         },
@@ -312,11 +308,10 @@ module.exports(new Class (function (params) {
                 });
             }
 
-            if (Empreendekit.path.match('/' + that.slug() + path)) {
-                route      = location.pathname;
+            if (Empreendekit.path.match('/' + that.slug() + path, params.route)) {
                 callback   = fn;
                 type       = 'embedEntity';
-                parameters = Empreendekit.path.params('/' + that.slug() + path);
+                parameters = Empreendekit.path.params('/' + that.slug() + path, params.route);
             }
 
         },
@@ -341,11 +336,10 @@ module.exports(new Class (function (params) {
                 });
             }
 
-            if (Empreendekit.path.match('/' + that.slug() + path)) {
-                route      = location.pathname;
+            if (Empreendekit.path.match('/' + that.slug() + path, params.route)) {
                 callback   = fn;
                 type       = 'dialog';
-                parameters = Empreendekit.path.params('/' + that.slug() + path);
+                parameters = Empreendekit.path.params('/' + that.slug() + path, params.route);
             }
 
         },
@@ -370,11 +364,10 @@ module.exports(new Class (function (params) {
                 });
             }
 
-            if (Empreendekit.path.match('/' + that.slug() + path)) {
-                route      = location.pathname;
+            if (Empreendekit.path.match('/' + that.slug() + path, params.route)) {
                 callback   = fn;
                 type       = 'frame';
-                parameters = Empreendekit.path.params('/' + that.slug() + path);
+                parameters = Empreendekit.path.params('/' + that.slug() + path, params.route);
             }
 
         }
