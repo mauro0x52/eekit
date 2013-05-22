@@ -2,7 +2,10 @@ var Event = require('./model/Model').Event,
     config = require('./config.js'),
 	needle = require('needle');
 
+console.log('Iniciando cron de LifeCycle');
+
 var send = function (user, params) {
+    console.log('enviando email para '+ user.id);
     needle.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + user.id + '?secret=' + require('querystring').escape(config.security.secret),function (error, response, data) {
         if (data && data.user && data.user.tokens && data.user.tokens[0] && data.user.tokens[0].token) {
             needle.post('http://'+config.services.jaiminho.url+':'+config.services.jaiminho.port+'/mail/self',{
@@ -33,6 +36,7 @@ Event.lifeCycle(
         app : 'contatos'
 	},
 	function (error, users) {
+		console.log(users.length + ' emails de 24h de contatos');
 		if (error) {
 			console.log(error);
 		} else {
@@ -66,6 +70,7 @@ Event.lifeCycle(
         app : 'tarefas'
 	},
 	function (error, users) {
+	console.log(users.length + ' emails de 24h de tarefas');
         if (error) {
             console.log(error);
         } else {
@@ -99,6 +104,7 @@ Event.lifeCycle(
         app : 'finanças'
 	},
 	function (error, users) {
+		console.log(users.length + ' emails de 24h de financas');
 		if (error) {
 			console.log(error);
 		} else {
@@ -121,6 +127,7 @@ Event.lifeCycle(
 
 /* Lifecycle de pagamento 10 dias */
 Event.signupUsersIds(10, function(error, users_ids) {
+    console.log(users_ids.length + ' emails de 10 dias');
     if (error) {
         console.log(error);
     } else {
@@ -144,6 +151,7 @@ Event.signupUsersIds(10, function(error, users_ids) {
 
 /* Lifecycle de pagamento 15 dias */
 Event.signupUsersIds(15, function(error, users_ids) {
+    console.log(users_ids.length + ' emails de 15 dias');
     if (error) {
         console.log(error);
     } else {
