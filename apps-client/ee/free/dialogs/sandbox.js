@@ -97,6 +97,9 @@ app.routes.dialog('/sandbox/dialog', function (params, data) {
                     {rule : /^[0-9]+$/, message : 'tem que ser numeros'},
                     {rule : /^[a-z]+$/, message : 'tem que ser letras'},
                 ]
+            }),
+            new app.ui.inputDate({
+                legend : 'Datepicker'
             })
         ]
     })

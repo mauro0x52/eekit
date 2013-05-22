@@ -10,7 +10,8 @@ var Element       = module.use('element'),
     Collection    = module.use('collection'),
     InputText     = module.use('inputText'),
     InputTextArea = module.use('inputTextArea'),
-    InputSelector = module.use('inputSelector');
+    InputSelector = module.use('inputSelector'),
+    InputDate     = module.use('inputDate');
 
 module.exports(new Class(function (params) {
     var element,
@@ -144,8 +145,7 @@ module.exports(new Class(function (params) {
      * @since  2013-05
      *
      */
-    //inputText, inputTextarea, inputPassword, inputDate, inputSelector
-    this.fields = new Collection(fields, [InputText, InputTextArea, InputSelector]);
+    this.fields = new Collection(fields, [InputText, InputTextArea, InputSelector, InputDate]);
 
     /*
      * Valores iniciais

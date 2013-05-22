@@ -238,7 +238,11 @@ module.exports(Element = new Class(function (tag, params) {
         };
 
         this.trigger = function (data) {
-            element.dispatchEvent(new CustomEvent(name, {detail : data}));
+            if (name !== 'focus') {
+                element.dispatchEvent(new CustomEvent(name, {detail : data}));
+            } else {
+                element.focus();
+            }
         };
 
         return this;
@@ -285,7 +289,7 @@ module.exports(Element = new Class(function (tag, params) {
                     }
                 }
             }
-            
+
             return result;
 
         },

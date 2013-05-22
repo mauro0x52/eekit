@@ -5,18 +5,21 @@
  * @since  2013-05
  */
 
-var Element    = module.use('element'),
-    Css        = module.use('css'),
-    App        = module.use('app'),
-    Collection = module.use('collection'),
-    Helper     = module.use('helper'),
-    FieldSet   = module.use('fieldset'),
-    InputText  = module.use('inputText'),
-    GroupSet   = module.use('groupset'),
-    Group      = module.use('group'),
-    Item       = module.use('item'),
-    Icon       = module.use('icon'),
-    Action     = module.use('action');
+var Element       = module.use('element'),
+    Css           = module.use('css'),
+    App           = module.use('app'),
+    Collection    = module.use('collection'),
+    Helper        = module.use('helper'),
+    FieldSet      = module.use('fieldset'),
+    InputText     = module.use('inputText'),
+    InputSelector = module.use('inputSelector'),
+    InputOption   = module.use('inputOption'),
+    InputDate     = module.use('inputDate'),
+    GroupSet      = module.use('groupset'),
+    Group         = module.use('group'),
+    Item          = module.use('item'),
+    Icon          = module.use('icon'),
+    Action        = module.use('action');
 
 module.exports(new Class(function (context) {
 
@@ -62,6 +65,8 @@ module.exports(new Class(function (context) {
     this.helper = Helper;
     this.fieldset = FieldSet;
     this.inputText = InputText;
+    this.inputSelector = InputSelector;
+    this.inputDate = InputDate;
     this.groupset = GroupSet;
     this.group = Group;
     this.item = Item;
@@ -134,6 +139,6 @@ module.exports(new Class(function (context) {
      * @author Rafael Erthal
      * @since  2013-05
      */
-    this.groups = new Collection(groups, [GroupSet]);
+    this.groups = new Collection(groups, [Group, GroupSet]);
 
 }));

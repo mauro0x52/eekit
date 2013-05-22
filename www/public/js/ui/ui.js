@@ -31,6 +31,7 @@ new Namespace({
     inputError    : folder + 'elements/inputError.js',
     inputSelector : folder + 'elements/inputSelector.js',
     inputOption   : folder + 'elements/inputOption.js',
+    inputDate     : folder + 'elements/inputDate.js',
 
     helper        : folder + 'elements/helper.js',
     dataset       : folder + 'elements/dataset.js',

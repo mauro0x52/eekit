@@ -13,7 +13,8 @@ var Element        = module.use('element'),
     InputTextArea  = module.use('inputTextArea'),
     InputError     = module.use('inputError'),
     InputSelector  = module.use('inputSelector'),
-    InputOption    = module.use('inputOption');
+    InputOption    = module.use('inputOption'),
+    InputDate      = module.use('inputDate');
 
 module.exports(new Class(function (context) {
 
@@ -61,6 +62,7 @@ module.exports(new Class(function (context) {
     this.inputError = InputError;
     this.inputSelector = InputSelector;
     this.inputOption = InputOption;
+    this.inputDate = InputDate;
 
     /**
      * Controla o titulo do app
