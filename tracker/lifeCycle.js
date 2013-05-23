@@ -7,7 +7,9 @@ console.log('Iniciando cron de LifeCycle');
 var send = function (user, params) {
     console.log('enviando email para '+ user.id);
     needle.get('http://'+config.services.auth.url+':'+config.services.auth.port+'/user/' + user.id + '?secret=' + require('querystring').escape(config.security.secret),function (error, response, data) {
-        if (data && data.user && data.user.tokens && data.user.tokens[0] && data.user.tokens[0].token) {
+        if (error) {
+            console.log(error);
+        } else if (data && data.user && data.user.tokens && data.user.tokens[0] && data.user.tokens[0].token) {
             needle.post('http://'+config.services.jaiminho.url+':'+config.services.jaiminho.port+'/mail/self',{
                 token : data.user.tokens[0].token,
                 from : 'lucas@empreendemia.com.br',
@@ -19,6 +21,9 @@ var send = function (user, params) {
                 name : params.name,
                 service : 'tracker'
             }, function () {console.log(arguments[2])});
+        } else {
+            console.log('data está vazio');
+            console.log(data);
         }
     });
 };
