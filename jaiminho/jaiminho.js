@@ -42,6 +42,7 @@ require('./controller/Mail.js')({
 /*  Métodos para dev e teste */
 app.get('/ping', function (request, response) {
     "use strict";
+    response.header('Access-Control-Allow-Origin', '*');
     response.send(true);
 });
 
@@ -64,6 +65,7 @@ app.get('/version', function (request, response) {
 });
 app.get('/status', function (request, response) {
     "use strict";
+    response.header('Access-Control-Allow-Origin', '*');
     response.send(true);
 });
 

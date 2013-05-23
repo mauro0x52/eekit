@@ -41,6 +41,7 @@ require('./controller/App.js')({
 /*  Métodos para dev e teste */
 app.get('/ping', function (request, response) {
     "use strict";
+    response.header('Access-Control-Allow-Origin', '*');
     response.send(true);
 });
 
