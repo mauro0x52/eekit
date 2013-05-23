@@ -16,6 +16,12 @@ app.get('/panel/service/:app', function (request, response) {
     response.render('../view/service.ejs', { app : request.params.app });
 });
 
+app.get('/panel/services', function (request, response) {
+    "use strict";
+
+    response.render('../view/services.ejs');
+});
+
 /**
  * Reinicia um serviço
  *

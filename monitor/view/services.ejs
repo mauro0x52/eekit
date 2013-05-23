@@ -1,0 +1,320 @@
+<script type="text/javascript">
+var timeInterval = {
+    ping : 1000,
+    status : 5000,
+    version : 10000
+};
+var services = {
+    'www'           : 'empreendekit.com.br',
+    'auth'          : 'empreendekit.com.br:8001',
+    'apps'          : 'empreendekit.com.br:8002',
+    'tracker'       : 'support.empreendekit.com.br:8003',
+    'jaiminho'      : 'support.empreendekit.com.br:8010',
+    'tasks'         : 'empreendekit.com.br:8005',
+    'contacts'      : 'empreendekit.com.br:8006',
+    'finances'      : 'empreendekit.com.br:8007',
+    'billets'       : 'empreendekit.com.br:8009',
+};
+</script>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <title>Monitor EmpreendeKit</title>
+    <style type="text/css">
+
+        h1 {
+            text-align: center;
+            font-size: 20px;
+            font-family: Verdana, Helvetica, sans-serif;
+            margin: 40px 0;
+        }
+
+        #services {
+            list-style: none;
+            margin: 20px auto;
+            padding: 0;
+            width: 600px;
+            border-top: 1px bottom #ccc;
+        }
+
+        #services li {
+            position: relative;
+            padding: 10px 0;
+            border-top: 1px dotted #ccc;
+            line-height: 16px;
+            height: 16px;
+            font-size: 12px;
+            font-family: Verdana, Helvetica, sans-serif;
+        }
+
+        #services li .status {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            display: block;
+            float: left;
+            margin: 0 10px;
+        }
+
+        #services li .status {
+            background-color: #ccc;
+        }
+
+        #services li.up .status {
+            background-color: #080;
+        }
+
+        #services li.down .status {
+            background-color: #c00;
+        }
+
+        #services li .name {
+            display: inline-block;
+            margin: 0 10px;
+            width: 100px;
+            font-weight: bold;
+        }
+
+        #services li .version {
+            display: inline-block;
+            margin: 0 10px;
+            width: 50px;
+        }
+
+        #services li .date {
+            display: inline-block;
+            margin: 0 10px;
+            width: 100px;
+        }
+
+        #services li .count {
+            display: inline-block;
+            margin: 0 10px;
+            width: 90px;
+            text-align: right;
+        }
+
+        #services li .url {
+            display: inline-block;
+            margin: 0 10px;
+            width: 200px;
+            overflow: hidden;
+            color: #888;
+        }
+
+        #services li .url a {
+            color: #888;
+        }
+
+        #services li .ping {
+            display: inline-block;
+            text-align: right;
+            margin: 0 10px;
+            width: 90px;
+        }
+
+        #services li .updating {
+            background-image: url(http://www.ajaxload.info/images/exemples/4.gif);
+            background-repeat: no-repeat;
+            background-position: bottom;
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            opacity: 0.5;
+        }
+
+        #services li .not-updating {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+        }
+
+    </style>
+    <script type="text/javascript">
+        var dateFormat = function (string) {
+            var date, split,
+                months = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'],
+                print;
+
+            if (/\d\d\d\d(\-\d{1,2}){0,2}/.test(string)) {
+                    split = string.split('-');
+                    date = new Date(split[0], parseInt(split[1]-1), split[2]);
+                    print = date.getDate() + ' / ' + months[date.getMonth()] + ' / ' + date.getFullYear();
+            } else {
+                print = '?'
+            }
+            return print;
+        }
+
+        var Ajax = function (url, cb) {
+            var invocation;
+
+            try {
+                /* Testa chamada para o IE */
+                if (window.XDomainRequest) {
+                    invocation = new XDomainRequest();
+                } else {
+                    invocation = new XMLHttpRequest();
+                }
+                /* Verifica se ajax esta disponível no browser */
+                if (invocation) {
+                    /* Callback de sucesso */
+                    invocation.onload = function () {
+                        try {
+                            var data = eval('(' + invocation.responseText + ')');
+
+                            if (cb) {
+                                cb(null, data);
+                            }
+                        } catch(e) {
+                            if (cb) {
+                                cb(e, null);
+                            }
+                        }
+                    };
+                    /* Callback de falha */
+                    invocation.onerror = function (error) {
+                        cb(error, null);
+                    };
+                    /* dispara a chamada */
+                    invocation.open('GET', url, true);
+                    start = new Date()
+                    invocation.send();
+                } else {
+                    cb('unable to create request object', null);
+                }
+            } catch (error) {
+                cb(error, null);
+            }
+        };
+
+        var Service = function (name, url) {
+            var element,
+                element_status, element_name, element_count, element_version, element_date, element_ping,
+                update_ping, update_version, update_status,
+                services = document.getElementById('services'),
+                self = this;
+
+            element             =  document.createElement('li');
+            element_status      =  document.createElement('div');
+            element_name        =  document.createElement('div');
+            element_version     =  document.createElement('div');
+            element_date        =  document.createElement('div');
+            element_ping        =  document.createElement('div');
+            element_count       =  document.createElement('div');
+            update_ping         =  document.createElement('div');
+            update_version      =  document.createElement('div');
+            update_status       =  document.createElement('div');
+
+            element.appendChild(element_status);
+            element.appendChild(element_name);
+            element.appendChild(element_version);
+            element.appendChild(element_date);
+            element.appendChild(update_version);
+            element.appendChild(element_count);
+            element.appendChild(update_status);
+            element.appendChild(element_ping);
+            element.appendChild(update_ping);
+
+            element_status.setAttribute('class', 'status');
+            element_name.setAttribute('class', 'name');
+            element_version.setAttribute('class', 'version');
+            element_date.setAttribute('class', 'date');
+            element_ping.setAttribute('class', 'ping');
+            element_count.setAttribute('class', 'count');
+            update_ping.setAttribute('class', 'not-updating');
+            update_version.setAttribute('class', 'not-updating');
+            update_status.setAttribute('class', 'not-updating');
+
+            services.appendChild(element);
+
+            element_name.innerHTML = name;
+
+            this.url = url;
+
+            this.ping = function (recursive) {
+                var now, then;
+                now = new Date();
+
+                update_ping.setAttribute('class', 'updating');
+                Ajax(this.url + '/ping', function (error, data) {
+                    update_ping.setAttribute('class', 'not-updating');
+                    if (error) {
+                        element.setAttribute('class', 'down');
+                        console.log(error);
+                    } else {
+                        element.setAttribute('class', 'up');
+                        then = new Date();
+                        element_ping.innerHTML = then - now + ' ms';
+                    }
+                    if (recursive) setTimeout(function() { self.ping(true) }, 2000);
+                });
+            }
+
+            this.version = function (recursive) {
+                update_version.setAttribute('class', 'updating');
+                Ajax(this.url + '/version', function (error, data) {
+                    update_version.setAttribute('class', 'not-updating');
+                    if (error) console.log(error);
+                    else {
+                        element_version.innerHTML = data.version;
+                        element_date.innerHTML = data.date;
+                    }
+                    if (recursive) setTimeout(function() { self.version(true) }, 20000);
+                });
+            }
+
+            this.status = function (recursive) {
+                update_status.setAttribute('class', 'updating');
+                Ajax(this.url + '/status', function (error, data) {
+                    update_status.setAttribute('class', 'not-updating');
+                    if (error) console.log(error);
+                    else {
+                        if (data.count) {
+                            element_count.innerHTML = data.count;
+                        }
+                    }
+                    if (recursive) setTimeout(function() { self.status(true) }, 10000);
+                });
+            }
+
+            this.monitor = function () {
+                self.ping(true);
+                self.version(true);
+                self.status(true);
+            }
+        }
+
+        var Panel = function () {
+            this.services = {};
+
+            for (var i in services) {
+                this.services[i] = new Service(i, 'http://' + services[i]);
+            }
+
+            this.status = function () {
+                for (var i in this.services) {
+                    this.services[i].monitor();
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Serviços do EmpreendeKit</h1>
+
+    <ul id="services">
+
+    </ul>
+
+    <script type="text/javascript">
+    (function () {
+        var panel = new Panel();
+        panel.status();
+    }) ()
+    </script>
+</body>
+</html>
