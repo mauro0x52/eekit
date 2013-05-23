@@ -38,9 +38,16 @@ require('./controller/Mail.js')({
     config   : config
 });
 
+
 /*  Métodos para dev e teste */
-app.get('/ping', function (request,response) {
+app.get('/ping', function (request, response) {
     "use strict";
+    response.send(true);
+});
+
+app.get('/version', function (request, response) {
+    "use strict";
+    var Model = require('./model/User.js').User;
 
     response.contentType('json');
     response.header('Access-Control-Allow-Origin', '*');
@@ -51,9 +58,13 @@ app.get('/ping', function (request,response) {
         if (error) response.send({error : error});
         else {
             regexm = data.match(/\#{2}\s*([0-9]+\.[0-9]+\.?[0-9]?)\s*(\((.*)\))?/);
-            response.send({ version : regexm[1], date : regexm[3]});
+            response.send({ version : regexm[1], date : regexm[3] });
         }
     });
+});
+app.get('/status', function (request, response) {
+    "use strict";
+    response.send(true);
 });
 
 /*  Ativando o server */

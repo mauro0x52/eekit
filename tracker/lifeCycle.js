@@ -22,8 +22,7 @@ var send = function (user, params) {
                 service : 'tracker'
             }, function () {console.log(arguments[2])});
         } else {
-            console.log('data está vazio');
-            console.log(data);
+            console.log('usuário sem token');
         }
     });
 };
