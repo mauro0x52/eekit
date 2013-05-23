@@ -48,7 +48,6 @@ app.get('/ping', function (request, response) {
 
 app.get('/version', function (request, response) {
     "use strict";
-    var Model = require('./model/User.js').User;
 
     response.contentType('json');
     response.header('Access-Control-Allow-Origin', '*');
