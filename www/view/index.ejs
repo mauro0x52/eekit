@@ -37,12 +37,13 @@
 
                 /* Exibe lista de apps no menu do usuário */
                 for (var i in this.config.apps) {
-                    if (this.config.apps[i].slug !== 'ee') {
+                    //if (this.config.apps[i].slug !== 'ee') {
                         this.ui.menu.add(new this.ui.appIcon({
                             legend : this.config.apps[i].name,
-                            image  : this.config.apps[i].slug
+                            image  : this.config.apps[i].slug,
+                            href   : this.config.apps[i].slug
                         }))
-                    }
+                    //}
                 }
 
             });

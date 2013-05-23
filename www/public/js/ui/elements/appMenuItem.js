@@ -23,7 +23,8 @@ module.exports(new Class(function (params) {
         ]})
     ]});
 
-    anchor.event('click').bind(function () {
+    anchor.event('click').bind(function (evt) {
+        evt.preventDefault();
         Empreendekit.path.redirect(href);
     });
 
@@ -54,7 +55,7 @@ module.exports(new Class(function (params) {
         } else {
             return legend.html.get();
         }
-    }
+    };
 
     /**
      * Controla a imagem do item
@@ -80,7 +81,7 @@ module.exports(new Class(function (params) {
         } else {
             return image.attribute('class').get().replace('image menu ', '');
         }
-    }
+    };
 
     /**
      * Controla a âncora do item
@@ -100,11 +101,12 @@ module.exports(new Class(function (params) {
                 });
             }
 
+            anchor.attribute('href').set('/' + value);
             href = value;
         } else {
             return href;
         }
-    }
+    };
 
     /**
      * Controla o estado de seleção do item
@@ -122,7 +124,7 @@ module.exports(new Class(function (params) {
         } else {
             return element.attribute('class').get().indexOf('selected') > -1;
         }
-    }
+    };
 
     /*
      * Valores iniciais

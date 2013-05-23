@@ -37,13 +37,11 @@ module.exports(Path = {
         /* Verifico se o app ja não esta aberto */
         var apps = ui.apps.get();
         for (var i in apps) {
-            if (apps[i].context().route() === path) {
+            if (apps[i].context().route() === route) {
                 apps[i].click();
                 return;
             }
         }
-
-        history.pushState({}, 'EmpreendeKit', path);
 
         /* Abro o app */
         ajax.get({
@@ -54,6 +52,7 @@ module.exports(Path = {
                 name   : response.name,
                 slug   : response.slug,
                 source : response.source,
+                route  : path,
                 caller : caller
             });
 
@@ -91,7 +90,7 @@ module.exports(Path = {
                     ui.collapse(false);
                 }
             } else {
-
+                caller.ui.embeds.add(newapp.ui);
             }
         });
     },
@@ -101,8 +100,8 @@ module.exports(Path = {
      * @author Rafael Erthal
      * @since  2013-05
      */
-    match : function (path) {
-        var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'],
+    match : function (path, route) {
+        var current_path = route.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'],
             current_route = path.match(/([\/][A-Za-z0-9\-\:]*[^\/])/g) || ['/'];
 
         if (current_path.length != current_route.length) {
@@ -126,8 +125,8 @@ module.exports(Path = {
      * @author Rafael Erthal
      * @since  2013-05
      */
-    params : function (path) {
-        var current_path = location.pathname.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'],
+    params : function (path, route) {
+        var current_path = route.match(/([\/][A-Za-z0-9\-]*[^\/])/g) || ['/'],
             current_route = path.match(/([\/][A-Za-z0-9\-\:]*[^\/])/g) || ['/'],
             res = {};
 

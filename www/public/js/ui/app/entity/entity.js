@@ -32,8 +32,8 @@ module.exports(new Class(function (context) {
             description = new Element('p', {attributes : {'class' : 'description'}}),
             /* Datasets */
             datasets = new Element('div', {attributes : {'class' : 'data-sets'}}),
-            /* Relateds */
-            relateds = new Element('div', {attributes : {'class' : 'relateds'}})
+            /* Embeds */
+            embeds = new Element('div', {attributes : {'class' : 'relateds'}})
         ]})
     ]);
 
@@ -112,6 +112,6 @@ module.exports(new Class(function (context) {
      * @author Rafael Erthal
      * @since  2013-05
      */
-    //this.relateds = new Collection(relateds, [EmbeddedList, EmbeddedEntity]);
+    this.embeds = new Collection(embeds, [Empreendekit.ui.embedList, Empreendekit.ui.embedEntity]);
 
 }));

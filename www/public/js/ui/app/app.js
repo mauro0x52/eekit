@@ -126,7 +126,9 @@ module.exports(new Class(function (context) {
             var apps = Empreendekit.ui.apps.get(),
                 navigations = Empreendekit.ui.navigation.get(),
                 appMenuItems = Empreendekit.ui.appMenu.get(),
+                appMenuIcons = Empreendekit.ui.menu.get(),
                 i,j;
+
             for (i = 0; i < apps.length; i++) {
                 if (apps[i] === self) {
                     apps[i].collapse(false);
@@ -136,6 +138,13 @@ module.exports(new Class(function (context) {
                             appMenuItems[j].select(true);
                         } else {
                             appMenuItems[j].select(false);
+                        }
+                    }
+                    for (j = 0; j < appMenuIcons.length; j++) {
+                        if (appMenuIcons[j].href() === apps[i].context().slug()) {
+                            appMenuIcons[j].select(true);
+                        } else {
+                            appMenuIcons[j].select(false);
                         }
                     }
                 } else {

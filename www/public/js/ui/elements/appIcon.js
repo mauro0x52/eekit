@@ -10,7 +10,7 @@ var Element    = module.use('element'),
     Collection = module.use('collection');
 
 module.exports(new Class(function (params) {
-    var element, image, legend, anchor,
+    var element, image, legend, anchor, href,
         self = this;
 
     element = new Element('li', {attributes : {'class' : 'tool'}, html : [
@@ -23,8 +23,9 @@ module.exports(new Class(function (params) {
         ]})
     ]});
 
-    anchor.event('click').bind(function () {
-        Empreendekit.path.redirect(self.image() + '/');
+    anchor.event('click').bind(function (evt) {
+        evt.preventDefault();
+        Empreendekit.path.redirect(href);
     });
 
     element.template = this;
@@ -54,7 +55,7 @@ module.exports(new Class(function (params) {
         } else {
             return legend.html.get();
         }
-    }
+    };
 
     /**
      * Controla a imagem do item
@@ -80,7 +81,50 @@ module.exports(new Class(function (params) {
         } else {
             return image.attribute('class').get().replace('image tool ', '');
         }
-    }
+    };
+
+    /**
+     * Controla a âncora do item
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-05
+     */
+    this.href = function(value) {
+        if (value){
+
+            if (value.constructor !== String) {
+                throw new Error({
+                    source    : 'appIcon.js',
+                    method    : 'href',
+                    message   : 'Href value must be a string',
+                    arguments : arguments
+                });
+            }
+
+            anchor.attribute('href').set('/' + value);
+            href = value;
+        } else {
+            return href;
+        }
+    };
+
+    /**
+     * Controla o estado de seleção do item
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-05
+     */
+    this.select = function(value) {
+        if (value === true || value === false) {
+            if (value) {
+                element.attribute('class').set('tool selected');
+            } else {
+                element.attribute('class').set('tool');
+            }
+        } else {
+            return element.attribute('class').get().indexOf('selected') > -1;
+        }
+    };
 
     /*
      * Valores iniciais
@@ -88,5 +132,6 @@ module.exports(new Class(function (params) {
     if (params) {
         this.legend(params.legend);
         this.image(params.image);
+        this.href(params.href);
     }
 }));
