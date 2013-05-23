@@ -18,8 +18,8 @@ module.exports(Path = {
      * @author Rafael Erthal
      * @since  2013-05
      */
-    redirect : function (path, caller) {
-        
+    redirect : function (path, caller, cb) {
+
         if (!path) {
             throw new Error({
                 source     : 'path.js',
@@ -57,11 +57,13 @@ module.exports(Path = {
                 caller : caller
             });
 
+            if (cb) newapp.close(cb);
+
             if (newapp.type() === 'dialog') {
                 /* Renderizo o dialogo */
                 ui.dialogs.add(newapp.ui);
             } else if (newapp.type() !== 'embedList' && newapp.type() !== 'embedEntity') {
-                
+
                 if (!newapp.caller()) {
                     /* Se o app tiver sido chamado pelo eekit, removo todos os apps ativos */
                     ui.apps.remove();

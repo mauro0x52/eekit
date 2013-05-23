@@ -50,14 +50,14 @@ module.exports(new Class(function (params) {
     });
 
     element.event('mouseover').bind(function (e) {
-        if (Empreendekit.ui.dragging) {
+        if (Empreendekit.ui.dragging()) {
 
             e.preventDefault();
 
             var elements = that.items.get();
 
             if (elements.length === 0) {
-                items.html.attach(Empreendekit.ui.dragging);
+                items.html.attach(Empreendekit.ui.dragging());
             }
         }
     });

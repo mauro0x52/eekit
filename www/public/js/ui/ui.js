@@ -32,6 +32,7 @@ new Namespace({
     inputSelector : folder + 'elements/inputSelector.js',
     inputOption   : folder + 'elements/inputOption.js',
     inputDate     : folder + 'elements/inputDate.js',
+    inputPassword : folder + 'elements/inputPassword.js',
 
     helper        : folder + 'elements/helper.js',
     dataset       : folder + 'elements/dataset.js',
@@ -53,7 +54,8 @@ new Namespace({
         navigation,
         appmenu,
         modals,
-        sheets;
+        sheets,
+        dragging = null;
 
     element = new this.element('div', {attributes : {'class' : 'body'}, html : [
         /* Hearder */
@@ -112,6 +114,21 @@ new Namespace({
     this.detach = element.detach;
 
     this.attach(document.body);
+
+    this.dragging = function (value) {
+        if (value === null || value) {
+            var apps = this.apps.get(),
+                i;
+
+            dragging = value;
+
+            for (i = 0; i < apps.length; i++) {
+                apps[i].sheet.attribute('dragging').set(value ? 'true' : 'false');
+            }
+        } else {
+            return dragging;
+        }
+    }
 
     this.collapse = function (value) {
         if (value === true || value === false) {

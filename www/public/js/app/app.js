@@ -12,7 +12,8 @@ module.exports(new Class (function (params) {
         route      = null,
         callback   = null,
         type       = null,
-        parameters = null;
+        parameters = null,
+        close_cb;
 
     if (!params) {
         throw new Error({
@@ -49,6 +50,8 @@ module.exports(new Class (function (params) {
             arguments : arguments
         });
     }
+
+    this.config = Empreendekit.config;
 
     this.name = function () {
 
@@ -97,9 +100,16 @@ module.exports(new Class (function (params) {
      * @author Rafael Erthal
      * @since  2013-05
      */
-    this.close = function () {
-        this.ui.close();
-        delete this;
+    this.close = function (value) {
+        if (!value || value.constructor != Function) {
+            this.ui.close();
+            delete this;
+            if (close_cb) {
+                close_cb(value);
+            }
+        } else {
+            close_cb = value;
+        }
     }
 
     /* Controla a biblioteca de ajax do app
@@ -111,25 +121,49 @@ module.exports(new Class (function (params) {
 
         get : function (path, cb) {
 
-            Empreendekit.ajax.get(path, cb, that);
+            Empreendekit.ajax.get(path, function (data) {
+                if (data.error && data.error.name === 'InvalidTokenError') {
+                    Empreendekit.auth.login();
+                } else {
+                    cb(data);
+                }
+            }, that);
 
         },
 
         put : function (path, cb) {
 
-            Empreendekit.ajax.put(path, cb, that);
+            Empreendekit.ajax.put(path, function (data) {
+                if (data.error && data.error.name === 'InvalidTokenError') {
+                    Empreendekit.auth.login();
+                } else {
+                    cb(data);
+                }
+            }, that);
 
         },
 
         post : function (path, cb) {
 
-            Empreendekit.ajax.post(path, cb, that);
+            Empreendekit.ajax.post(path, function (data) {
+                if (data.error && data.error.name === 'InvalidTokenError') {
+                    Empreendekit.auth.login();
+                } else {
+                    cb(data);
+                }
+            }, that);
 
         },
 
         del : function (path, cb) {
 
-            Empreendekit.ajax.del(path, cb, that);
+            Empreendekit.ajax.del(path, function (data) {
+                if (data.error && data.error.name === 'InvalidTokenError') {
+                    Empreendekit.auth.login();
+                } else {
+                    cb(data);
+                }
+            }, that);
 
         }
 

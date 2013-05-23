@@ -7,10 +7,16 @@
 
 module.exports({
 
+    login : function () {
+        Empreendekit.path.redirect('ee/login', null, function (data) {
+            console.log(data);
+        });
+    },
+
     service : {
 
         authorize : function (host, cb) {
-            cb();
+            Empreendekit.ajax.get({});
         }
 
     }

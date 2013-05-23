@@ -2578,6 +2578,7 @@ form {
     width: 20px;
     font-weight: bold;
     text-shadow: 1px 1px 0 #fff;
+    color: #000;
 }
 
 .date-picker > .calendar > .week-days > .day.weekend {
@@ -2605,6 +2606,7 @@ form {
     -webkit-transition: all 0.5s linear;
     -moz-transition: all 0.5s linear;
     -o-transition: all 0.5s linear;
+    color: #000;
 }
 
 .date-picker > .calendar > .month-days > .day:hover {
@@ -2701,8 +2703,12 @@ form {
 /* -------------------------------------------------------------------------- */
 /* Draggable                                                                  */
 /* -------------------------------------------------------------------------- */
-.list .draggable {
+.list .dragging {
     margin: 10px 0;
+}
+
+.list .dragging .actions {
+    display : none;
 }
 
 /* -------------------------------------------------------------------------- */

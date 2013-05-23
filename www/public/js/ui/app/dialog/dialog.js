@@ -8,13 +8,15 @@
 var Element        = module.use('element'),
     Css            = module.use('css'),
     Collection     = module.use('collection'),
+    Action         = module.use('action'),
     FieldSet       = module.use('fieldset'),
     InputText      = module.use('inputText'),
     InputTextArea  = module.use('inputTextArea'),
     InputError     = module.use('inputError'),
     InputSelector  = module.use('inputSelector'),
     InputOption    = module.use('inputOption'),
-    InputDate      = module.use('inputDate');
+    InputDate      = module.use('inputDate'),
+    InputPassword  = module.use('inputPassword');
 
 module.exports(new Class(function (context) {
 
@@ -25,7 +27,8 @@ module.exports(new Class(function (context) {
         description,
         form,
         fieldsets,
-        action;
+        action,
+        actions;
 
     element = new Element('div', {attributes : {'class' : 'modal-wrapper'}, html : [
         new Element('div', {attributes : {'class' : 'background'}}),
@@ -49,13 +52,15 @@ module.exports(new Class(function (context) {
                     submit : function (evt) {
                         evt.preventDefault();
                     }
-                }})
+                }}),
+                actions = new Element('menu', {attributes : {'class' : 'actions'}})
             ]})
         ]})
     ]});
 
     this.attach = element.attach;
     this.detach = element.detach;
+    this.action = Action;
     this.fieldset = FieldSet;
     this.inputText = InputText;
     this.inputTextarea = InputTextArea;
@@ -63,6 +68,7 @@ module.exports(new Class(function (context) {
     this.inputSelector = InputSelector;
     this.inputOption = InputOption;
     this.inputDate = InputDate;
+    this.inputPassword = InputPassword;
 
     /**
      * Controla o titulo do app
@@ -196,5 +202,17 @@ module.exports(new Class(function (context) {
         fieldsets : new Collection(fieldsets, [FieldSet])
 
     }
+
+
+
+    /**
+     * Controla as ações do modal
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-05
+     *
+     */
+    this.actions = new Collection(actions, [Action]);
+
 
 }));

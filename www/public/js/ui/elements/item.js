@@ -19,7 +19,7 @@ module.exports(new Class(function (params) {
         that = this,
         style = {
             "click"      : "",
-            "dragg"      : "",
+            "drag"      : "",
             "visibility" : "show"
         };
 
@@ -47,16 +47,16 @@ module.exports(new Class(function (params) {
     element.event('click').bind(function (e) {
         e.preventDefault();
 
-        if (Empreendekit.ui.dragging === element) {
+        if (Empreendekit.ui.dragging() === element) {
             element.parent().parent().event('drop').trigger();
         }
     }, true);
 
     element.event('mouseover').bind(function (e) {
-        if (Empreendekit.ui.dragging && element.parent().parent().attribute('droppable').get() === 'true') {
+        if (Empreendekit.ui.dragging() && element.parent().parent().attribute('droppable').get() === 'true') {
             e.preventDefault();
 
-            if (element.parent() === Empreendekit.ui.dragging.parent()) {
+            if (element.parent() === Empreendekit.ui.dragging().parent()) {
                 /* Elementos do mesmo grupo */
                 var elements = element.parent().html.get(),
                     hovered_poisition,
@@ -66,19 +66,19 @@ module.exports(new Class(function (params) {
                     if (elements[i] === element.template) {
                         hovered_poisition = i;
                     }
-                    if (elements[i] === Empreendekit.ui.dragging.template) {
+                    if (elements[i] === Empreendekit.ui.dragging().template) {
                         dragging_poisition = i;
                     }
                 }
 
                 if (hovered_poisition > dragging_poisition) {
-                    Empreendekit.ui.dragging.html.attachAfter(element);
+                    Empreendekit.ui.dragging().html.attachAfter(element);
                 } else {
-                    Empreendekit.ui.dragging.html.attachBefore(element);
+                    Empreendekit.ui.dragging().html.attachBefore(element);
                 }
             } else {
                 /* Elementos de grupos distintos */
-                element.html.attachAfter(Empreendekit.ui.dragging)
+                element.html.attachAfter(Empreendekit.ui.dragging());
             }
         }
     });
@@ -95,7 +95,7 @@ module.exports(new Class(function (params) {
      * @since  2013-05
      */
     var css = function () {
-        element.attribute('class').set('item ' + style.click + ' ' + style.dragg  + ' ' + style.visibility);
+        element.attribute('class').set('item ' + style.click + ' ' + style.drag + ' ' + style.visibility);
     };
 
     /**
@@ -105,10 +105,10 @@ module.exports(new Class(function (params) {
      * @since  2013-05
      */
     this.drag = function () {
-        style.dragg = 'dragging';
+        style.drag= 'dragging';
         css();
 
-        Empreendekit.ui.dragging = element;
+        Empreendekit.ui.dragging(element);
     };
 
     /**
@@ -130,10 +130,10 @@ module.exports(new Class(function (params) {
         if (value.constructor === Function) {
             drop_cb = value;
         } else {
-            style.dragg = '';
+            style.drag= '';
             css();
 
-            Empreendekit.ui.dragging = null;
+            Empreendekit.ui.dragging(null);
 
             if (drop_cb && value) {
                 drop_cb(value.group, value.position);

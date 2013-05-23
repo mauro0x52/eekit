@@ -11,7 +11,8 @@ var Element       = module.use('element'),
     InputText     = module.use('inputText'),
     InputTextArea = module.use('inputTextArea'),
     InputSelector = module.use('inputSelector'),
-    InputDate     = module.use('inputDate');
+    InputDate     = module.use('inputDate'),
+    InputPassword = module.use('inputPassword');
 
 module.exports(new Class(function (params) {
     var element,
@@ -145,7 +146,7 @@ module.exports(new Class(function (params) {
      * @since  2013-05
      *
      */
-    this.fields = new Collection(fields, [InputText, InputTextArea, InputSelector, InputDate]);
+    this.fields = new Collection(fields, [InputText, InputTextArea, InputSelector, InputDate, InputPassword]);
 
     /*
      * Valores iniciais
