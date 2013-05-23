@@ -76,9 +76,78 @@ app.routes.list('/sandbox/list', function (params, data) {
     });
 
 
-    var emptyGroup = new app.ui.group({
+    var groupA = new app.ui.group({
         header : {
-            title : 'grupo vazio'
+            title : 'Grupo não dropável',
+            icons : [
+                new app.ui.icon({
+                    legend : 'A',
+                    image : 'add'
+                }),
+                new app.ui.icon({
+                    legend : 'B',
+                    image : 'add'
+                })
+            ],
+            actions : [
+                new app.ui.action({
+                    legend : 'ação',
+                    image : 'add',
+                    click : function () {
+                        console.log('aew')
+                    }
+                })
+            ]
+        },
+        items : [
+            test6 = new app.ui.item({
+                title : 'Titulo do item teste 1',
+                description : 'descrição do item',
+                click : function () {
+                    app.open({
+                        app   : 'ee',
+                        route : '/sandbox/list'
+                    });
+                },
+                label : {
+                    color : 'blue',
+                    legend : 'label'
+                },
+                drop : function (group, position) {
+                },
+                actions : [
+                    new app.ui.action({
+                        legend : 'ação',
+                        image : 'trash',
+                        tip : 'tooltip'
+                    }),
+                    new app.ui.action({
+                        legend : 'outra ação',
+                        image : 'move',
+                        tip : 'tooltip 2',
+                        click : function () {
+                            test6.drag();
+                        }
+                    })
+                ]
+            }),
+            new app.ui.item({
+                title : 'Titulo do item',
+                description : 'descrição do item',
+                label : {
+                    color : 'blue',
+                    legend : 'label'
+                },
+                click : function () {
+                    console.log('aew')
+                }
+            })
+        ]
+    })
+
+    var groupB = new app.ui.group({
+        header : {
+            title : 'Grupo dropável'
         },
         droppable : true,
         items : [
@@ -105,10 +174,72 @@ app.routes.list('/sandbox/list', function (params, data) {
                     }),
                     new app.ui.action({
                         legend : 'outra ação',
-                        image : 'download',
+                        image : 'move',
                         tip : 'tooltip 2',
                         click : function () {
                             teste2.drag();
+                        }
+                    })
+                ]
+            }),
+            teste3 = new app.ui.item({
+                title : 'Titulo do item teste 2',
+                description : 'descrição do item',
+                label : {
+                    color : 'blue',
+                    legend : 'label'
+                },
+                click : function () {
+                    app.open({
+                        app   : 'ee',
+                        route : '/sandbox/entity'
+                    });
+                },
+                drop : function (group, position) {
+                },
+                actions : [
+                    new app.ui.action({
+                        legend : 'ação',
+                        image : 'trash',
+                        tip : 'tooltip'
+                    }),
+                    new app.ui.action({
+                        legend : 'outra ação',
+                        image : 'move',
+                        tip : 'tooltip 2',
+                        click : function () {
+                            teste3.drag();
+                        }
+                    })
+                ]
+            }),
+            teste4 = new app.ui.item({
+                title : 'Titulo do item teste 2',
+                description : 'descrição do item',
+                label : {
+                    color : 'blue',
+                    legend : 'label'
+                },
+                click : function () {
+                    app.open({
+                        app   : 'ee',
+                        route : '/sandbox/entity'
+                    });
+                },
+                drop : function (group, position) {
+                },
+                actions : [
+                    new app.ui.action({
+                        legend : 'ação',
+                        image : 'trash',
+                        tip : 'tooltip'
+                    }),
+                    new app.ui.action({
+                        legend : 'outra ação',
+                        image : 'move',
+                        tip : 'tooltip 2',
+                        click : function () {
+                            teste4.drag();
                         }
                     })
                 ]
@@ -116,9 +247,9 @@ app.routes.list('/sandbox/list', function (params, data) {
         ]
     })
 
-    var group = new app.ui.group({
+    var groupC = new app.ui.group({
         header : {
-            title : 'Titulo do grupo',
+            title : 'Outro grupo dropável',
             icons : [
                 new app.ui.icon({
                     legend : 'A',
@@ -139,6 +270,7 @@ app.routes.list('/sandbox/list', function (params, data) {
                 })
             ]
         },
+        droppable : true,
         items : [
             test = new app.ui.item({
                 title : 'Titulo do item teste 1',
@@ -163,7 +295,7 @@ app.routes.list('/sandbox/list', function (params, data) {
                     }),
                     new app.ui.action({
                         legend : 'outra ação',
-                        image : 'download',
+                        image : 'move',
                         tip : 'tooltip 2',
                         click : function () {
                             test.drag();
@@ -235,50 +367,6 @@ app.routes.list('/sandbox/list', function (params, data) {
                 click : function () {
                     console.log('aew')
                 }
-            }),
-            new app.ui.item({
-                title : 'Titulo do item',
-                description : 'descrição do item',
-                label : {
-                    color : 'red',
-                    legend : 'label'
-                },
-                click : function () {
-                    console.log('aew')
-                }
-            }),
-            new app.ui.item({
-                title : 'Titulo do item',
-                description : 'descrição do item',
-                label : {
-                    color : 'blue',
-                    legend : 'label'
-                },
-                click : function () {
-                    console.log('aew')
-                }
-            }),
-            new app.ui.item({
-                title : 'Titulo do item',
-                description : 'descrição do item',
-                label : {
-                    color : 'blue',
-                    legend : 'label'
-                },
-                click : function () {
-                    console.log('aew')
-                }
-            }),
-            new app.ui.item({
-                title : 'Titulo do item',
-                description : 'descrição do item',
-                label : {
-                    color : 'blue',
-                    legend : 'label'
-                },
-                click : function () {
-                    console.log('aew')
-                }
             })
         ]
     })
@@ -299,6 +387,6 @@ app.routes.list('/sandbox/list', function (params, data) {
         input.helper.example('Ex. Clique na verdura e compre uma alface.');
     }, 1000)
 
-    groupset.groups.add([emptyGroup, group]);
+    groupset.groups.add([groupA, groupB, groupC]);
     app.ui.groups.add(groupset);
 });

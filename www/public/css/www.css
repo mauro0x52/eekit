@@ -981,11 +981,6 @@ form {
     cursor: pointer;
 }
 
-
-.sheets .body > .groups .group.droppable .item.clickable > .click {
-    opacity: 0;
-}
-
 .sheets .body > .groups .item:hover > .click {
     background-color: #b9ac9f;
     border-left: 1px solid #b9ac9f;
@@ -1084,17 +1079,8 @@ form {
 }
 
 /* droppable */
-
-.sheets .body > .groups.droppable {
-
-}
-
-
-.sheets .body > .groups .group {
-    transition: all 0.2s ease-out;
-    -webkit-transition: all 0.2s ease-out;
-    -moz-transition: all 0.2s ease-out;
-    -o-transition: all 0.2s ease-out;
+.sheets .sheet.dragging .body > .groups .item.clickable > .click {
+    opacity: 0;
 }
 
 .sheets .body > .groups .group > .header,
@@ -1106,17 +1092,17 @@ form {
     -o-transition: all 0.2s linear;
 }
 
-.sheets .body > .groups.droppable .group > .header,
-.sheets .body > .groups.droppable .group > .items,
-.sheets .body > .groups.droppable .group > .footer {
+.sheets > .sheet.dragging > .body > .groups .group > .header,
+.sheets > .sheet.dragging > .body > .groups .group > .items,
+.sheets > .sheet.dragging > .body > .groups .group > .footer {
     opacity: 0.3;
 }
 
 
-.sheets .body > .groups.droppable .group.droppable > .header,
-.sheets .body > .groups.droppable .group.droppable > .groups,
-.sheets .body > .groups.droppable .group.droppable > .items,
-.sheets .body > .groups.droppable .group.droppable > .footer {
+.sheets > .sheet.dragging > .body > .groups .group[droppable=true] > .header,
+.sheets > .sheet.dragging > .body > .groups .group[droppable=true] > .groups,
+.sheets > .sheet.dragging > .body > .groups .group[droppable=true] > .items,
+.sheets > .sheet.dragging > .body > .groups .group[droppable=true] > .footer {
     opacity: 1;
 }
 
@@ -1127,22 +1113,14 @@ form {
     -o-transition: all 0.2s linear;
 }
 
-.sheets .body > .groups.droppable .actions {
-    opacity: 0 !important;
+.sheets > .sheet.dragging > .body > .groups .actions {
+    display: none;
+}
+.sheets > .sheet.dragging > .body > .groups .group[droppable=true] .items > .item {
+    background-color: #ddd;
 }
 
-.sheets .body > .groups.droppable .group.droppable:hover > .items {
-    padding-bottom: 60px;
-}
-
-.sheets .body > .groups.droppable .group.droppable .items > .item:hover {
-    border-top: 60px solid #fdfdeb;
-    border-radius: 0 0 0 10px;
-    box-shadow: none;
-    margin-left: 20px;
-}
-
-.sheets .body > .groups.droppable .group.droppable  .items > .item > .label {
+.sheets > .sheet.dragging > .body > .groups .group[droppable=true]  .items > .item > .label {
     transition: all 0.2s linear;
     -webkit-transition: all 0.2s linear;
     -moz-transition: all 0.2s linear;
@@ -2703,11 +2681,16 @@ form {
 /* -------------------------------------------------------------------------- */
 /* Draggable                                                                  */
 /* -------------------------------------------------------------------------- */
-.list .dragging {
-    margin: 10px 0;
+.item.dragging {
+    background-color: #fff !important;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4) !important;
+    z-index: 10000 !important;
+    margin-left: 15px !important;
+    border-bottom: 1px solid #b9ac9f !important;
+    background-color: #fff !important;
 }
 
-.list .dragging .actions {
+.item.dragging .actions {
     display : none;
 }
 

@@ -118,12 +118,18 @@ new Namespace({
     this.dragging = function (value) {
         if (value === null || value) {
             var apps = this.apps.get(),
-                i;
+                i, style_classes;
 
             dragging = value;
-
+            
             for (i = 0; i < apps.length; i++) {
-                apps[i].sheet.attribute('dragging').set(value ? 'true' : 'false');
+                style_classes = apps[i].sheet.attribute('class').get();
+
+                if (value) {
+                    apps[i].sheet.attribute('class').set(style_classes + ' dragging');
+                } else {
+                    apps[i].sheet.attribute('class').set(style_classes.replace(' dragging', ''));
+                }
             }
         } else {
             return dragging;
