@@ -25,7 +25,7 @@ app.routes.list('/', function (params, data) {
 
         this.item = new app.ui.item({
             click : function () {
-                app.open({app : app.slug, route : '/boleto/' + billet._id})
+                app.open({app : app.slug(), route : '/boleto/' + billet._id})
             }
         });
 
@@ -42,14 +42,14 @@ app.routes.list('/', function (params, data) {
                 tip    : 'editar dados do boleto',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-boleto/' + billet._id});
+                    app.open({app : app.slug(), route : '/editar-boleto/' + billet._id});
                 }
             }),
             remove : new app.ui.action({
                 tip    : 'remover boleto',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-boleto/' + billet._id});
+                    app.open({app : app.slug(), route : '/remover-boleto/' + billet._id});
                 }
             })
         };
@@ -112,7 +112,7 @@ app.routes.list('/', function (params, data) {
         tip : 'adicionar novo boleto',
         click : function () {
             app.open({
-                app : app.slug,
+                app : app.slug(),
                 route : '/adicionar-boleto'
             })
         }

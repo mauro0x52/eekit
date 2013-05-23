@@ -57,7 +57,7 @@
                 legend : 'editar campo',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-campo-personalizado/' + field._id});
+                    app.open({app : app.slug(), route : '/editar-campo-personalizado/' + field._id});
                 }
             }),
             drag         : new app.ui.action({
@@ -69,7 +69,7 @@
                 legend : 'remover campo',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-campo-personalizado/' + field._id});
+                    app.open({app : app.slug(), route : '/remover-campo-personalizado/' + field._id});
                 }
             })
         };
@@ -136,7 +136,7 @@
             tip : 'adicionar campo personalizado',
             click : function () {
                 app.open({
-                    app : app.slug,
+                    app : app.slug(),
                     route : '/adicionar-campo-personalizado'
                 })
             }

@@ -49,9 +49,9 @@ module.exports(new Class(function (params) {
             html = [];
 
         for (i in options) {
-            if (options[i].clicked()) {
+            /*if (options[i].click()) {
                 html.push(new Element('li', {attributes : {'class' : 'item'}, html : options[i].legend()}));
-            }
+            }*/
         }
         selected_list.html.set(html);
     }
@@ -61,7 +61,7 @@ module.exports(new Class(function (params) {
             var options = self.options.get();
             for (var i in options) {
                 if (options[i]) {
-                    options[i].clicked(false);
+                    //options[i].click(false);
                 }
             }
         }
@@ -75,7 +75,7 @@ module.exports(new Class(function (params) {
         var options = self.options.get();
         for (var i in options) {
             if (options[i]) {
-                options[i].clicked(true);
+                //options[i].click(true);
             }
         }
         self.change();
@@ -85,7 +85,7 @@ module.exports(new Class(function (params) {
         var options = self.options.get();
         for (var i in options) {
             if (options[i]) {
-                options[i].clicked(false);
+                //options[i].click(false);
             }
         }
         self.change();
@@ -199,9 +199,9 @@ module.exports(new Class(function (params) {
         var options = self.options.get(),
             res = [];
         for (var i in options) {
-            if (options[i].clicked()) {
+            /*if (options[i].click()) {
                 res.push(options[i].value());
-            }
+            }*/
         }
         return res;
     }
@@ -242,9 +242,9 @@ module.exports(new Class(function (params) {
     this.actions = function (value) {
         if (value === true || value === false) {
             if (value) {
-                element.appendChild(actions);
+                options.html.attach(actions);
             } else if (actions.parentNode == element) {
-                element.removeChild(actions);
+                options.html.detach()
             }
         } else if (value) {
 

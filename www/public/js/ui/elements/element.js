@@ -135,16 +135,9 @@ module.exports(Element = new Class(function (tag, params) {
      */
     this.detach = function () {
 
-        if (!element.parentNode || !element.parentNode.removeChild) {
-            throw new Error({
-                source     : 'element.js',
-                method     : 'detach',
-                message    : 'Parent element must exist',
-                arguments : arguments
-            });
+        if (element.parentNode && element.parentNode.removeChild) {
+            element.parentNode.removeChild(element);
         }
-
-        element.parentNode.removeChild(element);
 
     };
 

@@ -36,7 +36,7 @@
                     tip : 'adicionar categoria neste grupo',
                     click : function () {
                         app.open({
-                            app : app.slug,
+                            app : app.slug(),
                             route : '/adicionar-categoria',
                             data : {type : type}
                         })
@@ -98,14 +98,14 @@
                 tip : 'editar esta categoria',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-categoria/' + category._id});
+                    app.open({app : app.slug(), route : '/editar-categoria/' + category._id});
                 }
             }),
             remove       : new app.ui.action({
                 tip : 'remover esta categoria',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-categoria/' + category._id});
+                    app.open({app : app.slug(), route : '/remover-categoria/' + category._id});
                 }
             })
         };
@@ -173,7 +173,7 @@
             tip : 'adicionar nova categoria de contatos',
             click : function () {
                 app.open({
-                    app : app.slug,
+                    app : app.slug(),
                     route : '/adicionar-categoria',
                 })
             }

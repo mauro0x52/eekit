@@ -44,7 +44,7 @@ app.routes.embedList('/relacionadas', function (params, data) {
                     image : 'add',
                     click : function () {
                         app.open({
-                            app   : app.slug,
+                            app   : app.slug(),
                             route : '/adicionar-tarefa',
                             data  : {
                                 embeddeds : response.embed,
@@ -87,7 +87,7 @@ app.routes.embedList('/relacionadas', function (params, data) {
 
         this.item = new app.ui.item({
             click : function () {
-                app.open({app : app.slug, route : '/tarefa/' + task._id});
+                app.open({app : app.slug(), route : '/tarefa/' + task._id});
             }
         });
 
@@ -112,14 +112,14 @@ app.routes.embedList('/relacionadas', function (params, data) {
                 tip : 'editar esta tarefa',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-tarefa/' + task._id});
+                    app.open({app : app.slug(), route : '/editar-tarefa/' + task._id});
                 }
             }),
             remove       : new app.ui.action({
                 tip : 'remover esta tarefa',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-tarefa/' + task._id});
+                    app.open({app : app.slug(), route : '/remover-tarefa/' + task._id});
                 }
             })
         };

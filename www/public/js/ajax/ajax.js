@@ -5,8 +5,8 @@
  * @since  2013-05
  */
 
-var auth = module.use('auth'),
-    ajax = new Ajax();
+var auth   = module.use('auth'),
+    ajax   = new Ajax();
 
 module.exports({
 
@@ -35,10 +35,9 @@ module.exports({
             });
         }
 
-        auth.service.authorize(path.url, function (token) {
-            path.data = path.data || {};
-            path.data.token = token;
+        var port = path.url.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[4];
 
+        if (port.toString() === '8001') {
             ajax.get(path.url, {
                 data : path.data,
                 onsuccess : function (data) {
@@ -47,7 +46,20 @@ module.exports({
                     }
                 }
             });
-        });
+        } else {
+            auth.service.authorize(port, function (token) {
+                path.data = path.data || {};
+                path.data.token = token;
+                ajax.get(path.url, {
+                    data : path.data,
+                    onsuccess : function (data) {
+                        if (cb) {
+                            cb(eval('(' + data + ')'));
+                        }
+                    }
+                });
+            });
+        }
 
     },
 
@@ -76,10 +88,9 @@ module.exports({
             });
         }
 
-        auth.service.authorize(path.url, function (token) {
-            path.data = path.data || {temp : 'lalala'};
-            path.data.token = token;
+        var port = path.url.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[4];
 
+        if (port.toString() === '8001') {
             ajax.post(path.url, {
                 data : path.data,
                 onsuccess : function (data) {
@@ -88,7 +99,20 @@ module.exports({
                     }
                 }
             });
-        });
+        } else {
+            auth.service.authorize(port, function (token) {
+                path.data = path.data || {};
+                path.data.token = token;
+                ajax.post(path.url, {
+                    data : path.data,
+                    onsuccess : function (data) {
+                        if (cb) {
+                            cb(eval('(' + data + ')'));
+                        }
+                    }
+                });
+            });
+        }
 
     }
 

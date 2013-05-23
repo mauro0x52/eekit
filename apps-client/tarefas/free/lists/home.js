@@ -89,7 +89,7 @@ app.routes.list('/', function (params, data) {
                     image : 'add',
                     click : function () {
                         app.open({
-                            app : app.slug,
+                            app : app.slug(),
                             route : '/adicionar-tarefa',
                             data : {date : date}
                         })
@@ -232,7 +232,7 @@ app.routes.list('/', function (params, data) {
                 task.changePriority(order, group.date);
             },
             click : function () {
-                app.open({app : app.slug, route : '/tarefa/' + task._id});
+                app.open({app : app.slug(), route : '/tarefa/' + task._id});
             }
         });
 
@@ -257,7 +257,7 @@ app.routes.list('/', function (params, data) {
                 tip : 'editar esta tarefa',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-tarefa/' + task._id});
+                    app.open({app : app.slug(), route : '/editar-tarefa/' + task._id});
                 }
             }),
             drag         : new app.ui.action({
@@ -269,7 +269,7 @@ app.routes.list('/', function (params, data) {
                 tip : 'remover esta tarefa',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-tarefa/' + task._id});
+                    app.open({app : app.slug(), route : '/remover-tarefa/' + task._id});
                 }
             })
         };
@@ -465,7 +465,7 @@ app.routes.list('/', function (params, data) {
             image : 'add',
             click : function () {
                 app.open({
-                    app : app.slug,
+                    app : app.slug(),
                     route : '/adicionar-tarefa',
                 })
             }
@@ -567,7 +567,7 @@ app.routes.list('/', function (params, data) {
             options : [new app.ui.inputOption({legend : 'Importante', name : 'important', value : 'true', image : 'alert'})],
             change : app.ui.filter.submit
         });
-        /* filtro de usuário responsável */
+        /* filtro de usuário responsável
         fields.user = new app.ui.inputSelector({
             name : 'user',
             type : 'multiple',
@@ -585,16 +585,16 @@ app.routes.list('/', function (params, data) {
             })(),
             change : app.ui.filter.submit,
             actions : true
-        });
+        }); */
         /* fieldset principal */
         app.ui.filter.fieldsets.add(new app.ui.fieldset({
             legend : 'Filtrar tarefas',
-            fields : [fields.query, fields.user, fields.categories.general, fields.categories.meetings, fields.categories.finances, fields.categories.sales, fields.categories.projects, fields.categories.personals, fields.important]
+            fields : [fields.query/*, fields.user*/, fields.categories.general, fields.categories.meetings, fields.categories.finances, fields.categories.sales, fields.categories.projects, fields.categories.personals, fields.important]
         }));
-        /* dispara o evento de filtro */
+        /* dispara o evento de filtro
         app.ui.filter.submit(function () {
             app.trigger('filter task', fields);
-        });
+        }); */
 
         /* exibe o orientador */
         app.models.task.list({}, function (tasks) {

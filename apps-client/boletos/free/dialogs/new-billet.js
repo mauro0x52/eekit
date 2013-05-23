@@ -72,7 +72,7 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
         app.ui.form.submit(function() {
             var bankSlug = fields.bankId.value()[0];
             app.open({
-                app : app.slug,
+                app : app.slug(),
                 route : '/boleto/'+bankSlug+'/novo'
             });
             app.close();

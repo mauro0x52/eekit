@@ -60,7 +60,7 @@ app.routes.list('/contas', function (params, data) {
                 tip : 'editar dados desta conta',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-conta/' + account._id});
+                    app.open({app : app.slug(), route : '/editar-conta/' + account._id});
                 }
             })
         };
@@ -176,7 +176,7 @@ app.routes.list('/contas', function (params, data) {
                 tip : 'adicionar nova conta',
                 click : function () {
                     app.open({
-                        app : app.slug,
+                        app : app.slug(),
                         route : '/adicionar-conta'
                     })
                 }

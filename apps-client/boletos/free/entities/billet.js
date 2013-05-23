@@ -73,7 +73,7 @@ app.routes.entity('/boleto/:id', function (params, data) {
                 tip    : 'editar os dados deste boleto',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-boleto/' + billet._id});
+                    app.open({app : app.slug(), route : '/editar-boleto/' + billet._id});
                 }
             }),
             remove       : new app.ui.action({
@@ -81,7 +81,7 @@ app.routes.entity('/boleto/:id', function (params, data) {
                 tip    : 'remover este boleto da minha lista',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-boleto/' + billet._id});
+                    app.open({app : app.slug(), route : '/remover-boleto/' + billet._id});
                 }
             })
         };

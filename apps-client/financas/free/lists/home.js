@@ -77,7 +77,7 @@ app.routes.list('/', function (params, data) {
                 image : 'add',
                 click : function () {
                     app.open({
-                        app : app.slug,
+                        app : app.slug(),
                         route : '/adicionar-receita',
                         data : {date : date}
                     })
@@ -88,7 +88,7 @@ app.routes.list('/', function (params, data) {
                 image : 'sub',
                 click : function () {
                     app.open({
-                        app : app.slug,
+                        app : app.slug(),
                         route : '/adicionar-despesa',
                         data : {date : date}
                     })
@@ -99,7 +99,7 @@ app.routes.list('/', function (params, data) {
                 image : 'transfer',
                 click : function () {
                     app.open({
-                        app : app.slug,
+                        app : app.slug(),
                         route : '/adicionar-transferencia',
                         data : {date : date}
                     })
@@ -208,7 +208,7 @@ app.routes.list('/', function (params, data) {
 
         this.item = new app.ui.item({
             click : function () {
-                app.open({app : app.slug, route : '/transacao/' + transaction._id})
+                app.open({app : app.slug(), route : '/transacao/' + transaction._id})
             }
         });
 
@@ -225,14 +225,14 @@ app.routes.list('/', function (params, data) {
                 tip : 'editar esta transação',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-transacao/' + transaction._id});
+                    app.open({app : app.slug(), route : '/editar-transacao/' + transaction._id});
                 }
             }),
             remove       : new app.ui.action({
                 tip : 'remover esta transação',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-transacao/' + transaction._id});
+                    app.open({app : app.slug(), route : '/remover-transacao/' + transaction._id});
                 }
             })
         };
@@ -466,7 +466,7 @@ app.routes.list('/', function (params, data) {
                         tip : 'adicionar receita',
                         image : 'add',
                         click : function () {
-                            app.open({app : app.slug, route : '/adicionar-receita'});
+                            app.open({app : app.slug(), route : '/adicionar-receita'});
                         }
                     }));
                     /* Botão global de adicionar despesa */
@@ -475,7 +475,7 @@ app.routes.list('/', function (params, data) {
                         tip : 'adicionar despesa',
                         image : 'sub',
                         click : function () {
-                            app.open({app : app.slug, route : '/adicionar-despesa'});
+                            app.open({app : app.slug(), route : '/adicionar-despesa'});
                         }
                     }));
                     /* Botão global de adicionar transferencia */
@@ -484,7 +484,7 @@ app.routes.list('/', function (params, data) {
                         tip : 'adicionar transferência',
                         image : 'transfer',
                         click : function () {
-                            app.open({app : app.slug, route : '/adicionar-transferencia'});
+                            app.open({app : app.slug(), route : '/adicionar-transferencia'});
                         }
                     }));
 

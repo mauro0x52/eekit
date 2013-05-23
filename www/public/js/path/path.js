@@ -8,10 +8,9 @@
 var ajax   = module.use('ajax'),
     config = module.use('config'),
     ui     = module.use('ui'),
-    App    = module.use('app'),
-    Path;
+    App    = module.use('app');
 
-module.exports(Path = {
+module.exports({
 
     /* Altera o path
      *
@@ -56,7 +55,9 @@ module.exports(Path = {
                 caller : caller
             });
 
-            if (cb) newapp.close(cb);
+            if (cb) {
+                newapp.close(cb);
+            }
 
             if (newapp.type() === 'dialog') {
                 /* Renderizo o dialogo */

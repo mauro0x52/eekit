@@ -37,7 +37,7 @@ module.exports(new Class(function (context) {
     this.sheet.html.attach([
         /* Filtro */
         filter  = new Element('div', {attributes : {'class' : 'filter'}, html : [
-            new Element('form', {attributes : {'class' : 'form'}, html : [
+            form = new Element('form', {attributes : {'class' : 'form'}, html : [
                 /* Fieldsets */
                 fieldsets = new Element('div', {attributes : {'class' : 'field-sets'}}),
                 /* Submit */
@@ -65,6 +65,7 @@ module.exports(new Class(function (context) {
     this.helper = Helper;
     this.fieldset = FieldSet;
     this.inputText = InputText;
+    this.inputOption = InputOption;
     this.inputSelector = InputSelector;
     this.inputDate = InputDate;
     this.groupset = GroupSet;
@@ -118,7 +119,7 @@ module.exports(new Class(function (context) {
                     value.apply(context);
                 });
             } else {
-                form.event('submit').trigger();
+                //form.event('submit').trigger();
             }
 
         },

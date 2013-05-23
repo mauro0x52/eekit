@@ -131,7 +131,7 @@ app.routes.embeddedEntity('/transacao-relacionada/:id', function (params, data) 
             app.models.transaction.find(params.id, function (transaction) {
                 new Entity(transaction);
                 app.ui.click(function () {
-                    app.open({app : app.slug, route : '/transacao/' + transaction._id})
+                    app.open({app : app.slug(), route : '/transacao/' + transaction._id})
                 });
             });
         });

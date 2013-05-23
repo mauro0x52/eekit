@@ -79,7 +79,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
                 tip    : 'editar dados desta transação',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-transacao/' + transaction._id});
+                    app.open({app : app.slug(), route : '/editar-transacao/' + transaction._id});
                 }
             }),
             remove       : new app.ui.action({
@@ -87,7 +87,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
                 tip    : 'apagar esta transação',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-transacao/' + transaction._id});
+                    app.open({app : app.slug(), route : '/remover-transacao/' + transaction._id});
                 }
             })
         };

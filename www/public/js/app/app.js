@@ -12,7 +12,8 @@ module.exports(new Class (function (params) {
         callback   = null,
         type       = null,
         parameters = null,
-        close_cb;
+        close_cb,
+        interface = document.createElement('div');
 
     if (!params) {
         throw new Error({
@@ -122,7 +123,7 @@ module.exports(new Class (function (params) {
 
             Empreendekit.ajax.get(path, function (data) {
                 if (data.error && data.error.name === 'InvalidTokenError') {
-                    Empreendekit.auth.login();
+                    Empreendekit.auth.user.signin();
                 } else {
                     cb(data);
                 }
@@ -130,11 +131,11 @@ module.exports(new Class (function (params) {
 
         },
 
-        put : function (path, cb) {
+        post : function (path, cb) {
 
-            Empreendekit.ajax.put(path, function (data) {
+            Empreendekit.ajax.post(path, function (data) {
                 if (data.error && data.error.name === 'InvalidTokenError') {
-                    Empreendekit.auth.login();
+                    //Empreendekit.auth.user.signin();
                 } else {
                     cb(data);
                 }
@@ -180,7 +181,7 @@ module.exports(new Class (function (params) {
             });
         }
 
-        that.addEventListener(label, callback, true);
+        interface.addEventListener(label, callback, true);
 
     };
 
@@ -200,7 +201,7 @@ module.exports(new Class (function (params) {
             });
         }
 
-        that.dispatchEvent(new CustomEvent(label, data));
+        interface.dispatchEvent(new CustomEvent(label, data));
 
     };
 

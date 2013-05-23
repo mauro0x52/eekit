@@ -31,7 +31,7 @@ app.routes.list('/usuarios', function (params, data) {
                 tip    : 'alterar senha',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/alterar-senha/' + user._id});
+                    app.open({app : app.slug(), route : '/alterar-senha/' + user._id});
                 }
             })
         };
@@ -75,7 +75,7 @@ app.routes.list('/usuarios', function (params, data) {
         tip : 'adicionar novo usuário',
         click : function () {
             app.open({
-                app : app.slug,
+                app : app.slug(),
                 route : '/adicionar-usuario'
             })
         }

@@ -157,7 +157,7 @@ app.routes.list('/feitas', function (params, data) {
         this.item = new app.ui.item({
             droppableGroups : [],
             click : function () {
-                app.open({app : app.slug, route : '/tarefa/' + task._id});
+                app.open({app : app.slug(), route : '/tarefa/' + task._id});
             }
         });
 
@@ -175,14 +175,14 @@ app.routes.list('/feitas', function (params, data) {
                 tip : 'editar esta tarefa',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-tarefa/' + task._id});
+                    app.open({app : app.slug(), route : '/editar-tarefa/' + task._id});
                 }
             }),
             remove       : new app.ui.action({
                 tip : 'remover esta tarefa',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-tarefa/' + task._id});
+                    app.open({app : app.slug(), route : '/remover-tarefa/' + task._id});
                 }
             })
         };

@@ -50,7 +50,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
                         image : 'add',
                         click : function () {
                             app.open({
-                                app : app.slug,
+                                app : app.slug(),
                                 route : '/adicionar-receita',
                                 data  : {
                                     embeddeds : response.embed,
@@ -65,7 +65,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
                         image : 'sub',
                         click : function () {
                             app.open({
-                                app : app.slug,
+                                app : app.slug(),
                                 route : '/adicionar-despesa',
                                 data  : {
                                     embeddeds : response.embed,
@@ -103,7 +103,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
 
         this.item = new app.ui.item({
             click : function () {
-                app.open({app : app.slug, route : '/transacao/' + transaction._id})
+                app.open({app : app.slug(), route : '/transacao/' + transaction._id})
             }
         });
 
@@ -120,14 +120,14 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
                 tip : 'editar esta transação',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-transacao/' + transaction._id});
+                    app.open({app : app.slug(), route : '/editar-transacao/' + transaction._id});
                 }
             }),
             remove       : new app.ui.action({
                 tip : 'remover esta transação',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-transacao/' + transaction._id});
+                    app.open({app : app.slug(), route : '/remover-transacao/' + transaction._id});
                 }
             })
         };

@@ -55,7 +55,7 @@ app.routes.entity('/contato/:id', function (params, data) {
                 tip    : 'editar os dados deste contato',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-contato/' + contact._id});
+                    app.open({app : app.slug(), route : '/editar-contato/' + contact._id});
                 }
             }),
             remove       : new app.ui.action({
@@ -63,7 +63,7 @@ app.routes.entity('/contato/:id', function (params, data) {
                 tip    : 'remover este contato da minha lista',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-contato/' + contact._id});
+                    app.open({app : app.slug(), route : '/remover-contato/' + contact._id});
                 }
             })
         };

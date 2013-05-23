@@ -126,7 +126,7 @@ module.exports(new Class(function (params) {
      * @author Mauro Ribeiro
      * @since  2013-05
      */
-    this.clicked = function (value) {
+    this.click = function (value) {
         if (value === true || value === false) {
             status = value;
             if (status) {
@@ -147,7 +147,7 @@ module.exports(new Class(function (params) {
             if (value.constructor !== String) {
                 throw new Error({
                     source    : 'inputOption.js',
-                    method    : 'clicked',
+                    method    : 'click',
                     message   : 'Clicked value must be a boolean',
                     arguments : arguments
                 });
@@ -252,7 +252,7 @@ module.exports(new Class(function (params) {
         this.legend(params.legend);
         this.label(params.label);
         this.image(params.image);
-        this.clicked(params.clicked);
+        this.click(params.click);
         this.change(params.change);
         this.value(params.value);
     }

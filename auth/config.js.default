@@ -54,18 +54,6 @@ module.exports = {
                 informations : false
             }
         },
-        profiles : {
-            url  : 'localhost',
-            port : 8004,
-            secret : 'profiles',
-            permissions : {
-                users     : false,
-                username  : false,
-                tokens    : false,
-                auth      : false,
-                informations : false
-            }
-        },
         tasks : {
             url  : 'localhost',
             port : 8005,

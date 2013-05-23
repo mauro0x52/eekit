@@ -36,7 +36,7 @@ app.routes.list('/categorias', function (params, data) {
                     tip : 'adicionar categoria',
                     click : function () {
                         app.open({
-                            app : app.slug,
+                            app : app.slug(),
                             route : '/adicionar-categoria',
                             data : {type : type}
                         })
@@ -90,14 +90,14 @@ app.routes.list('/categorias', function (params, data) {
                 tip : 'editar esta categoria',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-categoria/' + category._id});
+                    app.open({app : app.slug(), route : '/editar-categoria/' + category._id});
                 }
             }),
             remove       : new app.ui.action({
                 tip : 'remover esta categoria',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-categoria/' + category._id});
+                    app.open({app : app.slug(), route : '/remover-categoria/' + category._id});
                 }
             })
         };
@@ -168,7 +168,7 @@ app.routes.list('/categorias', function (params, data) {
                 tip : 'adicionar nova categoria de transações',
                 click : function () {
                     app.open({
-                        app : app.slug,
+                        app : app.slug(),
                         route : '/adicionar-categoria',
                     })
                 }

@@ -141,7 +141,7 @@ app.routes.embeddedEntity('/contato-relacionado/:id', function (params, data) {
             userFields = data;
             app.models.contact.find(params.id, function (contact) {
                 app.ui.click(function () {
-                    app.open({app : app.slug, route : '/contato/' + contact._id})
+                    app.open({app : app.slug(), route : '/contato/' + contact._id})
                 });
                 new Entity(contact);
             });

@@ -43,7 +43,7 @@ app.routes.dialog('/login', function (params, data) {
         tip : 'enviar nova senha para seu email',
         click : function () {
             app.open({
-                app : app.slug,
+                app : app.slug(),
                 route : '/esqueci-minha-senha'
             });
             app.close();

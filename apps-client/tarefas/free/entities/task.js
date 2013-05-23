@@ -59,7 +59,7 @@ app.routes.entity('/tarefa/:id', function (params, data) {
                 tip : 'editar dados desta tarefa',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-tarefa/' + task._id});
+                    app.open({app : app.slug(), route : '/editar-tarefa/' + task._id});
                 }
             }),
             remove       : new app.ui.action({
@@ -67,7 +67,7 @@ app.routes.entity('/tarefa/:id', function (params, data) {
                 tip : 'apagar esta tarefa',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-tarefa/' + task._id});
+                    app.open({app : app.slug(), route : '/remover-tarefa/' + task._id});
                 }
             })
         };

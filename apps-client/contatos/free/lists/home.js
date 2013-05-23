@@ -85,7 +85,7 @@ app.routes.list('/', function (params, data) {
                 image : 'add',
                 click : function () {
                     app.open({
-                        app   : app.slug,
+                        app   : app.slug(),
                         route : '/adicionar-contato',
                         data  : {category : category._id}
                     });
@@ -222,7 +222,7 @@ app.routes.list('/', function (params, data) {
                 contact.changeCategory(group.category, position);
             },
             click : function () {
-                app.open({app : app.slug, route : '/contato/' + contact._id})
+                app.open({app : app.slug(), route : '/contato/' + contact._id})
             },
             droppableGroups : droppableGroups(),
         });
@@ -239,7 +239,7 @@ app.routes.list('/', function (params, data) {
                 tip    : 'editar este contato',
                 image  : 'pencil',
                 click  : function() {
-                    app.open({app : app.slug, route : '/editar-contato/' + contact._id});
+                    app.open({app : app.slug(), route : '/editar-contato/' + contact._id});
                 }
             }),
             drag         : new app.ui.action({
@@ -251,7 +251,7 @@ app.routes.list('/', function (params, data) {
                 tip    : 'remover este contato',
                 image  : 'trash',
                 click  : function() {
-                    app.open({app : app.slug, route : '/remover-contato/' + contact._id});
+                    app.open({app : app.slug(), route : '/remover-contato/' + contact._id});
                 }
             })
         };
@@ -424,7 +424,7 @@ app.routes.list('/', function (params, data) {
                     image  : 'add',
                     click  : function () {
                         app.open({
-                            app : app.slug,
+                            app : app.slug(),
                             route : '/adicionar-contato'
                         });
                     }
@@ -568,7 +568,7 @@ app.routes.list('/', function (params, data) {
                         fitGroup(contact).items.add((new Item(contact)).item);
                     }
                     if (!contacts.length) {
-                        app.open({app : app.slug, route : '/contato/' + contact._id})
+                        app.open({app : app.slug(), route : '/contato/' + contact._id})
                     }
                     contacts.push(contact);
                     app.ui.filter.submit();
