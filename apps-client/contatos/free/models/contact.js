@@ -119,7 +119,7 @@ app.models.contact = function (params) {
                     if (cb) {
                         cb.apply(app);
                     }
-                    app.tracker.event(event);
+                    app.event(event);
                 }
             }
         });
@@ -157,7 +157,7 @@ app.models.contact.list = function (data, cb) {
                 if (cb) {
                     cb.apply(app, [contacts]);
                 }
-                app.tracker.event('visualizar contatos');
+                app.event('visualizar contatos');
             }
         }
     });

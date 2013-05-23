@@ -6,7 +6,7 @@
  */
 
 app.routes.frame('/', function (params, data) {
-    app.tracker.event('visualizar: principal');
+    app.event('visualizar: principal');
 
     var header, content_header, content_signup, content_title, content_apps, footer_signup, app_contacts, app_finances, app_tasks, app_scroller, scroll_animation_style, contacts_button, tasks_button, finances_button, app_button_style, selected_app_button_style;
 
@@ -53,7 +53,7 @@ app.routes.frame('/', function (params, data) {
                                     },
                                     events : {
                                         click : function () {
-                                            app.apps.open({app : app.slug(), route : '/precos-e-planos'});
+                                            app.open({app : app.slug(), route : '/precos-e-planos'});
                                             app.close();
                                         }
                                     }
@@ -73,7 +73,7 @@ app.routes.frame('/', function (params, data) {
                                     },
                                     events : {
                                         click : function () {
-                                            app.apps.open({app : app.slug(), route : '/como-funciona'});
+                                            app.open({app : app.slug(), route : '/como-funciona'});
                                             app.close();
                                         }
                                     }
@@ -93,7 +93,7 @@ app.routes.frame('/', function (params, data) {
                                     },
                                     events : {
                                         click : function () {
-                                            app.apps.open({app : app.slug(), route : '/suporte'});
+                                            app.open({app : app.slug(), route : '/suporte'});
                                             app.close();
                                         }
                                     }
@@ -113,7 +113,7 @@ app.routes.frame('/', function (params, data) {
                                     },
                                     events : {
                                         click : function () {
-                                            app.apps.open({app : app.slug(), route : '/cadastrar'});
+                                            app.open({app : app.slug(), route : '/cadastrar'});
                                             app.close();
                                         }
                                     }
@@ -133,7 +133,7 @@ app.routes.frame('/', function (params, data) {
                                     },
                                     events : {
                                         click : function () {
-                                            app.apps.open({app : app.slug(), route : '/login'});
+                                            app.open({app : app.slug(), route : '/login'});
                                             app.close();
                                         }
                                     }
@@ -294,7 +294,7 @@ app.routes.frame('/', function (params, data) {
                                 },
                                 events : {
                                     click : function () {
-                                        app.apps.open({app : app.slug()()(), route : '/cadastrar'});
+                                        app.open({app : app.slug()()(), route : '/cadastrar'});
                                         app.close();
                                     }
                                 }
@@ -540,7 +540,7 @@ app.routes.frame('/', function (params, data) {
                                 },
                                 events : {
                                     click : function () {
-                                        app.apps.open({app : app.slug()()(), route : '/como-funciona'});
+                                        app.open({app : app.slug()()(), route : '/como-funciona'});
                                         app.close();
                                     }
                                 }
@@ -596,7 +596,7 @@ app.routes.frame('/', function (params, data) {
                                 html : 'Experimente já!',
                                 events : {
                                     click : function () {
-                                        app.apps.open({app : app.slug()()(), route : '/cadastrar'});
+                                        app.open({app : app.slug()()(), route : '/cadastrar'});
                                         app.close();
                                     }
                                 }

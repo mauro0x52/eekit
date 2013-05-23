@@ -96,7 +96,7 @@ app.routes.embeddedEntity('/contato-relacionado/:id', function (params, data) {
         };
 
         /* Pegando a edição do contato */
-        app.events.bind('update contact ' + contact._id, function (data) {
+        app.bind('update contact ' + contact._id, function (data) {
             contact = new app.models.contact(data);
 
             if (contact) {
@@ -109,7 +109,7 @@ app.routes.embeddedEntity('/contato-relacionado/:id', function (params, data) {
         });
 
         /* Pegando o drop do contato */
-        app.events.bind('drop contact ' + contact._id, function (data) {
+        app.bind('drop contact ' + contact._id, function (data) {
             contact = new app.models.contact(data);
 
             if (contact) {
@@ -118,7 +118,7 @@ app.routes.embeddedEntity('/contato-relacionado/:id', function (params, data) {
         });
 
         /* Pegando a exclusão do contato */
-        app.events.bind('remove contact ' + contact._id, app.close);
+        app.bind('remove contact ' + contact._id, app.close);
 
         if (contact) {
             this.name(contact.name);
@@ -141,7 +141,7 @@ app.routes.embeddedEntity('/contato-relacionado/:id', function (params, data) {
             userFields = data;
             app.models.contact.find(params.id, function (contact) {
                 app.ui.click(function () {
-                    app.apps.open({app : app.slug, route : '/contato/' + contact._id})
+                    app.open({app : app.slug, route : '/contato/' + contact._id})
                 });
                 new Entity(contact);
             });

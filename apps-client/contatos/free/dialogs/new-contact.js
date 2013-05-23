@@ -6,7 +6,7 @@
  */
 app.routes.dialog('/adicionar-contato', function (params, data) {
     var request = data ? data : {};
-    app.tracker.event('clicar: adicionar contato');
+    app.event('clicar: adicionar contato');
 
     /**
      * Monta o formulário

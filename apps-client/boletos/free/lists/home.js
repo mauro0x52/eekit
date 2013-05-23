@@ -25,7 +25,7 @@ app.routes.list('/', function (params, data) {
 
         this.item = new app.ui.item({
             click : function () {
-                app.apps.open({app : app.slug, route : '/boleto/' + billet._id})
+                app.open({app : app.slug, route : '/boleto/' + billet._id})
             }
         });
 
@@ -42,14 +42,14 @@ app.routes.list('/', function (params, data) {
                 tip    : 'editar dados do boleto',
                 image  : 'pencil',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/editar-boleto/' + billet._id});
+                    app.open({app : app.slug, route : '/editar-boleto/' + billet._id});
                 }
             }),
             remove : new app.ui.action({
                 tip    : 'remover boleto',
                 image  : 'trash',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/remover-boleto/' + billet._id});
+                    app.open({app : app.slug, route : '/remover-boleto/' + billet._id});
                 }
             })
         };
@@ -80,12 +80,12 @@ app.routes.list('/', function (params, data) {
         }
 
         /* Pegando a exclusão do boleto */
-        app.events.bind('remove billet ' + billet._id, function () {
+        app.bind('remove billet ' + billet._id, function () {
             that.item.detach();
         });
 
         /* Pegando quando o filtro é acionado */
-        app.events.bind('filter billet', function (fields) {
+        app.bind('filter billet', function (fields) {
             var queryField = fields.query.value();
             if (
                 queryField.length > 1 && billet.ourNumber.toLowerCase().indexOf(queryField.toLowerCase()) === -1
@@ -111,7 +111,7 @@ app.routes.list('/', function (params, data) {
         legend : 'adicionar boleto',
         tip : 'adicionar novo boleto',
         click : function () {
-            app.apps.open({
+            app.open({
                 app : app.slug,
                 route : '/adicionar-boleto'
             })
@@ -134,7 +134,7 @@ app.routes.list('/', function (params, data) {
     }));
     /* dispara o evento de filtro */
     app.ui.filter.submit(function () {
-        app.events.trigger('filter billet', fields);
+        app.trigger('filter billet', fields);
     });
 
     /* montando os grupos */
@@ -153,7 +153,7 @@ app.routes.list('/', function (params, data) {
     });
 
     /* Pegando usuários que são cadastradas ao longo do uso do app */
-    app.events.bind('create billet', function (billet) {
+    app.bind('create billet', function (billet) {
         groups.billets.items.add(new Item(billet).item);
     });
 });

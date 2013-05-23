@@ -28,7 +28,9 @@ module.exports(new Class(function (context) {
         form,
         fieldsets,
         action,
-        actions;
+        actions,
+        close_cb,
+        self = this;
 
     element = new Element('div', {attributes : {'class' : 'modal-wrapper'}, html : [
         new Element('div', {attributes : {'class' : 'background'}}),
@@ -58,6 +60,12 @@ module.exports(new Class(function (context) {
         ]})
     ]});
 
+    close.event('click').bind(function () {
+        context.close();
+    });
+
+    element.template = this;
+    this.id = element.id;
     this.attach = element.attach;
     this.detach = element.detach;
     this.action = Action;
@@ -69,6 +77,39 @@ module.exports(new Class(function (context) {
     this.inputOption = InputOption;
     this.inputDate = InputDate;
     this.inputPassword = InputPassword;
+
+    this.context = function () {
+
+        return context;
+
+    };
+
+    /* Controla o fechamento da ui
+     *
+     * @author Rafael Erthal
+     * @since  2013-05
+     */
+    this.close = function (value) {
+        if (value) {
+
+            if (value.constructor === Function) {
+                throw new Error({
+                    source    : 'app.js',
+                    method    : 'click',
+                    message   : 'Click value must be a function',
+                    arguments : arguments
+                });
+            }
+
+            close_cb = value;
+        } else {
+
+            self.detach();
+            if (close_cb) {
+                close_cb();
+            }
+        }
+    };
 
     /**
      * Controla o titulo do app

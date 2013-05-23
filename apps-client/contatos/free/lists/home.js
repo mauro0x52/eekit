@@ -84,7 +84,7 @@ app.routes.list('/', function (params, data) {
                 tip   : 'adicionar contato como "'+category.name+'"',
                 image : 'add',
                 click : function () {
-                    app.apps.open({
+                    app.open({
                         app   : app.slug,
                         route : '/adicionar-contato',
                         data  : {category : category._id}
@@ -100,7 +100,7 @@ app.routes.list('/', function (params, data) {
         };
 
         /* Pegando a edição da categoria */
-        app.events.bind('update category ' + category._id, function (data) {
+        app.bind('update category ' + category._id, function (data) {
             var oldGroup = fitGroup(category);
 
             category = new app.models.category(data);
@@ -116,10 +116,10 @@ app.routes.list('/', function (params, data) {
         });
 
         /* Pegando a exclusão da categoria */
-        app.events.bind('remove category ' + category._id, this.group.detach);
+        app.bind('remove category ' + category._id, this.group.detach);
 
         /* Pegando quando o filtro é acionado */
-        app.events.bind('filter contact', function (fields) {
+        app.bind('filter contact', function (fields) {
             var query = fields.categories.clients.value().concat(
                 fields.categories.suppliers.value(),
                 fields.categories.partners.value(),
@@ -222,7 +222,7 @@ app.routes.list('/', function (params, data) {
                 contact.changeCategory(group.category, position);
             },
             click : function () {
-                app.apps.open({app : app.slug, route : '/contato/' + contact._id})
+                app.open({app : app.slug, route : '/contato/' + contact._id})
             },
             droppableGroups : droppableGroups(),
         });
@@ -239,7 +239,7 @@ app.routes.list('/', function (params, data) {
                 tip    : 'editar este contato',
                 image  : 'pencil',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/editar-contato/' + contact._id});
+                    app.open({app : app.slug, route : '/editar-contato/' + contact._id});
                 }
             }),
             drag         : new app.ui.action({
@@ -251,7 +251,7 @@ app.routes.list('/', function (params, data) {
                 tip    : 'remover este contato',
                 image  : 'trash',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/remover-contato/' + contact._id});
+                    app.open({app : app.slug, route : '/remover-contato/' + contact._id});
                 }
             })
         };
@@ -301,7 +301,7 @@ app.routes.list('/', function (params, data) {
         };
 
         /* Pegando a edição do contato */
-        app.events.bind('update contact ' + contact._id, function (data) {
+        app.bind('update contact ' + contact._id, function (data) {
             var oldGroup = fitGroup(contact);
 
             contact = new app.models.contact(data);
@@ -324,7 +324,7 @@ app.routes.list('/', function (params, data) {
         });
 
         /* Pegando o drop do contato */
-        app.events.bind('drop contact ' + contact._id, function (data) {
+        app.bind('drop contact ' + contact._id, function (data) {
             contact = new app.models.contact(data);
 
             if (contact) {
@@ -333,13 +333,13 @@ app.routes.list('/', function (params, data) {
         });
 
         /* Pegando a exclusão do contato */
-        app.events.bind('remove contact ' + contact._id, function () {
+        app.bind('remove contact ' + contact._id, function () {
             that.item.detach();
             app.ui.filter.submit();
         });
 
         /* Pegando quando o filtro é acionado */
-        app.events.bind('filter contact', function (fields) {
+        app.bind('filter contact', function (fields) {
             var query,
                 queryField = fields.query.value(),
                 users = fields.user.value();
@@ -423,7 +423,7 @@ app.routes.list('/', function (params, data) {
                     tip : 'adicionar contato',
                     image  : 'add',
                     click  : function () {
-                        app.apps.open({
+                        app.open({
                             app : app.slug,
                             route : '/adicionar-contato'
                         });
@@ -532,7 +532,7 @@ app.routes.list('/', function (params, data) {
 
                     app.ui.actions.get()[0].href('data:csv,' + header + '%0A');
 
-                    app.events.trigger('filter contact', fields);
+                    app.trigger('filter contact', fields);
                 });
 
                 /* ordenando os contatos */
@@ -558,17 +558,17 @@ app.routes.list('/', function (params, data) {
                 }
 
                 /* Pegando categorias cadastradas ao longo do uso do app */
-                app.events.bind('create category', function (category) {
+                app.bind('create category', function (category) {
                     fitGroupset(category).groups.add((new Group(category)).group);
                 });
 
                 /* Pegando campos que são cadastradas ao longo do uso do app */
-                app.events.bind('create contact', function (contact) {
+                app.bind('create contact', function (contact) {
                     if (fitGroup(contact)) {
                         fitGroup(contact).items.add((new Item(contact)).item);
                     }
                     if (!contacts.length) {
-                        app.apps.open({app : app.slug, route : '/contato/' + contact._id})
+                        app.open({app : app.slug, route : '/contato/' + contact._id})
                     }
                     contacts.push(contact);
                     app.ui.filter.submit();

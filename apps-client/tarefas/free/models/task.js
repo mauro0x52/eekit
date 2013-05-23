@@ -89,7 +89,7 @@ app.models.task = function (params) {
             if (cb) {
                 cb();
             }
-            app.tracker.event('marcar tarefa como feita');    
+            app.event('marcar tarefa como feita');    
         });
     };
 
@@ -173,7 +173,7 @@ app.models.task = function (params) {
                     if (response.error) {
                         console.log(error);
                     } else {
-                        app.tracker.event('adicionar tarefa');
+                        app.event('adicionar tarefa');
                         cb(response.task);
                     }
                 }

@@ -167,7 +167,7 @@ app.models.transaction = function (params) {
                     if (cb) {
                         cb.apply(app);
                     }
-                    if (event) app.tracker.event(event);
+                    if (event) app.event(event);
                 }
             }
         });
@@ -197,7 +197,7 @@ app.models.transaction.list = function (filter, cb) {
                     transactions.push(new app.models.transaction(response.transactions[i]));
                 }
                 cb(transactions);
-                app.tracker.event('visualizar fluxo de caixa');
+                app.event('visualizar fluxo de caixa');
             }
         }
     });

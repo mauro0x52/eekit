@@ -1,6 +1,6 @@
 app.routes.dialog('/cadastro', function (params, data) {
     app.ui.title('Cadastre-se no EmpreendeKit!');
-    app.tracker.event('cadastrar: inicio');
+    app.event('cadastrar: inicio');
 
     var name, login, password, company, phone,
         fieldsets = {},
@@ -35,7 +35,7 @@ app.routes.dialog('/cadastro', function (params, data) {
         change : function () {
             if (!name_tracked) {
                 name_tracked = true;
-                app.tracker.event('cadastrar: nome');
+                app.event('cadastrar: nome');
             }
         }
     });
@@ -50,7 +50,7 @@ app.routes.dialog('/cadastro', function (params, data) {
         change : function () {
             if (!login_tracked) {
                 login_tracked = true;
-                app.tracker.event('cadastrar: email');
+                app.event('cadastrar: email');
             }
         }
     });
@@ -64,7 +64,7 @@ app.routes.dialog('/cadastro', function (params, data) {
         change : function () {
             if (!password_tracked) {
                 password_tracked = true;
-                app.tracker.event('cadastrar: senha');
+                app.event('cadastrar: senha');
             }
         }
     });
@@ -78,7 +78,7 @@ app.routes.dialog('/cadastro', function (params, data) {
         change : function () {
             if (!companyName_tracked) {
                 companyName_tracked = true;
-                app.tracker.event('cadastrar: nome da empresa');
+                app.event('cadastrar: nome da empresa');
             }
         }
     });
@@ -92,7 +92,7 @@ app.routes.dialog('/cadastro', function (params, data) {
         change : function () {
             if (!phone_tracked) {
                 phone_tracked = true;
-                app.tracker.event('cadastrar: telefone');
+                app.event('cadastrar: telefone');
             }
         }
     });
@@ -136,7 +136,7 @@ app.routes.dialog('/cadastro', function (params, data) {
                     }
                 } else {
                     token = response.token;
-                    app.tracker.event('cadastrar');
+                    app.event('cadastrar');
                     app.close({
                         token : token,
                         user : {

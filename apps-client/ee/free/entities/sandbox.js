@@ -44,12 +44,12 @@ app.routes.entity('/sandbox/entity', function (params, data) {
         })
     ])
 
-    app.apps.open({
+    app.open({
         app   : 'ee',
         route : '/sandbox/embed/list'
     });
 
-    app.apps.open({
+    app.open({
         app   : 'ee',
         route : '/sandbox/embed/entity'
     });

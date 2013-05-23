@@ -35,7 +35,7 @@ app.routes.list('/categorias', function (params, data) {
                     image : 'add',
                     tip : 'adicionar categoria',
                     click : function () {
-                        app.apps.open({
+                        app.open({
                             app : app.slug,
                             route : '/adicionar-categoria',
                             data : {type : type}
@@ -90,14 +90,14 @@ app.routes.list('/categorias', function (params, data) {
                 tip : 'editar esta categoria',
                 image  : 'pencil',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/editar-categoria/' + category._id});
+                    app.open({app : app.slug, route : '/editar-categoria/' + category._id});
                 }
             }),
             remove       : new app.ui.action({
                 tip : 'remover esta categoria',
                 image  : 'trash',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/remover-categoria/' + category._id});
+                    app.open({app : app.slug, route : '/remover-categoria/' + category._id});
                 }
             })
         };
@@ -116,7 +116,7 @@ app.routes.list('/categorias', function (params, data) {
         };
 
         /* Pegando a edição da categoria */
-        app.events.bind('update category ' + category._id, function (data) {
+        app.bind('update category ' + category._id, function (data) {
             var oldGroup = fitGroup(category);
 
             category = new app.models.category(data);
@@ -133,10 +133,10 @@ app.routes.list('/categorias', function (params, data) {
         });
 
         /* Pegando a exclusão da categoria */
-        app.events.bind('remove category ' + category._id, this.item.detach);
+        app.bind('remove category ' + category._id, this.item.detach);
 
         /* Pegando quando o filtro é acionado */
-        app.events.bind('filter category', function (fields) {
+        app.bind('filter category', function (fields) {
             var queryField = fields.query.value();
             if (
                 queryField.length > 1 && category.name.toLowerCase().indexOf(queryField.toLowerCase()) === -1
@@ -159,7 +159,7 @@ app.routes.list('/categorias', function (params, data) {
             var fields = {}
 
             app.ui.title('Categorias');
-            app.tracker.event('visualizar categorias');
+            app.event('visualizar categorias');
 
             /* Botão global de adicionar categoria */
             app.ui.actions.add(new app.ui.action({
@@ -167,7 +167,7 @@ app.routes.list('/categorias', function (params, data) {
                 legend : 'adicionar categoria',
                 tip : 'adicionar nova categoria de transações',
                 click : function () {
-                    app.apps.open({
+                    app.open({
                         app : app.slug,
                         route : '/adicionar-categoria',
                     })
@@ -190,7 +190,7 @@ app.routes.list('/categorias', function (params, data) {
             }));
             /* dispara o evento de filtro */
             app.ui.filter.submit(function () {
-                app.events.trigger('filter category', fields);
+                app.trigger('filter category', fields);
             });
 
             /* listando os campos */
@@ -199,7 +199,7 @@ app.routes.list('/categorias', function (params, data) {
             }
 
             /* Pegando categorias que são cadastradas ao longo do uso do app */
-            app.events.bind('create category', function (category) {
+            app.bind('create category', function (category) {
                 fitGroup(category).items.add((new Item(category)).item);
             });
         });

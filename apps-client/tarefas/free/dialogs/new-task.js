@@ -12,7 +12,7 @@
  */
 app.routes.dialog('/adicionar-tarefa', function (params, data) {
     var request = data ? data : {};
-    app.tracker.event('clicar: adicionar tarefa');
+    app.event('clicar: adicionar tarefa');
 
     /**
      * Pega o id de uma categoria a partir do nome
@@ -173,7 +173,7 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
             legend : 'Lembrete por email',
             options : reminderOptions,
             change : function () {
-                app.tracker.event('clicar: adicionar lembrete');
+                app.event('clicar: adicionar lembrete');
             }
         });
         if (fields.date.value()) {

@@ -42,7 +42,7 @@ app.routes.dialog('/login', function (params, data) {
         legend : 'esqueci minha senha',
         tip : 'enviar nova senha para seu email',
         click : function () {
-            app.apps.open({
+            app.open({
                 app : app.slug,
                 route : '/esqueci-minha-senha'
             });
@@ -59,7 +59,7 @@ app.routes.dialog('/login', function (params, data) {
             }
         }, function (response) {
             if (response && !response.error) {
-                app.tracker.event('autenticar');
+                app.event('autenticar');
                 app.close({token : response.token, remindme : remindme.value()[0] ? true : false});
             } else {
                 app.ui.error('Erro com login ou senha');

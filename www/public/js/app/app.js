@@ -101,8 +101,8 @@ module.exports(new Class (function (params) {
      */
     this.close = function (value) {
         if (!value || value.constructor != Function) {
-            this.ui.close();
-            delete this;
+            that.ui.close();
+            delete that;
             if (close_cb) {
                 close_cb(value);
             }
@@ -140,94 +140,67 @@ module.exports(new Class (function (params) {
                 }
             }, that);
 
-        },
-
-        post : function (path, cb) {
-
-            Empreendekit.ajax.post(path, function (data) {
-                if (data.error && data.error.name === 'InvalidTokenError') {
-                    Empreendekit.auth.login();
-                } else {
-                    cb(data);
-                }
-            }, that);
-
-        },
-
-        del : function (path, cb) {
-
-            Empreendekit.ajax.del(path, function (data) {
-                if (data.error && data.error.name === 'InvalidTokenError') {
-                    Empreendekit.auth.login();
-                } else {
-                    cb(data);
-                }
-            }, that);
-
         }
 
     };
 
-    /* Controla a biblioteca de embeds e acionadores do app
+    /* Abre um novo app
      *
      * @author Rafael Erthal
      * @since  2013-05
      */
-    this.apps = {
+    this.open = function (params) {
 
-        open : function (params) {
-
-            Empreendekit.path.redirect(params.app + params.route, that);
-
-        }
+        Empreendekit.path.redirect(params.app + params.route, that);
 
     };
 
-    /* Controla a biblioteca de eventos do app
+    /* Escuta um evento do kamisama
      *
      * @author Rafael Erthal
      * @since  2013-05
      */
-    this.events = {
+    this.bind = function (label, callback) {
 
-        bind : function (label, callback) {
-
-            if (!label || label.constructor !== String) {
-                throw new Error({
-                    source    : 'app.js',
-                    method    : 'bind',
-                    message   : 'Label must be a string',
-                    arguments : arguments
-                });
-            }
-
-            if (!callback || callback.constructor !== Function) {
-                throw new Error({
-                    source    : 'app.js',
-                    method    : 'bind',
-                    message   : 'Callback must be a function',
-                    arguments : arguments
-                });
-            }
-
-            that.addEventListener(label, callback, true);
-
-        },
-
-        trigger : function (label, data) {
-
-            if (!label || label.constructor !== String) {
-                throw new Error({
-                    source    : 'app.js',
-                    method    : 'trigger',
-                    message   : 'Label must be a string',
-                    arguments : arguments
-                });
-            }
-
-            that.dispatchEvent(new CustomEvent(label, data));
-
+        if (!label || label.constructor !== String) {
+            throw new Error({
+                source    : 'app.js',
+                method    : 'bind',
+                message   : 'Label must be a string',
+                arguments : arguments
+            });
         }
+
+        if (!callback || callback.constructor !== Function) {
+            throw new Error({
+                source    : 'app.js',
+                method    : 'bind',
+                message   : 'Callback must be a function',
+                arguments : arguments
+            });
+        }
+
+        that.addEventListener(label, callback, true);
+
+    };
+
+    /* Dispara um evento
+     *
+     * @author Rafael Erthal
+     * @since  2013-05
+     */
+    this.trigger = function (label, data) {
+
+        if (!label || label.constructor !== String) {
+            throw new Error({
+                source    : 'app.js',
+                method    : 'trigger',
+                message   : 'Label must be a string',
+                arguments : arguments
+            });
+        }
+
+        that.dispatchEvent(new CustomEvent(label, data));
 
     };
 
@@ -413,46 +386,42 @@ module.exports(new Class (function (params) {
      * @author Rafael Erthal
      * @since  2013-05
      */
-    this.tracker = {
+    this.event = function (label) {
 
-        event : function (label) {
+        var query = {/* PEGAR UTMS NAS ROTAS */},
+            data = {
+                app : app.name(),
+                label : label,
+                utm_source : query.utm_source,
+                utm_medium : query.utm_medium,
+                utm_content : query.utm_content,
+                utm_campaign : query.utm_campaign
+            };
 
-            var query = {/* PEGAR UTMS NAS ROTAS */},
-                data = {
-                    app : app.name(),
-                    label : label,
-                    utm_source : query.utm_source,
-                    utm_medium : query.utm_medium,
-                    utm_content : query.utm_content,
-                    utm_campaign : query.utm_campaign
-                };
-
-            if (!label || label.constructor !== String) {
-                throw new Error({
-                    source     : 'tracker.js',
-                    method     : 'event',
-                    message    : 'Label must be a string',
-                    arguments : arguments
-                });
-            }
-
-            if (
-                that.caller() &&
-                (
-                    that.type() === 'embbed list'   ||
-                    that.type() === 'embbed entity' ||
-                    that.type() === 'dialog'
-                )
-            ) {
-                data.source = that.caller().name();
-            }
-
-            Empreendekit.ajax.post({
-                url : 'http://' + Empreendekit.config.services.tracker.host + ':' + Empreendekit.config.services.tracker.port + '/event',
-                data : data
+        if (!label || label.constructor !== String) {
+            throw new Error({
+                source     : 'tracker.js',
+                method     : 'event',
+                message    : 'Label must be a string',
+                arguments : arguments
             });
-
         }
+
+        if (
+            that.caller() &&
+            (
+                that.type() === 'embbed list'   ||
+                that.type() === 'embbed entity' ||
+                that.type() === 'dialog'
+            )
+        ) {
+            data.source = that.caller().name();
+        }
+
+        Empreendekit.ajax.post({
+            url : 'http://' + Empreendekit.config.services.tracker.host + ':' + Empreendekit.config.services.tracker.port + '/event',
+            data : data
+        });
 
     };
 

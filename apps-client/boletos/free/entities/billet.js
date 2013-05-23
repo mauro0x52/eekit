@@ -73,7 +73,7 @@ app.routes.entity('/boleto/:id', function (params, data) {
                 tip    : 'editar os dados deste boleto',
                 image  : 'pencil',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/editar-boleto/' + billet._id});
+                    app.open({app : app.slug, route : '/editar-boleto/' + billet._id});
                 }
             }),
             remove       : new app.ui.action({
@@ -81,7 +81,7 @@ app.routes.entity('/boleto/:id', function (params, data) {
                 tip    : 'remover este boleto da minha lista',
                 image  : 'trash',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/remover-boleto/' + billet._id});
+                    app.open({app : app.slug, route : '/remover-boleto/' + billet._id});
                 }
             })
         };
@@ -155,7 +155,7 @@ app.routes.entity('/boleto/:id', function (params, data) {
         }
 
         /* Pegando a edição do contato */
-        app.events.bind('update billet ' + billet._id, function (data) {
+        app.bind('update billet ' + billet._id, function (data) {
             billet = new app.models.billet(data);
 
             if (billet) {
@@ -164,7 +164,7 @@ app.routes.entity('/boleto/:id', function (params, data) {
         });
 
         /* Pegando a exclusão do boleto */
-        app.events.bind('remove billet ' + billet._id, app.close);
+        app.bind('remove billet ' + billet._id, app.close);
 
         if (billet) {
             this.print(billet);

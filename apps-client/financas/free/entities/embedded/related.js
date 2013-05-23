@@ -96,7 +96,7 @@ app.routes.embeddedEntity('/transacao-relacionada/:id', function (params, data) 
         };
 
         /* Pegando a edição do contato */
-        app.events.bind('update transaction ' + transaction._id, function (data) {
+        app.bind('update transaction ' + transaction._id, function (data) {
             transaction = new app.models.transaction(data);
 
             if (transaction) {
@@ -108,7 +108,7 @@ app.routes.embeddedEntity('/transacao-relacionada/:id', function (params, data) 
         });
 
         /* Pegando a exclusão do contato */
-        app.events.bind('remove transaction ' + transaction._id, app.close);
+        app.bind('remove transaction ' + transaction._id, app.close);
 
         if (transaction) {
             this.name(transaction.name);
@@ -131,7 +131,7 @@ app.routes.embeddedEntity('/transacao-relacionada/:id', function (params, data) 
             app.models.transaction.find(params.id, function (transaction) {
                 new Entity(transaction);
                 app.ui.click(function () {
-                    app.apps.open({app : app.slug, route : '/transacao/' + transaction._id})
+                    app.open({app : app.slug, route : '/transacao/' + transaction._id})
                 });
             });
         });

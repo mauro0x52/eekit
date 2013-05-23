@@ -224,7 +224,7 @@ app.routes.dialog('/boleto/bb/:id', function (params, data) {
                     instructions : fields.instructions.value()
                 });
                 billet.save(function() {
-                    app.events.trigger('create billet', billet);
+                    app.trigger('create billet', billet);
                     app.routes.redirect('http://' + app.config.services.billets.host + ':' + app.config.services.billets.port + '/billet/'+billet._id+'/print/'+billet.ourNumber);
                     app.close();
                 });
@@ -248,7 +248,7 @@ app.routes.dialog('/boleto/bb/:id', function (params, data) {
                 billet.demonstrative = fields.demonstrative.value();
                 billet.instructions = fields.instructions.value();
                 billet.save(function() {
-                    app.events.trigger('update billet ' + billet._id, billet);
+                    app.trigger('update billet ' + billet._id, billet);
                     app.close();
                 });
             }

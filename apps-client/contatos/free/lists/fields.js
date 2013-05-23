@@ -57,7 +57,7 @@
                 legend : 'editar campo',
                 image  : 'pencil',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/editar-campo-personalizado/' + field._id});
+                    app.open({app : app.slug, route : '/editar-campo-personalizado/' + field._id});
                 }
             }),
             drag         : new app.ui.action({
@@ -69,7 +69,7 @@
                 legend : 'remover campo',
                 image  : 'trash',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/remover-campo-personalizado/' + field._id});
+                    app.open({app : app.slug, route : '/remover-campo-personalizado/' + field._id});
                 }
             })
         };
@@ -83,7 +83,7 @@
         };
 
         /* Pegando a edição do campo */
-        app.events.bind('update field ' + field._id, function (data) {
+        app.bind('update field ' + field._id, function (data) {
             var oldGroup = fitGroup(field);
 
             field = new app.models.field(data);
@@ -99,15 +99,15 @@
         });
 
         /* Pegando o drop do tarefa */
-        app.events.bind('drop field ' + field._id, function (data) {
+        app.bind('drop field ' + field._id, function (data) {
             field = new app.models.field(data);
         });
 
         /* Pegando a exclusão do campo */
-        app.events.bind('remove field ' + field._id, this.item.detach);
+        app.bind('remove field ' + field._id, this.item.detach);
 
         /* Pegando quando o filtro é acionado */
-        app.events.bind('filter field', function (fields) {
+        app.bind('filter field', function (fields) {
             var queryField = fields.query.value();
             if (
                 queryField.length > 1 && field.name.toLowerCase().indexOf(queryField.toLowerCase()) === -1
@@ -135,7 +135,7 @@
             legend : 'adicionar campo personalizado',
             tip : 'adicionar campo personalizado',
             click : function () {
-                app.apps.open({
+                app.open({
                     app : app.slug,
                     route : '/adicionar-campo-personalizado'
                 })
@@ -158,7 +158,7 @@
         }));
         /* dispara o evento de filtro */
         app.ui.filter.submit(function () {
-            app.events.trigger('filter field', fields);
+            app.trigger('filter field', fields);
         });
 
         /* ordenando os campos */
@@ -177,7 +177,7 @@
         }
 
         /* Pegando campos que são cadastradas ao longo do uso do app */
-        app.events.bind('create field', function (field) {
+        app.bind('create field', function (field) {
             fitGroup(field).items.add((new Item(field)).item);
         });
     });

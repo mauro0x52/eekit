@@ -7,7 +7,7 @@
 app.routes.dialog('/adicionar-boleto', function (params, data) {
     var request = data ? data : {};
 
-    app.tracker.event('clicar: adicionar boleto');
+    app.event('clicar: adicionar boleto');
 
     /**
      * Monta o formulário
@@ -71,7 +71,7 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
         /* Controle de envio do form */
         app.ui.form.submit(function() {
             var bankSlug = fields.bankId.value()[0];
-            app.apps.open({
+            app.open({
                 app : app.slug,
                 route : '/boleto/'+bankSlug+'/novo'
             });

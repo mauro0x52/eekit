@@ -49,7 +49,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
                         tip : 'adicionar receita',
                         image : 'add',
                         click : function () {
-                            app.apps.open({
+                            app.open({
                                 app : app.slug,
                                 route : '/adicionar-receita',
                                 data  : {
@@ -64,7 +64,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
                         tip : 'adicionar despesa',
                         image : 'sub',
                         click : function () {
-                            app.apps.open({
+                            app.open({
                                 app : app.slug,
                                 route : '/adicionar-despesa',
                                 data  : {
@@ -103,7 +103,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
 
         this.item = new app.ui.item({
             click : function () {
-                app.apps.open({app : app.slug, route : '/transacao/' + transaction._id})
+                app.open({app : app.slug, route : '/transacao/' + transaction._id})
             }
         });
 
@@ -120,14 +120,14 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
                 tip : 'editar esta transação',
                 image  : 'pencil',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/editar-transacao/' + transaction._id});
+                    app.open({app : app.slug, route : '/editar-transacao/' + transaction._id});
                 }
             }),
             remove       : new app.ui.action({
                 tip : 'remover esta transação',
                 image  : 'trash',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/remover-transacao/' + transaction._id});
+                    app.open({app : app.slug, route : '/remover-transacao/' + transaction._id});
                 }
             })
         };
@@ -191,7 +191,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
         };
 
         /* Pegando a edição da transação */
-        app.events.bind('update transaction ' + transaction._id, function (data) {
+        app.bind('update transaction ' + transaction._id, function (data) {
             transaction = new app.models.transaction(data);
 
             if (transaction) {
@@ -204,7 +204,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
         });
 
         /* Pegando a exclusão da transação */
-        app.events.bind('remove transaction ' + transaction._id, that.item.detach);
+        app.bind('remove transaction ' + transaction._id, that.item.detach);
 
         if (transaction) {
             this.name(transaction.name + (transaction.subtitle ? ' (' + transaction.subtitle + ')' : ''));
@@ -248,7 +248,7 @@ app.routes.embeddedList('/relacionadas', function (params, data) {
                     }
 
                     /* Pegando transações que são cadastradas ao longo do uso do app */
-                    app.events.bind('create transaction', function (transaction) {
+                    app.bind('create transaction', function (transaction) {
                         fitGroup(transaction).items.add((new Item(transaction)).item);
                     });
                 })

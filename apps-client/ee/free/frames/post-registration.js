@@ -147,11 +147,11 @@ app.routes.frame('/usuario-cadastrado', function (params, data) {
                                             route : '/',
                                             open  : function (tool) {
                                                 if (toolName === 'contacts') {
-                                                    app.tracker.event('ir para app: contatos');
+                                                    app.event('ir para app: contatos');
                                                 } else if (answer === 'finances') {
-                                                    app.tracker.event('ir para app: finanças');
+                                                    app.event('ir para app: finanças');
                                                 } else if (answer === 'tasks') {
-                                                    app.tracker.event('ir para app: tarefas');
+                                                    app.event('ir para app: tarefas');
                                                 }
                                                 tool.open();
                                                 app.empreendemia.apps.render(tool, true);
@@ -203,7 +203,7 @@ app.routes.frame('/usuario-cadastrado', function (params, data) {
                                         events : {
                                             click : function () {
                                                 answer = 'contacts';
-                                                app.tracker.event('marcar: contatos');
+                                                app.event('marcar: contatos');
                                             }
                                         }
                                     },
@@ -229,7 +229,7 @@ app.routes.frame('/usuario-cadastrado', function (params, data) {
                                     events : {
                                         click : function () {
                                             answer = 'finances';
-                                            app.tracker.event('marcar: finanças');
+                                            app.event('marcar: finanças');
                                         }
                                     }
                                 },
@@ -255,7 +255,7 @@ app.routes.frame('/usuario-cadastrado', function (params, data) {
                                     events : {
                                         click : function () {
                                             answer = 'tasks';
-                                            app.tracker.event('marcar: tarefas');
+                                            app.event('marcar: tarefas');
                                         }
                                     }
                                 },

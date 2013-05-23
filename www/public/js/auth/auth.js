@@ -16,7 +16,8 @@ module.exports({
     service : {
 
         authorize : function (host, cb) {
-            Empreendekit.ajax.get({});
+        	console.log(host)
+        	cb()
         }
 
     }

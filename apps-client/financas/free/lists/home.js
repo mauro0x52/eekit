@@ -76,7 +76,7 @@ app.routes.list('/', function (params, data) {
                 tip : 'adicionar receita neste dia',
                 image : 'add',
                 click : function () {
-                    app.apps.open({
+                    app.open({
                         app : app.slug,
                         route : '/adicionar-receita',
                         data : {date : date}
@@ -87,7 +87,7 @@ app.routes.list('/', function (params, data) {
                 tip : 'adicionar despesa neste dia',
                 image : 'sub',
                 click : function () {
-                    app.apps.open({
+                    app.open({
                         app : app.slug,
                         route : '/adicionar-despesa',
                         data : {date : date}
@@ -98,7 +98,7 @@ app.routes.list('/', function (params, data) {
                 tip : 'adicionar transferência neste dia',
                 image : 'transfer',
                 click : function () {
-                    app.apps.open({
+                    app.open({
                         app : app.slug,
                         route : '/adicionar-transferencia',
                         data : {date : date}
@@ -134,7 +134,7 @@ app.routes.list('/', function (params, data) {
         };
 
         /* Pegando quando elementos do grupo são filtrados é acionado */
-        app.events.bind('filter group', function () {
+        app.bind('filter group', function () {
             var items = that.group.items.get(),
                 i,
                 visible = 0;
@@ -208,7 +208,7 @@ app.routes.list('/', function (params, data) {
 
         this.item = new app.ui.item({
             click : function () {
-                app.apps.open({app : app.slug, route : '/transacao/' + transaction._id})
+                app.open({app : app.slug, route : '/transacao/' + transaction._id})
             }
         });
 
@@ -225,14 +225,14 @@ app.routes.list('/', function (params, data) {
                 tip : 'editar esta transação',
                 image  : 'pencil',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/editar-transacao/' + transaction._id});
+                    app.open({app : app.slug, route : '/editar-transacao/' + transaction._id});
                 }
             }),
             remove       : new app.ui.action({
                 tip : 'remover esta transação',
                 image  : 'trash',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/remover-transacao/' + transaction._id});
+                    app.open({app : app.slug, route : '/remover-transacao/' + transaction._id});
                 }
             })
         };
@@ -305,7 +305,7 @@ app.routes.list('/', function (params, data) {
         };
 
         /* Pegando a edição da transação */
-        app.events.bind('update transaction ' + transaction._id, function (data) {
+        app.bind('update transaction ' + transaction._id, function (data) {
             var oldGroup = fitGroup(transaction);
 
             transaction = new app.models.transaction(data);
@@ -329,7 +329,7 @@ app.routes.list('/', function (params, data) {
         });
 
         /* Pegando a exclusão da transação */
-        app.events.bind('remove transaction ' + transaction._id, function () {
+        app.bind('remove transaction ' + transaction._id, function () {
             var oldGroup = fitGroup(transaction);
 
             that.item.detach();
@@ -342,7 +342,7 @@ app.routes.list('/', function (params, data) {
         });
 
         /* Pegando quando o filtro é acionado */
-        app.events.bind('filter transaction', function (fields) {
+        app.bind('filter transaction', function (fields) {
             var categories = {
                     debt   : fields.categories.debt.value(),
                     credit : fields.categories.credit.value()
@@ -466,7 +466,7 @@ app.routes.list('/', function (params, data) {
                         tip : 'adicionar receita',
                         image : 'add',
                         click : function () {
-                            app.apps.open({app : app.slug, route : '/adicionar-receita'});
+                            app.open({app : app.slug, route : '/adicionar-receita'});
                         }
                     }));
                     /* Botão global de adicionar despesa */
@@ -475,7 +475,7 @@ app.routes.list('/', function (params, data) {
                         tip : 'adicionar despesa',
                         image : 'sub',
                         click : function () {
-                            app.apps.open({app : app.slug, route : '/adicionar-despesa'});
+                            app.open({app : app.slug, route : '/adicionar-despesa'});
                         }
                     }));
                     /* Botão global de adicionar transferencia */
@@ -484,7 +484,7 @@ app.routes.list('/', function (params, data) {
                         tip : 'adicionar transferência',
                         image : 'transfer',
                         click : function () {
-                            app.apps.open({app : app.slug, route : '/adicionar-transferencia'});
+                            app.open({app : app.slug, route : '/adicionar-transferencia'});
                         }
                     }));
 
@@ -601,8 +601,8 @@ app.routes.list('/', function (params, data) {
                         app.ui.actions.get()[0].href('data:csv,');
 
                         /* dispara o evento */
-                        app.events.trigger('filter transaction', fields);
-                        app.events.trigger('filter group');
+                        app.trigger('filter transaction', fields);
+                        app.trigger('filter group');
 
                         var i,j,
                             groups = groupsets.groupset.groups.get(),
@@ -657,7 +657,7 @@ app.routes.list('/', function (params, data) {
                     }
 
                     /* Pegando transações que são cadastradas ao longo do uso do app */
-                    app.events.bind('create transaction', function (transaction) {
+                    app.bind('create transaction', function (transaction) {
                         fitGroup(transaction).items.add((new Item(transaction)).item);
                         app.ui.filter.submit();
                     });

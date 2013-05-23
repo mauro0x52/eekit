@@ -13,7 +13,7 @@ app.routes.list('/sandbox/list', function (params, data) {
             legend : 'ação',
             image : 'add',
             click : function() {
-                app.apps.open({
+                app.open({
                     app   : 'ee',
                     route : '/sandbox/dialog'
                 });
@@ -27,7 +27,7 @@ app.routes.list('/sandbox/list', function (params, data) {
             legend : 'ação',
             image : 'add',
             click : function() {
-                app.apps.open({
+                app.open({
                     app   : 'ee',
                     route : '/sandbox/dialog'
                 });
@@ -90,7 +90,7 @@ app.routes.list('/sandbox/list', function (params, data) {
                     legend : 'label'
                 },
                 click : function () {
-                    app.apps.open({
+                    app.open({
                         app   : 'ee',
                         route : '/sandbox/entity'
                     });
@@ -144,7 +144,7 @@ app.routes.list('/sandbox/list', function (params, data) {
                 title : 'Titulo do item teste 1',
                 description : 'descrição do item',
                 click : function () {
-                    app.apps.open({
+                    app.open({
                         app   : 'ee',
                         route : '/sandbox/list'
                     });

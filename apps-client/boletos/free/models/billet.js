@@ -129,7 +129,7 @@ app.models.billet = function (params) {
                     if (cb) {
                         cb.apply(app);
                     }
-                    app.tracker.event(event);
+                    app.event(event);
                 }
             }
         });
@@ -167,7 +167,7 @@ app.models.billet.list = function (data, cb) {
                 if (cb) {
                     cb.apply(app, [billets]);
                 }
-                app.tracker.event('visualizar boletos');
+                app.event('visualizar boletos');
             }
         }
     });

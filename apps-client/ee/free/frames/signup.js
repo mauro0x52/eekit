@@ -6,7 +6,7 @@
  */
 
 app.routes.frame('/cadastrar', function (params, data) {
-    app.tracker.event('visualizar: cadastro');
+    app.event('visualizar: cadastro');
 
     var styles, header, content_header, content_form, form, topics,
         inputs = {}, error_message,
@@ -53,7 +53,7 @@ app.routes.frame('/cadastrar', function (params, data) {
                                 attributes : { style : 'display: block; background-image:url(/images/ee/logo.png); width:289px; height:74px; cursor:pointer;'},
                                 events : {
                                     click : function () {
-                                        app.apps.open({app : app.slug(), route : '/'});
+                                        app.open({app : app.slug(), route : '/'});
                                         app.close();
                                     }
                                 }
@@ -78,7 +78,7 @@ app.routes.frame('/cadastrar', function (params, data) {
                                         },
                                         events : {
                                             click : function () {
-                                                app.apps.open({app : app.slug(), route : '/precos-e-planos'});
+                                                app.open({app : app.slug(), route : '/precos-e-planos'});
                                                 app.close();
                                             }
                                         }
@@ -98,7 +98,7 @@ app.routes.frame('/cadastrar', function (params, data) {
                                         },
                                         events : {
                                             click : function () {
-                                                app.apps.open({app : app.slug(), route : '/como-funciona'});
+                                                app.open({app : app.slug(), route : '/como-funciona'});
                                                 app.close();
                                             }
                                         }
@@ -118,7 +118,7 @@ app.routes.frame('/cadastrar', function (params, data) {
                                         },
                                         events : {
                                             click : function () {
-                                                app.apps.open({app : app.slug(), route : '/suporte'});
+                                                app.open({app : app.slug(), route : '/suporte'});
                                                 app.close();
                                             }
                                         }
@@ -138,7 +138,7 @@ app.routes.frame('/cadastrar', function (params, data) {
                                         },
                                         events : {
                                             click : function () {
-                                                app.apps.open({app : app.slug(), route : '/cadastrar'});
+                                                app.open({app : app.slug(), route : '/cadastrar'});
                                                 app.close();
                                             }
                                         }
@@ -158,7 +158,7 @@ app.routes.frame('/cadastrar', function (params, data) {
                                         },
                                         events : {
                                             click : function () {
-                                                app.apps.open({app : app.slug(), route : '/login'});
+                                                app.open({app : app.slug(), route : '/login'});
                                                 app.close();
                                             }
                                         }
@@ -251,7 +251,7 @@ app.routes.frame('/cadastrar', function (params, data) {
 //    events : {
 //        keydown : function () {
 //            if (event_name === false) {
-//                app.tracker.event('cadastrar: nome');
+//                app.event('cadastrar: nome');
 //                event_name = true;
 //            }
 //        }
@@ -271,7 +271,7 @@ app.routes.frame('/cadastrar', function (params, data) {
 //        events : {
 //            keydown : function () {
 //                if (event_company === false) {
-//                    app.tracker.event('cadastrar: empresa');
+//                    app.event('cadastrar: empresa');
 //                    event_company = true;
 //                }
 //            }
@@ -290,7 +290,7 @@ app.routes.frame('/cadastrar', function (params, data) {
 //        events : {
 //            keydown : function () {
 //                if (event_phone === false) {
-//                    app.tracker.event('cadastrar: telefone');
+//                    app.event('cadastrar: telefone');
 //                    event_phone = true;
 //                }
 //            }
@@ -308,7 +308,7 @@ app.routes.frame('/cadastrar', function (params, data) {
 //        events : {
 //            keydown : function () {
 //                if (event_email === false) {
-//                    app.tracker.event('cadastrar: email');
+//                    app.event('cadastrar: email');
 //                    event_email = true;
 //                }
 //            }
@@ -328,7 +328,7 @@ app.routes.frame('/cadastrar', function (params, data) {
 //        events : {
 //            keydown : function () {
 //                if (event_password === false) {
-//                    app.tracker.event('cadastrar: senha');
+//                    app.event('cadastrar: senha');
 //                    event_password = true;
 //                }
 //            }
@@ -462,7 +462,7 @@ app.routes.frame('/cadastrar', function (params, data) {
 //                        }
 //                    } else {
 //                        var token = response.token;
-//                        app.tracker.event('cadastrar');
+//                        app.event('cadastrar');
 //                        app.empreendemia.user.signup(token);
 //                        app.close();
 //                    }

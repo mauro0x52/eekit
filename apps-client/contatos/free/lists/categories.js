@@ -35,7 +35,7 @@
                     image : 'add',
                     tip : 'adicionar categoria neste grupo',
                     click : function () {
-                        app.apps.open({
+                        app.open({
                             app : app.slug,
                             route : '/adicionar-categoria',
                             data : {type : type}
@@ -98,14 +98,14 @@
                 tip : 'editar esta categoria',
                 image  : 'pencil',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/editar-categoria/' + category._id});
+                    app.open({app : app.slug, route : '/editar-categoria/' + category._id});
                 }
             }),
             remove       : new app.ui.action({
                 tip : 'remover esta categoria',
                 image  : 'trash',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/remover-categoria/' + category._id});
+                    app.open({app : app.slug, route : '/remover-categoria/' + category._id});
                 }
             })
         };
@@ -123,7 +123,7 @@
         };
 
         /* Pegando a edição da categoria */
-        app.events.bind('update category ' + category._id, function (data) {
+        app.bind('update category ' + category._id, function (data) {
             var oldGroup = fitGroup(category);
 
             category = new app.models.category(data);
@@ -140,10 +140,10 @@
         });
 
         /* Pegando a exclusão da categoria */
-        app.events.bind('remove category ' + category._id, this.item.detach);
+        app.bind('remove category ' + category._id, this.item.detach);
 
         /* Pegando quando o filtro é acionado */
-        app.events.bind('filter category', function (fields) {
+        app.bind('filter category', function (fields) {
             var queryField = fields.query.value();
             if (
                 queryField.length > 1 && category.name.toLowerCase().indexOf(queryField.toLowerCase()) === -1
@@ -172,7 +172,7 @@
             legend : 'adicionar categoria',
             tip : 'adicionar nova categoria de contatos',
             click : function () {
-                app.apps.open({
+                app.open({
                     app : app.slug,
                     route : '/adicionar-categoria',
                 })
@@ -195,7 +195,7 @@
         }));
         /* dispara o evento de filtro */
         app.ui.filter.submit(function () {
-            app.events.trigger('filter category', fields);
+            app.trigger('filter category', fields);
         });
 
         /* listando os campos */
@@ -204,7 +204,7 @@
         }
 
         /* Pegando categorias que são cadastradas ao longo do uso do app */
-        app.events.bind('create category', function (category) {
+        app.bind('create category', function (category) {
             fitGroup(category).items.add((new Item(category)).item);
         });
     });

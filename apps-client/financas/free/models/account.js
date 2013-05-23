@@ -80,7 +80,7 @@ app.models.account = function (params) {
                     if (cb) {
                         cb.apply(app);
                     }
-                    if (event) app.tracker.event(event);
+                    if (event) app.event(event);
                 }
             }
         });

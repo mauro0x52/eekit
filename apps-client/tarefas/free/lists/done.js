@@ -157,7 +157,7 @@ app.routes.list('/feitas', function (params, data) {
         this.item = new app.ui.item({
             droppableGroups : [],
             click : function () {
-                app.apps.open({app : app.slug, route : '/tarefa/' + task._id});
+                app.open({app : app.slug, route : '/tarefa/' + task._id});
             }
         });
 
@@ -175,14 +175,14 @@ app.routes.list('/feitas', function (params, data) {
                 tip : 'editar esta tarefa',
                 image  : 'pencil',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/editar-tarefa/' + task._id});
+                    app.open({app : app.slug, route : '/editar-tarefa/' + task._id});
                 }
             }),
             remove       : new app.ui.action({
                 tip : 'remover esta tarefa',
                 image  : 'trash',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/remover-tarefa/' + task._id});
+                    app.open({app : app.slug, route : '/remover-tarefa/' + task._id});
                 }
             })
         };
@@ -278,7 +278,7 @@ app.routes.list('/feitas', function (params, data) {
         }
 
         /* Pegando a edição da tarefa */
-        app.events.bind('update task ' + task._id, function (data) {
+        app.bind('update task ' + task._id, function (data) {
             var oldGroup = fitGroup(task);
 
             task = new app.models.task(data);
@@ -300,10 +300,10 @@ app.routes.list('/feitas', function (params, data) {
         });
 
         /* Pegando a exclusão da tarefa */
-        app.events.bind('remove task ' + task._id, this.item.detach);
+        app.bind('remove task ' + task._id, this.item.detach);
 
         /* Pegando quando o filtro é acionado */
-        app.events.bind('filter task', function (fields) {
+        app.bind('filter task', function (fields) {
             var important = fields.important.value()[0] || fields.important.value()[0] === 'true',
                 users = fields.user.value();
 
@@ -349,7 +349,7 @@ app.routes.list('/feitas', function (params, data) {
         categories = data;
 
         app.ui.title('Tarefas feitas');
-        app.tracker.event('visualizar tarefas feitas');
+        app.event('visualizar tarefas feitas');
 
         /* Monta o filtro */
         app.ui.filter.action('filtrar');
@@ -473,7 +473,7 @@ app.routes.list('/feitas', function (params, data) {
         }));
         /* dispara o evento de filtro */
         app.ui.filter.submit(function () {
-            app.events.trigger('filter task', fields);
+            app.trigger('filter task', fields);
         });
 
         /* montando a listagem */

@@ -60,7 +60,7 @@ app.routes.list('/contas', function (params, data) {
                 tip : 'editar dados desta conta',
                 image  : 'pencil',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/editar-conta/' + account._id});
+                    app.open({app : app.slug, route : '/editar-conta/' + account._id});
                 }
             })
         };
@@ -123,7 +123,7 @@ app.routes.list('/contas', function (params, data) {
         };
 
         /* Pegando a edição da categoria */
-        app.events.bind('update account ' + account._id, function (data) {
+        app.bind('update account ' + account._id, function (data) {
             account = new app.models.account(data);
 
             if (account) {
@@ -137,10 +137,10 @@ app.routes.list('/contas', function (params, data) {
         });
 
         /* Pegando a exclusão da categoria */
-        app.events.bind('remove account ' + account._id, this.item.detach);
+        app.bind('remove account ' + account._id, this.item.detach);
 
         /* Pegando quando o filtro é acionado */
-        app.events.bind('filter account', function (fields) {
+        app.bind('filter account', function (fields) {
             var queryField = fields.query.value();
             if (
                 queryField.length > 1 && account.name.toLowerCase().indexOf(queryField.toLowerCase()) === -1
@@ -167,7 +167,7 @@ app.routes.list('/contas', function (params, data) {
             var fields = {}
 
             app.ui.title('Contas');
-            app.tracker.event('visualizar contas');
+            app.event('visualizar contas');
 
             /* Botão global de adicionar categoria */
             app.ui.actions.add(new app.ui.action({
@@ -175,7 +175,7 @@ app.routes.list('/contas', function (params, data) {
                 legend : 'adicionar conta',
                 tip : 'adicionar nova conta',
                 click : function () {
-                    app.apps.open({
+                    app.open({
                         app : app.slug,
                         route : '/adicionar-conta'
                     })
@@ -198,7 +198,7 @@ app.routes.list('/contas', function (params, data) {
             }));
             /* dispara o evento de filtro */
             app.ui.filter.submit(function () {
-                app.events.trigger('filter account', fields);
+                app.trigger('filter account', fields);
             });
 
             /* ordenando as contas */
@@ -217,7 +217,7 @@ app.routes.list('/contas', function (params, data) {
             }
 
             /* Pegando contas que são cadastradas ao longo do uso do app */
-            app.events.bind('create account', function (account) {
+            app.bind('create account', function (account) {
                 fitGroup(account).items.add((new Item(account)).item);
             });
         });

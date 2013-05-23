@@ -31,7 +31,7 @@ app.routes.list('/usuarios', function (params, data) {
                 tip    : 'alterar senha',
                 image  : 'pencil',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/alterar-senha/' + user._id});
+                    app.open({app : app.slug, route : '/alterar-senha/' + user._id});
                 }
             })
         };
@@ -48,7 +48,7 @@ app.routes.list('/usuarios', function (params, data) {
         }
 
         /* Pegando quando o filtro é acionado */
-        app.events.bind('filter user', function (fields) {
+        app.bind('filter user', function (fields) {
             var queryField = fields.query.value();
             if (
                 queryField.length > 1 && user.name.toLowerCase().indexOf(queryField.toLowerCase()) === -1
@@ -74,7 +74,7 @@ app.routes.list('/usuarios', function (params, data) {
         legend : 'adicionar usuário',
         tip : 'adicionar novo usuário',
         click : function () {
-            app.apps.open({
+            app.open({
                 app : app.slug,
                 route : '/adicionar-usuario'
             })
@@ -97,7 +97,7 @@ app.routes.list('/usuarios', function (params, data) {
     }));
     /* dispara o evento de filtro */
     app.ui.filter.submit(function () {
-        app.events.trigger('filter user', fields);
+        app.trigger('filter user', fields);
     });
 
     /* montando os grupos */
@@ -113,7 +113,7 @@ app.routes.list('/usuarios', function (params, data) {
     }
 
     /* Pegando usuários que são cadastradas ao longo do uso do app */
-    app.events.bind('create user', function (user) {
+    app.bind('create user', function (user) {
         groups.admins.items.add(new app.ui.item({
             title : user.name,
             label : {

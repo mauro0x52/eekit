@@ -61,8 +61,12 @@ module.exports(Path = {
             if (newapp.type() === 'dialog') {
                 /* Renderizo o dialogo */
                 ui.dialogs.add(newapp.ui);
+            } else if (newapp.type() === 'frame') {
+                ui.collapse(true);
+                ui.apps.add(newapp.ui);
+                newapp.ui.click();
             } else if (newapp.type() !== 'embedList' && newapp.type() !== 'embedEntity') {
-
+                ui.collapse(false);
                 if (!newapp.caller()) {
                     /* Se o app tiver sido chamado pelo eekit, removo todos os apps ativos */
                     ui.apps.remove();
@@ -81,14 +85,7 @@ module.exports(Path = {
                 /* Renderizo o app no corpo principal */
                 ui.apps.add(newapp.ui);
                 ui.navigation.add(newapp.ui.navigation);
-
-                /* Controlo o header do eekit */
-                if (newapp.type() === 'frame') {
-                    ui.collapse(true);
-                } else {
-                    newapp.ui.click();
-                    ui.collapse(false);
-                }
+                newapp.ui.click();
             } else {
                 caller.ui.embeds.add(newapp.ui);
             }

@@ -155,7 +155,7 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
             legend : 'Lembrete por email',
             options : reminderOptions,
             change : function () {
-                app.tracker.event('clicar: adicionar lembrete');
+                app.event('clicar: adicionar lembrete');
             }
         });
         if (fields.date.value()) {

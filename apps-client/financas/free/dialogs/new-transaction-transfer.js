@@ -8,7 +8,7 @@
  */
 app.routes.dialog('/adicionar-transferencia', function (params, data) {
     var request = data ? data : {};
-    app.tracker.event('clicar: adicionar transação');
+    app.event('clicar: adicionar transação');
 
     /**
      * Cria o formulário

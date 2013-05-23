@@ -43,7 +43,7 @@ app.routes.embedList('/relacionadas', function (params, data) {
                     legend : 'adicionar nova tarefa',
                     image : 'add',
                     click : function () {
-                        app.apps.open({
+                        app.open({
                             app   : app.slug,
                             route : '/adicionar-tarefa',
                             data  : {
@@ -87,7 +87,7 @@ app.routes.embedList('/relacionadas', function (params, data) {
 
         this.item = new app.ui.item({
             click : function () {
-                app.apps.open({app : app.slug, route : '/tarefa/' + task._id});
+                app.open({app : app.slug, route : '/tarefa/' + task._id});
             }
         });
 
@@ -112,14 +112,14 @@ app.routes.embedList('/relacionadas', function (params, data) {
                 tip : 'editar esta tarefa',
                 image  : 'pencil',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/editar-tarefa/' + task._id});
+                    app.open({app : app.slug, route : '/editar-tarefa/' + task._id});
                 }
             }),
             remove       : new app.ui.action({
                 tip : 'remover esta tarefa',
                 image  : 'trash',
                 click  : function() {
-                    app.apps.open({app : app.slug, route : '/remover-tarefa/' + task._id});
+                    app.open({app : app.slug, route : '/remover-tarefa/' + task._id});
                 }
             })
         };
@@ -218,7 +218,7 @@ app.routes.embedList('/relacionadas', function (params, data) {
         }
 
         /* Pegando a edição da tarefa */
-        app.events.bind('update task ' + task._id, function (data) {
+        app.bind('update task ' + task._id, function (data) {
             task = new app.models.task(data);
 
             that.item.detach();
@@ -240,7 +240,7 @@ app.routes.embedList('/relacionadas', function (params, data) {
         });
 
         /* Pegando o drop da tarefa */
-        app.events.bind('drop task ' + task._id, function (data) {
+        app.bind('drop task ' + task._id, function (data) {
             task = new app.models.task(data);
 
             if (task) {
@@ -253,10 +253,10 @@ app.routes.embedList('/relacionadas', function (params, data) {
         });
 
         /* Pegando a exclusão da tarefa */
-        app.events.bind('remove task ' + task._id, this.item.detach);
+        app.bind('remove task ' + task._id, this.item.detach);
 
         /* Pegando a marcação como feita da tarefa */
-        app.events.bind('do task ' + task._id, function (data) {
+        app.bind('do task ' + task._id, function (data) {
             task = new app.models.task(data);
 
             that.item.detach();
@@ -318,7 +318,7 @@ app.routes.embedList('/relacionadas', function (params, data) {
             }
 
             /* Pegando tarefas que são cadastradas ao longo do uso do app */
-            app.events.bind('create task', function (task) {
+            app.bind('create task', function (task) {
                 groups.pending.items.add((new Item(task)).item);
             });
         });

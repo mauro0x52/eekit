@@ -100,7 +100,7 @@ module.exports(new Class(function (context) {
                 close_cb();
             }
         }
-    }
+    };
 
     /* Controla o click no app
      *

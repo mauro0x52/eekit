@@ -62,7 +62,7 @@ app.routes.embedList('/sandbox/embed/list', function (params, data) {
                     legend : 'label'
                 },
                 click : function () {
-                    app.apps.open({
+                    app.open({
                         app   : 'ee',
                         route : '/sandbox/entity'
                     });
@@ -116,7 +116,7 @@ app.routes.embedList('/sandbox/embed/list', function (params, data) {
                 title : 'Titulo do item teste 1',
                 description : 'descrição do item',
                 click : function () {
-                    app.apps.open({
+                    app.open({
                         app   : 'ee',
                         route : '/sandbox/list'
                     });

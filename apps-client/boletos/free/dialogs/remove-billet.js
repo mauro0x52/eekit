@@ -18,7 +18,7 @@ app.routes.dialog('/remover-boleto/:id', function (params, data) {
 
         app.ui.form.submit(function() {
             billet.remove();
-            app.events.trigger('remove billet ' + params.id);
+            app.trigger('remove billet ' + params.id);
             app.close(true);
         });
     });
