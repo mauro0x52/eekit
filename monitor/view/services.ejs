@@ -243,6 +243,7 @@ var services = {
                     update_ping.setAttribute('class', 'not-updating');
                     if (error) {
                         element.setAttribute('class', 'down');
+                        element_ping.innerHTML = 'erro';
                         console.log(error);
                     } else {
                         element.setAttribute('class', 'up');
@@ -257,7 +258,12 @@ var services = {
                 update_version.setAttribute('class', 'updating');
                 Ajax(this.url + '/version', function (error, data) {
                     update_version.setAttribute('class', 'not-updating');
-                    if (error) console.log(error);
+                    if (error) {
+                        console.log(error);
+                        element.setAttribute('class', 'down');
+                        element_version.innerHTML = 'erro';
+                        element_date.innerHTML = 'erro';
+                    }
                     else {
                         element_version.innerHTML = data.version;
                         element_date.innerHTML = data.date;
@@ -270,7 +276,11 @@ var services = {
                 update_status.setAttribute('class', 'updating');
                 Ajax(this.url + '/status', function (error, data) {
                     update_status.setAttribute('class', 'not-updating');
-                    if (error) console.log(error);
+                    if (error) {
+                        console.log(error);
+                        element.setAttribute('class', 'down');
+                        element_count.innerHTML = 'erro';
+                    }
                     else {
                         if (data.count) {
                             element_count.innerHTML = data.count;
