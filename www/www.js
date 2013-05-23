@@ -41,6 +41,11 @@ app.get('/', function (request, response) {
 /*  Métodos para dev e teste */
 app.get('/ping', function (request, response) {
     "use strict";
+    response.send(true);
+});
+
+app.get('/version', function (request, response) {
+    "use strict";
 
     response.contentType('json');
     response.header('Access-Control-Allow-Origin', '*');
@@ -54,6 +59,11 @@ app.get('/ping', function (request, response) {
             response.send({ version : regexm[1], date : regexm[3] });
         }
     });
+});
+
+app.get('/status', function (request, response) {
+    "use strict";
+    response.send(true);
 });
 
 /*  Métodos para dev e teste */
