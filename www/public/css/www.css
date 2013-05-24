@@ -416,9 +416,18 @@ form {
 
 
 /* colapsado */
+.tool > .sheets > .sheet.selected {
+    margin-right: 10px;
+}
 .tool > .sheets > .sheet.collapsed {
     width: 60px;
     margin-right: -25px;
+}
+.tool > .sheets > .sheet.collapsed > .filter {
+    display: none;
+}
+.tool > .sheets > .sheet.collapsed > .body {
+    display: none;
 }
 .tool > .sheets > .sheet.collapsed:last-child {
     width: 40px;
