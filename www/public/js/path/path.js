@@ -37,7 +37,7 @@ module.exports({
         /* Verifico se o app ja não esta aberto */
         var apps = ui.apps.get();
         for (var i in apps) {
-            if (apps[i].context().route() === route) {
+            if (apps[i].context().route() === path) {
                 apps[i].click();
                 return;
             }
@@ -79,6 +79,18 @@ module.exports({
                             image  : newapp.menu[i].image,
                             href   : newapp.slug() + newapp.menu[i].href
                         }))
+                    }
+                } else {
+                    /* Fecho todos os apps em frente ao caller */
+                    var found = false,
+                        apps = ui.apps.get();
+                    for (var i in apps) {
+                        if (found) {
+                            apps[i].close();
+                        }
+                        if (apps[i].context() === newapp.caller()) {
+                            found = true;
+                        }
                     }
                 }
 

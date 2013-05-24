@@ -20,20 +20,31 @@ module.exports(new Class(function (context) {
 
     var subtitle,
         description,
-        datasets;
+        datasets,
+        anchor,
+        click_cb,
+        self = this;
 
-    this.body.html.attach([
+    this.sheet.html.attach([
         subtitle    = new Element('h5', {attributes : {'class' : 'title'}}),
         description = new Element('p', {attributes : {'class' : 'description'}}),
         datasets    = new Element('div', {attributes : {'class' : 'data-sets'}}),
-        new Element('div', {attributes : {'class' : 'click'}, html : [
+        anchor      = new Element('div', {attributes : {'class' : 'click'}, html : [
             new Element('div', {attributes : {'class' : 'arrow'}, html : [
                 new Element('div', {attributes : {'class' : 'fill'}})
             ]}),
         ]})
     ]);
 
-    this.body = undefined;
+    subtitle.event('click').bind(function () {
+        self.click();
+    });
+
+    anchor.event('click').bind(function () {
+        self.click();
+    });
+
+    this.sheet = undefined;
     this.action = Action;
     this.dataset = DataSet;
     this.data = Data;
@@ -57,11 +68,11 @@ module.exports(new Class(function (context) {
                 });
             }
 
-            subtitle.event('click').bind(function (evt) {
-                value.apply(context);
-            });
+            click_cb = value
         } else {
-            subtitle.event('click').trigger();
+            if (click_cb) {
+                click_cb();
+            }
         }
 
     };

@@ -12,7 +12,6 @@ var Element    = module.use('element'),
     Helper     = module.use('helper'),
     FieldSet   = module.use('fieldset'),
     InputText  = module.use('inputText'),
-    GroupSet   = module.use('groupset'),
     Group      = module.use('group'),
     Item       = module.use('item'),
     Icon       = module.use('icon'),
@@ -24,11 +23,11 @@ module.exports(new Class(function (context) {
 
     var groups;
 
-    this.body.html.attach([
+    this.sheet.html.attach([
         groups  = new Element('div', {attributes : {'class' : 'groups'}})
     ]);
 
-    this.body = undefined;
+    this.sheet = undefined;
     this.helper = Helper;
     this.fieldset = FieldSet;
     this.inputText = InputText;
@@ -43,6 +42,6 @@ module.exports(new Class(function (context) {
      * @author Rafael Erthal
      * @since  2013-05
      */
-    this.groups = new Collection(groups, [GroupSet]);
+    this.groups = new Collection(groups, [Group]);
 
 }));

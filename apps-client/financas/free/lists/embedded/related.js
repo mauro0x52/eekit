@@ -200,7 +200,6 @@ app.routes.embedList('/relacionadas', function (params, data) {
                 that.account(transaction.account);
                 that.value(transaction.value);
             }
-            app.ui.filter.submit();
         });
 
         /* Pegando a exclusão da transação */
@@ -249,6 +248,7 @@ app.routes.embedList('/relacionadas', function (params, data) {
 
                     /* Pegando transações que são cadastradas ao longo do uso do app */
                     app.bind('create transaction', function (transaction) {
+                        console.log('oie')
                         fitGroup(transaction).items.add((new Item(transaction)).item);
                     });
                 })

@@ -112,7 +112,7 @@ module.exports = function (params) {
                             query.embeddeds = {$in : request.param('filterByCategory')};
                         }
                         if (request.param('filterByEmbeddeds')) {
-                            query.embeddeds = {$in : request.param('filterByEmbeddeds')};
+                            query.embeddeds = {$in : [request.param('filterByEmbeddeds')]};
                         }
                         if (
                             request.param('filterByDone') === true ||

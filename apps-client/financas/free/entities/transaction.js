@@ -198,7 +198,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
 
         if (transaction) {
             this.name(transaction.name + (transaction.subtitle ? ' (' + transaction.subtitle + ')' : ''));
-            this.observation(transaction.observation);
+            this.observation(transaction.observation || '');
             this.category(transaction.category);
             this.account(transaction.account);
             this.date(transaction.date);
@@ -226,10 +226,7 @@ app.routes.entity('/transacao/:id', function (params, data) {
 
                     app.open({
                         app : appa,
-                        route : route,
-                        open : function (tool) {
-                            app.ui.embbeds.add(tool);
-                        }
+                        route : route
                     })
                 }
             });

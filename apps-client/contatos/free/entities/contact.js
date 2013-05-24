@@ -256,7 +256,7 @@ app.routes.entity('/contato/:id', function (params, data) {
                         });
                     }*/
                 })
-/*
+
                 app.open({
                     app : 'financas',
                     route : '/relacionadas',
@@ -267,7 +267,7 @@ app.routes.entity('/contato/:id', function (params, data) {
                         }
                     }
                 })
-*/
+
 
             });
         });

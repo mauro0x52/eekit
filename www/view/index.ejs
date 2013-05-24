@@ -67,8 +67,8 @@
                     var apps = self.ui.apps.get();
                     for (var i in apps) {
                         apps[i].context().trigger(evt.label, evt.data);
-                        if (apps[i].context().embeds) {
-                            var embeds = apps[i].context().embeds.get();
+                        if (apps[i].context().ui.embeds) {
+                            var embeds = apps[i].context().ui.embeds.get();
                             for (var j in embeds) {
                                 embeds[j].context().trigger(evt.label, evt.data);
                             }

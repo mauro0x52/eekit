@@ -21,9 +21,17 @@ module.exports(new Class(function (context) {
         body = new Element('div', {attributes : {'class' : 'body'}})
     ]});
 
-    this.body = body;
-    this.attach = element.attach;
-    this.detach = element.detach;
+    element.template = this;
+    this.id          = element.id;
+    this.sheet       = body;
+    this.attach      = element.attach;
+    this.detach      = element.detach;
+
+    this.context = function () {
+
+        return context;
+
+    };
 
     /* Controla o titulo do app
      *

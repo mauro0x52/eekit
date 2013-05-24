@@ -122,7 +122,7 @@ module.exports = function (params) {
                             }
                         }
                         if (request.param('filterByEmbeddeds')) {
-                            query.embeddeds = {$in : request.param('filterByEmbeddeds')};
+                            query.embeddeds = {$in : [request.param('filterByEmbeddeds')]};
                         }
                         params.model.Transaction.find(query, function (error, transactions) {
                             if (error) {
