@@ -75,7 +75,7 @@ app.routes.dialog('/editar-conta/:id', function (params, data) {
         fieldset = new app.ui.fieldset({
             legend : 'Conta'
         });
-        fieldset.fields.add([fields.name, fields.bank, fields.agency, fields.account, fields.initialDate, fields.initialBalance]);
+        fieldset.fields.add([fields.name, fields.bank, fields.agency, fields.account, fields.initialBalance]);
 
         fields.name.focus();
 
