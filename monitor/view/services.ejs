@@ -116,7 +116,7 @@ var services = {
         }
 
         #services li .updating {
-            background-image: url(http://www.ajaxload.info/images/exemples/4.gif);
+            background-image: url(/images/loader.gif);
             background-repeat: no-repeat;
             background-position: bottom;
             width: 16px;
@@ -244,11 +244,13 @@ var services = {
                     if (error) {
                         element.setAttribute('class', 'down');
                         element_ping.innerHTML = 'erro';
+                        element_ping.setAttribute('style', 'color: #c00');
                         console.log(error);
                     } else {
                         element.setAttribute('class', 'up');
                         then = new Date();
                         element_ping.innerHTML = then - now + ' ms';
+                        element_ping.setAttribute('style', '');
                     }
                     if (recursive) setTimeout(function() { self.ping(true) }, 2000);
                 });
@@ -261,10 +263,14 @@ var services = {
                     if (error) {
                         console.log(error);
                         element.setAttribute('class', 'down');
+                        element_version.setAttribute('style', 'color: #c00');
+                        element_date.setAttribute('style', 'color: #c00');
                         element_version.innerHTML = 'erro';
                         element_date.innerHTML = 'erro';
                     }
                     else {
+                        element_version.setAttribute('style', '');
+                        element_date.setAttribute('style', '');
                         element_version.innerHTML = data.version;
                         element_date.innerHTML = data.date;
                     }
@@ -278,12 +284,16 @@ var services = {
                     update_status.setAttribute('class', 'not-updating');
                     if (error) {
                         console.log(error);
+                        element_count.setAttribute('style', 'color: #c00');
                         element.setAttribute('class', 'down');
                         element_count.innerHTML = 'erro';
                     }
                     else {
+                        element_count.setAttribute('style', '');
                         if (data.count) {
                             element_count.innerHTML = data.count;
+                        } else {
+                            element_count.innerHTML = '';
                         }
                     }
                     if (recursive) setTimeout(function() { self.status(true) }, 10000);

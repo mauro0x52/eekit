@@ -3,22 +3,32 @@ var express = require('express'),
 
 var app = express();
 
+/*  Configurando o server */
+app.configure(function () {
+    "use strict";
+    app.use(express.bodyParser());
+    app.use(express.methodOverride());
+    app.use('/images', express.static('images'));
+    app.use(app.router);
+});
+
+app.get('/images', function (request, response) {
+    "use strict";
+    response.render('../view/index.ejs');
+});
 
 app.get('/panel', function (request, response) {
     "use strict";
-
     response.render('../view/index.ejs');
 });
 
 app.get('/panel/service/:app', function (request, response) {
     "use strict";
-
     response.render('../view/service.ejs', { app : request.params.app });
 });
 
 app.get('/panel/services', function (request, response) {
     "use strict";
-
     response.render('../view/services.ejs');
 });
 
