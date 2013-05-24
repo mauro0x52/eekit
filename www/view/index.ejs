@@ -60,6 +60,27 @@
                 path    : folder + 'path/path.js',
                 ui      : folder + 'ui/ui.js'
             }, function () {
+                /* Comunicação com o kami-sama */
+                var socket = io.connect('http://' + this.config.services.kamisama.host + ':' + this.config.services.kamisama.port),
+                    self = this;
+                socket.on('trigger', function (evt) {
+                    var apps = self.ui.apps.get();
+                    for (var i in apps) {
+                        apps[i].context().trigger(evt.label, evt.data);
+                        if (apps[i].context().embeds) {
+                            var embeds = apps[i].context().embeds.get();
+                            for (var j in embeds) {
+                                embeds[j].context().trigger(evt.label, evt.data);
+                            }
+                        }
+                    }
+                });
+                this.auth.user.validate(function (data) {
+                    socket.emit('auth', {
+                        user    : data.user._id,
+                        company : data.company._id
+                    });
+                });
 
                 /* Abre o app da rota ou a home*/
                 var app =  location.pathname.match(/^\/([^\/]+)/) || [],
