@@ -160,7 +160,7 @@ new Namespace({
                 }
                 name.html.set(value);
             } else {
-                name.html.get();
+                name.html.get()[0];
             }
 
         }

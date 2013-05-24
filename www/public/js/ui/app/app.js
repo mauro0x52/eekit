@@ -249,7 +249,7 @@ module.exports(new Class(function (context) {
             self.navigation.legend(value);
             title.html.set(value);
         } else {
-            title.html.get();
+            title.html.get()[0];
         }
 
     };

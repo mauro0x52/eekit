@@ -70,7 +70,7 @@ app.routes.dialog('/boleto/bb/:id', function (params, data) {
 
         /* input com os bancos */
         walletsOptions = {
-            bb18        : new app.ui.inputOption({ legend : '18 - sem registro', value : '18', clicked : true })
+            bb18        : new app.ui.inputOption({ legend : '18 - sem registro', value : '18', click : true })
         }
 
         /* campos do recebedor */

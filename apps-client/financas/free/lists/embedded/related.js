@@ -5,7 +5,7 @@
  * @since  2013-03
  * data : {embeddeds : [], insert : {title}}
  */
-app.routes.embeddedList('/relacionadas', function (params, data) {
+app.routes.embedList('/relacionadas', function (params, data) {
 
     var
     /*

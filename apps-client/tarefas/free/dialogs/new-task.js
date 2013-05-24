@@ -86,13 +86,13 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
                     legend : categories[i].name,
                     value : categories[i]._id,
                     label : categories[i].color || 'blue',
-                    clicked : request.category ? categories[i]._id === request.category : parseInt(i) === 0
+                    click : request.category ? categories[i]._id === request.category : parseInt(i) === 0
                 }));
             }
         }
 
         /* Input com as frequencias */
-        recurrenceOptions.push(new app.ui.inputOption({legend : 'sem recorrência', value : '0', clicked : true}));
+        recurrenceOptions.push(new app.ui.inputOption({legend : 'sem recorrência', value : '0', click : true}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'diariamente', value : '1'}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'dias úteis', value : '5'}));
         recurrenceOptions.push(new app.ui.inputOption({legend : 'semanalmente', value : '7'}));
@@ -100,7 +100,7 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
         recurrenceOptions.push(new app.ui.inputOption({legend : 'mensalmente', value : '30'}));
 
         /* Input com os lembretes */
-        reminderOptions.push(new app.ui.inputOption({legend : 'sem lembrete', value : 'null', clicked : true}));
+        reminderOptions.push(new app.ui.inputOption({legend : 'sem lembrete', value : 'null', click : true}));
         reminderOptions.push(new app.ui.inputOption({legend : 'no dia', value : '0'}));
         reminderOptions.push(new app.ui.inputOption({legend : '1 dia antes', value : '1'}));
         reminderOptions.push(new app.ui.inputOption({legend : '2 dias antes', value : '2'}));
@@ -112,7 +112,7 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
                 userOptions.push(new app.ui.inputOption({
                     legend  : app.config.users[i].name,
                     value   : app.config.users[i]._id,
-                    clicked : app.config.user._id === app.config.users[i]._id
+                    click : app.config.user._id === app.config.users[i]._id
                 }));
             }
         }

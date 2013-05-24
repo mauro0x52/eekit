@@ -46,7 +46,7 @@ module.exports(new Class(function (params) {
             legend.attribute('class').set('legend');
             legend.html.set(value);
         } else {
-            return legend.attribute('class').get();
+            return legend.html.get()[0];
         }
     };
 

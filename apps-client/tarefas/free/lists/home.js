@@ -95,7 +95,8 @@ app.routes.list('/', function (params, data) {
                         })
                     }
                 })
-            }
+            },
+            droppable : title !== 'Pendente'
         });
         group.date = date;
 
@@ -210,24 +211,6 @@ app.routes.list('/', function (params, data) {
             actions;
 
         this.item = new app.ui.item({
-            droppableGroups : [
-                groups.today,
-                groups.thisWeek.sunday,
-                groups.thisWeek.monday,
-                groups.thisWeek.tuesday,
-                groups.thisWeek.wednesday,
-                groups.thisWeek.thursday,
-                groups.thisWeek.friday,
-                groups.thisWeek.saturday,
-                groups.nextWeek.sunday,
-                groups.nextWeek.monday,
-                groups.nextWeek.tuesday,
-                groups.nextWeek.wednesday,
-                groups.nextWeek.thursday,
-                groups.nextWeek.friday,
-                groups.nextWeek.saturday,
-                groups.noDeadline
-            ],
             drop : function (group, order) {
                 task.changePriority(order, group.date);
             },
@@ -411,24 +394,27 @@ app.routes.list('/', function (params, data) {
 
         /* Pegando quando o filtro é acionado */
         app.bind('filter task', function (fields) {
-            var important = fields.important.value()[0] || fields.important.value()[0] === 'true',
-                users = fields.user.value();
+            var important = fields.important.value()[0] || fields.important.value()[0] === 'true'/*,
+                users = fields.user.value()*/;
 
             if (
-                (
+                /*(
                     task.user &&
                     users.indexOf(task.user) == -1
-                ) ||
-                (
+                ) ||*/ (
                     fields.categories.general.value().indexOf(that.item.label.legend()) === -1 &&
                     fields.categories.meetings.value().indexOf(that.item.label.legend()) === -1 &&
                     fields.categories.finances.value().indexOf(that.item.label.legend()) === -1 &&
                     fields.categories.sales.value().indexOf(that.item.label.legend()) === -1 &&
                     fields.categories.projects.value().indexOf(that.item.label.legend()) === -1 &&
                     fields.categories.personals.value().indexOf(that.item.label.legend()) === -1
-                ) ||
-                (!(icons.important.legend().replace('-', ' ').toLowerCase() === 'importante') && important) ||
-                (fields.query.value().length > 1 && (that.item.title() + ' ' + that.item.description()).toLowerCase().indexOf(fields.query.value().toLowerCase()) === -1)
+                ) || (
+                    (icons.important.legend() !== 'importante') &&
+                    important
+                ) || (
+                    fields.query.value().length > 1 &&
+                    (that.item.title() + ' ' + that.item.description()).toLowerCase().indexOf(fields.query.value().toLowerCase()) === -1
+                )
             ) {
                 that.item.visibility('hide');
             } else {
@@ -490,7 +476,7 @@ app.routes.list('/', function (params, data) {
                     options.push(new app.ui.inputOption({
                         legend  : categories[i].name,
                         value   : categories[i].name,
-                        clicked : true,
+                        click   : true,
                         label   : categories[i].color || 'blue'
                     }));
                 }
@@ -578,7 +564,7 @@ app.routes.list('/', function (params, data) {
                     result.push(new app.ui.inputOption({
                         legend  : app.config.users[i].name,
                         value   : app.config.users[i]._id,
-                        clicked : app.config.user._id === app.config.users[i]._id
+                        click : app.config.user._id === app.config.users[i]._id
                     }));
                 }
                 return result;
@@ -591,10 +577,10 @@ app.routes.list('/', function (params, data) {
             legend : 'Filtrar tarefas',
             fields : [fields.query/*, fields.user*/, fields.categories.general, fields.categories.meetings, fields.categories.finances, fields.categories.sales, fields.categories.projects, fields.categories.personals, fields.important]
         }));
-        /* dispara o evento de filtro
+        /* dispara o evento de filtro */
         app.ui.filter.submit(function () {
             app.trigger('filter task', fields);
-        }); */
+        });
 
         /* exibe o orientador */
         app.models.task.list({}, function (tasks) {

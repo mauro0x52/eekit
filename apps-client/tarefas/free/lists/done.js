@@ -370,7 +370,7 @@ app.routes.list('/feitas', function (params, data) {
                     options.push(new app.ui.inputOption({
                         legend  : categories[i].name,
                         value   : categories[i].name,
-                        clicked : true,
+                        click : true,
                         label   : categories[i].color || 'blue'
                     }));
                 }
@@ -458,7 +458,7 @@ app.routes.list('/feitas', function (params, data) {
                     result.push(new app.ui.inputOption({
                         legend  : app.config.users[i].name,
                         value   : app.config.users[i]._id,
-                        clicked : app.config.user._id === app.config.users[i]._id
+                        click : app.config.user._id === app.config.users[i]._id
                     }));
                 }
                 return result;

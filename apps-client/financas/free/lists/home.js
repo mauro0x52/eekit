@@ -525,7 +525,7 @@ app.routes.list('/', function (params, data) {
                                 options.push(new app.ui.inputOption({
                                     legend : accounts[i].name,
                                     value : accounts[i]._id,
-                                    clicked : true
+                                    click : true
                                 }));
                             }
                             return options;
@@ -539,9 +539,9 @@ app.routes.list('/', function (params, data) {
                         name : 'type',
                         legend : 'Tipo',
                         options : [
-                            new app.ui.inputOption({legend : 'Transferencia', value : 'transfer', clicked : true}),
-                            new app.ui.inputOption({legend : 'Receita', value : 'credit', clicked : true}),
-                            new app.ui.inputOption({legend : 'Despesa', value : 'debt', clicked : true})
+                            new app.ui.inputOption({legend : 'Transferencia', value : 'transfer', click : true}),
+                            new app.ui.inputOption({legend : 'Receita', value : 'credit', click : true}),
+                            new app.ui.inputOption({legend : 'Despesa', value : 'debt', click : true})
                         ],
                         change : app.ui.filter.submit,
                         actions : true
@@ -560,7 +560,7 @@ app.routes.list('/', function (params, data) {
                                         options.push(new app.ui.inputOption({
                                             legend : categories[i].name,
                                             value : categories[i]._id,
-                                            clicked : true
+                                            click : true
                                         }));
                                     }
                                 }
@@ -581,7 +581,7 @@ app.routes.list('/', function (params, data) {
                                         options.push(new app.ui.inputOption({
                                             legend : categories[i].name,
                                             value : categories[i]._id,
-                                            clicked : true
+                                            click : true
                                         }));
                                     }
                                 }

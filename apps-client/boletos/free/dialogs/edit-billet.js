@@ -99,18 +99,18 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
 
         /* input com os bancos */
         banksOptions = {
-            bb : new app.ui.inputOption({ legend : 'Banco do Brasil', value : '001', clicked : billet.bankId === '001' }),
-            bradesco : new app.ui.inputOption({ legend : 'Bradesco', value : '237', clicked : billet.bankId === '247' }),
-            caixa : new app.ui.inputOption({ legend : 'Caixa', value : '104' , clicked : billet.bankId === '104' }),
-            itau     : new app.ui.inputOption({ legend : 'Itaú', value : '341', clicked : billet.bankId === '341' })
+            bb : new app.ui.inputOption({ legend : 'Banco do Brasil', value : '001', click : billet.bankId === '001' }),
+            bradesco : new app.ui.inputOption({ legend : 'Bradesco', value : '237', click : billet.bankId === '247' }),
+            caixa : new app.ui.inputOption({ legend : 'Caixa', value : '104' , click : billet.bankId === '104' }),
+            itau     : new app.ui.inputOption({ legend : 'Itaú', value : '341', click : billet.bankId === '341' })
         }
 
         /* input com os bancos */
         walletsOptions = {
-            bb18        : new app.ui.inputOption({ legend : '18', value : '18', clicked : billet.wallet === '18' }),
-            bradesco06  : new app.ui.inputOption({ legend : '06', value : '06', clicked : billet.wallet === '06' }),
-            caixaSIGCB  : new app.ui.inputOption({ legend : 'SIGCB - sem registro', value : 'sigcb', clicked : billet.wallet === 'sigcb' }),
-            itau175     : new app.ui.inputOption({ legend : '175', value : '175', clicked : billet.wallet === '175' })
+            bb18        : new app.ui.inputOption({ legend : '18', value : '18', click : billet.wallet === '18' }),
+            bradesco06  : new app.ui.inputOption({ legend : '06', value : '06', click : billet.wallet === '06' }),
+            caixaSIGCB  : new app.ui.inputOption({ legend : 'SIGCB - sem registro', value : 'sigcb', click : billet.wallet === 'sigcb' }),
+            itau175     : new app.ui.inputOption({ legend : '175', value : '175', click : billet.wallet === '175' })
         }
 
         /* campos do recebedor */

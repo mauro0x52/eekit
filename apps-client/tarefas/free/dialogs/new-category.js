@@ -20,32 +20,32 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
         typesOptions.push(new app.ui.inputOption({
             legend : 'geral',
             value : 'general',
-            clicked : request.type ? request.type === 'general' : true
+            click : request.type ? request.type === 'general' : true
         }));
         typesOptions.push(new app.ui.inputOption({
             legend : 'reuniões',
             value : 'meetings',
-            clicked : request.type ? request.type === 'meetings' : false
+            click : request.type ? request.type === 'meetings' : false
         }));
         typesOptions.push(new app.ui.inputOption({
             legend : 'finanças',
             value : 'finances',
-            clicked : request.type ? request.type === 'finances' : false
+            click : request.type ? request.type === 'finances' : false
         }));
         typesOptions.push(new app.ui.inputOption({
             legend : 'vendas',
             value : 'sales',
-            clicked : request.type ? request.type === 'sales' : false
+            click : request.type ? request.type === 'sales' : false
         }));
         typesOptions.push(new app.ui.inputOption({
             legend : 'projetos',
             value : 'projects',
-            clicked : request.type ? request.type === 'projects' : false
+            click : request.type ? request.type === 'projects' : false
         }));
         typesOptions.push(new app.ui.inputOption({
             legend : 'pessoais',
             value : 'personals',
-            clicked : request.type ? request.type === 'personals' : false
+            click : request.type ? request.type === 'personals' : false
         }));
 
         fields.types = new app.ui.inputSelector({
@@ -61,7 +61,7 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
                 legend : app.models.colors[i],
                 value : i,
                 label : i,
-                clicked : i === 'navy'
+                click : i === 'navy'
             }));
         }
 

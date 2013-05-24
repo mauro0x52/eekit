@@ -70,7 +70,7 @@ app.routes.dialog('/boleto/caixa/:id', function (params, data) {
 
         /* input com os bancos */
         walletsOptions = {
-            caixaSIGCB : new app.ui.inputOption({ legend : 'SIGCB sem registro', value : 'sigcb', clicked : true })
+            caixaSIGCB : new app.ui.inputOption({ legend : 'SIGCB sem registro', value : 'sigcb', click : true })
         }
 
         /* campos do recebedor */

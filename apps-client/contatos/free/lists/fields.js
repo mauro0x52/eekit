@@ -19,7 +19,9 @@
 
     /* montando os grupos */
     groups = {
-        group : new app.ui.group()
+        group : new app.ui.group({
+            droppable : true
+        })
     };
 
     app.ui.groups.add([groups.group]);
@@ -47,8 +49,7 @@
         this.item = new app.ui.item({
             drop : function (group, position) {
                 field.changePosition(position);
-            },
-            droppableGroups : [groups.group],
+            }
         });
 
         /* Botões do item */

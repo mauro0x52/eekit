@@ -102,7 +102,7 @@ module.exports(new Class(function (params) {
 
             legend.html.set(value);
         } else {
-            return legend.html.get();
+            return legend.html.get()[0];
         }
     };
 

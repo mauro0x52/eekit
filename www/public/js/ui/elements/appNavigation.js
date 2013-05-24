@@ -85,7 +85,7 @@ module.exports(new Class(function (params) {
 
             anchor.html.set(value);
         } else {
-            return anchor.html.get();
+            return anchor.html.get()[0];
         }
     };
 

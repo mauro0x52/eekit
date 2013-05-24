@@ -20,22 +20,22 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
         typesOptions.push(new app.ui.inputOption({
             legend : 'clientes',
             value : 'clients',
-            clicked : request.type ? request.type === 'clients' : true
+            click : request.type ? request.type === 'clients' : true
         }));
         typesOptions.push(new app.ui.inputOption({
             legend : 'fornecedores',
             value : 'suppliers',
-            clicked : request.type ? request.type === 'suppliers' : false
+            click : request.type ? request.type === 'suppliers' : false
         }));
         typesOptions.push(new app.ui.inputOption({
             legend : 'parceiros',
             value : 'partners',
-            clicked : request.type ? request.type === 'partners' : false
+            click : request.type ? request.type === 'partners' : false
         }));
         typesOptions.push(new app.ui.inputOption({
             legend : 'pessoais',
             value : 'personals',
-            clicked : request.type ? request.type === 'personals' : false
+            click : request.type ? request.type === 'personals' : false
         }));
 
         fields.types = new app.ui.inputSelector({
@@ -51,7 +51,7 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
                 legend : app.models.colors[i],
                 value : i,
                 label : i,
-                clicked : i === 'navy'
+                click : i === 'navy'
             }));
         }
 

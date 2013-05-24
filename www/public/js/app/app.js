@@ -12,8 +12,7 @@ module.exports(new Class (function (params) {
         callback   = null,
         type       = null,
         parameters = null,
-        close_cb,
-        interface = document.createElement('div');
+        events     = [];
 
     if (!params) {
         throw new Error({
@@ -77,6 +76,12 @@ module.exports(new Class (function (params) {
 
     };
 
+    this.data = function () {
+
+        return params.data;
+
+    };
+
     this.callback = function () {
 
         return callback;
@@ -101,14 +106,10 @@ module.exports(new Class (function (params) {
      * @since  2013-05
      */
     this.close = function (value) {
-        if (!value || value.constructor != Function) {
-            that.ui.close();
-            delete that;
-            if (close_cb) {
-                close_cb(value);
-            }
-        } else {
-            close_cb = value;
+        that.ui.close();
+        delete that;
+        if (params.close) {
+            params.close(value);
         }
     }
 
@@ -151,8 +152,10 @@ module.exports(new Class (function (params) {
      * @since  2013-05
      */
     this.open = function (params) {
+        params = params || {},
+        params.caller = that;
 
-        Empreendekit.path.redirect(params.app + params.route, that);
+        Empreendekit.path.redirect(params.app + params.route, params);
 
     };
 
@@ -181,7 +184,7 @@ module.exports(new Class (function (params) {
             });
         }
 
-        interface.addEventListener(label, callback, true);
+        events.push({label : label, callback : callback})
 
     };
 
@@ -201,7 +204,11 @@ module.exports(new Class (function (params) {
             });
         }
 
-        interface.dispatchEvent(new CustomEvent(label, data));
+        for (var i in events) {
+            if (events[i].label === label) {
+                events[i].callback(data);
+            }
+        }
 
     };
 
@@ -443,6 +450,6 @@ module.exports(new Class (function (params) {
 
     this.ui = new Empreendekit.ui[this.type()](this);
 
-    this.callback().apply(this, [this.params()]);
+    this.callback().apply(this, [this.params(), this.data()]);
 
 }));

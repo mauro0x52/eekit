@@ -71,12 +71,12 @@ app.routes.dialog('/adicionar-transferencia', function (params, data) {
                 sourceAccountsOptions.push(new app.ui.inputOption({
                     legend : accounts[i].name,
                     value : accounts[i]._id,
-                    clicked : parseInt(i) === 0
+                    click : parseInt(i) === 0
                 }));
                 destinyAccountsOptions.push(new app.ui.inputOption({
                     legend : accounts[i].name,
                     value : accounts[i]._id,
-                    clicked : accounts.hasOwnProperty(1) ? parseInt(i) === 1 : parseInt(i) === 0
+                    click : accounts.hasOwnProperty(1) ? parseInt(i) === 1 : parseInt(i) === 0
                 }));
             }
         }

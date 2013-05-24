@@ -45,7 +45,7 @@ module.exports(new Class(function (context) {
 
             title.html.set(value);
         } else {
-            title.html.get();
+            title.html.get()[0];
         }
 
     };

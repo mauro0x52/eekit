@@ -20,22 +20,22 @@ app.routes.dialog('/editar-categoria/:id', function (params, data) {
         typesOptions.push(new app.ui.inputOption({
             legend : 'clientes',
             value : 'clients',
-            clicked : category.type === 'clients'
+            click : category.type === 'clients'
         }));
         typesOptions.push(new app.ui.inputOption({
             legend : 'fornecedores',
             value : 'suppliers',
-            clicked : category.type === 'suppliers'
+            click : category.type === 'suppliers'
         }));
         typesOptions.push(new app.ui.inputOption({
             legend : 'parceiros',
             value : 'partners',
-            clicked : category.type === 'partners'
+            click : category.type === 'partners'
         }));
         typesOptions.push(new app.ui.inputOption({
             legend : 'pessoais',
             value : 'personals',
-            clicked : category.type === 'personals'
+            click : category.type === 'personals'
         }));
 
         fields.types = new app.ui.inputSelector({
@@ -51,7 +51,7 @@ app.routes.dialog('/editar-categoria/:id', function (params, data) {
                 legend : app.models.colors[i],
                 value : i,
                 label : i,
-                clicked : i === category.color
+                click : i === category.color
             }));
         }
 

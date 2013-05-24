@@ -70,7 +70,7 @@ app.routes.dialog('/boleto/itau/:id', function (params, data) {
 
         /* input com os bancos */
         walletsOptions = {
-            itau175 : new app.ui.inputOption({ legend : '175 - sem registro', value : '175', clicked : true })
+            itau175 : new app.ui.inputOption({ legend : '175 - sem registro', value : '175', click : true })
         }
 
         /* campos do recebedor */

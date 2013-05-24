@@ -215,7 +215,7 @@ module.exports(new Class(function (params) {
                 legend.attribute('class').set('legend');
                 legend.html.set(value)
             } else {
-                return legend.html.get();
+                return legend.html.get()[0];
             }
         }
     };
@@ -244,7 +244,7 @@ module.exports(new Class(function (params) {
             title.attribute('class').set('title');
             titleAnchor.html.set(value);
         } else {
-            return titleAnchor.html.get();
+            return titleAnchor.html.get()[0];
         }
     };
 
@@ -272,7 +272,7 @@ module.exports(new Class(function (params) {
             description.attribute('class').set('description');
             description.html.set(value);
         } else {
-            return description.html.get();
+            return description.html.get()[0];
         }
     };
 

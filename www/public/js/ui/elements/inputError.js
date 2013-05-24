@@ -42,7 +42,7 @@ module.exports(new Class(function (params) {
             element.attribute('class').set('error');
             element.html.set(value);
         } else {
-            return element.html.get();
+            return element.html.get()[0];
         }
     };
 

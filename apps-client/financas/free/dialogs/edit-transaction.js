@@ -58,7 +58,7 @@ app.routes.dialog('/editar-transacao/:id', function (params, data) {
                     categoriesOptions.push(new app.ui.inputOption({
                         legend : categories[i].name,
                         value : categories[i]._id,
-                        clicked : categories[i]._id === transaction.category
+                        click : categories[i]._id === transaction.category
                     }));
                 }
             }
@@ -70,7 +70,7 @@ app.routes.dialog('/editar-transacao/:id', function (params, data) {
                 accountsOptions.push(new app.ui.inputOption({
                     legend : accounts[i].name,
                     value : accounts[i]._id,
-                    clicked : accounts[i]._id === transaction.account
+                    click : accounts[i]._id === transaction.account
                 }));
             }
         }

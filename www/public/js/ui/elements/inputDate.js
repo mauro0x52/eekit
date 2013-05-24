@@ -91,10 +91,13 @@ module.exports(new Class(function (params) {
         input.event('focus').trigger();
     }, true);
     input.event('focus').bind(function () {
-        self.show()
+        date_picker.attribute('style').set('opacity:1');
+        date_picker.attribute('class').set('date-picker');
+        month_name.html.set(self.monthName());
+        self.monthDays();
     });
     input.event('blur').bind(function () {
-        self.hide()
+        date_picker.attribute('style').set('opacity:0');
     });
 
     /**
@@ -117,7 +120,7 @@ module.exports(new Class(function (params) {
 
             legend.html.set(value);
         } else {
-            return legend.html.get();
+            return legend.html.get()[0];
         }
     };
 
@@ -168,29 +171,6 @@ module.exports(new Class(function (params) {
         } else if (change_cb) {
             change_cb.apply(self);
         }
-    };
-
-    /**
-     * Exibe o calendário
-     *
-     * @author Mauro Ribeir, Rafael Erthal
-     * @since  2013-05
-     */
-    this.show = function () {
-        date_picker.attribute('style').set('opacity:1');
-        date_picker.attribute('class').set('date-picker');
-        month_name.html.set(self.monthName());
-        self.monthDays();
-    };
-
-    /**
-     * Esconde o calendário
-     *
-     * @author Mauro Ribeir, Rafael Erthal
-     * @since  2013-05
-     */
-    this.hide = function () {
-        date_picker.attribute('style').set('opacity:0');
     };
 
     /**
@@ -410,5 +390,6 @@ module.exports(new Class(function (params) {
      */
     if (params) {
         this.legend(params.legend);
+        this.value(params.value);
     }
 }));

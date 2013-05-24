@@ -17,7 +17,7 @@ module.exports({
      * @author Rafael Erthal
      * @since  2013-05
      */
-    redirect : function (path, caller, cb) {
+    redirect : function (path, params) {
 
         if (!path) {
             throw new Error({
@@ -29,6 +29,7 @@ module.exports({
         }
 
         path = '/' + path;
+        params = params || {};
 
         var app = path.match(/^\/([^\/]+)/) || [],
             route = path.match(/^\/[^\/]+(.*)/) || [];
@@ -52,12 +53,10 @@ module.exports({
                 slug   : response.slug,
                 source : response.source,
                 route  : path,
-                caller : caller
+                caller : params.caller,
+                data   : params.data,
+                close  : params.close
             });
-
-            if (cb) {
-                newapp.close(cb);
-            }
 
             if (newapp.type() === 'dialog') {
                 /* Renderizo o dialogo */
@@ -87,8 +86,8 @@ module.exports({
                 ui.apps.add(newapp.ui);
                 ui.navigation.add(newapp.ui.navigation);
                 newapp.ui.click();
-            } else {
-                caller.ui.embeds.add(newapp.ui);
+            } else if (params.caller) {
+                params.caller.ui.embeds.add(newapp.ui);
             }
         });
     },

@@ -38,11 +38,19 @@ module.exports({
         var port = path.url.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[4];
 
         if (port.toString() === '8001') {
+            path.data = path.data || {};
+            if (Empreendekit.config) {
+                path.data.secret = Empreendekit.config.services.www.secret;
+            }
             ajax.get(path.url, {
                 data : path.data,
                 onsuccess : function (data) {
                     if (cb) {
-                        cb(eval('(' + data + ')'));
+                        if (data) {
+                            cb(JSON.parse(data));
+                        } else {
+                            cb({});
+                        }
                     }
                 }
             });
@@ -54,7 +62,11 @@ module.exports({
                     data : path.data,
                     onsuccess : function (data) {
                         if (cb) {
-                            cb(eval('(' + data + ')'));
+                            if (data) {
+                                cb(JSON.parse(data));
+                            } else {
+                                cb({});
+                            }
                         }
                     }
                 });
@@ -91,11 +103,19 @@ module.exports({
         var port = path.url.match(/(http\:\/\/)?([a-zA-Z0-9\.\-]+)(\:([0-9]+))?/)[4];
 
         if (port.toString() === '8001') {
+            path.data = path.data || {};
+            if (Empreendekit.config) {
+                path.data.secret = Empreendekit.config.services.www.secret;
+            }
             ajax.post(path.url, {
                 data : path.data,
                 onsuccess : function (data) {
                     if (cb) {
-                        cb(eval('(' + data + ')'));
+                        if (data) {
+                            cb(JSON.parse(data));
+                        } else {
+                            cb({});
+                        }
                     }
                 }
             });
@@ -107,7 +127,11 @@ module.exports({
                     data : path.data,
                     onsuccess : function (data) {
                         if (cb) {
-                            cb(eval('(' + data + ')'));
+                            if (data) {
+                                cb(JSON.parse(data));
+                            } else {
+                                cb({});
+                            }
                         }
                     }
                 });

@@ -63,7 +63,7 @@ module.exports(new Class(function (context) {
 
             subtitle.html.set(value);
         } else {
-            subtitle.html.get();
+            subtitle.html.get()[0];
         }
     };
 
@@ -86,7 +86,7 @@ module.exports(new Class(function (context) {
 
             description.html.set(value);
         } else {
-            description.html.get();
+            description.html.get()[0];
         }
     };
 

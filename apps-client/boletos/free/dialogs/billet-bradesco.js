@@ -70,7 +70,7 @@ app.routes.dialog('/boleto/bradesco/:id', function (params, data) {
 
         /* input com os bancos */
         walletsOptions = {
-            bradesco06 : new app.ui.inputOption({ legend : '06 - sem registro', value : '06', clicked : true })
+            bradesco06 : new app.ui.inputOption({ legend : '06 - sem registro', value : '06', click : true })
         }
 
         /* campos do recebedor */

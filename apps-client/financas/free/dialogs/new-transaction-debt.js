@@ -67,7 +67,7 @@ app.routes.dialog('/adicionar-despesa', function (params, data) {
                 categoriesOptions.push(new app.ui.inputOption({
                     legend : categories[i].name,
                     value : categories[i]._id,
-                    clicked : !selected
+                    click : !selected
                 }));
                 selected = true;
             }
@@ -79,7 +79,7 @@ app.routes.dialog('/adicionar-despesa', function (params, data) {
                 accountsOptions.push(new app.ui.inputOption({
                     legend : accounts[i].name,
                     value : accounts[i]._id,
-                    clicked : parseInt(i) === 0
+                    click : parseInt(i) === 0
                 }));
             }
         }
@@ -133,7 +133,7 @@ app.routes.dialog('/adicionar-despesa', function (params, data) {
             type : 'single',
             legend : 'Lembrete por email',
             options : [
-                new app.ui.inputOption({legend : 'sem lembrete', value : 'null', clicked : true}),
+                new app.ui.inputOption({legend : 'sem lembrete', value : 'null', click : true}),
                 new app.ui.inputOption({legend : 'no dia', value : '0'}),
                 new app.ui.inputOption({legend : '1 dia antes', value : '1'}),
                 new app.ui.inputOption({legend : '2 dias antes', value : '2'}),

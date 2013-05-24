@@ -75,7 +75,9 @@ app.routes.list('/', function (params, data) {
             category = new app.models.category(data),
             actions;
 
-        this.group = new app.ui.group();
+        this.group = new app.ui.group({
+            droppable : true
+        });
         this.group.category = category._id;
 
         /* Botões do grupo */
@@ -189,42 +191,13 @@ app.routes.list('/', function (params, data) {
             icons,
             actions;
 
-        /* Monta a lista de grupos para drop */
-        function droppableGroups() {
-            var i,
-                groups
-                res = [];
-
-            groups = groupsets.clients.groups.get();
-            for (i in groups) {
-                res.push(groups[i]);
-            }
-
-            groups = groupsets.suppliers.groups.get();
-            for (i in groups) {
-                res.push(groups[i]);
-            }
-
-            groups = groupsets.partners.groups.get();
-            for (i in groups) {
-                res.push(groups[i]);
-            }
-
-            groups = groupsets.personals.groups.get();
-            for (i in groups) {
-                res.push(groups[i]);
-            }
-            return res;
-        }
-
         this.item = new app.ui.item({
             drop : function (group, position) {
                 contact.changeCategory(group.category, position);
             },
             click : function () {
                 app.open({app : app.slug(), route : '/contato/' + contact._id})
-            },
-            droppableGroups : droppableGroups(),
+            }
         });
 
         /* Icones do item */
@@ -448,7 +421,7 @@ app.routes.list('/', function (params, data) {
                             options.push(new app.ui.inputOption({
                                 legend  : categories[i].name,
                                 value   : categories[i]._id,
-                                clicked : true,
+                                click   : true,
                                 label   : categories[i].color
                             }));
                         }
@@ -509,7 +482,7 @@ app.routes.list('/', function (params, data) {
                             result.push(new app.ui.inputOption({
                                 legend  : app.config.users[i].name,
                                 value   : app.config.users[i]._id,
-                                clicked : app.config.user._id === app.config.users[i]._id
+                                click   : app.config.user._id === app.config.users[i]._id
                             }));
                         }
                         return result;

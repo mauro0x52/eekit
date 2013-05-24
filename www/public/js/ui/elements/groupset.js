@@ -63,7 +63,7 @@ module.exports(GroupSet = new Class(function (params) {
                 headerTitle.attribute('class').set('name');
                 headerTitle.html.set(value);
             } else {
-                return headerTitle.html.get();
+                return headerTitle.html.get()[0];
             }
         },
         icons : new Collection(headerIcons, [Icon]),
@@ -96,7 +96,7 @@ module.exports(GroupSet = new Class(function (params) {
                 footerTitle.attribute('class').set('name');
                 footerTitle.html.set(value);
             } else {
-                return footerTitle.html.get();
+                return footerTitle.html.get()[0];
             }
         },
         icons : new Collection(footerIcons, [Icon]),

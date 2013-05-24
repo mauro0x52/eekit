@@ -13,6 +13,37 @@
     </head>
     <body>
         <script type="text/javascript">
+
+            function setToken (token, remindme) {
+                var exdate=new Date();
+                if (remindme) {
+                    exdate.setDate(exdate.getDate() + 30);
+                } else {
+                    exdate.setDate(exdate.getDate() + 2);
+                }
+                var c_value=escape(token) + ((remindme) ? "" : "; expires="+exdate.toUTCString());
+                document.cookie="token=" + c_value;
+            }
+
+            function getToken () {
+                var c_value = document.cookie;
+                var c_start = c_value.indexOf(" token=");
+                if (c_start == -1) {
+                    c_start = c_value.indexOf("token=");
+                }
+                if (c_start == -1) {
+                    c_value = null;
+                } else {
+                    c_start = c_value.indexOf("=", c_start) + 1;
+                    var c_end = c_value.indexOf(";", c_start);
+                    if (c_end == -1) {
+                        c_end = c_value.length;
+                    }
+                    c_value = unescape(c_value.substring(c_start,c_end));
+                }
+                return c_value;
+            }
+
             var folder = '/js/',
                 auth = '<%=config.services.auth.url%>:<%=config.services.auth.port%>';
 
@@ -37,13 +68,13 @@
 
                 /* Exibe lista de apps no menu do usuário */
                 for (var i in this.config.apps) {
-                    //if (this.config.apps[i].slug !== 'ee') {
+                    if (this.config.apps[i].slug !== 'ee') {
                         this.ui.menu.add(new this.ui.appIcon({
                             legend : this.config.apps[i].name,
                             image  : this.config.apps[i].slug,
                             href   : this.config.apps[i].slug
                         }))
-                    //}
+                    }
                 }
 
             });

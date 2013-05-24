@@ -44,7 +44,7 @@ module.exports(new Class(function (params) {
         for (var i = 0; i < elements.length; i++) {
             elements[i].drop({
                 group    : that,
-                position : i
+                position : i+1
             });
         }
     });

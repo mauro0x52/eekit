@@ -32,7 +32,9 @@ module.exports(new Class(function (context) {
         fieldsets,
         body,
         action,
-        actions;
+        actions,
+        submit_cb,
+        self = this;
 
     this.sheet.html.attach([
         /* Filtro */
@@ -44,11 +46,7 @@ module.exports(new Class(function (context) {
                 new Element('div', {attributes : {'class' : 'submit'}, html : [
                     action = new Element('input', {attributes : {'type' : 'submit', 'class' : 'input'}})
                 ]})
-            ], events : {
-                submit : function (evt) {
-                    evt.preventDefault();
-                }
-            }})
+            ]})
         ]}),
         /* Body */
         new Element('div', {attributes : {'class' : 'body'}, html : [
@@ -60,6 +58,12 @@ module.exports(new Class(function (context) {
             groups  = new Element('ol', {attributes : {'class' : 'groups'}})
         ]})
     ]);
+
+    form.event('submit').bind(function (evt) {
+        evt.preventDefault();
+        self.form.submit();
+        return false;
+    })
 
     this.sheet = undefined;
     this.helper = Helper;
@@ -93,10 +97,9 @@ module.exports(new Class(function (context) {
                         arguments : arguments
                     });
                 }
-
-                action.html.set(value);
+                action.attribute('value').set(value);
             } else {
-                action.html.get();
+                action.attribute('value').get();
             }
 
         },
@@ -114,12 +117,11 @@ module.exports(new Class(function (context) {
                     });
                 }
 
-                form.event('submit').bind(function (evt) {
-                    evt.preventDefault();
-                    value.apply(context);
-                });
+                submit_cb = value;
             } else {
-                //form.event('submit').trigger();
+                if (submit_cb) {
+                    submit_cb();
+                }
             }
 
         },

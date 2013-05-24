@@ -44,7 +44,7 @@ module.exports(new Class(function (context) {
                     new Element('div', {attributes : {'class' : 'legend'}, html : 'fechar'})
                 ]}),
                 flash       = new Element('div', {attributes : {'class' : 'flash hide'}}),
-                description = new Element('p', {attributes : {'class' : 'description hide'}}),
+                description = new Element('p', {attributes : {'class' : 'description'}}),
                 form        = new Element('form', {attributes : {'class' : 'form'}, html : [
                     fieldsets = new Element('div', {attributes : {'class' : 'field-sets'}}),
                     new Element('div', {attributes : {'class' : 'submit'}, html : [
@@ -132,7 +132,7 @@ module.exports(new Class(function (context) {
 
             title.html.set(value);
         } else {
-            title.html.get();
+            title.html.get()[0];
         }
 
     };
@@ -158,7 +158,7 @@ module.exports(new Class(function (context) {
 
             description.html.set(value);
         } else {
-            description.html.get();
+            description.html.get()[0];
         }
 
     };
@@ -184,7 +184,7 @@ module.exports(new Class(function (context) {
 
             flash.html.set(value);
         } else {
-            flash.html.get();
+            flash.html.get()[0];
         }
 
     };
@@ -209,10 +209,9 @@ module.exports(new Class(function (context) {
                         arguments : arguments
                     });
                 }
-
-                action.html.set(value);
+                action.attribute('value').set(value);
             } else {
-                action.html.get();
+                action.attribute('value').get();
             }
 
         },
@@ -244,8 +243,6 @@ module.exports(new Class(function (context) {
 
     }
 
-
-
     /**
      * Controla as ações do modal
      *
@@ -254,6 +251,5 @@ module.exports(new Class(function (context) {
      *
      */
     this.actions = new Collection(actions, [Action]);
-
-
+    
 }));

@@ -37,8 +37,8 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
             type : 'single',
             name : 'type',
             options : [
-                new app.ui.inputOption({legend : 'receita', value : 'credit', clicked : type === 'credit'}),
-                new app.ui.inputOption({legend : 'despesa', value : 'debt', clicked : type === 'debt'})
+                new app.ui.inputOption({legend : 'receita', value : 'credit', click : type === 'credit'}),
+                new app.ui.inputOption({legend : 'despesa', value : 'debt', click : type === 'debt'})
             ]
         })
 

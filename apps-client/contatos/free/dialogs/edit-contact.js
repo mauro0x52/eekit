@@ -37,11 +37,11 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
      * @param  field_id : id do campo
      * @param  values : vetor com os valores dos campos do contato
      */
-    function fieldId (field_id, values) {
+    function fieldName (field_id, values) {
         var i;
         for (i in values) {
             if (values[i].field && values[i].field.toString() === field_id.toString()) {
-                return values[i]._id;
+                return values[i].name;
             }
         }
     }
@@ -66,7 +66,7 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
                     legend : categories[i].name,
                     value : categories[i]._id,
                     label : categories[i].color,
-                    clicked : categories[i]._id === contact.category
+                    click : categories[i]._id === contact.category
                 }));
             }
         }
@@ -77,7 +77,7 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
                 userOptions.push(new app.ui.inputOption({
                     legend  : app.config.users[i].name,
                     value   : app.config.users[i]._id,
-                    clicked : contact.user === app.config.users[i]._id
+                    click : contact.user === app.config.users[i]._id
                 }));
             }
         }
@@ -122,13 +122,12 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
             options : userOptions,
             filterable : true
         });
-        fields.userfields = [];
+        fields.userfields = {};
         for (i in userfields) {
-            fields.userfields.push(new app.ui.inputText({
+            fields.userfields[userfields[i]._id] = new app.ui.inputText({
                 legend : userfields[i].name,
-                name : userfields[i]._id,
                 value : fieldValue(userfields[i]._id, contact.fieldValues)
-            }));
+            });
         }
 
         fieldset = new app.ui.fieldset({
@@ -157,13 +156,12 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
             contact.notes = fields.notes.value();
             contact.user = fields.user.value()[0];
             contact.fieldValues = [];
-            for (var i in fields.userfields) {
+            /*for (var i in fields.userfields) {
                 contact.fieldValues.push({
-                    field : fields.userfields[i].name(),
                     value : fields.userfields[i].value(),
-                    _id   : fieldId(userfields[i]._id, contact.fieldValues)
+                    _id   : i
                 })
-            }
+            }*/
             contact.save(function () {
                 app.close(contact);
             });

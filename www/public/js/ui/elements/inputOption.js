@@ -199,7 +199,6 @@ module.exports(new Class(function (params) {
         }
     };
 
-
     /**
      * Controla a visibilidade
      *
@@ -245,6 +244,7 @@ module.exports(new Class(function (params) {
             return element.attribute('class').get().replace('option', '');
         }
     };
+
     /*
      * Valores inciais
      */

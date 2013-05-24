@@ -27,7 +27,7 @@ app.routes.dialog('/adicionar-contato', function (params, data) {
                     legend : categories[i].name,
                     value : categories[i]._id,
                     label : categories[i].color,
-                    clicked : request.category ? categories[i]._id === request.category : parseInt(i) === 0
+                    click : request.category ? categories[i]._id === request.category : parseInt(i) === 0
                 }));
             }
         }
@@ -38,7 +38,7 @@ app.routes.dialog('/adicionar-contato', function (params, data) {
                 userOptions.push(new app.ui.inputOption({
                     legend  : app.config.users[i].name,
                     value   : app.config.users[i]._id,
-                    clicked : app.config.user._id === app.config.users[i]._id
+                    click : app.config.user._id === app.config.users[i]._id
                 }));
             }
         }

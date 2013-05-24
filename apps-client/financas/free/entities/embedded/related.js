@@ -6,7 +6,7 @@
  *
  * @param  params.id : id da transacao
  */
-app.routes.embeddedEntity('/transacao-relacionada/:id', function (params, data) {
+app.routes.embedEntity('/transacao-relacionada/:id', function (params, data) {
 
     var
     /**

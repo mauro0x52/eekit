@@ -234,7 +234,7 @@ app.routes.entity('/contato/:id', function (params, data) {
                         insert : {
                             title : contact.name
                         }
-                    },
+                    }/*,
                     open : function (tool) {
                         app.ui.embbeds.add(tool);
                         app.ajax.get({
@@ -254,9 +254,9 @@ app.routes.entity('/contato/:id', function (params, data) {
                                 }
                             }
                         });
-                    }
+                    }*/
                 })
-
+/*
                 app.open({
                     app : 'financas',
                     route : '/relacionadas',
@@ -265,10 +265,9 @@ app.routes.entity('/contato/:id', function (params, data) {
                         insert : {
                             title : contact.name
                         }
-                    },
-                    open : function (tool) {app.ui.embbeds.add(tool);}
+                    }
                 })
-
+*/
 
             });
         });

@@ -5,45 +5,16 @@
  * @since  2013-05
  */
 
-function setToken (token, remindme) {
-    var expire = new Date();
-    if (remindme) {
-        expire.setDate(expire.getDate() + 30);
-    } else {
-        expire.setDate(expire.getDate() + 1);
-    }
-
-    var value = escape(token) + ((expire==null) ? "" : "; expires="+expire.toUTCString());
-    document.cookie = "token=" + value;
-}
-
-function getToken () {
-    var cookies = document.cookie;
-    var token_start = cookies.indexOf(" token=");
-    if (token_start == -1){
-        token_start = cookies.indexOf("token=");
-    }
-    if (token_start > -1) {
-        token_start = cookies.indexOf("=", token_start) + 1;
-
-        var token_end = cookies.indexOf(";", token_start);
-        if (token_end == -1) {
-            token_end = cookies.length;
-        }
-        return unescape(cookies.substring(token_start,token_end));
-    }
-}
-
 module.exports({
 
     user : {
 
         signin : function () {
-            Empreendekit.path.redirect('ee/login', null, function (data) {
+            Empreendekit.path.redirect('ee/login', {close : function (data) {
                 setToken(data.token, data.remindme);
                 Empreendekit.config.services.www.token = data.token;
                 Empreendekit.path.redirect('tarefas/');
-            });
+            }});
         },
 
         signup : function () {

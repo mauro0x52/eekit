@@ -67,7 +67,7 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
                     legend : categories[i].name,
                     value : categories[i]._id,
                     label : categories[i].color || 'blue',
-                    clicked : categories[i]._id === task.category
+                    click : categories[i]._id === task.category
                 }));
             }
         }
@@ -78,25 +78,25 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
                 userOptions.push(new app.ui.inputOption({
                     legend  : app.config.users[i].name,
                     value   : app.config.users[i]._id,
-                    clicked : task.user === app.config.users[i]._id
+                    click : task.user === app.config.users[i]._id
                 }));
             }
         }
 
         /* Input com as frequencias */
-        recurrenceOptions.push(new app.ui.inputOption({legend : 'sem recorrência', value : '0', clicked : task.recurrence.toString() === '0'}));
-        recurrenceOptions.push(new app.ui.inputOption({legend : 'diariamente', value : '1', clicked : task.recurrence.toString() === '1'}));
-        recurrenceOptions.push(new app.ui.inputOption({legend : 'dias úteis', value : '5', clicked : task.recurrence.toString() === '5'}));
-        recurrenceOptions.push(new app.ui.inputOption({legend : 'semanalmente', value : '7', clicked : task.recurrence.toString() === '7'}));
-        recurrenceOptions.push(new app.ui.inputOption({legend : 'quinzenalmente', value : '14', clicked : task.recurrence.toString() === '14'}));
-        recurrenceOptions.push(new app.ui.inputOption({legend : 'mensalmente', value : '30', clicked : task.recurrence.toString() === '30'}));
+        recurrenceOptions.push(new app.ui.inputOption({legend : 'sem recorrência', value : '0', click : task.recurrence.toString() === '0'}));
+        recurrenceOptions.push(new app.ui.inputOption({legend : 'diariamente', value : '1', click : task.recurrence.toString() === '1'}));
+        recurrenceOptions.push(new app.ui.inputOption({legend : 'dias úteis', value : '5', click : task.recurrence.toString() === '5'}));
+        recurrenceOptions.push(new app.ui.inputOption({legend : 'semanalmente', value : '7', click : task.recurrence.toString() === '7'}));
+        recurrenceOptions.push(new app.ui.inputOption({legend : 'quinzenalmente', value : '14', click : task.recurrence.toString() === '14'}));
+        recurrenceOptions.push(new app.ui.inputOption({legend : 'mensalmente', value : '30', click : task.recurrence.toString() === '30'}));
 
         /* Input com os lembretes */
-        reminderOptions.push(new app.ui.inputOption({legend : 'sem lembrete', value : 'null', clicked : !task.reminder && task.reminder !== 0}));
-        reminderOptions.push(new app.ui.inputOption({legend : 'no dia', value : '0', clicked : (task.reminder === 0) ? true : false}));
-        reminderOptions.push(new app.ui.inputOption({legend : '1 dia antes', value : '1', clicked : (task.reminder === 1) ? true : false}));
-        reminderOptions.push(new app.ui.inputOption({legend : '2 dias antes', value : '2', clicked : (task.reminder === 2) ? true : false}));
-        reminderOptions.push(new app.ui.inputOption({legend : '1 semana antes', value : '7', clicked : (task.reminder === 7) ? true : false}));
+        reminderOptions.push(new app.ui.inputOption({legend : 'sem lembrete', value : 'null', click : !task.reminder && task.reminder !== 0}));
+        reminderOptions.push(new app.ui.inputOption({legend : 'no dia', value : '0', click : (task.reminder === 0) ? true : false}));
+        reminderOptions.push(new app.ui.inputOption({legend : '1 dia antes', value : '1', click : (task.reminder === 1) ? true : false}));
+        reminderOptions.push(new app.ui.inputOption({legend : '2 dias antes', value : '2', click : (task.reminder === 2) ? true : false}));
+        reminderOptions.push(new app.ui.inputOption({legend : '1 semana antes', value : '7', click : (task.reminder === 7) ? true : false}));
 
         /* Inputs do formulário */
         /* título da tarefa */
@@ -145,7 +145,7 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
             name : 'important',
             type : 'multiple',
             legend : 'Importante',
-            options : [new app.ui.inputOption({label : '', name : 'important', value : 'important', clicked : task.important})]
+            options : [new app.ui.inputOption({label : '', name : 'important', value : 'important', click : task.important})]
         });
 
         /* lembrete */

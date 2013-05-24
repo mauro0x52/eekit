@@ -48,7 +48,7 @@ module.exports(GroupSet = new Class(function (params) {
             legend.attribute('class').set('legend');
             legend.html.set(value);
         } else {
-            return legend.html.get();
+            return legend.html.get()[0];
         }
     };
 

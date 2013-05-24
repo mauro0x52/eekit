@@ -42,7 +42,7 @@ module.exports(GroupSet = new Class(function (params) {
 
             data.html.set(value);
         } else {
-            return data.html.get();
+            return data.html.get()[0];
         }
     };
 

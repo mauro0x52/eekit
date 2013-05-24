@@ -31,8 +31,8 @@ module.exports(new Class(function (parent) {
     ]});
 
     /* Eventos */
-    close.event('click').bind(function (e) {
-        event.stopPropagation();
+    close.event('click').bind(function (evt) {
+        evt.stopPropagation();
         self.hide();
     })
 
@@ -73,7 +73,7 @@ module.exports(new Class(function (parent) {
             description.attribute('class').set('description');
             description.html.set(value);
         } else {
-            return description.html.get();
+            return description.html.get()[0];
         }
     };
 
@@ -92,7 +92,7 @@ module.exports(new Class(function (parent) {
             example.attribute('class').set('example');
             example.html.set(value);
         } else {
-            return example.html.get();
+            return example.html.get()[0];
         }
     };
 

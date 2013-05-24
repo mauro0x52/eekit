@@ -6,7 +6,7 @@
  *
  * @param  params.id : id do contato
  */
-app.routes.embeddedEntity('/contato-relacionado/:id', function (params, data) {
+app.routes.embedEntity('/contato-relacionado/:id', function (params, data) {
 
     var
     /**
