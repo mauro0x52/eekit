@@ -7,6 +7,8 @@
 var config   = require('./../config.js'),
     mongoose = require('mongoose');
 
+mongoose.set('debug', true);
+
 /*  Conectar com o banco de dados  */
 if (config.mongodb.username && config.mongodb.password) {
     mongoose.connect('mongodb://' + config.mongodb.username + ':' + config.mongodb.password + '@' + config.mongodb.url + ':' + config.mongodb.port + '/' + config.mongodb.db);
