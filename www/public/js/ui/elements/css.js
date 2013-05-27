@@ -8,10 +8,11 @@
 var instances = 0,
     Css;
 
-module.exports(Css = new Class(function (properties) {
+module.exports(Css = new Class(function (properties, name) {
+
+    name = name || 'sdk-css-' + instances;
 
     var element = document.createElement('style'),
-        name = 'sdk-css-' + instances,
         selectors = [];
 
     instances++;
@@ -24,10 +25,10 @@ module.exports(Css = new Class(function (properties) {
      * @author Rafael Erthal
      * @since  2013-05
      */
-    this.selector = function (name) {
+    this.selector = function (_name) {
         var position;
 
-        if (!name) {
+        if (!_name) {
             throw new Error({
                 source     : 'css.js',
                 method     : 'selector',
@@ -38,24 +39,23 @@ module.exports(Css = new Class(function (properties) {
 
         for (var i in selectors) {
             if (selectors.hasOwnProperty(i)) {
-                if (selectors[i].name === name) {
+                if (selectors[i].name === _name) {
                     position = i;
                 }
             }
         }
+
         if (!position) {
             selectors.push({
-                name : name,
-                css  : new Css()
+                name : _name,
+                css  : new Css(null, name + ':' + _name)
             })
         }
 
-        this.get = function () {
-            return selectors[position].css;
-        };
-
         this.set = function (value) {
-
+            for (var i in value) {
+                selectors[position].css.property(i).set(value[i]);
+            }
         };
 
     }

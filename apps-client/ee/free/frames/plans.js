@@ -36,7 +36,7 @@ app.routes.frame('/precos-e-planos', function (params, data) {
                                 attributes : { style : 'display: block; background-image:url(/images/ee/logo.png); width:289px; height:74px; cursor:pointer;'},
                                 events : {
                                     click : function () {
-                                        app.open({app : app.slug()(), route : '/'});
+                                        app.open({app : app.slug(), route : '/'});
                                         app.close();
                                     }
                                 }
@@ -61,7 +61,7 @@ app.routes.frame('/precos-e-planos', function (params, data) {
                                         },
                                         events : {
                                             click : function () {
-                                                app.open({app : app.slug()(), route : '/precos-e-planos'});
+                                                app.open({app : app.slug(), route : '/precos-e-planos'});
                                                 app.close();
                                             }
                                         }
@@ -81,7 +81,7 @@ app.routes.frame('/precos-e-planos', function (params, data) {
                                         },
                                         events : {
                                             click : function () {
-                                                app.open({app : app.slug()(), route : '/como-funciona'});
+                                                app.open({app : app.slug(), route : '/como-funciona'});
                                                 app.close();
                                             }
                                         }
@@ -101,7 +101,7 @@ app.routes.frame('/precos-e-planos', function (params, data) {
                                         },
                                         events : {
                                             click : function () {
-                                                app.open({app : app.slug()(), route : '/suporte'});
+                                                app.open({app : app.slug(), route : '/suporte'});
                                                 app.close();
                                             }
                                         }
@@ -121,7 +121,7 @@ app.routes.frame('/precos-e-planos', function (params, data) {
                                         },
                                         events : {
                                             click : function () {
-                                                app.open({app : app.slug()(), route : '/cadastrar'});
+                                                app.open({app : app.slug(), route : '/cadastrar'});
                                                 app.close();
                                             }
                                         }
@@ -141,7 +141,7 @@ app.routes.frame('/precos-e-planos', function (params, data) {
                                         },
                                         events : {
                                             click : function () {
-                                                app.open({app : app.slug()(), route : '/login'});
+                                                app.open({app : app.slug(), route : '/login'});
                                                 app.close();
                                             }
                                         }
@@ -439,7 +439,7 @@ app.routes.frame('/precos-e-planos', function (params, data) {
                             html : 'Experimente já!',
                             events : {
                                 click : function () {
-                                    app.open({app : app.slug()(), route : '/cadastrar'});
+                                    app.open({app : app.slug(), route : '/cadastrar'});
                                     app.close();
                                 }
                             }
