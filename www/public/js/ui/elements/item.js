@@ -41,16 +41,22 @@ module.exports(new Class(function (params) {
         ]})
     ]});
 
-    titleAnchor.event('click').bind(function () {that.click();});
-    arrow.event('click').bind(function () {that.click();});
+    titleAnchor.event('click').bind(function () {
+        if (!Empreendekit.ui.dragging()) {
+            that.click();
+        }
+    }, true);
+    arrow.event('click').bind(function () {
+        if (!Empreendekit.ui.dragging()) {
+            that.click();
+        }
+    }, true);
 
     element.event('click').bind(function (e) {
-        e.preventDefault();
-
         if (Empreendekit.ui.dragging() === element) {
             element.parent().parent().event('drop').trigger();
         }
-    }, true);
+    });
 
     element.event('mouseover').bind(function (e) {
         if (Empreendekit.ui.dragging() && element.parent().parent().attribute('droppable').get() === 'true') {
