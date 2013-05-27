@@ -50,7 +50,7 @@ module.exports(new Class(function (params) {
     });
 
     element.event('mouseover').bind(function (e) {
-        if (Empreendekit.ui.dragging()) {
+        if (Empreendekit.ui.dragging() && that.droppable()) {
 
             e.preventDefault();
 

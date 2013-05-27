@@ -63,6 +63,7 @@ module.exports({
                 ui.dialogs.add(newapp.ui);
             } else if (newapp.type() === 'frame') {
                 ui.collapse(true);
+                ui.apps.remove();
                 ui.apps.add(newapp.ui);
                 newapp.ui.click();
             } else if (newapp.type() !== 'embedList' && newapp.type() !== 'embedEntity') {
@@ -83,12 +84,16 @@ module.exports({
                 } else {
                     /* Fecho todos os apps em frente ao caller */
                     var found = false,
-                        apps = ui.apps.get();
+                        apps = ui.apps.get(),
+                        current = newapp.caller();
+                    while (current.type() === 'embedList' || current.type() === 'embedEntity') {
+                        current = current.caller();
+                    }
                     for (var i in apps) {
                         if (found) {
                             apps[i].close();
                         }
-                        if (apps[i].context() === newapp.caller()) {
+                        if (apps[i].context() === current) {
                             found = true;
                         }
                     }
