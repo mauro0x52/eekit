@@ -68,8 +68,8 @@ module.exports({
                 newapp.ui.click();
             } else if (newapp.type() !== 'embedList' && newapp.type() !== 'embedEntity') {
                 ui.collapse(false);
-                if (!newapp.caller()) {
-                    /* Se o app tiver sido chamado pelo eekit, removo todos os apps ativos */
+                if (!newapp.caller() || newapp.caller().name() !== newapp.name()) {
+                    /* Se o app tiver sido chamado pelo eekit ou outro app, removo todos os apps ativos */
                     ui.apps.remove();
                     ui.appMenu.remove();
                     ui.navigation.remove();

@@ -10,6 +10,7 @@ var instances = 0,
 
 module.exports(Css = new Class(function (properties, name) {
 
+    properties = properties || [];
     name = name || 'sdk-css-' + instances;
 
     var element = document.createElement('style'),
@@ -46,17 +47,20 @@ module.exports(Css = new Class(function (properties, name) {
         }
 
         if (!position) {
+            position = selectors.length;
             selectors.push({
                 name : _name,
                 css  : new Css(null, name + ':' + _name)
-            })
+            });
         }
 
         this.set = function (value) {
             for (var i in value) {
                 selectors[position].css.property(i).set(value[i]);
             }
-        };
+        }
+
+        return this;
 
     }
 

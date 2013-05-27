@@ -389,13 +389,12 @@ app.routes.frame('/cadastrar', function (params, data) {
                     style : 'margin: 15px 0;'
                 },
                 html : [
-                    {
-                        tag : 'div',
+                    new app.ui.tag('div', {
                         html : 'Empresa',
                         attributes : {
                             style : 'width:150px; padding:8px 20px 5px 20px; text-align:right; color:#fdfdeb; font-size: 18px; font-weight: bold; font-family:Arial,Helvetica,sans-serif; float:left;'
                         }
-                    },
+                    }),
                     inputs.company
                 ]
             }),
@@ -404,13 +403,12 @@ app.routes.frame('/cadastrar', function (params, data) {
                     style : 'margin: 15px 0;'
                 },
                 html : [
-                    {
-                        tag : 'div',
+                    new app.ui.tag('div', {
                         html : 'Telefone',
                         attributes : {
                             style : 'width:150px; padding:8px 20px 5px 20px; text-align:right; color:#fdfdeb; font-size: 18px; font-weight: bold; font-family:Arial,Helvetica,sans-serif; float:left;'
                         }
-                    },
+                    }),
                     inputs.phone
                 ]
             }),
@@ -419,13 +417,12 @@ app.routes.frame('/cadastrar', function (params, data) {
                     style : 'margin: 40px 0 15px 0;'
                 },
                 html : [
-                    {
-                        tag : 'div',
+                    new app.ui.tag('div', {
                         html : 'E-mail',
                         attributes : {
                             style : 'width:150px; padding:8px 20px 5px 20px; text-align:right; color:#fdfdeb; font-size: 18px; font-weight: bold; font-family:Arial,Helvetica,sans-serif; float:left;'
                         }
-                    },
+                    }),
                     inputs.email
                 ]
             }),
@@ -434,13 +431,12 @@ app.routes.frame('/cadastrar', function (params, data) {
                     style : 'margin: 15px 0;'
                 },
                 html : [
-                    {
-                        tag : 'div',
+                    new app.ui.tag('div', {
                         html : 'Senha',
                         attributes : {
                             style : 'width:150px; padding:8px 20px 5px 20px; text-align:right; color:#fdfdeb; font-size: 18px; font-weight: bold; font-family:Arial,Helvetica,sans-serif; float:left;'
                         }
-                    },
+                    }),
                     inputs.password
                 ]
             }),
@@ -449,14 +445,13 @@ app.routes.frame('/cadastrar', function (params, data) {
                     style : 'text-align:right; margin: 40px 10px;'
                 },
                 html : [
-                    {
-                        tag : 'input',
+                    new app.ui.tag('input', {
                         attributes : {
                             type : 'submit',
                             value : 'Cadastrar!',
                             style : 'text-align:center; background-color:#F38305; color:#fdfdeb; text-shadow:2px 2px 2px rgba(0,0,0,0.5); padding:20px; font-family:Arial,Helvetica,sans-serif; font-size: 20px; width:200px; cursor:pointer; border:0;'
                         }
-                    }
+                    })
                 ]
             })
         ],
@@ -624,13 +619,14 @@ app.routes.frame('/cadastrar', function (params, data) {
                         attributes : {
                             style : 'text-align:center;'
                         },
-                        html : {
-                            tag : 'a',
-                            attributes : {
-                                style : 'width:400px; float:right;'
-                            },
-                            html : topics
-                        }
+                        html : [
+                            new app.ui.tag('div', {
+                                attributes : {
+                                    style : 'width:400px; float:right;'
+                                },
+                                html : topics
+                            })
+                        ]
                     }),
                     /* clear */
                     new app.ui.tag('div', {
