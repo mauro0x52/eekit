@@ -5,7 +5,8 @@
  * @since  2013-05
  */
 
-var folder = '/js/ui/';
+var folder = '/js/ui/',
+    auth   = module.use('auth');
 
 new Namespace({
     element       : folder + 'elements/element.js',
@@ -109,6 +110,10 @@ new Namespace({
         /* modal */
         modals = new this.element('div', {attributes : {'class' : 'modals'}})
     ]});
+
+    logout.event('click').bind(function () {
+        auth.user.signout();
+    });
 
     this.attach = element.attach;
     this.detach = element.detach;
