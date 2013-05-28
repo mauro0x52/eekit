@@ -470,7 +470,6 @@ app.routes.frame('/cadastrar', function (params, data) {
                         }
                     } else {
                         var token = response.token;
-                        app.event('cadastrar');
                         app.close({token : token});
                     }
                 });
