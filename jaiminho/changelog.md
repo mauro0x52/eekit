@@ -1,7 +1,17 @@
 Changelog
 =========
 
-## 1.1.2
+## 1.1.4 (2013-05-20)
+
+Correções
+- BCC do Sengrid
+
+## 1.1.3 (2013-05-17)
+
+Melhorias
+- Botando Lucas como bcc dos emails
+
+## 1.1.2 (2013-05-13)
 
 Melhorias
 - Atualizando pacotes

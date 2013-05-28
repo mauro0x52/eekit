@@ -59,8 +59,15 @@ require('./controller/Transaction.js')({
     config   : config
 });
 
+
 /*  Métodos para dev e teste */
-app.get('/ping', function (request,response) {
+app.get('/ping', function (request, response) {
+    "use strict";
+    response.header('Access-Control-Allow-Origin', '*');
+    response.send(true);
+});
+
+app.get('/version', function (request, response) {
     "use strict";
 
     response.contentType('json');
@@ -75,6 +82,21 @@ app.get('/ping', function (request,response) {
             response.send({ version : regexm[1], date : regexm[3] });
         }
     });
+});
+
+app.get('/status', function (request, response) {
+    "use strict";
+    var Model = require('./model/Transaction.js').Transaction;
+
+    response.contentType('json');
+    response.header('Access-Control-Allow-Origin', '*');
+
+    Model.count(function (error, count) {
+        if (error) response.send({error : error})
+        else {
+            response.send({count : count});
+        }
+    })
 });
 
 /*  Ativando o server */

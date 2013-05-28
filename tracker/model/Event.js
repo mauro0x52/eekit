@@ -98,39 +98,181 @@ eventSchema.statics.groupByUser = function (cb) {
 	});
 };
 
-eventSchema.statics.user = function (user, cb) {
-	Event.groupByUser(function (error, users) {
-		if (error) {
-			cb(error, null);
-		} else {
-			var obj;
-			for (var i in users) {
-				if (users[i].id === user) {
-					obj = users[i];
-				}
-			}
-			cb(null, obj);	
-		}
-	})
+eventSchema.statics.groupByUserFilter = function (filter, cb) {
+	Event.find(filter, function (error, events) {
+	    var users = {};
+
+        if (error) {
+        	cb(error, null)
+        } else {
+	        for (var i = 0; i < events.length; i += 1) {
+            	var id = events[i].user ? events[i].user.toString() : events[i].ip.toString().replace(/\./g, '_');
+                if (users[id]) {
+                    users[id].events.push(events[i]);
+                    if (users[id].date < events[i].date) {
+                        users[id].firstEvent = events[i].date;
+                    }
+                } else {
+                    users[id] = {
+                    	id : id,
+                        firstEvent : events[i].date,
+                        events : [events[i]] ,
+                        utm : {},
+                        ocurrences : function (app, labels, from, to) {
+		                    var dateFrom = new Date(from),
+			                    dateTo   = new Date(to),
+			                    ocurrences = 0;
+
+							for (var i in this.events) {
+	                            if (
+	                                (
+	                                	this.events[i].date >= dateFrom ||
+	                                	!from
+                                	) && (
+	                                	this.events[i].date <= dateTo ||
+	                                	!to
+                                	) && (
+	                                	this.events[i].app === app ||
+	                                	this.events[i].source === app ||
+	                                	!app
+                                	) && (
+	                                	labels.indexOf(this.events[i].label) >= 0 ||
+	                                	!labels ||
+	                                	labels.length === 0
+                                	)
+	                            ) {
+	                                ocurrences += 1;
+	                            }
+		                    }
+		                    return ocurrences;
+		                }
+                    };
+                }
+                if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
+                	users[id].utm = events[i].utm;
+                }
+	        }
+	        cb(null, users);
+	    }
+	});
 };
 
-eventSchema.statics.lifeCycle = function (required, forbidden, cb) {
-	Event.groupByUser(function (error, users) {
-		if (error) {
-			cb(error, null);
-		} else {
-			result = [];
-			for (var i in users) {
-				if (
-					users[i].ocurrences(required.app, required.labels) >= required.minimum &&
-					users[i].ocurrences(forbidden.app, forbidden.labels) < forbidden.minimum
-				) {
-					result.push(users[i]);
-				}
-			}
-			cb(null, result);
-		}
+eventSchema.statics.user = function (user, cb) {
+	var query = {};
+
+	if (user.indexOf('_') > -1) {
+		query = {ip : user.replace(/\_/g, '.')};
+	} else {
+		query = {user : user};
+	}
+
+	Event.find(query, function (error, events) {
+	    var users = {};
+
+        if (error) {
+        	cb(error, null)
+        } else {
+	        for (var i = 0; i < events.length; i += 1) {
+            	var id = events[i].user ? events[i].user.toString() : events[i].ip.toString().replace(/\./g, '_');
+                if (users[id]) {
+                    users[id].events.push(events[i]);
+                    if (users[id].date < events[i].date) {
+                        users[id].firstEvent = events[i].date;
+                    }
+                } else {
+                    users[id] = {
+                    	id : id,
+                        firstEvent : events[i].date,
+                        events : [events[i]] ,
+                        utm : {},
+                        ocurrences : function (app, labels, from, to) {
+		                    var dateFrom = new Date(from),
+			                    dateTo   = new Date(to),
+			                    ocurrences = 0;
+
+							for (var i in this.events) {
+	                            if (
+	                                (
+	                                	this.events[i].date >= dateFrom ||
+	                                	!from
+                                	) && (
+	                                	this.events[i].date <= dateTo ||
+	                                	!to
+                                	) && (
+	                                	this.events[i].app === app ||
+	                                	this.events[i].source === app ||
+	                                	!app
+                                	) && (
+	                                	labels.indexOf(this.events[i].label) >= 0 ||
+	                                	!labels ||
+	                                	labels.length === 0
+                                	)
+	                            ) {
+	                                ocurrences += 1;
+	                            }
+		                    }
+		                    return ocurrences;
+		                }
+                    };
+                }
+                if (events[i].utm && (events[i].utm.source || events[i].utm.medium || events[i].utm.content || events[i].utm.campaign)) {
+                	users[id].utm = events[i].utm;
+                }
+	        }
+	        cb(null, users[id]);
+	    }
 	});
+};
+
+eventSchema.statics.signupUsersIds = function (days, cb) {
+    var from, to, now, users_ids = [];
+
+    now = new Date();
+    from = new Date(now.getFullYear(), now.getMonth(), now.getDate() - days);
+    to = new Date(now.getFullYear(), now.getMonth(), now.getDate() - days + 1);
+
+    Event.find({date : {$gte : from, $lte : to}, label : 'cadastrar'}, function(error, events) {
+        if (error) {
+            cb(error)
+        } else {
+            for (var i in events) {
+                if (events[i].user) {
+                    users_ids.push(events[i].user);
+                }
+            }
+            cb(null, users_ids);
+        }
+    });
+};
+
+eventSchema.statics.lifeCycle = function (days, required, forbidden, cb) {
+    Event.signupUsersIds(days, function(error, users_ids) {
+        if (error) {
+            cb(error)
+        } else {
+            Event.groupByUserFilter({
+                label : {$in : required.labels.concat(forbidden.labels)},
+                app : {$in : [required.app, forbidden.app]},
+                user : {$in : users_ids}
+            }, function (error, users) {
+                    if (error) {
+                            cb(error, null);
+                    } else {
+                            result = [];
+                            for (var i in users) {
+                                    if (
+                                            users[i].ocurrences(required.app, required.labels) >= required.minimum &&
+                                            users[i].ocurrences(forbidden.app, forbidden.labels) < forbidden.minimum
+                                    ) {
+                                            result.push(users[i]);
+                                    }
+                            }
+                            cb(null, result);
+                    }
+            });
+        }
+    });
+
 };
 
 eventSchema.statics.cohort = function (app, frequency, cb) {

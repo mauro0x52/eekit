@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.0.3
+## 1.0.3 (2013-05-13)
 
 Melhorias
 - Atualizando pacotes

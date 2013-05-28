@@ -5,6 +5,33 @@ var model = require('./model/Model.js'),
         Email = require('sendgrid').Email;
 
 var message = function (task) {
+    var html = '';
+
+    html += '<b>' + task.title + '</b>';
+    html += '<p> ' + task.description + '</p>';
+    html += '<p> <hr /></p>';
+    html += '<p> Você está recebendo esse e-mail porque cadastrou um lembrete através do aplicativo <b>Tarefas</b> no Empreendekit. </p>';
+    html += '<p> Para marcar essa tarefa como feita, adicionar novas tarefas e organizar seu dia-a-dia, clique <a href="http://' + config.services.www.url + ':' + config.services.www.port + '/#!/tarefas">aqui</a>. </p>';
+    html += '<p>Abraços,<br/>Equipe Empreendekit</p>';
+
+    /* manda email para o usuário */
+    require('needle').post(
+        'http://' + params.config.services.jaiminho.url + ':' + params.config.services.jaiminho.port + '/mail/self',
+        {
+            token : token,
+            service : 'auth',
+            subject : 'Presente de boas vindas do Empreendekit',
+            name : 'novo usuario',
+            from : 'atendimento@empreendekit.com.br',
+            html : html
+        },
+        function (error, response, data) {
+            if (error) {
+                console.log(error);
+            }
+        }
+    );
+
     var mongodb = require("mongodb"),
         mongoserver = new mongodb.Server(config.mongodb.url, config.mongodb.port, {}),
         connector = new mongodb.Db('auth', mongoserver);

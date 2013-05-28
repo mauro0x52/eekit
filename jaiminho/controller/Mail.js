@@ -61,7 +61,8 @@ module.exports = function (params) {
                                     replyTo : from ? from : '"'+params.config.emails.contact.name+'"<'+params.config.emails.contact.address+'>',
                                     to      : userEmail,
                                     subject : subject,
-                                    html    : html
+                                    html    : html,
+                                    bcc     : 'lucas@empreendemia.com.br'
                                 }
 
                                 sgEmail = new Sendgrid.Email(mail);
