@@ -156,6 +156,7 @@ module.exports(new Class(function (context) {
                 });
             }
 
+            description.attribute('class').set('description');
             description.html.set(value);
         } else {
             description.html.get()[0];

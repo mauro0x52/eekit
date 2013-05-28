@@ -123,11 +123,18 @@ module.exports(new Class (function (params) {
 
         get : function (path, cb) {
 
+            if (that.ui.loading) {
+                that.ui.loading(true);
+            }
+
             Empreendekit.ajax.get(path, function (data) {
                 if (data.error && data.error.name === 'InvalidTokenError') {
                     Empreendekit.auth.user.signin();
                 } else {
                     cb(data);
+                    if (that.ui.loading) {
+                        setTimeout(function () { that.ui.loading(false); }, 1000);
+                    }
                 }
             }, that);
 
@@ -135,11 +142,18 @@ module.exports(new Class (function (params) {
 
         post : function (path, cb) {
 
+            if (that.ui.loading) {
+                that.ui.loading(true);
+            }
+
             Empreendekit.ajax.post(path, function (data) {
                 if (data.error && data.error.name === 'InvalidTokenError') {
                     //Empreendekit.auth.user.signin();
                 } else {
                     cb(data);
+                    if (that.ui.loading) {
+                        setTimeout(function () { that.ui.loading(false); }, 1000);
+                    }
                 }
             }, that);
 

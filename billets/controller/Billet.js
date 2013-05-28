@@ -59,6 +59,7 @@ module.exports = function (params) {
                     if (error) {
                         response.send({ error : error });
                     } else {
+                        params.kamisama.trigger(request.param('token'), 'create billet', billet);
                         response.send({ billet : billet });
                     }
                 });
@@ -112,6 +113,7 @@ module.exports = function (params) {
                             if (error) {
                                 response.send({ error : error });
                             } else {
+                                params.kamisama.trigger(request.param('token'), 'update billet ' + billet._id, billet);
                                 response.send({ billet : billet });
                             }
                         });
@@ -193,6 +195,7 @@ module.exports = function (params) {
                             if (error) {
                                 response.send({error : error});
                             } else {
+                                params.kamisama.trigger(request.param('token'), 'remove billet ' + billet._id, billet);
                                 response.send(null);
                             }
                         });

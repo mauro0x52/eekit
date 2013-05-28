@@ -216,8 +216,10 @@ app.routes.dialog('/boleto/bradesco/:id', function (params, data) {
                     instructions : fields.instructions.value()
                 });
                 billet.save(function() {
-                    app.trigger('create billet', billet);
-                    app.routes.redirect('http://' + app.config.services.billets.host + ':' + app.config.services.billets.port + '/billet/'+billet._id+'/print/'+billet.ourNumber);
+                    app.open({
+                        app : 'boletos',
+                        route : '/boleto/' + billet._id
+                    })
                     app.close();
                 });
             } else {
@@ -239,7 +241,6 @@ app.routes.dialog('/boleto/bradesco/:id', function (params, data) {
                 billet.demonstrative = fields.demonstrative.value();
                 billet.instructions = fields.instructions.value();
                 billet.save(function() {
-                    app.trigger('update billet ' + billet._id, billet);
                     app.close();
                 });
             }

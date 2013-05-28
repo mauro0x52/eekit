@@ -38,6 +38,7 @@ module.exports(new Class(function (params) {
 
     input.event('change').bind(function () {
         self.change();
+        self.validate();
     });
     input.event('keyup').bind(function () {
         self.change();
@@ -157,7 +158,6 @@ module.exports(new Class(function (params) {
         } else if (change_cb) {
             change_cb.apply(self);
         }
-        self.validate();
     };
 
     /**

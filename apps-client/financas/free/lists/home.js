@@ -140,7 +140,7 @@ app.routes.list('/', function (params, data) {
                 visible = 0;
 
             for (i in items) {
-                if (items[i].visibility() != ' hide') {
+                if (items[i].visibility() != 'hide') {
                     visible++;
                 }
             }
@@ -401,7 +401,7 @@ app.routes.list('/', function (params, data) {
                         escape(that.item.label.legend())  + ' %2C' +
                         escape(icons.account.legend()) + ' %2C' +
                         escape(transaction.observation) + '%0A'
-                    );   
+                    );
                 } else {
                     that.item.visibility('hide');
                 }

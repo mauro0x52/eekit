@@ -46,8 +46,8 @@ socket.on('connect', function () {
 
 	/* Autentica no kami-sama */
 	socket.emit('auth', {
-		service : config.security.name,
-		secret  : config.security.secret
+		service : 'www',
+		secret  : config.services.www.secret
 	});
 
 	/* Escuta qualquer evento que venha do kami-sama */

@@ -19,7 +19,6 @@ function getCompany (token, secret, cb) {
                 token  : token
             }),
         function (error, response, data) {
-            console.log(data)
             if (data.company) {
                 cb(data.company._id)
             }

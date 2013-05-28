@@ -178,7 +178,7 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
             rules : [{rule : /(^$)|(^\d{6,8}$)/, message : 'formato inválido'}],
             value : billet.agreement
         });
-        
+
         fields.value = new app.ui.inputText({
             legend : 'Valor (R$)',
             name : 'value',
@@ -281,7 +281,6 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
                 app.ui.error('Escolha uma carteira');
             } else {
                 billet.save(function() {
-                    app.trigger('update billet ' + billet._id, billet);
                     app.close();
                 });
             }

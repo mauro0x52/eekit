@@ -394,14 +394,14 @@ app.routes.list('/', function (params, data) {
 
         /* Pegando quando o filtro é acionado */
         app.bind('filter task', function (fields) {
-            var important = fields.important.value()[0] || fields.important.value()[0] === 'true'/*,
-                users = fields.user.value()*/;
+            var important = fields.important.value()[0] || fields.important.value()[0] === 'true',
+                users = fields.user.value();
 
             if (
-                /*(
+                (
                     task.user &&
                     users.indexOf(task.user) == -1
-                ) ||*/ (
+                ) || (
                     fields.categories.general.value().indexOf(that.item.label.legend()) === -1 &&
                     fields.categories.meetings.value().indexOf(that.item.label.legend()) === -1 &&
                     fields.categories.finances.value().indexOf(that.item.label.legend()) === -1 &&
@@ -553,7 +553,7 @@ app.routes.list('/', function (params, data) {
             options : [new app.ui.inputOption({legend : 'Importante', name : 'important', value : 'true', image : 'alert'})],
             change : app.ui.filter.submit
         });
-        /* filtro de usuário responsável
+        /* filtro de usuário responsável */
         fields.user = new app.ui.inputSelector({
             name : 'user',
             type : 'multiple',
@@ -571,11 +571,11 @@ app.routes.list('/', function (params, data) {
             })(),
             change : app.ui.filter.submit,
             actions : true
-        }); */
+        });
         /* fieldset principal */
         app.ui.filter.fieldsets.add(new app.ui.fieldset({
             legend : 'Filtrar tarefas',
-            fields : [fields.query/*, fields.user*/, fields.categories.general, fields.categories.meetings, fields.categories.finances, fields.categories.sales, fields.categories.projects, fields.categories.personals, fields.important]
+            fields : [fields.query, fields.user, fields.categories.general, fields.categories.meetings, fields.categories.finances, fields.categories.sales, fields.categories.projects, fields.categories.personals, fields.important]
         }));
         /* dispara o evento de filtro */
         app.ui.filter.submit(function () {

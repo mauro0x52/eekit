@@ -26,7 +26,7 @@ module.exports(new Class(function (context) {
                 new Element('div', {attributes : {'class' : 'legend'}, html : 'fechar'})
             ]})
         ]}),
-        load = new Element('div', {attributes : {'class' : 'loading'}, html : [
+        load = new Element('div', {attributes : {'class' : 'loading hide'}, html : [
             new Element('div', {attributes : {'class' : 'image'}}),
             new Element('div', {attributes : {'class' : 'legend'}, html : 'carregando'})
         ]})
@@ -220,7 +220,7 @@ module.exports(new Class(function (context) {
             if (value) {
                 load.attribute('class').set('loading');
             } else {
-                load.attribute('class').set('');
+                load.attribute('class').set('loading hide');
             }
         } else {
             return load.attribute('class').get().indexOf('loading') > -1;
