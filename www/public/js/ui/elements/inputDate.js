@@ -17,7 +17,7 @@ module.exports(new Class(function (params) {
         legend, input, errors, date_picker, month_name, month_days,
         previous_month, next_month,
         menu_today, menu_none, menu_tomorrow,
-        changing_month,
+        changing_month = false,
         self = this,
         change_cb;
 
@@ -84,20 +84,27 @@ module.exports(new Class(function (params) {
     });
     previous_month.event('click').bind(function (evt) {
         self.previousMonth();
+        changing_month = true;
         input.event('focus').trigger();
     }, true);
     next_month.event('click').bind(function (evt) {
         self.nextMonth();
+        changing_month = true;
         input.event('focus').trigger();
     }, true);
     input.event('focus').bind(function () {
-        date_picker.attribute('style').set('opacity:1');
         date_picker.attribute('class').set('date-picker');
         month_name.html.set(self.monthName());
         self.monthDays();
     });
     input.event('blur').bind(function () {
-        date_picker.attribute('style').set('opacity:0');
+        setTimeout(function () {
+            if (!changing_month) {
+                date_picker.attribute('class').set('hide');
+            }
+            changing_month = false;
+        }, 150);
+
     });
 
     /**
