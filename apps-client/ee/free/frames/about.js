@@ -116,7 +116,7 @@ app.routes.frame('/como-funciona', function (params, data) {
                                         },
                                         events : {
                                             click : function () {
-                                                app.open({app : app.slug(), route : '/cadastrar'});
+                                                Empreendekit.auth.user.signup();
                                                 app.close();
                                             }
                                         }
@@ -134,12 +134,7 @@ app.routes.frame('/como-funciona', function (params, data) {
                                         attributes : {
                                             style : 'cursor:pointer; color:#fdfdeb; font-weight:bold;'
                                         },
-                                        events : {
-                                            click : function () {
-                                                app.open({app : app.slug(), route : '/login'});
-                                                app.close();
-                                            }
-                                        }
+                                        events : {click : Empreendekit.auth.user.signin}
                                     })
                                 ]
                             }),

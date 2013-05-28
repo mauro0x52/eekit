@@ -54,7 +54,8 @@ app.routes.dialog('/adicionar-usuario', function (params, data) {
                 username : login.value(),
                 password : password.value(),
                 name : name.value(),
-                secret : app.config.services.www.secret
+                secret : app.config.services.www.secret,
+                token : getToken()
             }
         }, function (response) {
             if (!response || response.error) {
@@ -63,7 +64,6 @@ app.routes.dialog('/adicionar-usuario', function (params, data) {
                     login.errors.add(new app.ui.inputError({ message : 'este email já está cadastrado' }));
                 }
             } else {
-                app.trigger('create user', {name : name.value()});
                 app.close();
             }
         });

@@ -227,7 +227,9 @@ module.exports(new Class(function (params) {
         this.legend(params.legend);
         this.rules(params.rules);
         this.value(params.value);
-        this.change(params.change);
+        if (params.change) {
+            this.change(params.change);
+        }
         this.visibility(params.visibility);
         this.errors.add(params.errors);
         this.rules(params.rules);

@@ -51,6 +51,7 @@ module.exports(new Class (function (params) {
     }
 
     this.config = Empreendekit.config;
+    this.config.users = params.users;
 
     this.name = function () {
 

@@ -44,7 +44,7 @@ module.exports(new Class(function (context) {
                     new Element('div', {attributes : {'class' : 'legend'}, html : 'fechar'})
                 ]}),
                 flash       = new Element('div', {attributes : {'class' : 'flash hide'}}),
-                description = new Element('p', {attributes : {'class' : 'description'}}),
+                description = new Element('p', {attributes : {'class' : 'description hide'}}),
                 form        = new Element('form', {attributes : {'class' : 'form'}, html : [
                     fieldsets = new Element('div', {attributes : {'class' : 'field-sets'}}),
                     new Element('div', {attributes : {'class' : 'submit'}, html : [
@@ -182,6 +182,7 @@ module.exports(new Class(function (context) {
                 });
             }
 
+            flash.attribute('class').set('flash error')
             flash.html.set(value);
         } else {
             flash.html.get()[0];
@@ -251,5 +252,5 @@ module.exports(new Class(function (context) {
      *
      */
     this.actions = new Collection(actions, [Action]);
-    
+
 }));

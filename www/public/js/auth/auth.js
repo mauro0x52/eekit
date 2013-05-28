@@ -10,20 +10,33 @@ module.exports({
     user : {
 
         signin : function () {
-            Empreendekit.path.redirect('ee/login', {close : function (data) {
-                setToken(data.token, data.remindme);
-                Empreendekit.config.services.www.token = data.token;
+            if (getToken()) {
                 Empreendekit.path.redirect('tarefas/');
-                Empreendekit.auth.user.validate();
-            }});
+            } else {
+                Empreendekit.path.redirect('ee/login', {close : function (data) {
+                    setToken(data.token, data.remindme);
+                    Empreendekit.config.services.www.token = data.token;
+                    Empreendekit.path.redirect('tarefas/');
+                    Empreendekit.auth.user.validate();
+                }});
+            }
         },
 
         signup : function () {
-
+            if (getToken()) {
+                Empreendekit.path.redirect('tarefas/');
+            } else {
+                Empreendekit.path.redirect('ee/cadastrar', {close : function (data) {
+                    setToken(data.token, false);
+                    Empreendekit.config.services.www.token = data.token;
+                    Empreendekit.path.redirect('ee/usuario-cadastrado');
+                    Empreendekit.auth.user.validate();
+                }});
+            }
         },
 
         signout : function () {
-            setToken(null, 0);
+            setToken('', true);
             Empreendekit.path.redirect('ee/');
             Empreendekit.socket.emit('auth', {
                 user    : null,
@@ -37,10 +50,26 @@ module.exports({
                 token : getToken()
             }}, function (data) {
                 if (data && data.user) {
+                    Empreendekit.config.user = data.user;
                     Empreendekit.socket.emit('auth', {
                         user    : data.user._id,
                         company : data.company._id
                     });
+                }
+            });
+        }
+
+    },
+
+    company : {
+
+        users : function (cb) {
+            Empreendekit.ajax.get({url : 'http://' + Empreendekit.config.services.auth.host + ':' + Empreendekit.config.services.auth.port + '/company/users', data : {
+                secret : Empreendekit.config.services.www.secret,
+                token : getToken()
+            }}, function (users) {
+                if (users && users.users && cb) {
+                    cb(users.users);
                 }
             });
         }

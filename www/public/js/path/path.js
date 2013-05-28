@@ -6,6 +6,7 @@
  */
 
 var ajax   = module.use('ajax'),
+    auth   = module.use('auth'),
     config = module.use('config'),
     ui     = module.use('ui'),
     App    = module.use('app');
@@ -47,65 +48,66 @@ module.exports({
         ajax.get({
             url : 'http://' + config.services.apps.host + ':' + config.services.apps.port + '/app/' + app[1] + '/source'
         }, function (response) {
-
-            var newapp = new App({
-                name   : response.name,
-                slug   : response.slug,
-                source : response.source,
-                route  : path,
-                caller : params.caller,
-                data   : params.data,
-                close  : params.close
-            });
-
-            if (newapp.type() === 'dialog') {
-                /* Renderizo o dialogo */
-                ui.dialogs.add(newapp.ui);
-            } else if (newapp.type() === 'frame') {
-                ui.collapse(true);
-                ui.apps.remove();
-                ui.apps.add(newapp.ui);
-                newapp.ui.click();
-            } else if (newapp.type() !== 'embedList' && newapp.type() !== 'embedEntity') {
-                ui.collapse(false);
-                if (!newapp.caller() || newapp.caller().name() !== newapp.name()) {
-                    /* Se o app tiver sido chamado pelo eekit ou outro app, removo todos os apps ativos */
+            auth.company.users(function (users) {
+                var newapp = new App({
+                    name   : response.name,
+                    slug   : response.slug,
+                    source : response.source,
+                    route  : path,
+                    caller : params.caller,
+                    data   : params.data,
+                    close  : params.close,
+                    users  : users
+                });
+                if (newapp.type() === 'dialog') {
+                    /* Renderizo o dialogo */
+                    ui.dialogs.add(newapp.ui);
+                } else if (newapp.type() === 'frame') {
+                    ui.collapse(true);
                     ui.apps.remove();
-                    ui.appMenu.remove();
-                    ui.navigation.remove();
-                    /* Renderiza o menu do app */
-                    for (var i in newapp.menu) {
-                        ui.appMenu.add(new ui.appMenuItem({
-                            legend : newapp.menu[i].legend,
-                            image  : newapp.menu[i].image,
-                            href   : newapp.slug() + newapp.menu[i].href
-                        }))
-                    }
-                } else {
-                    /* Fecho todos os apps em frente ao caller */
-                    var found = false,
-                        apps = ui.apps.get(),
-                        current = newapp.caller();
-                    while (current.type() === 'embedList' || current.type() === 'embedEntity') {
-                        current = current.caller();
-                    }
-                    for (var i in apps) {
-                        if (found) {
-                            apps[i].close();
+                    ui.apps.add(newapp.ui);
+                    newapp.ui.click();
+                } else if (newapp.type() !== 'embedList' && newapp.type() !== 'embedEntity') {
+                    ui.collapse(false);
+                    if (!newapp.caller() || newapp.caller().name() !== newapp.name()) {
+                        /* Se o app tiver sido chamado pelo eekit ou outro app, removo todos os apps ativos */
+                        ui.apps.remove();
+                        ui.appMenu.remove();
+                        ui.navigation.remove();
+                        /* Renderiza o menu do app */
+                        for (var i in newapp.menu) {
+                            ui.appMenu.add(new ui.appMenuItem({
+                                legend : newapp.menu[i].legend,
+                                image  : newapp.menu[i].image,
+                                href   : newapp.slug() + newapp.menu[i].href
+                            }))
                         }
-                        if (apps[i].context() === current) {
-                            found = true;
+                    } else {
+                        /* Fecho todos os apps em frente ao caller */
+                        var found = false,
+                            apps = ui.apps.get(),
+                            current = newapp.caller();
+                        while (current.type() === 'embedList' || current.type() === 'embedEntity') {
+                            current = current.caller();
+                        }
+                        for (var i in apps) {
+                            if (found) {
+                                apps[i].close();
+                            }
+                            if (apps[i].context() === current) {
+                                found = true;
+                            }
                         }
                     }
-                }
 
-                /* Renderizo o app no corpo principal */
-                ui.apps.add(newapp.ui);
-                ui.navigation.add(newapp.ui.navigation);
-                newapp.ui.click();
-            } else if (params.caller) {
-                params.caller.ui.embeds.add(newapp.ui);
-            }
+                    /* Renderizo o app no corpo principal */
+                    ui.apps.add(newapp.ui);
+                    ui.navigation.add(newapp.ui.navigation);
+                    newapp.ui.click();
+                } else if (params.caller) {
+                    params.caller.ui.embeds.add(newapp.ui);
+                }
+            });
         });
     },
 

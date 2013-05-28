@@ -135,12 +135,7 @@ app.routes.frame('/cadastrar', function (params, data) {
                                         attributes : {
                                             style : 'cursor:pointer; color:#fdfdeb; font-weight:bold;'
                                         },
-                                        events : {
-                                            click : function () {
-                                                app.open({app : app.slug(), route : '/login'});
-                                                app.close();
-                                            }
-                                        }
+                                        events : {click : Empreendekit.auth.user.signin}
                                     })
                                 ]
                             }),
@@ -453,13 +448,13 @@ app.routes.frame('/cadastrar', function (params, data) {
             submit : function (evt) {
                 evt.preventDefault();
                 var data = {
-                    name : inputs.company.value(),
+                    name : inputs.company.attribute('value').get(),
                     admin : {
-                        name : inputs.name.value(),
-                        username : inputs.email.value(),
-                        password : inputs.password.value(),
+                        name : inputs.name.attribute('value').get(),
+                        username : inputs.email.attribute('value').get(),
+                        password : inputs.password.attribute('value').get(),
                         informations : {
-                            phone : inputs.phone.value()
+                            phone : inputs.phone.attribute('value').get()
                         }
                     }
                 }
@@ -469,15 +464,14 @@ app.routes.frame('/cadastrar', function (params, data) {
                 }, function (response) {
                     if (!response || response.error) {
                         error_message.attribute('style').set('opacity:1;top:-32px;');
-                        error_message.html('Desculpe-nos, mas ocorreu um erro em nossos servidores. Tente novamente mais tarde.')
+                        error_message.html.set('Desculpe-nos, mas ocorreu um erro em nossos servidores. Tente novamente mais tarde.')
                         if (response.error.name === 'ValidationError' && response.error.errors.username && response.error.errors.username.type ) {
-                            error_message.html('O email '+data.admin.username+' já está cadastrado em nosso sistema.')
+                            error_message.html.set('O email '+data.admin.username+' já está cadastrado em nosso sistema.')
                         }
                     } else {
                         var token = response.token;
                         app.event('cadastrar');
-                        app.empreendemia.user.signup(token);
-                        app.close();
+                        app.close({token : token});
                     }
                 });
             }

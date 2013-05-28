@@ -41,6 +41,7 @@ body > .body {
 
 a {
     text-decoration: none;
+    cursor: pointer;
 }
 
 a img {
@@ -270,7 +271,7 @@ form {
 .body > .tool > .menu {
     display: block;
     position: absolute;
-    z-index: 10000;
+    z-index: 100000;
     height: 100%;
     left: 0;
     top: 0;
@@ -298,11 +299,11 @@ form {
 
 .body > .tool > .menu > .options > .option.selected   > .arrow {
     position: absolute;
-    top: 28px;
-    left: 100px;
-    border-top: 11px solid transparent;
-    border-bottom: 11px solid transparent;
-    border-left: 11px solid #332f2f;
+    top: 19px;
+    left: 90px;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid #332f2f;
 }
 
 .body > .tool > .menu > .options > .option > .anchor {

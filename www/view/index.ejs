@@ -22,7 +22,7 @@
                 } else {
                     exdate.setDate(exdate.getDate() + 2);
                 }
-                var c_value=escape(token) + ((remindme) ? "" : "; expires="+exdate.toUTCString());
+                var c_value=escape(token) + "; expires="+exdate.toUTCString();
                 document.cookie="token=" + c_value;
             }
 
@@ -81,7 +81,7 @@
                 var app =  location.pathname.match(/^\/([^\/]+)/) || [],
                     route = location.pathname.match(/^\/[^\/]+(.*)/) || [];
 
-                this.path.redirect((app[1] || 'ee') + (route[1] || '/')) 
+                this.path.redirect((app[1] || 'ee') + (route[1] || '/'));
 
                 /* Exibe lista de apps no menu do usuário */
                 for (var i in this.config.apps) {

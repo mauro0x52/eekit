@@ -114,6 +114,7 @@ app.routes.list('/usuarios', function (params, data) {
 
     /* Pegando usuários que são cadastradas ao longo do uso do app */
     app.bind('create user', function (user) {
+        console.log(user)
         groups.admins.items.add(new app.ui.item({
             title : user.name,
             label : {

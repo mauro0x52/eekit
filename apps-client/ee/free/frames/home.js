@@ -113,7 +113,7 @@ app.routes.frame('/', function (params, data) {
                                     },
                                     events : {
                                         click : function () {
-                                            app.open({app : app.slug(), route : '/cadastrar'});
+                                            Empreendekit.auth.user.signup();
                                             app.close();
                                         }
                                     }

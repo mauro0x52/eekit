@@ -50,9 +50,12 @@ new Namespace({
         header,
         name,
         settings,
+        help,
         logout,
         appsmenu,
         navigation,
+        menuContainer,
+        navigationContainer,
         appmenu,
         modals,
         sheets,
@@ -77,19 +80,19 @@ new Namespace({
                 new this.element('menu', {attributes : {'class' : 'options'}, html : [
                     /* Name */
                     new this.element('li', {attributes : {'class' : 'option name'}, html : [
-                        name = new this.element('a', {attributes : {'class' : 'anchor', 'href' : '#'}})
+                        name = new this.element('a', {attributes : {'class' : 'anchor'}})
                     ]}),
                     /* Configurações */
                     new this.element('li', {attributes : {'class' : 'option settings'}, html : [
-                        settings = new this.element('a', {attributes : {'class' : 'anchor', 'href' : '#'}, html : 'configurações'})
+                        settings = new this.element('a', {attributes : {'class' : 'anchor'}, html : 'configurações'})
                     ]}),
                     /* Ajuda */
                     new this.element('li', {attributes : {'class' : 'option help'}, html : [
-                        settings = new this.element('a', {attributes : {'class' : 'anchor', 'href' : '#'}, html : 'ajuda'})
+                        help = new this.element('a', {attributes : {'class' : 'anchor'}, html : 'ajuda'})
                     ]}),
                     /* Sair */
                     new this.element('li', {attributes : {'class' : 'option logout'}, html : [
-                        logout = new this.element('a', {attributes : {'class' : 'anchor', 'href' : '#'}, html : 'sair'})
+                        logout = new this.element('a', {attributes : {'class' : 'anchor'}, html : 'sair'})
                     ]})
                 ]}),
             ]})
@@ -97,11 +100,11 @@ new Namespace({
         /* Ferramenta */
         new this.element('div', {attributes : {'class' : 'tool'}, html : [
             /* Menu */
-            new this.element('div', {attributes : {'class' : 'menu'}, html : [
+            menuContainer = new this.element('div', {attributes : {'class' : 'menu'}, html : [
                 appmenu = new this.element('menu', {attributes : {'class' : 'options'}})
             ]}),
             /* Navigation */
-            new this.element('div', {attributes : {'class' : 'navigation'}, html : [
+            navigationContainer = new this.element('div', {attributes : {'class' : 'navigation'}, html : [
                 navigation = new this.element('menu', {attributes : {'class' : 'sheets'}}),
             ]}),
             /* Sheets */
@@ -115,6 +118,14 @@ new Namespace({
         auth.user.signout();
     });
 
+    help.event('click').bind(function () {
+        Empreendekit.path.redirect('ee/suporte');
+    });
+
+    settings.event('click').bind(function () {
+        Empreendekit.path.redirect('ee/usuarios');
+    });
+
     this.attach = element.attach;
     this.detach = element.detach;
 
@@ -126,7 +137,7 @@ new Namespace({
                 i, style_classes;
 
             dragging = value;
-            
+
             for (i = 0; i < apps.length; i++) {
                 style_classes = apps[i].sheet.attribute('class').get();
 
@@ -144,6 +155,8 @@ new Namespace({
     this.collapse = function (value) {
         if (value === true || value === false) {
             header.attribute('class').set(value ? 'hide' : 'header');
+            menuContainer.attribute('class').set(value ? 'hide' : 'menu');
+            navigationContainer.attribute('class').set(value ? 'hide' : 'navigation');
         } else {
             return header.attribute('class').get() !== 'hide';
         }
