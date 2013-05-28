@@ -43,7 +43,7 @@ module.exports(new Class(function (params) {
      * @since  2013-05
      */
     this.validate = function () {
-        var inputs = this.fields.get(),
+        var inputs = self.fields.get(),
             valid = true;
 
         for (var i in inputs) {

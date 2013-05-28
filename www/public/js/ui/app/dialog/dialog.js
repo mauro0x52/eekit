@@ -50,11 +50,7 @@ module.exports(new Class(function (context) {
                     new Element('div', {attributes : {'class' : 'submit'}, html : [
                         action = new Element('input', {attributes : {'class' : 'input', type : 'submit'}})
                     ]})
-                ], events : {
-                    submit : function (evt) {
-                        evt.preventDefault();
-                    }
-                }}),
+                ]}),
                 actions = new Element('menu', {attributes : {'class' : 'actions'}})
             ]})
         ]})
@@ -218,6 +214,21 @@ module.exports(new Class(function (context) {
 
         },
 
+        validate : function () {
+            var i, fieldsets, fields,
+                valid = true;
+
+            fieldsets = self.form.fieldsets.get();
+
+            for (i in fieldsets) {
+                if (fieldsets[i].validate() === false) {
+                    valid = false;
+                }
+            }
+
+            return valid;
+        },
+
         submit : function (value) {
 
             if (value) {
@@ -231,9 +242,11 @@ module.exports(new Class(function (context) {
                     });
                 }
 
-                form.event('submit').bind(function (evt) {
-                    evt.preventDefault();
-                    value.apply(context);
+                form.event('submit').bind(function (event) {
+                    event.preventDefault();
+                    if (self.form.validate()) {
+                        value.apply(context);
+                    }
                 });
             } else {
                 form.event('submit').trigger();
