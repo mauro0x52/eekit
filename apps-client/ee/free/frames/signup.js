@@ -119,13 +119,7 @@ app.routes.frame('/cadastrar', function (params, data) {
                                     new app.ui.tag('a', {
                                         html : 'Cadastrar',
                                         attributes : {
-                                            style : 'cursor:pointer; color:#fdfdeb; font-weight:bold;'
-                                        },
-                                        events : {
-                                            click : function () {
-                                                app.open({app : app.slug(), route : '/cadastrar'});
-                                                app.close();
-                                            }
+                                            style : 'color:#6196ae; font-weight:bold;'
                                         }
                                     })
                                 ]

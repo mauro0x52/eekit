@@ -97,13 +97,7 @@ app.routes.frame('/suporte', function (params, data) {
                                     new app.ui.tag('a', {
                                         html : 'DÚVIDAS',
                                         attributes : {
-                                            style : 'cursor:pointer; color:#fdfdeb;'
-                                        },
-                                        events : {
-                                            click : function () {
-                                                app.open({app : app.slug(), route : '/suporte'});
-                                                app.close();
-                                            }
+                                            style : 'color:#6196ae;'
                                         }
                                     })
                                 ]

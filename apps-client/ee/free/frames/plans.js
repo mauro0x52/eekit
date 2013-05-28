@@ -57,13 +57,7 @@ app.routes.frame('/precos-e-planos', function (params, data) {
                                     new app.ui.tag('a', {
                                         html : 'PLANOS',
                                         attributes : {
-                                            style : 'cursor:pointer; color:#fdfdeb;'
-                                        },
-                                        events : {
-                                            click : function () {
-                                                app.open({app : app.slug(), route : '/precos-e-planos'});
-                                                app.close();
-                                            }
+                                            style : 'color:#6196ae;'
                                         }
                                     })
                                 ]

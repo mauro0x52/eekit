@@ -35,7 +35,7 @@ app.routes.frame('/', function (params, data) {
                 html : [
                     /* imagem */
                     new app.ui.tag('div', {attributes : { style : 'position: absolute; top: 20px; left:20px;'}, html : [
-                        new app.ui.tag('a', {attributes : { style : 'display: block; background-image:url(/images/ee/logo.png); width:289px; height:74px; cursor:pointer;'}})
+                        new app.ui.tag('a', {attributes : { style : 'display: block; background-image:url(/images/ee/logo.png); width:289px; height:74px;'}})
                     ]}),
                     /* menu */
                     new app.ui.tag('menu', {attributes : {style : 'position:absolute; right: 0; display:block; font-size:18px; font-family:Verdana, Helvetica, sans-serif;'}, html : [

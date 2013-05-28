@@ -78,13 +78,7 @@ app.routes.frame('/como-funciona', function (params, data) {
                                     new app.ui.tag('a', {
                                         html : 'COMO FUNCIONA',
                                         attributes : {
-                                            style : 'cursor:pointer; color:#fdfdeb;'
-                                        },
-                                        events : {
-                                            click : function () {
-                                                app.open({app : app.slug(), route : '/como-funciona'});
-                                                app.close();
-                                            }
+                                            style : 'color:#6196ae;'
                                         }
                                     })
                                 ]
