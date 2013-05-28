@@ -70,6 +70,8 @@ module.exports({
             }}, function (users) {
                 if (users && users.users && cb) {
                     cb(users.users);
+                } else {
+                    cb();
                 }
             });
         }
