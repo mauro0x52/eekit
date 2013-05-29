@@ -7,13 +7,8 @@
 
 [
     {
-        legend : 'sandbox list',
-        image  : 'tag',
-        href   : '/sandbox/list'
-    },
-    {
-        legend : 'sandbox entity',
-        image  : 'tag',
-        href   : '/sandbox/entity'
+        legend : 'equipe',
+        image  : 'person',
+        href   : '/ee/usuários'
     }
 ]

@@ -47,6 +47,7 @@ new Namespace({
 }, function () {
 
     var element,
+        logoAnchor,
         header,
         name,
         settings,
@@ -66,7 +67,7 @@ new Namespace({
         header = new this.element('div', {attributes : {'class' : 'header hide'}, html : [
             /* Logo */
             new this.element('div', {attributes : {'class' : 'logo'}, html : [
-                new this.element('a', {attributes : {'class' : 'anchor', 'href' : '#', 'title' : 'Página principal'}, html : [
+                logoAnchor = new this.element('a', {attributes : {'class' : 'anchor', 'title' : 'Página principal'}, html : [
                     new this.element('span', {attributes : {'class' : 'image'}}),,
                     new this.element('h1', {attributes : {'class' : 'title'}, html : 'EmpreendeKit'})
                 ]})

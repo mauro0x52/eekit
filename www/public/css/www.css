@@ -42,6 +42,7 @@ body > .body {
 a {
     text-decoration: none;
     cursor: pointer;
+    outline: 0;
 }
 
 a img {
@@ -106,6 +107,7 @@ form {
 
 .body > .header > .logo > .anchor {
     display: block;
+    cursor: default;
 }
 
 .body > .header > .logo > .anchor > .image {
@@ -160,7 +162,7 @@ form {
 }
 
 .body > .header > .menu > .tools > .tool  > .anchor > .legend{
-    margin: 2px 0;
+    margin: 5px 0 0 0;
     font-size: 11px;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 11px;
@@ -318,7 +320,7 @@ form {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     width: 80px;
-    margin: auto;
+    margin: 5px auto 0 auto;
 }
 
 /* navigation */
@@ -688,7 +690,7 @@ form {
 }
 
 .sheets .body .groups > .group .group > .header > .actions {
-    top: 2px;
+    top: 1px;
     opacity: 0;
     transition: all 0.2s linear;
     -webkit-transition: all 0.2s linear;
@@ -709,6 +711,7 @@ form {
 .sheets .body .groups > .group > .header > .actions  > .action  > .anchor {
     display: block;
     padding: 5px;
+    height: 20px;
 }
 
 .sheets .body .groups > .group > .header > .actions  > .action  > .anchor > .image {
@@ -905,7 +908,7 @@ form {
 
 .sheets .body > .groups .item > .label > .legend  {
     position: absolute;
-    top: 12px;
+    top: 10px;
     left: 1px;
     width: 78px;
     color: #fff;
@@ -1079,6 +1082,7 @@ form {
 .sheets .body > .groups .item > .actions > .action > .anchor{
     display: block;
     padding: 5px;
+    height: 20px;
 }
 
 .sheets .body > .groups .item > .actions > .action > .anchor > .image {
@@ -1330,7 +1334,7 @@ form {
     margin: 5px 0 5px 5px;
     color: #000;
     position: absolute;
-    top: -2px;
+    top: 0;
     z-index: 10000;
 }
 
@@ -2403,7 +2407,7 @@ form {
     display: block;
     position: relative;
     margin: 0;
-    padding: 0 0 5px 0;
+    padding: 2px 0 5px 0;
     font-size: 12px;
 }
 
