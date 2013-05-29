@@ -471,6 +471,7 @@ form {
     text-align: right;
     top: 260px;
     transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
     width: 500px;
 }
 
