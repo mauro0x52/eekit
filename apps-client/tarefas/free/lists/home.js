@@ -256,7 +256,7 @@ app.routes.list('/', function (params, data) {
                 }
             })
         };
-        this.item.actions.add([actions.done, actions.edit, actions.remove]);
+        this.item.actions.add([actions.done, actions.edit, actions.remove, actions.drag]);
 
         /* Exibe o titulo da tarefa */
         this.title = function (value) {
@@ -331,13 +331,6 @@ app.routes.list('/', function (params, data) {
             } else {
                 icons.dateDeadline.legend('-');
                 this.item.icons.remove(icons.dateDeadline);
-            }
-
-            /* Verifica se deve exibir o botão de drag */
-            if (fitGroup(task) !== groups.later) {
-                this.item.actions.add(actions.drag);
-            } else {
-                this.item.actions.remove(actions.drag);
             }
         };
 
