@@ -387,7 +387,7 @@ form {
     z-index: 10000;
     float: left;
     margin-right: 1px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    border: 1px solid #332f2f;
     width: 660px;
     background-color: #fdfdeb;
     transition: all 0.4s ease;
@@ -822,7 +822,7 @@ form {
 }
 
 .sheets .body > .groups .items > .item:hover  {
-    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
     z-index: 10000;
     margin-left: 15px;
     border-bottom: 1px solid #b9ac9f;
@@ -830,7 +830,7 @@ form {
 }
 
 .sheets .body > .groups .group:hover > .items > .item:hover  {
-    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
     z-index: 10000;
     margin-left: 15px;
     border-bottom: 1px solid #b9ac9f;
@@ -1235,7 +1235,6 @@ form {
     width: 190px;
     padding: 4px 6px;
     border: 1px solid #b9ac9f;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     border-radius: 8px;
     font-size: 12px;
 }
@@ -1244,7 +1243,6 @@ form {
     width: 190px;
     padding: 4px 6px;
     border: 1px solid #b9ac9f;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     border-radius: 8px;
     font-size: 12px;
 }
@@ -1311,7 +1309,6 @@ form {
     height: 12px;
     margin-right: 10px;
     border: 1px solid #b9ac9f;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     border-radius: 4px;
     background-color: #fff;
     transition: all 0.1s linear;
@@ -1397,7 +1394,6 @@ form {
     padding: 6px 23px 6px 6px;
     background-color: #fff;
     border: 0;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     font-size: 12px;
     margin: 0;
 }
@@ -1513,7 +1509,6 @@ form {
     top: 0;
     border: 1px solid #b9ac9f;
     z-index: 100000;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.6);
 }
 
 .field.select .select-box > .all  {
@@ -1541,7 +1536,6 @@ form {
     padding: 6px 23px 6px 6px;
     background-color: #fff;
     border: 0;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     font-size: 12px;
     outline: 0;
 }
@@ -1584,7 +1578,6 @@ form {
     left: 220px;
     width: 220px;
     display: block;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.6);
     border: 1px solid #b9ac9f;
 }
 
@@ -1631,7 +1624,6 @@ form {
 
 .field.select .groups > .group.selected {
     background-color: #6196ae;
-    box-shadow: inset 2px 6px 6px rgba(0,10,50,0.3);
     color: #fff;
 }
 
