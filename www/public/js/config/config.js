@@ -14,4 +14,4 @@ ajax.get({url : 'http://' + auth + '/services'}, function (services) {
 			apps     : apps.apps
 		})
 	});
-})
+});
