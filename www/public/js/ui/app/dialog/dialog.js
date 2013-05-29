@@ -44,7 +44,7 @@ module.exports(new Class(function (context) {
                     new Element('div', {attributes : {'class' : 'legend'}, html : 'fechar'})
                 ]}),
                 flash       = new Element('div', {attributes : {'class' : 'flash hide'}}),
-                description = new Element('p', {attributes : {'class' : 'description hide'}}),
+                description = new Element('div', {attributes : {'class' : 'description hide'}}),
                 form        = new Element('form', {attributes : {'class' : 'form'}, html : [
                     fieldsets = new Element('div', {attributes : {'class' : 'field-sets'}}),
                     new Element('div', {attributes : {'class' : 'submit'}, html : [
@@ -161,13 +161,12 @@ module.exports(new Class(function (context) {
     };
 
     /**
-     * Controla o flash do app
+     * Controla o flash error do app
      *
      * @author Rafael Erthal
      * @since  2013-05
      */
     this.error = function (value) {
-
         if (value) {
 
             if (value.constructor != String) {
@@ -184,7 +183,56 @@ module.exports(new Class(function (context) {
         } else {
             flash.html.get()[0];
         }
+    };
 
+    /**
+     * Controla o flash success do app
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-05
+     */
+    this.success = function (value) {
+        if (value) {
+
+            if (value.constructor != String) {
+                throw new Error({
+                    source     : 'dialog.js',
+                    method     : 'error',
+                    message    : 'Success value must be a string',
+                    arguments : arguments
+                });
+            }
+
+            flash.attribute('class').set('flash success')
+            flash.html.set(value);
+        } else {
+            flash.html.get()[0];
+        }
+    };
+
+    /**
+     * Controla o flash alert do app
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-05
+     */
+    this.alert = function (value) {
+        if (value) {
+
+            if (value.constructor != String) {
+                throw new Error({
+                    source     : 'dialog.js',
+                    method     : 'error',
+                    message    : 'Alert value must be a string',
+                    arguments : arguments
+                });
+            }
+
+            flash.attribute('class').set('flash alert')
+            flash.html.set(value);
+        } else {
+            flash.html.get()[0];
+        }
     };
 
     /**
