@@ -13,14 +13,12 @@ module.exports({
             if (getToken()) {
                 Empreendekit.path.redirect('tarefas/');
             } else {
-                Empreendekit.path.redirect('ee/login', {
-                    close : function (data) {
-                        setToken(data.token, data.remindme);
-                        Empreendekit.config.services.www.token = data.token;
-                        Empreendekit.path.redirect('tarefas/');
-                        Empreendekit.auth.user.validate();
-                    }
-                });
+                Empreendekit.path.redirect('ee/login', {close : function (data) {
+                    setToken(data.token, data.remindme);
+                    Empreendekit.config.services.www.token = data.token;
+                    Empreendekit.path.redirect('tarefas/');
+                    Empreendekit.auth.user.validate();
+                }});
             }
         },
 
@@ -28,31 +26,21 @@ module.exports({
             if (getToken()) {
                 Empreendekit.path.redirect('tarefas/');
             } else {
-                Empreendekit.path.redirect('ee/cadastrar', {
-                    close : function (data) {
-                        if (data) {
-                            setToken(data.token, false);
-                            Empreendekit.config.services.www.token = data.token;
-                            Empreendekit.path.redirect('ee/usuario-cadastrado');
-                            Empreendekit.auth.user.validate();
-                        }
-                    }
-                });
+                Empreendekit.path.redirect('ee/cadastrar', {close : function (data) {
+                    setToken(data.token, false);
+                    Empreendekit.config.services.www.token = data.token;
+                    Empreendekit.path.redirect('ee/usuario-cadastrado');
+                    Empreendekit.auth.user.validate();
+                }});
             }
         },
 
         signout : function () {
-            var token = getToken();
-            clearToken();
-            Empreendekit.ajax.post({url : 'http://' + Empreendekit.config.services.auth.host + ':' + Empreendekit.config.services.auth.port + '/user/logout', data : {
-                secret : Empreendekit.config.services.www.secret,
-                token : token
-            }}, function (data) {
-                Empreendekit.path.redirect('ee/');
-                Empreendekit.socket.emit('auth', {
-                    user    : null,
-                    company : null
-                });
+            setToken('', true);
+            Empreendekit.path.redirect('ee/');
+            Empreendekit.socket.emit('auth', {
+                user    : null,
+                company : null
             });
         },
 
