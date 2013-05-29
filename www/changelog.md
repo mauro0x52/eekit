@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 2.0
+
+Features
+- Novo SDK e novo Layout
+
 ## 1.3.2 (2013-05-13)
 
 Melhorias
