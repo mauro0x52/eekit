@@ -80,7 +80,7 @@ module.exports(new Class(function (params) {
         self.value((date.getDate() + 1) + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
     });
     menu_none.event('click').bind(function () {
-        self.value(' ');
+        self.value('');
     });
     previous_month.event('click').bind(function (evt) {
         self.previousMonth();
@@ -138,7 +138,7 @@ module.exports(new Class(function (params) {
      * @since  2013-05
      */
     this.value = function (value) {
-        if (value) {
+        if (value || value === '') {
 
             if (value.constructor !== String) {
                 throw new Error({
@@ -223,6 +223,9 @@ module.exports(new Class(function (params) {
             day,month,year;
 
         switch (value.length) {
+            case 0: {
+                return false;
+            }
             case 1: {
                 day = value[0];
                 if (day.length === 2) {
