@@ -236,38 +236,6 @@ module.exports(new Class(function (context) {
     };
 
     /**
-     * Ajusta ao tamanho da janela
-     *
-     * @author Mauro Ribeiro
-     * @since  2013-06
-     */
-    this.adjust = function () {
-
-        var height = 460,
-            offset = 200;
-
-        if (
-            document.body &&
-            document.body.offsetHeight
-        ) {
-            height = document.body.offsetHeight - offset;
-        } else if (
-            document.compatMode=='CSS1Compat' &&
-            document.documentElement &&
-            document.documentElement.offsetHeight
-        ) {
-            height = document.documentElement.offsetHeight - offset;
-        } else if (
-            window.innerHeight
-        ) {
-            height = window.innerHeight - offset;
-        }
-
-        fieldsets.attribute('style').set('max-height : ' + height + 'px');
-
-    };
-
-    /**
      * Controla o formulário do app
      *
      * @author Rafael Erthal
@@ -346,9 +314,5 @@ module.exports(new Class(function (context) {
      *
      */
     this.actions = new Collection(actions, [Action]);
-
-    window.addEventListener('resize', self.adjust);
-
-    this.adjust();
 
 }));

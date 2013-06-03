@@ -2346,8 +2346,6 @@ form {
 
 .modal > .form > .field-sets {
     display: block;
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 .modal > .form > .field-sets > .field-set {
