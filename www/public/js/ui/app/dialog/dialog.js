@@ -33,26 +33,23 @@ module.exports(new Class(function (context) {
         self = this;
 
     element = new Element('div', {attributes : {'class' : 'modal-wrapper'}, html : [
-        new Element('div', {attributes : {'class' : 'background'}}),
-        new Element('div', {attributes : {'class' : 'centralizer'}, html : [
-            new Element('div', {attributes : {'class' : 'modal'}, html : [
-                new Element('div', {attributes : {'class' : 'header'}, html : [
-                    title = new Element('h1', {attributes : {'class' : 'title'}})
-                ]}),
-                close = new Element('div', {attributes : {'class' : 'close'}, html : [
-                    new Element('div', {attributes : {'class' : 'image'}}),
-                    new Element('div', {attributes : {'class' : 'legend'}, html : 'fechar'})
-                ]}),
-                flash       = new Element('div', {attributes : {'class' : 'flash hide'}}),
-                description = new Element('div', {attributes : {'class' : 'description hide'}}),
-                form        = new Element('form', {attributes : {'class' : 'form'}, html : [
-                    fieldsets = new Element('div', {attributes : {'class' : 'field-sets'}}),
-                    new Element('div', {attributes : {'class' : 'submit'}, html : [
-                        action = new Element('input', {attributes : {'class' : 'input', type : 'submit'}})
-                    ]})
-                ]}),
-                actions = new Element('menu', {attributes : {'class' : 'actions'}})
-            ]})
+        new Element('div', {attributes : {'class' : 'modal'}, html : [
+            new Element('div', {attributes : {'class' : 'header'}, html : [
+                title = new Element('h1', {attributes : {'class' : 'title'}})
+            ]}),
+            close = new Element('div', {attributes : {'class' : 'close'}, html : [
+                new Element('div', {attributes : {'class' : 'image'}}),
+                new Element('div', {attributes : {'class' : 'legend'}, html : 'fechar'})
+            ]}),
+            flash       = new Element('div', {attributes : {'class' : 'flash hide'}}),
+            description = new Element('div', {attributes : {'class' : 'description hide'}}),
+            form        = new Element('form', {attributes : {'class' : 'form'}, html : [
+                fieldsets = new Element('div', {attributes : {'class' : 'field-sets'}}),
+                new Element('div', {attributes : {'class' : 'submit'}, html : [
+                    action = new Element('input', {attributes : {'class' : 'input', type : 'submit'}})
+                ]})
+            ]}),
+            actions = new Element('menu', {attributes : {'class' : 'actions'}})
         ]})
     ]});
 

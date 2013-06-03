@@ -398,5 +398,6 @@ module.exports(new Class(function (params) {
     if (params) {
         this.legend(params.legend);
         this.value(params.value);
+        this.change(params.change);
     }
 }));
