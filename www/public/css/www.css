@@ -1297,7 +1297,7 @@ form {
 
 .field.select > .data   > .arrow {
     position: absolute;
-    top: 8px;
+    top: 10px;
     left: 282px;
     border-right: 6px solid transparent;
     border-left: 6px solid transparent;
@@ -2342,6 +2342,12 @@ form {
     display: block;
     background-color: #fff;
     border: 0;
+}
+
+.modal > .form > .field-sets {
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .modal > .form > .field-sets > .field-set {

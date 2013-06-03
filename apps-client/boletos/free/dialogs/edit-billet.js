@@ -212,7 +212,8 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
         });
 
         fieldsets.dates = new app.ui.fieldset({
-            legend : 'Datas'
+            legend : 'Datas',
+            collapsed : true
         });
         fieldsets.dates.fields.add([
             fields.creationDate,
@@ -237,7 +238,8 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
         });
 
         fieldsets.client = new app.ui.fieldset({
-            legend : 'Cliente'
+            legend : 'Cliente',
+            collapsed : true
         });
         fieldsets.client.fields.add([
             fields.clientName,
