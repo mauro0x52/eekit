@@ -2080,7 +2080,7 @@ form {
 
 .modal-wrapper {
     position: fixed;
-    display: table;
+    display: block;
     left: 0;
     top: 0;
     height: 100%;
@@ -2089,6 +2089,8 @@ form {
     -webkit-transition: all 0.2s linear;
     -moz-transition: all 0.2s linear;
     -o-transition: all 0.2s linear;
+    overflow: auto;
+    background-color: rgba(51, 47, 47, 0.9);
 }
 
 .modal-wrapper.hide {
@@ -2096,27 +2098,6 @@ form {
     opacity: 0;
     z-index: 0;
 }
-
-.modal-wrapper > .centralizer {
-    display: table-cell;
-    vertical-align: middle;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Background                                                                 */
-/* -------------------------------------------------------------------------- */
-
-.modal-wrapper > .background {
-    position: fixed;
-    display: block;
-    background-color: #332f2f;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    opacity: 0.8;
-}
-
 
 /* -------------------------------------------------------------------------- */
 /* Modal                                                                      */
@@ -2126,7 +2107,7 @@ form {
     position: relative;
     display: block;
     width: 540px;
-    margin: auto;
+    margin: 20px auto;
     border: 4px solid #2b4f67;
     border-radius: 5px;
     background-color: #fff;
