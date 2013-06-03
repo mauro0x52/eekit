@@ -225,12 +225,12 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
             name : 'clientName',
             value : billet.clientName
         });
-        fields.demonstrative = new app.ui.inputText({
+        fields.demonstrative = new app.ui.inputTextarea({
             legend : 'Demonstrativo',
             name : 'demonstrative',
             value : billet.demonstrative
         });
-        fields.instructions = new app.ui.inputText({
+        fields.instructions = new app.ui.inputTextarea({
             legend : 'Instruções ao caixa',
             name : 'instructions',
             value : billet.instructions
