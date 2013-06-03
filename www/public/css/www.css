@@ -882,7 +882,6 @@ form {
     top: 0;
     left: 0;
     width: 100px;
-    font-size: 9px;
     text-align: center;
     border-radius: 5px 0 0 5px;
     min-height: 20px;
@@ -912,11 +911,14 @@ form {
 
 .sheets .body > .groups .item > .label > .legend  {
     position: absolute;
-    top: 10px;
+    top: 50%;
+    margin-top: -6px;
     left: 1px;
     width: 98px;
     color: #fff;
     text-shadow: 0 0 2px rgba(0,0,0,0.8);
+    font-size: 9px;
+    line-height: 9px;
 }
 
 .sheets .body > .groups .item  >.thumbnail > .anchor > .image {

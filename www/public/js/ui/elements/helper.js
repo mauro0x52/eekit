@@ -31,16 +31,11 @@ module.exports(new Class(function (parent) {
     ]});
 
     /* Eventos */
-    close.event('click').bind(function (evt) {
-        evt.stopPropagation();
-        self.hide();
-    })
-
     if (parent) {
         parent.html.attach(element);
         parent.event('click').bind(function () {
             self.hide();
-        });
+        }, true);
     }
 
     element.template = this;

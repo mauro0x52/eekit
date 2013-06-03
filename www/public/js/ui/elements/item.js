@@ -9,7 +9,8 @@ var Element    = module.use('element'),
     Css        = module.use('css'),
     Collection = module.use('collection'),
     Icon       = module.use('icon'),
-    Action     = module.use('action');
+    Action     = module.use('action'),
+    Helper     = module.use('helper');
 
 module.exports(new Class(function (params) {
     var element,
@@ -370,7 +371,7 @@ module.exports(new Class(function (params) {
      * @author Mauro Ribeiro
      * @since  2013-05
      */
-    //this.helper = new empreendemia.ui.helper(element);
+    this.helper = new Helper(element);
 
     /*
      * Valores iniciais
@@ -390,9 +391,9 @@ module.exports(new Class(function (params) {
             this.label.color(params.label.color);
             this.label.legend(params.label.legend);
         }
-//        if (params.helper) {
-//            this.helper.description(params.helper.description);
-//            this.helper.example(params.helper.example);
-//        }
+        if (params.helper) {
+            this.helper.description(params.helper.description);
+            this.helper.example(params.helper.example);
+        }
     }
 }));
