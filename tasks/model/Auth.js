@@ -18,7 +18,7 @@ authSchema = new schema({
 });
 
 authSchema.index({token : 1});
-authSchema.index({date  : 1});
+authSchema.index({'user._id' : 1});
 
 
 /**

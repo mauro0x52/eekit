@@ -1,11 +1,13 @@
 var model = require('./model/Model.js'),
-	config = require('./config.js'),
-	Sendgrid = require('sendgrid'),
-	sendgrid = new Sendgrid.SendGrid(config.sendgrid.username, config.sendgrid.password),
-        Email = require('sendgrid').Email;
+    config = require('./config.js'),
+    needle = require('needle'),
+    Email = require('sendgrid').Email,
+    today = new Date();
 
-var message = function (task) {
-    var html = '';
+today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+var message = function (auth, task) {
+    var html;
 
     html += '<b>' + task.title + '</b>';
     html += '<p> ' + task.description + '</p>';
@@ -16,13 +18,12 @@ var message = function (task) {
 
     /* manda email para o usuário */
     require('needle').post(
-        'http://' + params.config.services.jaiminho.url + ':' + params.config.services.jaiminho.port + '/mail/self',
+        'http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail/self',
         {
-            token : token,
-            service : 'auth',
-            subject : 'Presente de boas vindas do Empreendekit',
-            name : 'novo usuario',
-            from : 'atendimento@empreendekit.com.br',
+            token : auth.token,
+            service : 'tasks',
+            subject : 'Lembrete: ' + task.title + ' - ' + task.dateDeadline.getDate() + '/' + (task.dateDeadline.getMonth() + 1) + '/' + task.dateDeadline.getFullYear(),
+            name : 'lembrete',
             html : html
         },
         function (error, response, data) {
@@ -31,49 +32,21 @@ var message = function (task) {
             }
         }
     );
-
-    var mongodb = require("mongodb"),
-        mongoserver = new mongodb.Server(config.mongodb.url, config.mongodb.port, {}),
-        connector = new mongodb.Db('auth', mongoserver);
-
-    connector.open(function (error, db) {
-        db.collection('users', function (error, collection) {
-            collection.find({_id : task.user}).toArray(function (error, users) {
-				var html = '', email;
-
-				html += '<b>' + task.title + '</b>';
-				html += '<p> ' + task.description + '</p>';
-				html += '<p> <hr /></p>';
-				html += '<p> Você está recebendo esse e-mail porque cadastrou um lembrete através do aplicativo <b>Tarefas</b> no Empreendekit. </p>';
-				html += '<p> Para marcar essa tarefa como feita, adicionar novas tarefas e organizar seu dia-a-dia, clique <a href="http://' + config.services.www.url + ':' + config.services.www.port + '/#!/tarefas">aqui</a>. </p>';
-				html += '<p>Abraços,<br/>Equipe Empreendekit</p>';
-
-                                email = new Email({
-					to: users[0].username,
-					subject: 'Lembrete: ' + task.title + ' - ' + task.dateDeadline.getDate() + '/' + (task.dateDeadline.getMonth() + 1) + '/' + task.dateDeadline.getFullYear(),
-					from: 'EmpreendeKit<atendimento@empreendekit.com.br>',
-					html: html
-                                });
-                                email.setCategory('eekit tarefas: lembrete');
-                                sendgrid.send(email);
-
-            });
-        });
-    });
 }
 
-model.Task.find(function (error, tasks) {
-	var i,
-		now = new Date().getTime(),
-		diff;
+model.Task.find({reminder : {$gt : 0}, dateDeadline : {$gte : today}}, function (error, tasks) {
+console.log(tasks)
+    var i,
+        now = today.getTime(),
+        diff;
 
-	for (i in tasks) {
-		if ((tasks[i].reminder || tasks[i].reminder === 0) && tasks[i].dateDeadline) {
-			diff = (tasks[i].dateDeadline.getTime() - now)/(24*3600*1000);
-			/* Verifica se esta no dia de mandar a mensagem */
-			if (diff > tasks[i].reminder - 1 && diff < tasks[i].reminder) {
-				message(tasks[i]);
-			}
-		}
-	}
+    for (i in tasks) {
+        diff = (tasks[i].dateDeadline.getTime() - now)/(24*3600*1000);
+        /* Verifica se esta no dia de mandar a mensagem */
+        model.Auth.findOne({'user._id' : tasks[i].user}, function (error, auth) {
+            if (!error && auth) {
+                message(auth, tasks[i]);
+            }
+        })
+    }
 });
