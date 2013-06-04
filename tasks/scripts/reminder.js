@@ -1,15 +1,14 @@
-var model = require('./model/Model.js'),
-    config = require('./config.js'),
+var model = require('../model/Model.js'),
+    config = require('../config.js'),
     needle = require('needle'),
-    Email = require('sendgrid').Email,
     today = new Date();
 
 today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
 var message = function (auth, task) {
-    var html;
+    var html = '';
 
-    html += '<b>' + task.title + '</b>';
+    html += '<h1>' + task.title + '</h1>';
     html += '<p> ' + task.description + '</p>';
     html += '<p> <hr /></p>';
     html += '<p> Você está recebendo esse e-mail porque cadastrou um lembrete através do aplicativo <b>Tarefas</b> no Empreendekit. </p>';
@@ -27,6 +26,7 @@ var message = function (auth, task) {
             html : html
         },
         function (error, response, data) {
+            console.log(data)
             if (error) {
                 console.log(error);
             }
@@ -35,7 +35,6 @@ var message = function (auth, task) {
 }
 
 model.Task.find({reminder : {$gt : 0}, dateDeadline : {$gte : today}}, function (error, tasks) {
-console.log(tasks)
     var i,
         now = today.getTime(),
         diff;
