@@ -32,8 +32,8 @@ module.exports(new Class(function (params) {
             options = new Element('ul', {attributes : {'class' : 'options hide'}})
         ]}),
         actions = new Element('div', {attributes : {'class' : 'hide'}, html : [
-            markall = new Element('div', {attributes : {'class' : 'markall'}}),
-            unmarkall = new Element('div', {attributes : {'class' : 'unmarkall'}})
+            markall = new Element('div', {attributes : {'class' : 'markall'}, html : 'marcar todos'}),
+            unmarkall = new Element('div', {attributes : {'class' : 'unmarkall'}, html : 'desmarcar todos'})
         ]})
 
     ]});
@@ -242,9 +242,9 @@ module.exports(new Class(function (params) {
     this.actions = function (value) {
         if (value === true || value === false) {
             if (value) {
-                //options.html.attach(actions);
+                actions.attribute('class').set('actions');
             } else if (actions.parentNode == element) {
-                //options.html.detach()
+                actions.attribute('class').set('hide');
             }
         } else if (value) {
 
@@ -256,7 +256,7 @@ module.exports(new Class(function (params) {
             });
 
         } else {
-            return actions.parentNode == element;
+            return actions.attribute('class').get() === 'actions';
         }
     };
 

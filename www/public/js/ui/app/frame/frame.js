@@ -86,11 +86,48 @@ module.exports(new Class(function (context) {
         }
     };
 
+
+    /**
+     * Ajusta ao tamanho da janela
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    this.adjust = function () {
+
+        var width = 1000;
+
+        if (
+            document.body &&
+            document.body.offsetWidth
+        ) {
+            width = document.body.offsetWidth;
+        } else if (
+            document.compatMode=='CSS1Compat' &&
+            document.documentElement &&
+            document.documentElement.offsetWidth
+        ) {
+            width = document.documentElement.offsetWidth;
+        } else if (
+            window.innerWidth
+        ) {
+            width = window.innerWidth;
+        }
+
+        element.attribute('style').set('width : ' + width + 'px');
+
+    };
+
     /* Controla as tags do app
      *
      * @author Rafael Erthal
      * @since  2013-05
      */
     this.html = new Collection(element, [Element]);
+
+
+    window.addEventListener('resize', self.adjust);
+    this.adjust();
+
 
 }));

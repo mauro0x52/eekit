@@ -10,7 +10,8 @@ var Element    = module.use('element'),
     Collection = module.use('collection'),
     Icon       = module.use('icon'),
     Action     = module.use('action'),
-    Item       = module.use('item');
+    Item       = module.use('item'),
+    Helper     = module.use('helper');
 
 module.exports(new Class(function (params) {
 
@@ -124,7 +125,7 @@ module.exports(new Class(function (params) {
             }
         },
         icons : new Collection(footerIcons, [Icon]),
-        //helper : new Helper(footer)
+        helper : new Helper(footer)
     };
 
     /**
@@ -201,10 +202,10 @@ module.exports(new Class(function (params) {
         if (params.footer) {
             this.footer.title(params.footer.title);
             this.footer.icons.add(params.footer.icons);
-//            if (params.footer.helper) {
-//                this.footer.helper.description(params.footer.helper.description);
-//                this.footer.helper.example(params.footer.helper.example);
-//            }
+            if (params.footer.helper) {
+                this.footer.helper.description(params.footer.helper.description);
+                this.footer.helper.example(params.footer.helper.example);
+            }
         }
 //        this.visibility(params.visibility);
     }

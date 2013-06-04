@@ -33,30 +33,23 @@ module.exports(new Class(function (context) {
         self = this;
 
     element = new Element('div', {attributes : {'class' : 'modal-wrapper'}, html : [
-        new Element('div', {attributes : {'class' : 'background'}}),
-        new Element('div', {attributes : {'class' : 'centralizer'}, html : [
-            new Element('div', {attributes : {'class' : 'modal'}, html : [
-                new Element('div', {attributes : {'class' : 'header'}, html : [
-                    title = new Element('h1', {attributes : {'class' : 'title'}})
-                ]}),
-                close = new Element('div', {attributes : {'class' : 'close'}, html : [
-                    new Element('div', {attributes : {'class' : 'image'}}),
-                    new Element('div', {attributes : {'class' : 'legend'}, html : 'fechar'})
-                ]}),
-                flash       = new Element('div', {attributes : {'class' : 'flash hide'}}),
-                description = new Element('p', {attributes : {'class' : 'description hide'}}),
-                form        = new Element('form', {attributes : {'class' : 'form'}, html : [
-                    fieldsets = new Element('div', {attributes : {'class' : 'field-sets'}}),
-                    new Element('div', {attributes : {'class' : 'submit'}, html : [
-                        action = new Element('input', {attributes : {'class' : 'input', type : 'submit'}})
-                    ]})
-                ], events : {
-                    submit : function (evt) {
-                        evt.preventDefault();
-                    }
-                }}),
-                actions = new Element('menu', {attributes : {'class' : 'actions'}})
-            ]})
+        new Element('div', {attributes : {'class' : 'modal'}, html : [
+            new Element('div', {attributes : {'class' : 'header'}, html : [
+                title = new Element('h1', {attributes : {'class' : 'title'}})
+            ]}),
+            close = new Element('div', {attributes : {'class' : 'close'}, html : [
+                new Element('div', {attributes : {'class' : 'image'}}),
+                new Element('div', {attributes : {'class' : 'legend'}, html : 'fechar'})
+            ]}),
+            flash       = new Element('div', {attributes : {'class' : 'flash hide'}}),
+            description = new Element('div', {attributes : {'class' : 'description hide'}}),
+            form        = new Element('form', {attributes : {'class' : 'form'}, html : [
+                fieldsets = new Element('div', {attributes : {'class' : 'field-sets'}}),
+                new Element('div', {attributes : {'class' : 'submit'}, html : [
+                    action = new Element('input', {attributes : {'class' : 'input', type : 'submit'}})
+                ]})
+            ]}),
+            actions = new Element('menu', {attributes : {'class' : 'actions'}})
         ]})
     ]});
 
@@ -165,13 +158,12 @@ module.exports(new Class(function (context) {
     };
 
     /**
-     * Controla o flash do app
+     * Controla o flash error do app
      *
      * @author Rafael Erthal
      * @since  2013-05
      */
     this.error = function (value) {
-
         if (value) {
 
             if (value.constructor != String) {
@@ -188,7 +180,56 @@ module.exports(new Class(function (context) {
         } else {
             flash.html.get()[0];
         }
+    };
 
+    /**
+     * Controla o flash success do app
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-05
+     */
+    this.success = function (value) {
+        if (value) {
+
+            if (value.constructor != String) {
+                throw new Error({
+                    source     : 'dialog.js',
+                    method     : 'error',
+                    message    : 'Success value must be a string',
+                    arguments : arguments
+                });
+            }
+
+            flash.attribute('class').set('flash success')
+            flash.html.set(value);
+        } else {
+            flash.html.get()[0];
+        }
+    };
+
+    /**
+     * Controla o flash alert do app
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-05
+     */
+    this.alert = function (value) {
+        if (value) {
+
+            if (value.constructor != String) {
+                throw new Error({
+                    source     : 'dialog.js',
+                    method     : 'error',
+                    message    : 'Alert value must be a string',
+                    arguments : arguments
+                });
+            }
+
+            flash.attribute('class').set('flash alert')
+            flash.html.set(value);
+        } else {
+            flash.html.get()[0];
+        }
     };
 
     /**
@@ -218,6 +259,21 @@ module.exports(new Class(function (context) {
 
         },
 
+        validate : function () {
+            var i, fieldsets, fields,
+                valid = true;
+
+            fieldsets = self.form.fieldsets.get();
+
+            for (i in fieldsets) {
+                if (fieldsets[i].validate() === false) {
+                    valid = false;
+                }
+            }
+
+            return valid;
+        },
+
         submit : function (value) {
 
             if (value) {
@@ -231,9 +287,11 @@ module.exports(new Class(function (context) {
                     });
                 }
 
-                form.event('submit').bind(function (evt) {
-                    evt.preventDefault();
-                    value.apply(context);
+                form.event('submit').bind(function (event) {
+                    event.preventDefault();
+                    if (self.form.validate()) {
+                        value.apply(context);
+                    }
                 });
             } else {
                 form.event('submit').trigger();

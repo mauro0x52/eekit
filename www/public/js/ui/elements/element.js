@@ -177,8 +177,7 @@ module.exports(Element = new Class(function (tag, params) {
         };
 
         this.set = function (value) {
-
-            if (!value) {
+            if (!value && value !== '' && value !== null) {
                 throw new Error({
                     source     : 'element.js',
                     method     : 'attribute.set',
@@ -187,7 +186,12 @@ module.exports(Element = new Class(function (tag, params) {
                 });
             }
 
-            element.setAttribute(name, value);
+            if (name !== 'value') {
+                element.setAttribute(name, value);
+            } else {
+                element.setAttribute(name, value);
+                element.value = value;
+            }
 
         };
 

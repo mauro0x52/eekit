@@ -113,7 +113,7 @@ app.routes.dialog('/adicionar-contato', function (params, data) {
             };
             for (var i in fields.userfields) {
                 data.fieldValues.push({
-                    field : fields.userfields[i].name(),
+                    field : userfields[i]._id,
                     value : fields.userfields[i].value()
                 })
             }

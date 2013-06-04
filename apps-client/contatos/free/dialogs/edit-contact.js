@@ -156,12 +156,12 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
             contact.notes = fields.notes.value();
             contact.user = fields.user.value()[0];
             contact.fieldValues = [];
-            /*for (var i in fields.userfields) {
+            for (var i in fields.userfields) {
                 contact.fieldValues.push({
-                    value : fields.userfields[i].value(),
-                    _id   : i
+                    field : i,
+                    value : fields.userfields[i].value()
                 })
-            }*/
+            }
             contact.save(function () {
                 app.close(contact);
             });
