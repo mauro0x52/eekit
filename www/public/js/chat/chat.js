@@ -1,8 +1,8 @@
 /*
- * Biblioteca de controle de rotas do eeKit
+ * Biblioteca de controle de chats do eeKit
  *
  * @author Rafael Erthal
- * @since  2013-05
+ * @since  2013-06
  */
 
 var config = module.use('config'),
