@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.3.2
+
+Melhorias
+- Todos os tokens valem por 30 dias
+- Tokens atualizados tem validade adiada para mais 30 dias
+
 ## 1.3.1 (2013-05-13)
 
 Melhorias
