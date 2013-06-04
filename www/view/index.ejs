@@ -58,8 +58,14 @@
                 app     : folder + 'app/app.js',
                 auth    : folder + 'auth/auth.js',
                 path    : folder + 'path/path.js',
-                ui      : folder + 'ui/ui.js'
+                ui      : folder + 'ui/ui.js',
+                chat    : folder + 'chat/chat.js'
             }, function () {
+                /* Chat de atendimento */
+                Empreendekit.customerService = new this.chat({
+                    title : 'Chat online. Estamos disponíveis!'
+                });
+
                 /* Comunicação com o kami-sama */
                 Empreendekit.socket = io.connect('http://' + this.config.services.kamisama.host + ':' + this.config.services.kamisama.port),
                     self = this;
