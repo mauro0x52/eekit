@@ -68,15 +68,20 @@ module.exports = function (params) {
                                 sgEmail = new Sendgrid.Email(mail);
                                 sgEmail.setCategory(categoriesArray);
 
-                                sendgrid.send(sgEmail, function(success) {
-                                    if (success) {
-                                        mail.name = name;
-                                        mail.categories = categoriesArray;
-                                        response.send({mail : mail});
-                                    } else {
-                                        response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
-                                    }
-                                });
+                                if (params.config.environment === 'development') {
+                                    sendgrid.send(sgEmail, function(success) {
+                                        if (success) {
+                                            mail.name = name;
+                                            mail.categories = categoriesArray;
+                                            response.send({mail : mail});
+                                        } else {
+                                            response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
+                                        }
+                                    });
+                                } else {
+                                    console.log({mail : mail});
+                                    response.send({mail : mail});
+                                }
                             } else {
                                 response.send({error : data.error});
                             }
@@ -149,15 +154,20 @@ module.exports = function (params) {
                             sgEmail = new Sendgrid.Email(mail);
                             sgEmail.setCategory(categoriesArray);
 
-                            sendgrid.send(sgEmail, function(success) {
-                                if (success) {
-                                    mail.name = name;
-                                    mail.categories = categoriesArray;
-                                    response.send({mail : mail});
-                                } else {
-                                    response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
-                                }
-                            });
+                            if (params.config.environment === 'development') {
+                                sendgrid.send(sgEmail, function(success) {
+                                    if (success) {
+                                        mail.name = name;
+                                        mail.categories = categoriesArray;
+                                        response.send({mail : mail});
+                                    } else {
+                                        response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
+                                    }
+                                });
+                            } else {
+                                console.log({mail : mail});
+                                response.send({mail : mail});
+                            }
                         } else {
                             response.send({error : data.error});
                         }

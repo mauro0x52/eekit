@@ -43,7 +43,6 @@ tokenSchema.generate = function (service) {
              .update(config.security.token + this._id + crypto.randomBytes(10))
              .digest('hex'),
          service : service,
-         lifetime : days,
          dateCreated : new Date(),
          dateExpiration : expiration
     };
