@@ -18,7 +18,7 @@ authSchema = new schema({
 });
 
 authSchema.index({token : 1});
-authSchema.index({'user._id' : 1});
+authSchema.index({'user._id' : 1, expiration : -1});
 
 
 /**
@@ -32,6 +32,7 @@ authSchema.statics.findByToken = function (tokenkey, cb) {
 
     var expiration;
 
+    /* procura o token mais recente */
     Auth.findOne({token : tokenkey}, function (error, auth) {
         if (error || !auth) {
             /* se não tiver, valida no servico auth */
@@ -46,7 +47,7 @@ authSchema.statics.findByToken = function (tokenkey, cb) {
                 cb(error, auth);
             });
         }
-    })
+    });
 };
 
 /**
@@ -75,7 +76,7 @@ authSchema.statics.tokenServiceCheck = function (token, cb) {
 
             expiration = new Date();
             expiration = expiration.setDate(expiration.getDate() + 30);
-
+console.log(data);
             newAuth = new Auth({
                 token      : token,
                 user       : {_id : data.user._id},
@@ -85,6 +86,7 @@ authSchema.statics.tokenServiceCheck = function (token, cb) {
 
             newAuth.save(function(error) {
                 cb(error, newAuth);
+                console.log(newAuth)
             });
         }
     });
