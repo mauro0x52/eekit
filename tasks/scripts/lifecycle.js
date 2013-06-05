@@ -110,7 +110,6 @@ var mailPreviousWeek = function (auth) {
                     html : html
                 },
                 function (error, response, data) {
-                    console.log(data)
                     if (error) {
                         console.log(error);
                     }
@@ -128,7 +127,7 @@ model.Auth.find().distinct('user._id', function (error, usersIds){
             model.Auth.find().where('user._id', usersIds[i]).sort({expiration : -1}).exec(function (error, auths) {
                 if (!error && auths.length > 0 && auths[0].user && auths[0].user._id) {
                     var auth = auths[0];
-        console.log(auth.user._id);
+
                     /* tarefas para esta semana */
                     model.Task.find({
                         user : auth.user._id,
