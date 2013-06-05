@@ -4,7 +4,6 @@ var model = require('../model/Model.js'),
     today,
     nextWeek, previousWeek, prePreviousWeek,
     checkToken = require('../utils/auth'),
-    auth,
     weekDays;
 
 today = new Date();
@@ -71,7 +70,6 @@ var mailThisWeek = function (auth, tasks) {
                     html : html
                 },
                 function (error, response, data) {
-                    console.log(data)
                     if (error) {
                         console.log(error);
                     }
@@ -82,22 +80,23 @@ var mailThisWeek = function (auth, tasks) {
     })
 }
 var mailPreviousWeek = function (auth) {
-    var html = '';
+    var html = '', date;
 
     checkToken(auth.token, function (error, auth) {
         if (!error && auth) {
             html += '<p>Olá '+auth.user.name.split(' ')[0]+'!</p>';
             html += '<p>Este é um relatório automático de tarefas do EmpreendeKit. Você o receberá toda segunda-feira para poder organizar melhor sua semana.<p>';
-            html += '<hr />';
+            html += '<br />';
 
             for (var i = 0; i < 7; i++) {
-                html += '<p style="font-weight:bold">'+weekDays[i]+'</p>';
+                date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+                html += '<p style="font-weight:bold">'+weekDays[i]+' ('+date.getDate()+' de '+months[date.getMonth()]+' de '+date.getFullYear()+')</p>';
                 html += '<ul>';
                 html += '<li style="color:#888;font-style:italic;">nenhuma tarefa</li>';
                 html += '</ul>';
-                html += '<br />';
             }
 
+            html += '<br />';
             html += '<p>Quer adicionar mais tarefas e organizar sua semana? <a href="http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=relatorio-tarefas&utm_campaign=lifecycle#!/tarefas">Clique aqui</a>.'
 
             /* manda email para o usuário */
@@ -111,6 +110,7 @@ var mailPreviousWeek = function (auth) {
                     html : html
                 },
                 function (error, response, data) {
+                    console.log(data)
                     if (error) {
                         console.log(error);
                     }
@@ -127,7 +127,8 @@ model.Auth.find().distinct('user._id', function (error, usersIds){
             /* procura o token mais novo */
             model.Auth.find().where('user._id', usersIds[i]).sort({expiration : -1}).exec(function (error, auths) {
                 if (!error && auths.length > 0 && auths[0].user && auths[0].user._id) {
-                    auth = auths[0];
+                    var auth = auths[0];
+        console.log(auth.user._id);
                     /* tarefas para esta semana */
                     model.Task.find({
                         user : auth.user._id,
@@ -145,6 +146,7 @@ model.Auth.find().distinct('user._id', function (error, usersIds){
                             /* cadastrou só semana passada */
                             model.Task.find({
                                 user : auth.user._id,
+                                done : false,
                                 dateDeadline : {$gte : prePreviousWeek, $lt : today}
                             },
                             function (error, tasks) {

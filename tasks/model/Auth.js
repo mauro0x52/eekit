@@ -76,7 +76,7 @@ authSchema.statics.tokenServiceCheck = function (token, cb) {
 
             expiration = new Date();
             expiration = expiration.setDate(expiration.getDate() + 30);
-console.log(data);
+
             newAuth = new Auth({
                 token      : token,
                 user       : {_id : data.user._id},
@@ -86,7 +86,6 @@ console.log(data);
 
             newAuth.save(function(error) {
                 cb(error, newAuth);
-                console.log(newAuth)
             });
         }
     });
