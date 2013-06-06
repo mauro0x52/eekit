@@ -441,6 +441,8 @@ module.exports(new Class (function (params) {
             data.source = that.caller().name();
         }
 
+        _gaq.push(['_trackEvent', app.name(), label]);
+
         Empreendekit.ajax.post({
             url : 'http://' + Empreendekit.config.services.tracker.host + ':' + Empreendekit.config.services.tracker.port + '/event',
             data : data
