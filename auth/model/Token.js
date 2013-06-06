@@ -14,8 +14,8 @@ var mongoose = require('mongoose'),
 tokenSchema = new Schema({
     token          : {type : String, trim : true},
     service        : {type : String, required : true},
-    dateCreated    : {type : Date},
-    dateExpiration : {type : Date}
+    dateCreated    : {type : Date, required : true},
+    dateExpiration : {type : Date, required : true}
 });
 
 
@@ -29,13 +29,13 @@ tokenSchema = new Schema({
  * @param service   id do serviço
  * @param cb        callback
  */
-tokenSchema.generate = function (minutes, service) {
+tokenSchema.generate = function (service) {
     var token, expiration,
         crypto = require('crypto'),
         config = require('./../config.js');
 
     expiration = new Date();
-    expiration.setMinutes(expiration.getMinutes() + minutes);
+    expiration.setDate(expiration.getDate() + 30);
 
     token = {
          token : crypto
@@ -49,6 +49,7 @@ tokenSchema.generate = function (minutes, service) {
 
     return token;
 }
+
 
 /*  Exportando o pacote  */
 Token = exports.Token = tokenSchema;

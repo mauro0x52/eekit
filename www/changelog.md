@@ -1,7 +1,13 @@
 Changelog
 =========
 
-## 2.0
+## 2.0.1 (2013-06-06)
+
+Melhorias
+- Verificando se o token está pré-setado na url
+- Google Analytics
+
+## 2.0 (2013-06-04)
 
 Features
 - Novo SDK e novo Layout

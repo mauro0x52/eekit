@@ -348,6 +348,7 @@ module.exports = function (params) {
                                 }
                             );
                             response.send(null);
+                            console.log('http://www.empreendekit.com.br/ee/usuarios?token=' + token);
                         }
                     });
                 }

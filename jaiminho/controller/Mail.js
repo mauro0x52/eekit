@@ -61,22 +61,27 @@ module.exports = function (params) {
                                     replyTo : from ? from : '"'+params.config.emails.contact.name+'"<'+params.config.emails.contact.address+'>',
                                     to      : userEmail,
                                     subject : subject,
-                                    html    : html,
+                                    html    : html + '<br /><br /><br />',
                                     bcc     : 'lucas@empreendemia.com.br'
                                 }
 
                                 sgEmail = new Sendgrid.Email(mail);
                                 sgEmail.setCategory(categoriesArray);
 
-                                sendgrid.send(sgEmail, function(success) {
-                                    if (success) {
-                                        mail.name = name;
-                                        mail.categories = categoriesArray;
-                                        response.send({mail : mail});
-                                    } else {
-                                        response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
-                                    }
-                                });
+                                if (params.config.environment === 'development') {
+                                    sendgrid.send(sgEmail, function(success) {
+                                        if (success) {
+                                            mail.name = name;
+                                            mail.categories = categoriesArray;
+                                            response.send({mail : mail});
+                                        } else {
+                                            response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
+                                        }
+                                    });
+                                } else {
+                                    console.log({mail : mail});
+                                    response.send({mail : mail});
+                                }
                             } else {
                                 response.send({error : data.error});
                             }
@@ -143,21 +148,26 @@ module.exports = function (params) {
                                 replyTo : userEmail,
                                 to      : to,
                                 subject : subject,
-                                html    : html
+                                html    : html + '<br /><br /><br />',
                             }
 
                             sgEmail = new Sendgrid.Email(mail);
                             sgEmail.setCategory(categoriesArray);
 
-                            sendgrid.send(sgEmail, function(success) {
-                                if (success) {
-                                    mail.name = name;
-                                    mail.categories = categoriesArray;
-                                    response.send({mail : mail});
-                                } else {
-                                    response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
-                                }
-                            });
+                            if (params.config.environment === 'development') {
+                                sendgrid.send(sgEmail, function(success) {
+                                    if (success) {
+                                        mail.name = name;
+                                        mail.categories = categoriesArray;
+                                        response.send({mail : mail});
+                                    } else {
+                                        response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
+                                    }
+                                });
+                            } else {
+                                console.log({mail : mail});
+                                response.send({mail : mail});
+                            }
                         } else {
                             response.send({error : data.error});
                         }

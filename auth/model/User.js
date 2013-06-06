@@ -121,9 +121,9 @@ userSchema.methods.checkToken = function (tokenKey, serviceKey) {
             this.tokens[i].token.toString() === tokenKey.toString() &&
             (new Date() <= expiration)
         ) {
-                this.tokens[i].dateExpiration = expiration.setMinutes(expiration.getMinutes() + 24*60);
-                this.save()
-                return true;
+            return true;
+            this.tokens[i].dateExpiration = expiration.setDate(expiration.getDate() + 30);
+            this.save()
         }
     }
     return false;
@@ -157,8 +157,8 @@ userSchema.methods.login = function (service, cb) {
             }
             if (found) {
                // se a empresa tem autorização
-               // gera token de 24h
-               token = Token.generate(24*60, found.service);
+               // gera token de 30 dias
+               token = Token.generate(found.service);
 
                // salva usuário com novo token
                user.tokens.push(token);

@@ -15,6 +15,8 @@ companySchema = new schema({
     categories  : [require('./Category').Category]
 });
 
+companySchema.index({company: 1});
+
 companySchema.methods.findCategory = function (category_id, cb) {
     var category = null,
         i;

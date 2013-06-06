@@ -79,6 +79,7 @@ module.exports(new Class(function (context) {
             click_cb = value;
         } else {
             history.pushState({}, 'EmpreendeKit', context.route());
+            _gaq.push(['_trackPageview', context.route()]);
 
             if (click_cb) {
                 click_cb.apply(self);

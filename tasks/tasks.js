@@ -26,9 +26,9 @@ app.configure(function () {
     app.use(app.router);
 });
 
-var model = require('./model/Model'),
-    auth = require('./utils/auth'),
-    kamisama = require('./utils/kamisama');
+var auth = require('./utils/auth'),
+    kamisama = require('./utils/kamisama'),
+    model = require('./model/Model');
 /*  Chamando controllers */
 require('./controller/Company.js')({
     app      : app,
