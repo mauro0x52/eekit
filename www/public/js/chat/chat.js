@@ -13,7 +13,7 @@ module.exports(new Class (function (params) {
     var conversant = params.conversant;
 
     var ui = new Empreendekit.ui.chat({
-        title  : conversant ? 'Conversa com ' + conversant.name : 'Chat online. Estamos disponíveis!'
+        title  : conversant ? ('Conversa com ' + conversant.name) : 'Chat online. Estamos disponíveis!',
         submit : function () {
             Empreendekit.socket.emit('chat', {
                 jid     : conversant.jid,
@@ -29,7 +29,7 @@ module.exports(new Class (function (params) {
             !conversant
         ) {
             ui.messages.add(new ui.chatMessage({
-                sender  : conversant ? conversant.name || 'Gabriel',
+                sender  : conversant ? conversant.name : 'Gabriel',
                 content : message.content,
                 date    : new Date(message.date)
             }));

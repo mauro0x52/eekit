@@ -43,10 +43,10 @@ new Namespace({
     group         : folder + 'elements/group.js',
     item          : folder + 'elements/item.js',
     icon          : folder + 'elements/icon.js',
-    action        : folder + 'elements/action.js',
+    action        : folder + 'elements/action.js'/*,
 
     chat          : folder + 'elements/chat.js',
-    chatMesssage  : folder + 'elements/chatMessage.js'
+    chatMesssage  : folder + 'elements/chatMessage.js'*/
 }, function () {
 
     var element,
@@ -201,7 +201,7 @@ new Namespace({
 
     this.dialogs = new this.collection(modals, [this.dialog]);
 
-    this.chats = new this.collection(chats, [this.chat]);
+    //this.chats = new this.collection(chats, [this.chat]);
 
     module.exports(this);
 });
