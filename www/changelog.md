@@ -5,6 +5,7 @@ Changelog
 
 Melhorias
 - Verificando se o token está pré-setado na url
+- Google Analytics
 
 ## 2.0 (2013-06-04)
 
