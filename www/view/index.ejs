@@ -11,9 +11,14 @@
         <script type="text/javascript" src="/js/ajax.min.js"></script>
         <script type="text/javascript" src="/js/namespace.min.js"></script>
         <script src="http://<%=config.services.kamisama.url%>:<%=config.services.kamisama.port%>/socket.io/socket.io.js"></script>
-
-        <!-- begin google analytics -->
+    </head>
+    <body>
         <script type="text/javascript">
+            <%
+            /**
+             * Google Analytics
+             */
+            %>
             var _gaq = _gaq || [];
             <% if (config.environment === 'production') { %>
                 _gaq.push(['_setAccount', 'UA-7274902-7']);
@@ -27,14 +32,13 @@
                     }
                 })();
             <% } %>
-        </script>
-        <!-- end google analytics -->
-    </head>
-    <body>
-        <script type="text/javascript">
-
+            <%
+            /**
+             * Seta o Token
+             */
+            %>
             function setToken (token, remindme) {
-                var exdate=new Date();
+                var exdate = new Date();
                 if (remindme) {
                     exdate.setDate(exdate.getDate() + 30);
                 } else {
@@ -42,10 +46,24 @@
                 }
                 document.cookie = "token=" + escape(token) + "; expires=" + exdate.toUTCString() + "; path=/";
             }
-
+            <%
+            /**
+             * Pega o Token
+             */
+            %>
             function getToken () {
                 return document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*((?:[^;](?!;))*[^;]?).*)|.*/, "$1");
             }
+            <%
+            /**
+             * Verifica se o token foi setado na url
+             */
+            %>
+            var url_query = /.*token\=([^&]*).*/.exec(location.search);
+            var token = url_query && url_query[1] ? url_query[1] : null;
+            console.log(location.search)
+            console.log(token)
+            if (token) setToken(token);
 
             var folder = '/js/',
                 auth = '<%=config.services.auth.url%>:<%=config.services.auth.port%>';
