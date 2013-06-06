@@ -122,6 +122,7 @@ module.exports(new Class(function (context) {
             click_cb = value;
         } else {
             history.pushState({}, 'EmpreendeKit', context.route());
+            _gaq.push(['_trackPageview', context.route()]);
 
             var apps = Empreendekit.ui.apps.get(),
                 navigations = Empreendekit.ui.navigation.get(),

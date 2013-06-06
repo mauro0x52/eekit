@@ -1,4 +1,5 @@
 module.exports = {
+    environment : 'development',
     host : {
         port : 8000,
         url  : 'localhost',
