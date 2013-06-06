@@ -17,7 +17,7 @@ module.exports = {
     },
     sendgrid : {
         username : '',
-        password : '',
+        password : ''
     },
     security : {
         secret : 'www'
