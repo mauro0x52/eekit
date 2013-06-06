@@ -131,6 +131,7 @@ model.Auth.find().distinct('user._id', function (error, usersIds){
                     /* tarefas para esta semana */
                     model.Task.find({
                         user : auth.user._id,
+                        done : false,
                         dateDeadline : {$gte : today, $lt : nextWeek}
                     },
                     null,
@@ -145,7 +146,6 @@ model.Auth.find().distinct('user._id', function (error, usersIds){
                             /* cadastrou só semana passada */
                             model.Task.find({
                                 user : auth.user._id,
-                                done : false,
                                 dateDeadline : {$gte : prePreviousWeek, $lt : today}
                             },
                             function (error, tasks) {
