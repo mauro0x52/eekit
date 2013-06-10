@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 2.3.2
+
+Features
+- Botões de pagamento do PagSeguro
+
+
 ## 2.3.1 (2013-06-03)
 
 Ajustes
