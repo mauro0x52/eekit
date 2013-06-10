@@ -315,7 +315,12 @@ app.routes.list('/', function (params, data) {
         app.bind('filter contact', function (fields) {
             var query,
                 queryField = fields.query.value(),
-                users = fields.user.value();
+                users = fields.user.value(),
+                categories = fields.categories.clients.value().concat(
+                    fields.categories.suppliers.value(),
+                    fields.categories.partners.value(),
+                    fields.categories.personals.value()
+                );
 
             query  = contact.name;
             query += ' ' + contact.email;
@@ -351,14 +356,24 @@ app.routes.list('/', function (params, data) {
                     }
                 }
 
-                app.ui.actions.get()[0].href(
-                    app.ui.actions.get()[0].href() +
-                    escape(contact.name)  + ' %2C' +
-                    escape(contact.phone) + ' %2C' +
-                    escape(contact.email) +
-                    fields        +
-                    '%0A'
-                );
+                var category;
+                for (var i in categories) {
+                    if (categories[i]._id === contact.category) {
+                        category = categories[i].name;
+                    }
+                }
+
+                if (categories.indexOf(contact.category) > -1) {
+                    app.ui.actions.get()[0].href(
+                        app.ui.actions.get()[0].href() +
+                        escape(contact.name)  + ' %2C' +
+                        escape(contact.phone) + ' %2C' +
+                        escape(contact.phone) + ' %2C' +
+                        escape(category) +
+                        fields        +
+                        '%0A'
+                    )
+                };
             }
         });
 
@@ -497,7 +512,7 @@ app.routes.list('/', function (params, data) {
                 }));
                 /* dispara o evento de filtro */
                 app.ui.filter.submit(function () {
-                    var header = 'nome %2Ctelefone %2Cemail';
+                    var header = 'nome %2Ctelefone %2Cemail %2Ccategoria';
 
                     for (var i in userfields) {
                         header += '%2C' + escape(userfields[i].name) + ' ';
