@@ -121,9 +121,9 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
             value : billet.receiver
         });
         fields.cpfCnpj = new app.ui.inputText({
-            legend : 'Seu cnpj',
+            legend : 'Seu CNPJ ou CPF',
             name : 'cpfCnpj',
-            rules : [{rule : /^\d\d\.?\d\d\d\.?\d\d\d\/?\d\d\d\d\-?\d\d$/, message : 'ex: 12.345.678/9999-00'}],
+            rules : [{rule : /^((\d\d\d\.?\d\d\d\.?\d\d\d\-?\d\d)|(\d\d\.?\d\d\d\.?\d\d\d\/?\d\d\d\d\-?\d\d))$/, message : 'CPF ou CNPJ inválido'}],
             value : billet.cpfCnpj
         });
         fields.bankId = new app.ui.inputSelector({
