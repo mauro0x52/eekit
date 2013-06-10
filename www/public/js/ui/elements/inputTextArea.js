@@ -128,7 +128,7 @@ module.exports(new Class(function (params) {
             input.html.set(value);
             self.change();
         } else {
-            return input.attribute('value').get();
+            return input.attribute('value').get().replace(/\n/g, '%0A');
         }
     };
 

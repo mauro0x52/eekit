@@ -115,7 +115,7 @@ app.routes.dialog('/boleto/itau/:id', function (params, data) {
             value : billet.agency ? billet.agency : ''
         });
         fields.account = new app.ui.inputText({
-            legend : 'Código do cedente',
+            legend : 'Conta corrente',
             name : 'account',
             value : request.account ? request.account : '',
             rules : [{rule : /^\d{5}(\-[0-9x]{1})?$/, message : 'conta inválida'}],

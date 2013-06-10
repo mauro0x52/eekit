@@ -234,9 +234,8 @@ app.routes.entity('/contato/:id', function (params, data) {
                         insert : {
                             title : contact.name
                         }
-                    }/*,
+                    },
                     open : function (tool) {
-                        app.ui.embbeds.add(tool);
                         app.ajax.get({
                             url : 'http://' + app.config.services.tasks.host + ':' + app.config.services.tasks.port + '/tasks',
                             data : data
@@ -254,7 +253,7 @@ app.routes.entity('/contato/:id', function (params, data) {
                                 }
                             }
                         });
-                    }*/
+                    }
                 })
 
                 app.open({

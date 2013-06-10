@@ -19,6 +19,23 @@ module.exports = {
         secret : 'tasks',
         name   : 'tasks'
     },
+    attendant : {
+        jid : 'contato@empreendekit.com.br'
+    },
+    accounts : [
+        {
+            jid : 'eekittalk1@gmail.com',
+            password : 'kawasakitalk'
+        },
+        {
+            jid : 'eekittalk2@gmail.com',
+            password : 'kawasakitalk'
+        },
+        {
+            jid : 'eekittalk3@gmail.com',
+            password : 'kawasakitalk'
+        }
+    ],
     services : {
         auth : {
             url  : 'localhost',

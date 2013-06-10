@@ -60,6 +60,7 @@ new Namespace({
         appmenu,
         modals,
         sheets,
+        chats,
         dragging = null;
 
     element = new this.element('div', {attributes : {'class' : 'body'}, html : [
@@ -112,7 +113,9 @@ new Namespace({
             sheets = new this.element('div', {attributes : {'class' : 'sheets'}})
         ]}),
         /* modal */
-        modals = new this.element('div', {attributes : {'class' : 'modals'}})
+        modals = new this.element('div', {attributes : {'class' : 'modals'}}),
+        /* chat */
+        chats = new this.element('div', {attributes : {'class' : 'chats'}})
     ]});
 
     logout.event('click').bind(function () {
@@ -195,6 +198,8 @@ new Namespace({
     this.apps = new this.collection(sheets, [this.list, this.entity, this.frame]);
 
     this.dialogs = new this.collection(modals, [this.dialog]);
+
+    //this.chats = new this.collection(chats, [this.chat]);
 
     module.exports(this);
 });
