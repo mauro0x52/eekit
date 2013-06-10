@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 2.3.2 (2013-06-10)
+
+Melhorias
+- Nome no cadastro aceita acentos
+
 ## 2.3.1 (2013-06-03)
 
 Ajustes

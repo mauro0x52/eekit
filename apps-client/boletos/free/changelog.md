@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.1.3 (2013-06-10)
+
+Melhorias
+- Rancando fora boletos do BB e Caixa
+
 ## 1.1.2 (2013-06-03)
 
 Ajustes
