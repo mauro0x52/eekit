@@ -68,7 +68,7 @@ module.exports = function (params) {
                                 sgEmail = new Sendgrid.Email(mail);
                                 sgEmail.setCategory(categoriesArray);
 
-                                if (params.config.environment === 'development') {
+                                if (params.config.environment === 'production') {
                                     sendgrid.send(sgEmail, function(success) {
                                         if (success) {
                                             mail.name = name;
@@ -154,7 +154,7 @@ module.exports = function (params) {
                             sgEmail = new Sendgrid.Email(mail);
                             sgEmail.setCategory(categoriesArray);
 
-                            if (params.config.environment === 'development') {
+                            if (params.config.environment === 'production') {
                                 sendgrid.send(sgEmail, function(success) {
                                     if (success) {
                                         mail.name = name;
