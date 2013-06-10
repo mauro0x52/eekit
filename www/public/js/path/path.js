@@ -57,6 +57,7 @@ module.exports({
                     caller : params.caller,
                     data   : params.data,
                     close  : params.close,
+                    open   : params.open,
                     users  : users
                 });
                 if (newapp.type() === 'dialog') {

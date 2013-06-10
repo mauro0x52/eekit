@@ -467,4 +467,8 @@ module.exports(new Class (function (params) {
 
     this.callback().apply(this, [this.params(), this.data()]);
 
+    if (params.open) {
+        params.open(this.ui);
+    }
+
 }));

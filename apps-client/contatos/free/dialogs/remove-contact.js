@@ -17,7 +17,7 @@ app.routes.dialog('/remover-contato/:id', function (params, data) {
         app.ui.description("Ao apagar esse contato, você apagará também as tarefas relacionadas. Você tem certeza disso?");
 
         app.ui.form.submit(function() {
-            contact.remove();
+            contact.remove(function () {});
             app.close(true);
         });
     });

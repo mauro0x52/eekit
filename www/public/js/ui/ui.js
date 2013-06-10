@@ -43,10 +43,7 @@ new Namespace({
     group         : folder + 'elements/group.js',
     item          : folder + 'elements/item.js',
     icon          : folder + 'elements/icon.js',
-    action        : folder + 'elements/action.js'/*,
-
-    chat          : folder + 'elements/chat.js',
-    chatMesssage  : folder + 'elements/chatMessage.js'*/
+    action        : folder + 'elements/action.js'
 }, function () {
 
     var element,
