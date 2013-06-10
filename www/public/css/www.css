@@ -1779,6 +1779,7 @@ form {
     font-size: 12px;
     line-height: 1.6em;
     margin: 20px;
+    white-space:pre;
 }
 
 /* data-set */
