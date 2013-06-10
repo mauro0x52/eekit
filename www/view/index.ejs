@@ -45,14 +45,10 @@
                 ui      : folder + 'ui/ui.js'/*,
                 chat    : folder + 'chat/chat.js'*/
             }, function () {
-                /* Chat de atendimento
-                Empreendekit.customerService = new this.chat({
-                    title : 'Chat online. Estamos disponíveis!'
-                }); */
-
+                var self = this;
+                
                 /* Comunicação com o kami-sama */
-                Empreendekit.socket = io.connect('http://' + this.config.services.kamisama.host + ':' + this.config.services.kamisama.port),
-                    self = this;
+                Empreendekit.socket = io.connect('http://' + this.config.services.kamisama.host + ':' + this.config.services.kamisama.port);
                 Empreendekit.socket.on('trigger', function (evt) {
                     var apps = self.ui.apps.get();
                     for (var i in apps) {
