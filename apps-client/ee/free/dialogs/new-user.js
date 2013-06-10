@@ -54,8 +54,7 @@ app.routes.dialog('/adicionar-usuario', function (params, data) {
                 username : login.value(),
                 password : password.value(),
                 name : name.value(),
-                secret : app.config.services.www.secret,
-                token : getToken()
+                secret : app.config.services.www.secret
             }
         }, function (response) {
             if (!response || response.error) {

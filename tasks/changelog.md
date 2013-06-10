@@ -1,6 +1,14 @@
 Changelog
 =========
 
+## 1.1
+
+Features
+- Relatório de tarefas por email
+
+Melhorias
+- Cache local dos tokens
+
 ## 1.0.2 (2013-05-13)
 
 Melhorias
@@ -19,6 +27,7 @@ Features
 - Adição de usuário responsável para tarefa
 
 ## 0.3 (2013-03-19)
+
 - Autenticação de serviço
 - Comunicação com barramento de eventos
 

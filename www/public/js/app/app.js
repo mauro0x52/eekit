@@ -129,7 +129,7 @@ module.exports(new Class (function (params) {
 
             Empreendekit.ajax.get(path, function (data) {
                 if (data.error && data.error.name === 'InvalidTokenError') {
-                    Empreendekit.auth.user.signin();
+                    Empreendekit.path.redirect('ee/');
                 } else {
                     cb(data);
                     if (that.ui.loading) {
@@ -148,7 +148,7 @@ module.exports(new Class (function (params) {
 
             Empreendekit.ajax.post(path, function (data) {
                 if (data.error && data.error.name === 'InvalidTokenError') {
-                    //Empreendekit.auth.user.signin();
+                    Empreendekit.path.redirect('ee/');
                 } else {
                     cb(data);
                     if (that.ui.loading) {

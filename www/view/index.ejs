@@ -22,27 +22,11 @@
                 } else {
                     exdate.setDate(exdate.getDate() + 2);
                 }
-                var c_value=escape(token) + "; expires="+exdate.toUTCString();
-                document.cookie="token=" + c_value;
+                document.cookie = "token=" + escape(token) + "; expires=" + exdate.toUTCString() + "; path=/";
             }
 
             function getToken () {
-                var c_value = document.cookie;
-                var c_start = c_value.indexOf(" token=");
-                if (c_start == -1) {
-                    c_start = c_value.indexOf("token=");
-                }
-                if (c_start == -1) {
-                    c_value = null;
-                } else {
-                    c_start = c_value.indexOf("=", c_start) + 1;
-                    var c_end = c_value.indexOf(";", c_start);
-                    if (c_end == -1) {
-                        c_end = c_value.length;
-                    }
-                    c_value = unescape(c_value.substring(c_start,c_end));
-                }
-                return c_value;
+                return document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*((?:[^;](?!;))*[^;]?).*)|.*/, "$1");
             }
 
             var folder = '/js/',
@@ -53,7 +37,7 @@
             });
 
             var Empreendekit = new Namespace({
-                config  : folder + 'configuration/configuration.js',
+                config  : folder + 'config/config.js',
                 ajax    : folder + 'ajax/ajax.js',
                 app     : folder + 'app/app.js',
                 auth    : folder + 'auth/auth.js',

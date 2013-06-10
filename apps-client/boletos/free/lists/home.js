@@ -146,7 +146,6 @@ app.routes.list('/', function (params, data) {
 
     /* listando os boletos */
     app.models.billet.list({}, function (billets) {
-        console.log(billets)
         for (var i in billets) {
             groups.billets.items.add(new Item(billets[i]).item);
         }

@@ -212,7 +212,8 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
         });
 
         fieldsets.dates = new app.ui.fieldset({
-            legend : 'Datas'
+            legend : 'Datas',
+            collapsed : true
         });
         fieldsets.dates.fields.add([
             fields.creationDate,
@@ -225,19 +226,20 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
             name : 'clientName',
             value : billet.clientName
         });
-        fields.demonstrative = new app.ui.inputText({
+        fields.demonstrative = new app.ui.inputTextarea({
             legend : 'Demonstrativo',
             name : 'demonstrative',
             value : billet.demonstrative
         });
-        fields.instructions = new app.ui.inputText({
+        fields.instructions = new app.ui.inputTextarea({
             legend : 'Instruções ao caixa',
             name : 'instructions',
             value : billet.instructions
         });
 
         fieldsets.client = new app.ui.fieldset({
-            legend : 'Cliente'
+            legend : 'Cliente',
+            collapsed : true
         });
         fieldsets.client.fields.add([
             fields.clientName,

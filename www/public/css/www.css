@@ -24,6 +24,8 @@ body {
     margin: 0;
     height: 100%;
     width: 100%;
+    min-width: 1100px;
+    min-height: 500px;
     overflow: hidden;
     background-color: #332f2f;
     background-image: url("../images/loading-global.gif");
@@ -42,6 +44,7 @@ body > .body {
 a {
     text-decoration: none;
     cursor: pointer;
+    outline: 0;
 }
 
 a img {
@@ -106,6 +109,7 @@ form {
 
 .body > .header > .logo > .anchor {
     display: block;
+    cursor: default;
 }
 
 .body > .header > .logo > .anchor > .image {
@@ -160,7 +164,7 @@ form {
 }
 
 .body > .header > .menu > .tools > .tool  > .anchor > .legend{
-    margin: 2px 0;
+    margin: 5px 0 0 0;
     font-size: 11px;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 11px;
@@ -318,7 +322,7 @@ form {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     width: 80px;
-    margin: auto;
+    margin: 5px auto 0 auto;
 }
 
 /* navigation */
@@ -387,7 +391,7 @@ form {
     z-index: 10000;
     float: left;
     margin-right: 1px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    border: 1px solid #332f2f;
     width: 660px;
     background-color: #fdfdeb;
     transition: all 0.4s ease;
@@ -469,6 +473,7 @@ form {
     text-align: right;
     top: 260px;
     transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
     width: 500px;
 }
 
@@ -688,7 +693,7 @@ form {
 }
 
 .sheets .body .groups > .group .group > .header > .actions {
-    top: 2px;
+    top: 1px;
     opacity: 0;
     transition: all 0.2s linear;
     -webkit-transition: all 0.2s linear;
@@ -709,6 +714,7 @@ form {
 .sheets .body .groups > .group > .header > .actions  > .action  > .anchor {
     display: block;
     padding: 5px;
+    height: 20px;
 }
 
 .sheets .body .groups > .group > .header > .actions  > .action  > .anchor > .image {
@@ -751,14 +757,17 @@ form {
 
 .sheets .body .groups > .group .group > .header {
     position: relative;
-    padding: 6px 0 6px 20px;
-    margin: 5px 0 0 100px;
+    margin: 5px 0 0 120px;
     border-radius: 10px 0 0 0;
     background-color: #332f2f;
+    height: 32px;
 }
 
 .sheets .body .groups > .group .group > .header > .name {
     display: inline-block;
+    position: absolute;
+    top: 8px;
+    left: 10px;
     color: #fdfdeb;
     font-size: 12px;
     padding: 0;
@@ -822,7 +831,7 @@ form {
 }
 
 .sheets .body > .groups .items > .item:hover  {
-    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
     z-index: 10000;
     margin-left: 15px;
     border-bottom: 1px solid #b9ac9f;
@@ -830,7 +839,7 @@ form {
 }
 
 .sheets .body > .groups .group:hover > .items > .item:hover  {
-    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
     z-index: 10000;
     margin-left: 15px;
     border-bottom: 1px solid #b9ac9f;
@@ -874,8 +883,7 @@ form {
     position: absolute;
     top: 0;
     left: 0;
-    width: 80px;
-    font-size: 9px;
+    width: 100px;
     text-align: center;
     border-radius: 5px 0 0 5px;
     min-height: 20px;
@@ -892,7 +900,7 @@ form {
     position: absolute;
     top: 0;
     right: 0;
-    width: 70px;
+    width: 92px;
     transition: all 0.2s ease;
     -webkit-transition: all 0.2s ease;
     -moz-transition: all 0.2s ease;
@@ -905,11 +913,14 @@ form {
 
 .sheets .body > .groups .item > .label > .legend  {
     position: absolute;
-    top: 12px;
+    top: 50%;
+    margin-top: -6px;
     left: 1px;
-    width: 78px;
+    width: 98px;
     color: #fff;
     text-shadow: 0 0 2px rgba(0,0,0,0.8);
+    font-size: 9px;
+    line-height: 9px;
 }
 
 .sheets .body > .groups .item  >.thumbnail > .anchor > .image {
@@ -919,8 +930,8 @@ form {
 
 .sheets .body > .groups .item  >.title {
     display: block;
-    width: 400px;
-    margin: 10px 0 4px 100px;
+    width: 360px;
+    margin: 10px 0 4px 110px;
     font-weight: normal;
     font-size: 14px;
     color: #333;
@@ -943,7 +954,7 @@ form {
     display: block;
     padding: 0;
     font-size: 11px;
-    margin: 4px 0 8px 100px;
+    margin: 4px 0 8px 110px;
     width: 480px;
 }
 
@@ -970,7 +981,7 @@ form {
 
 .sheets .body > .groups .item > .description {
     display: block;
-    margin: 8px 0 10px 100px;
+    margin: 8px 0 10px 110px;
     font-size: 11px;
     line-height: 1.4em;
     width: 480px;
@@ -1079,6 +1090,7 @@ form {
 .sheets .body > .groups .item > .actions > .action > .anchor{
     display: block;
     padding: 5px;
+    height: 20px;
 }
 
 .sheets .body > .groups .item > .actions > .action > .anchor > .image {
@@ -1235,7 +1247,6 @@ form {
     width: 190px;
     padding: 4px 6px;
     border: 1px solid #b9ac9f;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     border-radius: 8px;
     font-size: 12px;
 }
@@ -1244,7 +1255,6 @@ form {
     width: 190px;
     padding: 4px 6px;
     border: 1px solid #b9ac9f;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     border-radius: 8px;
     font-size: 12px;
 }
@@ -1289,7 +1299,7 @@ form {
 
 .field.select > .data   > .arrow {
     position: absolute;
-    top: 8px;
+    top: 10px;
     left: 282px;
     border-right: 6px solid transparent;
     border-left: 6px solid transparent;
@@ -1311,7 +1321,6 @@ form {
     height: 12px;
     margin-right: 10px;
     border: 1px solid #b9ac9f;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     border-radius: 4px;
     background-color: #fff;
     transition: all 0.1s linear;
@@ -1333,7 +1342,7 @@ form {
     margin: 5px 0 5px 5px;
     color: #000;
     position: absolute;
-    top: -2px;
+    top: 0;
     z-index: 10000;
 }
 
@@ -1397,7 +1406,6 @@ form {
     padding: 6px 23px 6px 6px;
     background-color: #fff;
     border: 0;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     font-size: 12px;
     margin: 0;
 }
@@ -1513,7 +1521,6 @@ form {
     top: 0;
     border: 1px solid #b9ac9f;
     z-index: 100000;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.6);
 }
 
 .field.select .select-box > .all  {
@@ -1541,7 +1548,6 @@ form {
     padding: 6px 23px 6px 6px;
     background-color: #fff;
     border: 0;
-    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     font-size: 12px;
     outline: 0;
 }
@@ -1584,7 +1590,6 @@ form {
     left: 220px;
     width: 220px;
     display: block;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.6);
     border: 1px solid #b9ac9f;
 }
 
@@ -1631,7 +1636,6 @@ form {
 
 .field.select .groups > .group.selected {
     background-color: #6196ae;
-    box-shadow: inset 2px 6px 6px rgba(0,10,50,0.3);
     color: #fff;
 }
 
@@ -1720,7 +1724,7 @@ form {
 .sheets .body > .menu {
     background-color: #fff;
     border-bottom: 1px solid #b9ac9f;
-    padding: 10px 20px;
+    padding: 8px 20px 12px;
     height: 16px;
     text-align: right;
 }
@@ -2056,7 +2060,9 @@ form {
     border-radius: 0;
     margin-left: -100px;
     margin-top: -40px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-width: 1000px;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -2074,7 +2080,7 @@ form {
 
 .modal-wrapper {
     position: fixed;
-    display: table;
+    display: block;
     left: 0;
     top: 0;
     height: 100%;
@@ -2083,6 +2089,8 @@ form {
     -webkit-transition: all 0.2s linear;
     -moz-transition: all 0.2s linear;
     -o-transition: all 0.2s linear;
+    overflow: auto;
+    background-color: rgba(51, 47, 47, 0.9);
 }
 
 .modal-wrapper.hide {
@@ -2090,27 +2098,6 @@ form {
     opacity: 0;
     z-index: 0;
 }
-
-.modal-wrapper > .centralizer {
-    display: table-cell;
-    vertical-align: middle;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Background                                                                 */
-/* -------------------------------------------------------------------------- */
-
-.modal-wrapper > .background {
-    position: fixed;
-    display: block;
-    background-color: #332f2f;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    opacity: 0.8;
-}
-
 
 /* -------------------------------------------------------------------------- */
 /* Modal                                                                      */
@@ -2120,7 +2107,7 @@ form {
     position: relative;
     display: block;
     width: 540px;
-    margin: auto;
+    margin: 20px auto;
     border: 4px solid #2b4f67;
     border-radius: 5px;
     background-color: #fff;
@@ -2342,6 +2329,10 @@ form {
     border: 0;
 }
 
+.modal > .form > .field-sets {
+    display: block;
+}
+
 .modal > .form > .field-sets > .field-set {
     padding: 10px;
     margin: 10px 0;
@@ -2411,7 +2402,7 @@ form {
     display: block;
     position: relative;
     margin: 0;
-    padding: 0 0 5px 0;
+    padding: 2px 0 5px 0;
     font-size: 12px;
 }
 
@@ -2503,7 +2494,7 @@ form {
     position: absolute;
     top: 25px;
     left: 0;
-    z-index: 10000;
+    z-index: 100000;
 }
 
 .date-picker > .calendar > .month {

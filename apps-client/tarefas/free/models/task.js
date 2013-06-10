@@ -89,7 +89,7 @@ app.models.task = function (params) {
             if (cb) {
                 cb();
             }
-            app.event('marcar tarefa como feita');    
+            app.event('marcar tarefa como feita');
         });
     };
 

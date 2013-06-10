@@ -10,8 +10,8 @@ var should = require("should"),
     api = require("./utils.js").api,
     rand = require("./utils.js").rand,
     auth = require("./utils.js").auth;
-    
-describe('POST /user', function () {
+
+describe('POST /company', function () {
     var token;
 
     before(function (done) {
@@ -20,7 +20,7 @@ describe('POST /user', function () {
             done();
         });
     });
-    
+
     it('url tem que existir', function (done) {
         api.post('tasks', '/company', {}, function (error, data, response) {
             if (error) {
@@ -32,7 +32,7 @@ describe('POST /user', function () {
             }
         });
     });
-    
+
     it('token inválido', function (done) {
         api.post('tasks', '/company', {token : 'invalido'}, function (error, data, response) {
             if (error) {
@@ -43,16 +43,16 @@ describe('POST /user', function () {
             }
         });
     });
-    
+
     it('registra usuário', function (done) {
         api.post('tasks', '/company', {token : token}, function (error, data, response) {
             if (error) {
                 return done(error);
             } else {
-                data.should.have.property('categories')
+                data.should.have.property('categories');
                 done();
             }
         });
     });
-    
+
 })

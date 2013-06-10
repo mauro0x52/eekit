@@ -9,7 +9,7 @@ module.exports({
 
     user : {
 
-        signin : function () {
+        signin : function (cb) {
             if (getToken()) {
                 Empreendekit.path.redirect('tarefas/');
             } else {
@@ -38,6 +38,9 @@ module.exports({
         signout : function () {
             setToken('', true);
             Empreendekit.path.redirect('ee/');
+            for (var i in Empreendekit.config.services) {
+                Empreendekit.config.services[i].token = undefined;
+            }
             Empreendekit.socket.emit('auth', {
                 user    : null,
                 company : null

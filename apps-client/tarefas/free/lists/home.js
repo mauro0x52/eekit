@@ -96,7 +96,7 @@ app.routes.list('/', function (params, data) {
                     }
                 })
             },
-            droppable : title !== 'Pendente'
+            droppable : title !== 'Pendente' && title !== 'Depois'
         });
         group.date = date;
 

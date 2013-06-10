@@ -340,13 +340,14 @@ module.exports = function (params) {
                                     token      : token,
                                     subject    : 'Recuperação de senha',
                                     html       : '<p>Olá '+user.name+'</p><p>Foi solicitada a recuperação de senha da sua conta no Empreendekit. Caso você não tenha feito a solicitação, favor desconsidere este email.</p><p>Para criar uma nova senha no empreendekit <a href="http://www.empreendekit.com.br/?token=' + token + '#!/ee/usuarios">clique aqui</a>.</p><br /><br />',
-                                    name : 'recuperar senha',
+                                    name       : 'recuperar senha',
                                     service    : 'auth'
                                 },
                                 function (error, response, data) {
-                                    response.send(null);
+
                                 }
                             );
+                            response.send(null);
                         }
                     });
                 }

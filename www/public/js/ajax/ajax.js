@@ -41,6 +41,7 @@ module.exports({
             path.data = path.data || {};
             if (Empreendekit.config) {
                 path.data.secret = Empreendekit.config.services.www.secret;
+                path.data.token = getToken();
             }
             ajax.get(path.url, {
                 data : path.data,
@@ -106,6 +107,7 @@ module.exports({
             path.data = path.data || {};
             if (Empreendekit.config) {
                 path.data.secret = Empreendekit.config.services.www.secret;
+                path.data.token = getToken();
             }
             ajax.post(path.url, {
                 data : path.data,

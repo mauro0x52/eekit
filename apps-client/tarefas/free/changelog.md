@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 2.1.2 (2013-06-03)
+
+Ajustes
+- Ajustando para o www 2.0
+
 ## 2.1.1 (2013-04-19)
 
 Melhorias

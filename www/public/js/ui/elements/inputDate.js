@@ -17,7 +17,7 @@ module.exports(new Class(function (params) {
         legend, input, errors, date_picker, month_name, month_days,
         previous_month, next_month,
         menu_today, menu_none, menu_tomorrow,
-        changing_month,
+        changing_month = false,
         self = this,
         change_cb;
 
@@ -80,24 +80,31 @@ module.exports(new Class(function (params) {
         self.value((date.getDate() + 1) + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
     });
     menu_none.event('click').bind(function () {
-        self.value(' ');
+        self.value('');
     });
     previous_month.event('click').bind(function (evt) {
         self.previousMonth();
+        changing_month = true;
         input.event('focus').trigger();
     }, true);
     next_month.event('click').bind(function (evt) {
         self.nextMonth();
+        changing_month = true;
         input.event('focus').trigger();
     }, true);
     input.event('focus').bind(function () {
-        date_picker.attribute('style').set('opacity:1');
         date_picker.attribute('class').set('date-picker');
         month_name.html.set(self.monthName());
         self.monthDays();
     });
     input.event('blur').bind(function () {
-        date_picker.attribute('style').set('opacity:0');
+        setTimeout(function () {
+            if (!changing_month) {
+                date_picker.attribute('class').set('hide');
+            }
+            changing_month = false;
+        }, 150);
+
     });
 
     /**
@@ -131,7 +138,7 @@ module.exports(new Class(function (params) {
      * @since  2013-05
      */
     this.value = function (value) {
-        if (value) {
+        if (value || value === '') {
 
             if (value.constructor !== String) {
                 throw new Error({
@@ -216,6 +223,9 @@ module.exports(new Class(function (params) {
             day,month,year;
 
         switch (value.length) {
+            case 0: {
+                return false;
+            }
             case 1: {
                 day = value[0];
                 if (day.length === 2) {
@@ -391,5 +401,6 @@ module.exports(new Class(function (params) {
     if (params) {
         this.legend(params.legend);
         this.value(params.value);
+        this.change(params.change);
     }
 }));

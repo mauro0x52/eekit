@@ -40,6 +40,7 @@ module.exports(new Class(function (params) {
         self.change();
         self.validate();
     });
+
     input.event('keyup').bind(function () {
         self.change();
     });

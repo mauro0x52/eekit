@@ -24,16 +24,16 @@ module.exports = function (params) {
         response.contentType('json');
         response.header('Access-Control-Allow-Origin', '*');
 
-        params.auth(request.param('token', null), function (error, data) {
+        params.model.Auth.findByToken(request.param('token', null), function (error, auth) {
             if (error) {
                 response.send({error : error});
             } else {
-                params.model.Company.findOne({company : data.company._id}, function (error, company) {
+                params.model.Company.findOne({company : auth.company._id}, function (error, company) {
                     if (error) {
                         response.send({error : error});
                     } else if (company === null) {
                         newcompany = new params.model.Company({
-                            company : data.company._id,
+                            company : auth.company._id,
                             categories : [
                                 {name : 'Geral', type : 'general', color : 'blue'},
                                 {name : 'Reuniões', type : 'meetings', color : 'brown'},
