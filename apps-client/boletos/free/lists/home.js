@@ -34,9 +34,7 @@ app.routes.list('/', function (params, data) {
             print : new app.ui.action({
                 tip    : 'imprimir boleto',
                 image  : 'download',
-                click  : function() {
-                    app.routes.redirect('http://' + app.config.services.billets.host + ':' + app.config.services.billets.port + '/billet/'+billet._id+'/print/'+billet.ourNumber);
-                }
+                href   : 'http://' + app.config.services.billets.host + ':' + app.config.services.billets.port + '/billet/'+billet._id+'/print/'+billet.ourNumber
             }),
             edit : new app.ui.action({
                 tip    : 'editar dados do boleto',
