@@ -167,6 +167,11 @@ module.exports(new Class(function (params) {
                 });
             }
 
+            if (value.indexOf('data:csv') > -1) {
+                anchor.attribute('target').set('_blank');
+            } else {
+                anchor.attribute('target').set('');
+            }
             anchor.attribute('href').set(value);
         } else {
             return anchor.attribute('href').get();
