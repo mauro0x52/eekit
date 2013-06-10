@@ -265,7 +265,7 @@ app.routes.frame('/cadastrar', function (params, data) {
             'type' : 'text',
             'class' : 'input',
             'required' : 'true',
-            'pattern' : '^[a-zA-Z0-9][a-zA-Z0-9 ]+$',
+            'pattern' : '^[a-zA-ZéúíóáÉÚÍÓÁèùìòàÈÙÌÒÀõãñÕÃÑêûîôâÊÛÎÔÂëÿüïöäËYÜÏÖÄ][a-zA-ZéúíóáÉÚÍÓÁèùìòàÈÙÌÒÀõãñÕÃÑêûîôâÊÛÎÔÂëÿüïöäËYÜÏÖÄ ]+$',
             'placeholder' : 'ex.: Fulano de Tal'
         },
         css : styles['input'],
