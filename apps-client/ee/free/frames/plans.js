@@ -363,7 +363,7 @@ app.routes.frame('/precos-e-planos', function (params, data) {
                         /* preco */
                         new app.ui.tag('div', {
                             attributes : {
-                                style : 'height:80px; vertical-align:center; border-top:1px solid #eee; padding-top:30px; background-color: #fff; '+(featured ? 'padding-bottom:10px;' : '')
+                                style : 'height:80px; vertical-align:center; border-top:1px solid #eee; padding-top:30px; background-color: #fff;'
                             },
                             html : new button(data.pagseguro)
                         }),
