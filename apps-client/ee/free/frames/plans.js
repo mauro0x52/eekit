@@ -8,7 +8,9 @@
 app.routes.frame('/precos-e-planos', function (params, data) {
     app.event('visualizar: precos-e-planos');
 
-    var header, prices, footer_signup, table_header, plan, table_plan_1, table_plan_2, table_plan_3;
+    var header, prices, footer_signup,
+        table_header, plan, table_plan_1, table_plan_2, table_plan_3,
+        button, buttons = [];
 
 
 /*
@@ -146,6 +148,42 @@ app.routes.frame('/precos-e-planos', function (params, data) {
 
 /*
  * -----------------------------------------------------------------------------
+ * Botões de pagamento
+ * -----------------------------------------------------------------------------
+ */
+    button = function (data) {
+        var html;
+
+        html = new app.ui.tag('form', {
+            attributes : {
+                'target' : 'pagseguro',
+                'action' :  data.type === 'signature' ? 'https://pagseguro.uol.com.br/v2/pre-approvals/request.html' : 'https://pagseguro.uol.com.br/checkout/v2/cart.html?action=add',
+                'method' : 'post'
+            },
+            html : [
+                new app.ui.tag('input', {
+                    attributes : {
+                        'type' : 'hidden',
+                        'name' : data.type === 'signature' ? 'code' : 'itemCode',
+                        'value' : data.value
+                    }
+                }),
+                new app.ui.tag('input', {
+                    attributes : {
+                        'type' : 'image',
+                        'src' : data.type === 'signature' ? 'https://p.simg.uol.com.br/out/pagseguro/i/botoes/assinaturas/209x48-assinar-assina.gif' : 'https://p.simg.uol.com.br/out/pagseguro/i/botoes/pagamentos/209x48-pagar-assina.gif',
+                        'name' : 'submit',
+                        'alt' : 'Pague com PagSeguro - é rápido, grátis e seguro!'
+                    }
+                })
+            ]
+        });
+
+        return html;
+    }
+
+/*
+ * -----------------------------------------------------------------------------
  * Tabela de preços
  * -----------------------------------------------------------------------------
  */
@@ -179,6 +217,12 @@ app.routes.frame('/precos-e-planos', function (params, data) {
                 attributes : {
                     style : 'background-color:#B9AC9F; border-radius: 0 0 0 10px; height:80px; line-height:80px; padding-right:10px; border-top: 1px solid #dad0c6; border-bottom:1px solid #948a80;'
                 }
+            }),
+            new app.ui.tag('div', {
+                html : 'Pagamento',
+                attributes : {
+                    style : 'color:#B9AC9F; height:100px; line-height:100px; padding-right:10px; text-shadow: 1px 1px 1px #fff;'
+                }
             })
         ]
     })
@@ -195,7 +239,7 @@ app.routes.frame('/precos-e-planos', function (params, data) {
 
         html = new app.ui.tag('div', {
             attributes : {
-                style : 'width: 240px; float:left; margin-right:-1px; border:1px solid #fff; border-radius:10px; background-color:#dddddd; text-align:center; z-index:1000;' + (featured ? 'background-color:#e8e8e8; box-shadow:0 0 20px rgba(0,0,0,0.5); z-index:10000; position:relative; top:-10px;' : '')
+                style : 'width: 240px; float:left; margin-right:-1px; border:1px solid #fff; border-radius:10px; background-color:#dddddd; text-align:center; z-index:1000;' + (featured ? 'background-color:#e8e8e8; box-shadow:0 0 20px rgba(0,0,0,0.2); z-index:10000; position:relative; top:-10px;' : '')
             },
             html : [
                 /* header */
@@ -303,7 +347,7 @@ app.routes.frame('/precos-e-planos', function (params, data) {
                         /* suporte */
                         new app.ui.tag('div', {
                             attributes : {
-                                style : 'height:80px; vertical-align:center; border-top:1px solid #eee; border-bottom: 1px solid #ccc; line-height:80px;' + (featured ? 'height:90px;' : '')                            },
+                                style : 'height:80px; vertical-align:center; border-top:1px solid #eee; border-bottom: 1px solid #ccc; line-height:80px;'},
                             html : [
                                 new app.ui.tag('span', {
                                     html : 'Suporte '
@@ -315,6 +359,13 @@ app.routes.frame('/precos-e-planos', function (params, data) {
                                     html : data.support
                                 })
                             ]
+                        }),
+                        /* preco */
+                        new app.ui.tag('div', {
+                            attributes : {
+                                style : 'height:80px; vertical-align:center; border-top:1px solid #eee; padding-top:30px; background-color: #fff;'
+                            },
+                            html : new button(data.pagseguro)
                         }),
                     ]
                 })
@@ -330,7 +381,11 @@ app.routes.frame('/precos-e-planos', function (params, data) {
         price : 59,
         users : 5,
         tools : ['Organize seus contatos', 'Gerencie suas tarefas', 'Cuide das suas finanças'],
-        support : 'básico'
+        support : 'básico',
+        pagseguro : {
+            type : 'signature',
+            value : '80141F914B4B655DD4694FBC9438936D'
+        }
     });
 
     table_plan_2 = plan({
@@ -339,7 +394,11 @@ app.routes.frame('/precos-e-planos', function (params, data) {
         price : 54,
         users : 5,
         tools : ['Organize seus contatos', 'Gerencie suas tarefas', 'Cuide das suas finanças'],
-        support : 'personalizado'
+        support : 'personalizado',
+        pagseguro : {
+            type : 'signature',
+            value : '445036377F7F2AB994C5BF85E14AB7F3'
+        }
     }, true);
 
     table_plan_3 = plan({
@@ -348,7 +407,11 @@ app.routes.frame('/precos-e-planos', function (params, data) {
         price : 49,
         users : 5,
         tools : ['Organize seus contatos', 'Gerencie suas tarefas', 'Cuide das suas finanças'],
-        support : 'personalizado'
+        support : 'personalizado',
+        pagseguro : {
+            type : 'single',
+            value : '74EBEC462E2E99BDD4F7CFA409C5BC31'
+        }
     });
 
 
