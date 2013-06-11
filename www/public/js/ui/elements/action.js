@@ -167,7 +167,7 @@ module.exports(new Class(function (params) {
                 });
             }
 
-            if (value.indexOf('data:csv') > -1) {
+            if (!click_cb) {
                 anchor.attribute('target').set('_blank');
             } else {
                 anchor.attribute('target').set('');
