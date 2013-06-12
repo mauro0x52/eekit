@@ -140,7 +140,7 @@ app.get('/export.csv', function (request, response) {
                             for (var j = 0; j < contacts[i].fieldValues; j++) {
                                 contact += ', ' + contacts[i].fieldValues[j].value;
                             }
-                            response.write(contact + '\n');
+                            response.write(contact.toString("utf8") + '\n');
 
                         }
                         response.end()

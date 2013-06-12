@@ -148,7 +148,7 @@ app.get('/export.csv', function (request, response) {
                     model.Transaction.find(query, function (error, transactions) {
                         console.log(transactions)
                         for (var i = 0; i < transactions.length; i++) {
-                            response.write(transactions[i].name + ', ' + getCategory(transactions[i].category) + ', ' + getAccount(transactions[i].account) + ', ' + (transactions[i].type == 'debt' ? '-' : '+') + transactions[i].value + ', ' +  transactions[i].date.getDate() + '/' + (transactions[i].date.getMonth() + 1) + '/' + transactions[i].date.getFullYear() + '\n');
+                            response.write((transactions[i].name + ', ' + getCategory(transactions[i].category) + ', ' + getAccount(transactions[i].account) + ', ' + (transactions[i].type == 'debt' ? '-' : '+') + transactions[i].value + ', ' +  transactions[i].date.getDate() + '/' + (transactions[i].date.getMonth() + 1) + '/' + transactions[i].date.getFullYear() + '\n')).toString("utf8");
                         }
                         response.end()
                     });
