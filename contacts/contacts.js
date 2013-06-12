@@ -98,7 +98,7 @@ app.get('/status', function (request, response) {
     })
 });
 
-app.get('/export', function (request, response) {
+app.get('/export.csv', function (request, response) {
     "use strict";
 
     response.contentType('csv');

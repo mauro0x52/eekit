@@ -589,7 +589,7 @@ app.routes.list('/', function (params, data) {
                     }));
                     /* dispara o evento de filtro */
                     app.ui.filter.submit(function () {
-                        var url = 'http://' + app.config.services.finances.host + ':' + app.config.services.finances.port + '/export?',
+                        var url = 'http://' + app.config.services.finances.host + ':' + app.config.services.finances.port + '/export.csv?',
                             j,
                             values;
 

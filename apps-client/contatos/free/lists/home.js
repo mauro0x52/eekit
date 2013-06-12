@@ -479,7 +479,7 @@ app.routes.list('/', function (params, data) {
                 }));
                 /* dispara o evento de filtro */
                 app.ui.filter.submit(function () {
-                    var url = 'http://' + app.config.services.contacts.host + ':' + app.config.services.contacts.port + '/export?',
+                    var url = 'http://' + app.config.services.contacts.host + ':' + app.config.services.contacts.port + '/export.csv?',
                         j,
                         values;
 
