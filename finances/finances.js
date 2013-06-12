@@ -109,13 +109,31 @@ app.get('/export.csv', function (request, response) {
             response.send({error : error});
         } else {
             model.Company.findOne({company : data.company._id}, function (error, company) {
-                var query = {}
+
+                function getCategory(id) {
+                    for (var i in company.categories) {
+                        if (company.categories[i]._id && id && company.categories[i]._id.toString() === id.toString()) {
+                            return company.categories[i].name;
+                        }
+                    }
+                    return '';
+                }
+
+                function getAccount(id) {
+                    for (var i in company.accounts) {
+                        if (company.accounts[i]._id && id && company.accounts[i]._id.toString() === id.toString()) {
+                            return company.accounts[i].name;
+                        }
+                    }
+                    return '';
+                }
+
                 if (error) {
                     response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                 } else if (company === null) {
                     response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                 } else {
-                    var header = 'nome, categoria, conta, tipo, valor, data',
+                    var header = 'nome, categoria, conta, valor, data',
                         query = {};
                     response.write(header + '\n')
 
@@ -124,14 +142,13 @@ app.get('/export.csv', function (request, response) {
 
                     query.company = company._id;
                     query.account = {$in : request.param('accounts')};
-                    query.category = {$in : request.param('categories')};
+                    query.category = {$in : request.param('categories').concat(null)};
                     query.date = {$gt : new Date(request.param('dateStart')), $lt : new Date(request.param('dateEnd'))};
-                    
-                    console.log(query)
 
                     model.Transaction.find(query, function (error, transactions) {
+                        console.log(transactions)
                         for (var i = 0; i < transactions.length; i++) {
-                            response.write(transactions[i].name + ', ' + transactions[i].category + ', ' + transactions[i].account + ', ' + transactions[i].type + ', ' + transactions[i].value + ', ' +  transactions[i].date + '\n');
+                            response.write(transactions[i].name + ', ' + getCategory(transactions[i].category) + ', ' + getAccount(transactions[i].account) + ', ' + (transactions[i].type == 'debt' ? '-' : '+') + transactions[i].value + ', ' +  transactions[i].date.getDate() + '/' + (transactions[i].date.getMonth() + 1) + '/' + transactions[i].date.getFullYear() + '\n');
                         }
                         response.end()
                     });

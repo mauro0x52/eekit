@@ -108,6 +108,15 @@ app.get('/export.csv', function (request, response) {
             response.send({error : error});
         } else {
             model.Company.findOne({company : data.company._id}, function (error, company) {
+
+                function getCategory(id) {
+                    for (var i in company.categories) {
+                        if (company.categories[i]._id.toString() === id.toString()) {
+                            return company.categories[i].name;
+                        }
+                    }
+                }
+
                 if (error) {
                     response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                 } else if (company === null) {
@@ -127,7 +136,7 @@ app.get('/export.csv', function (request, response) {
                     query.user     = {$in : request.param('users')};
                     model.Contact.find(query, function (error, contacts) {
                         for (var i = 0; i < contacts.length; i++) {
-                            var contact = contacts[i].name + ', ' + contacts[i].category + ', ' + contacts[i].email + ', ' + contacts[i].phone
+                            var contact = contacts[i].name + ', ' + getCategory(contacts[i].category) + ', ' + contacts[i].email + ', ' + contacts[i].phone
                             for (var j = 0; j < contacts[i].fieldValues; j++) {
                                 contact += ', ' + contacts[i].fieldValues[j].value;
                             }
