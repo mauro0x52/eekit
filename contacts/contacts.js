@@ -98,5 +98,49 @@ app.get('/status', function (request, response) {
     })
 });
 
+app.get('/export', function (request, response) {
+    "use strict";
+
+    response.contentType('csv');
+
+    auth(request.param('token', null), function (error, data) {
+        if (error) {
+            response.send({error : error});
+        } else {
+            model.Company.findOne({company : data.company._id}, function (error, company) {
+                if (error) {
+                    response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                } else if (company === null) {
+                    response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                } else {
+                    var header = 'nome, categoria, email, telefone',
+                        query = {};
+                    for (var i = 0; i < company.fields.length; i++) {
+                        if (company.fields.hasOwnProperty(i)) {
+                            header += ', ' + company.fields[i].name;
+                        }
+                    }
+                    response.write(header + '\n')
+
+                    query.company  = company._id;
+                    query.category = {$in : request.param('categories')};
+                    query.user     = {$in : request.param('users')};
+                    model.Contact.find(query, function (error, contacts) {
+                        for (var i = 0; i < contacts.length; i++) {
+                            var contact = contacts[i].name + ', ' + contacts[i].category + ', ' + contacts[i].email + ', ' + contacts[i].phone
+                            for (var j = 0; j < contacts[i].fieldValues; j++) {
+                                contact += ', ' + contacts[i].fieldValues[j].value;
+                            }
+                            response.write(contact + '\n');
+
+                        }
+                        response.end()
+                    });
+                }
+            });
+        }
+    });
+});
+
 /*  Ativando o server */
 app.listen(config.host.port);

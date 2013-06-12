@@ -341,24 +341,6 @@ app.routes.list('/', function (params, data) {
                 that.item.visibility('hide');
             } else {
                 that.item.visibility('show');
-
-                var fields = '';
-                for (var i in contact.fieldValues) {
-                    for (var j in userfields) {
-                        if (contact.fieldValues[i].field === userfields[j]._id) {
-                            fields += ' %2C' + escape(contact.fieldValues[i].value);
-                        }
-                    }
-                }
-
-                app.ui.actions.get()[0].href(
-                    app.ui.actions.get()[0].href() +
-                    escape(contact.name)  + ' %2C' +
-                    escape(contact.phone) + ' %2C' +
-                    escape(contact.email) +
-                    fields        +
-                    '%0A'
-                );
             }
         });
 
@@ -497,14 +479,32 @@ app.routes.list('/', function (params, data) {
                 }));
                 /* dispara o evento de filtro */
                 app.ui.filter.submit(function () {
-                    var header = 'nome %2Ctelefone %2Cemail';
+                    var url = 'http://' + app.config.services.contacts.host + ':' + app.config.services.contacts.port + '/export?',
+                        j,
+                        values;
 
-                    for (var i in userfields) {
-                        header += '%2C' + escape(userfields[i].name) + ' ';
+                    url += 'query=' + fields.query.value() + '&';
+
+                    j = 0;
+                    values = fields.user.value();
+                    for (var i in values) {
+                        url += 'users[' + j + ']=' + values[i] + '&';
+                        j++;
                     }
+                    
+                    j = 0;
+                    values = fields.categories.clients.value().concat(
+                        fields.categories.suppliers.value(),
+                        fields.categories.partners.value(),
+                        fields.categories.personals.value()
+                    );
+                    for (var i in values) {
+                        url += 'categories[' + j + ']=' + values[i] + '&';
+                        j++;
+                    }
+                    url += 'token=' + app.config.services.contacts.token;
 
-                    app.ui.actions.get()[0].href('data:csv,' + header + '%0A');
-
+                    app.ui.actions.get()[0].href(url);
                     app.trigger('filter contact', fields);
                 });
 
