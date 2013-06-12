@@ -137,8 +137,10 @@ app.get('/export.csv', function (request, response) {
                     model.Contact.find(query, function (error, contacts) {
                         for (var i = 0; i < contacts.length; i++) {
                             var contact = contacts[i].name + ', ' + getCategory(contacts[i].category) + ', ' + contacts[i].email + ', ' + contacts[i].phone
-                            for (var j = 0; j < contacts[i].fieldValues.length; j++) {
-                                contact += ', ' + contacts[i].fieldValues[j].value;
+                            if (contacts[i].fieldValues) {
+                                for (var j = 0; j < contacts[i].fieldValues.length; j++) {
+                                    contact += ', ' + contacts[i].fieldValues[j].value;
+                                }   
                             }
                             response.write(contact.toString("utf8") + '\n');
 
