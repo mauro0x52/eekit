@@ -14,7 +14,7 @@ statisticSchema = new schema({
     /**
      * id do usuario
      */
-    user  : {type : objectId},
+    user  : {type : objectId, required : true},
     /**
      * categoria de atividade do usuário
      */

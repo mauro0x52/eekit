@@ -74,7 +74,7 @@ module.exports = function (params) {
                             } else {
                                 params.kamisama.trigger(request.param('token'), 'create task', task);
                                 response.send({task : task});
-                                params.model.Statistic.inc('tasks', auth.author);
+                                params.model.Statistic.inc('tasks', task.author);
                             }
                         });
                     }
@@ -306,7 +306,7 @@ module.exports = function (params) {
                                         });
                                     }
                                 });
-                                params.model.Statistic.inc('done', auth.author);
+                                params.model.Statistic.inc('done', task.author);
                             }
                         });
                     }
