@@ -99,5 +99,47 @@ app.get('/status', function (request, response) {
     })
 });
 
+app.get('/export', function (request, response) {
+    "use strict";
+
+    response.contentType('csv');
+
+    auth(request.param('token', null), function (error, data) {
+        if (error) {
+            response.send({error : error});
+        } else {
+            model.Company.findOne({company : data.company._id}, function (error, company) {
+                var query = {}
+                if (error) {
+                    response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                } else if (company === null) {
+                    response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                } else {
+                    var header = 'nome, categoria, conta, tipo, valor, data',
+                        query = {};
+                    response.write(header + '\n')
+
+                    console.log(request.param('dateStart'));
+                    console.log(request.param('dateEnd'));
+
+                    query.company = company._id;
+                    query.account = {$in : request.param('accounts')};
+                    query.category = {$in : request.param('categories')};
+                    query.date = {$gt : new Date(request.param('dateStart')), $lt : new Date(request.param('dateEnd'))};
+                    
+                    console.log(query)
+
+                    model.Transaction.find(query, function (error, transactions) {
+                        for (var i = 0; i < transactions.length; i++) {
+                            response.write(transactions[i].name + ', ' + transactions[i].category + ', ' + transactions[i].account + ', ' + transactions[i].type + ', ' + transactions[i].value + ', ' +  transactions[i].date + '\n');
+                        }
+                        response.end()
+                    });
+                }
+            });
+        }
+    });
+});
+
 /*  Ativando o server */
 app.listen(config.host.port);
