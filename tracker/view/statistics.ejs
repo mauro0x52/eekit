@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>EmpreendeKit</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+    th, td {
+        font-family: Verdana, Helvetica, sans-serif;
+        font-size: 12px;
+        padding: 5px;
+    }
+</style>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>ID do usuário</th>
+            <th>Cadastro</th>
+            <th>Atividade</th>
+            <th>Tarefas</th>
+            <th>Contatos</th>
+            <th>Finanças</th>
+            <th>Boletos</th>
+        </tr>
+        <% for (var i in statistics) { %>
+        <tr>
+            <td><a href="/user/<%= statistics[i].user %>/statistic?secret=tr4ck3r"><%= statistics[i].user %></a></td>
+            <td><%= statistics[i].signupDate %></td>
+            <td><%= statistics[i].activityDate %></td>
+            <td><%= statistics[i].apps.tarefas ? statistics[i].apps.tarefas.status : '-' %></td>
+            <td><%= statistics[i].apps.contatos ? statistics[i].apps.contatos.status : '-' %></td>
+            <td><%= statistics[i].apps.financas ? statistics[i].apps.financas.status : '-' %></td>
+            <td><%= statistics[i].apps.boletos ? statistics[i].apps.boletos.status : '-' %></td>
+        </tr>
+        <% } %>
+    </table>
+</body>
+</html>

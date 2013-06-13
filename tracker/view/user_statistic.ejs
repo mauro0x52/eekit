@@ -1,0 +1,93 @@
+<html>
+<head>
+<title>EmpreendeKit</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+    body {
+        font-family: Verdana, Helvetica, sans-serif;
+        font-size: 12px;
+    }
+    dl {
+        clear: none;
+    }
+
+    dt {
+        clear: both;
+        width: 150px;
+        float: left;
+        font-weight: bold;
+    }
+
+    dd {
+        float: left;
+        margin: 0 0 10px 0;
+    }
+
+    .apps {
+        width: 800px;
+    }
+
+    .event {
+        font-size: 10px;
+    }
+
+    .app {
+        color: #026;
+    }
+
+    .app > dt {
+        background-color: #000;
+        color: #fff;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .app > dd {
+        padding: 10px;
+    }
+
+    .events {
+        margin-top: 5px;
+        color: #888;
+    }
+</style>
+</head>
+<body>
+<dl>
+    <dt>ID</dt><dd><%= statistic.user %></dd>
+    <dt>Cadastro</dt><dd><%= statistic.signupDate %></dd>
+    <dt>Atividade</dt><dd><%= statistic.activityDate %></dd>
+
+    <dt>Apps</dt>
+    <dd class="apps">
+        <% for (var app in statistic.apps) { %>
+            <dl class="app">
+                <dt><%= app %></dt>
+                <dd>
+                    <dl><dt>Status</dt><dd><%= statistic.apps[app].status %></dd></dl>
+                    <dl><dt>Data do status</dt><dd><%= statistic.apps[app].statusDate %></dd></dl>
+                    <dl><dt>Atividade</dt><dd><%= statistic.apps[app].statusDate %></dd></dl>
+                    <dl>
+                        <dt>Eventos</dt>
+                        <dd class="events">
+                        <% for (var event in statistic.apps[app].events) { %>
+                            <dl class="event">
+                                <dt><%= event %></dt>
+                                <dd>
+                                    <dl>
+                                        <dt>Total ocorrências</dt><dd><%= statistic.apps[app].events[event].totalCount %></dd>
+                                        <dt>Ocorrências por status</dt><dd><%= statistic.apps[app].events[event].statusCount %></dd>
+                                        <dt>Última ocorrência</dt><dd><%= statistic.apps[app].events[event].lastDate %></dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+                        <% } %>
+                        </dd>
+                    </dl>
+                </dd>
+            </dl>
+        <% } %>
+    </dd>
+</dl>
+</body>
+</html>

@@ -38,6 +38,10 @@ require('./controller/Event.js')({
     auth     : auth,
     config   : config
 });
+require('./controller/Statistic.js')({
+    app      : app,
+    model    : model
+});
 require('./controller/Tasks.js')({
     app      : app,
     model    : model,
