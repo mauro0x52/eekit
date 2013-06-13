@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.1
+
+Features
+- Estatísticas dos usuários
+- Emails de lifecycle
+
 ## 1.0.9 (2013-05-21)
 
 Hotfixes
