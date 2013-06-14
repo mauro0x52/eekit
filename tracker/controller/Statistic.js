@@ -22,13 +22,14 @@ module.exports = function (params) {
 
         response.contentType('text/html');
 
-        params.model.Statistic.find(request.param('filter', {}), function (error, statistics) {
+        var filter = request.param('filter');
+        if (!filter) filter = '{}';
+
+        params.model.Statistic.find(eval('('+filter+')'), function (error, statistics) {
             if (error) {
                 response.send(error);
-            } else if (statistics.length === 0) {
-                response.send('not found');
             } else {
-                response.render('../view/statistics', {statistics : statistics});
+                response.render('../view/statistics', {statistics : statistics, filter : filter});
             }
         });
     });
