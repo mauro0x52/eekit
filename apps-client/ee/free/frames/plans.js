@@ -402,7 +402,7 @@ app.routes.frame('/precos-e-planos', function (params, data) {
     }, true);
 
     table_plan_3 = plan({
-        title : 'Plano 6 meses',
+        title : 'Plano 12 meses',
         subtitle : 'cliente VIP',
         price : 49,
         users : 5,
