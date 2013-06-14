@@ -393,15 +393,6 @@ app.routes.list('/', function (params, data) {
                 balanceable = true;
                 if (transaction.date >= dateStart) {
                     that.item.visibility('show');
-                    app.ui.actions.get()[0].href(
-                        app.ui.actions.get()[0].href() +
-                        escape(transaction.name) + ' %2C' +
-                        (transaction.date.getDate() + '/' + (transaction.date.getMonth() + 1) + '/' + transaction.date.getFullYear()) + ' %2C' +
-                        (transaction.type === 'credit' ? '+' : '-') + transaction.value + ' %2C' +
-                        escape(that.item.label.legend())  + ' %2C' +
-                        escape(icons.account.legend()) + ' %2C' +
-                        escape(transaction.observation) + '%0A'
-                    );
                 } else {
                     that.item.visibility('hide');
                 }
@@ -598,7 +589,31 @@ app.routes.list('/', function (params, data) {
                     }));
                     /* dispara o evento de filtro */
                     app.ui.filter.submit(function () {
-                        app.ui.actions.get()[0].href('data:csv,');
+                        var url = 'http://' + app.config.services.finances.host + ':' + app.config.services.finances.port + '/export.csv?',
+                            j,
+                            values;
+
+                        url += 'query=' + fields.query.value() + '&';
+                        
+                        j = 0;
+                        values = fields.accounts.value();
+                        for (var i in values) {
+                            url += 'accounts[' + j + ']=' + values[i] + '&';
+                            j++;
+                        }
+                        
+                        j = 0;
+                        values = fields.categories.debt.value().concat(fields.categories.credit.value());
+                        for (var i in values) {
+                            url += 'categories[' + j + ']=' + values[i] + '&';
+                            j++;
+                        }
+
+                        url += 'dateStart=' + fields.dateStart.date() + '&';
+                        url += 'dateEnd=' + fields.dateEnd.date() + '&';
+                        url += 'token=' + app.config.services.finances.token;
+
+                        app.ui.actions.get()[0].href(url);
 
                         /* dispara o evento */
                         app.trigger('filter transaction', fields);

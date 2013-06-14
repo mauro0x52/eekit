@@ -98,5 +98,60 @@ app.get('/status', function (request, response) {
     })
 });
 
+app.get('/export.csv', function (request, response) {
+    "use strict";
+
+    response.contentType('csv');
+
+    auth(request.param('token', null), function (error, data) {
+        if (error) {
+            response.send({error : error});
+        } else {
+            model.Company.findOne({company : data.company._id}, function (error, company) {
+
+                function getCategory(id) {
+                    for (var i in company.categories) {
+                        if (company.categories[i]._id.toString() === id.toString()) {
+                            return company.categories[i].name;
+                        }
+                    }
+                }
+
+                if (error) {
+                    response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                } else if (company === null) {
+                    response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                } else {
+                    var header = 'nome, categoria, email, telefone',
+                        query = {};
+                    for (var i = 0; i < company.fields.length; i++) {
+                        if (company.fields.hasOwnProperty(i)) {
+                            header += ', ' + company.fields[i].name;
+                        }
+                    }
+                    response.write(header + '\n')
+
+                    query.company  = company._id;
+                    query.category = {$in : request.param('categories')};
+                    query.user     = {$in : request.param('users')};
+                    model.Contact.find(query, function (error, contacts) {
+                        for (var i = 0; i < contacts.length; i++) {
+                            var contact = contacts[i].name + ', ' + getCategory(contacts[i].category) + ', ' + contacts[i].email + ', ' + contacts[i].phone
+                            if (contacts[i].fieldValues) {
+                                for (var j = 0; j < contacts[i].fieldValues.length; j++) {
+                                    contact += ', ' + contacts[i].fieldValues[j].value;
+                                }   
+                            }
+                            response.write(contact.toString("utf8") + '\n');
+
+                        }
+                        response.end()
+                    });
+                }
+            });
+        }
+    });
+});
+
 /*  Ativando o server */
 app.listen(config.host.port);

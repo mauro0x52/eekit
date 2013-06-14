@@ -514,12 +514,32 @@ app.routes.list('/', function (params, data) {
                 app.ui.filter.submit(function () {
                     var header = 'nome %2Ctelefone %2Cemail %2Ccategoria';
 
-                    for (var i in userfields) {
-                        header += '%2C' + escape(userfields[i].name) + ' ';
+                    var url = 'http://' + app.config.services.contacts.host + ':' + app.config.services.contacts.port + '/export.csv?',
+                        j,
+                        values;
+
+                    url += 'query=' + fields.query.value() + '&';
+
+                    j = 0;
+                    values = fields.user.value();
+                    for (var i in values) {
+                        url += 'users[' + j + ']=' + values[i] + '&';
+                        j++;
                     }
 
-                    app.ui.actions.get()[0].href('data:csv,' + header + '%0A');
+                    j = 0;
+                    values = fields.categories.clients.value().concat(
+                        fields.categories.suppliers.value(),
+                        fields.categories.partners.value(),
+                        fields.categories.personals.value()
+                    );
+                    for (var i in values) {
+                        url += 'categories[' + j + ']=' + values[i] + '&';
+                        j++;
+                    }
+                    url += 'token=' + app.config.services.contacts.token;
 
+                    app.ui.actions.get()[0].href(url);
                     app.trigger('filter contact', fields);
                 });
 

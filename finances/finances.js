@@ -99,5 +99,64 @@ app.get('/status', function (request, response) {
     })
 });
 
+app.get('/export.csv', function (request, response) {
+    "use strict";
+
+    response.contentType('csv');
+
+    auth(request.param('token', null), function (error, data) {
+        if (error) {
+            response.send({error : error});
+        } else {
+            model.Company.findOne({company : data.company._id}, function (error, company) {
+
+                function getCategory(id) {
+                    for (var i in company.categories) {
+                        if (company.categories[i]._id && id && company.categories[i]._id.toString() === id.toString()) {
+                            return company.categories[i].name;
+                        }
+                    }
+                    return '';
+                }
+
+                function getAccount(id) {
+                    for (var i in company.accounts) {
+                        if (company.accounts[i]._id && id && company.accounts[i]._id.toString() === id.toString()) {
+                            return company.accounts[i].name;
+                        }
+                    }
+                    return '';
+                }
+
+                if (error) {
+                    response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                } else if (company === null) {
+                    response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
+                } else {
+                    var header = 'nome, categoria, conta, valor, data',
+                        query = {};
+                    response.write(header + '\n')
+
+                    console.log(request.param('dateStart'));
+                    console.log(request.param('dateEnd'));
+
+                    query.company = company._id;
+                    query.account = {$in : request.param('accounts')};
+                    query.category = {$in : request.param('categories').concat(null)};
+                    query.date = {$gt : new Date(request.param('dateStart')), $lt : new Date(request.param('dateEnd'))};
+
+                    model.Transaction.find(query, function (error, transactions) {
+                        console.log(transactions)
+                        for (var i = 0; i < transactions.length; i++) {
+                            response.write((transactions[i].name + ', ' + getCategory(transactions[i].category) + ', ' + getAccount(transactions[i].account) + ', ' + (transactions[i].type == 'debt' ? '-' : '+') + transactions[i].value + ', ' +  transactions[i].date.getDate() + '/' + (transactions[i].date.getMonth() + 1) + '/' + transactions[i].date.getFullYear() + '\n').toString("utf8"));
+                        }
+                        response.end()
+                    });
+                }
+            });
+        }
+    });
+});
+
 /*  Ativando o server */
 app.listen(config.host.port);
