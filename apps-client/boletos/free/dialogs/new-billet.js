@@ -54,7 +54,7 @@ app.routes.dialog('/adicionar-boleto', function (params, data) {
             type : 'single',
             name : 'bankId',
             legend : 'Escolha um banco',
-            options : [banksOptions.bb, banksOptions.bradesco, banksOptions.caixa, banksOptions.itau],
+            options : [/*banksOptions.bb,*/ banksOptions.bradesco, /*banksOptions.caixa,*/ banksOptions.itau],
             change : function () {
                 app.ui.form.action("Gerar boleto")
             }

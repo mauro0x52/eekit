@@ -413,7 +413,7 @@ module.exports(new Class (function (params) {
 
         var query = {/* PEGAR UTMS NAS ROTAS */},
             data = {
-                app : app.name(),
+                app : app.slug(),
                 label : label,
                 utm_source : query.utm_source,
                 utm_medium : query.utm_medium,
@@ -440,6 +440,8 @@ module.exports(new Class (function (params) {
         ) {
             data.source = that.caller().name();
         }
+
+        _gaq.push(['_trackEvent', app.name(), label]);
 
         Empreendekit.ajax.post({
             url : 'http://' + Empreendekit.config.services.tracker.host + ':' + Empreendekit.config.services.tracker.port + '/event',

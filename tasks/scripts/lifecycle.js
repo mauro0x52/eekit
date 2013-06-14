@@ -1,162 +1,181 @@
 var model = require('../model/Model.js'),
     config = require('../config.js'),
     needle = require('needle'),
-    today,
-    nextWeek, previousWeek, prePreviousWeek,
-    checkToken = require('../utils/auth'),
-    weekDays;
+    today, oneDay, twoDays, threeDays,
+    checkToken = require('../utils/auth');
 
 today = new Date();
 today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-nextWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7);
-previousWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
-prePreviousWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 14);
+oneDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+twoDays = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2);
+threeDays = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3);
 
-weekDays = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado', 'Domingo'];
-months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-
-var mailThisWeek = function (auth, tasks) {
-    var html = '',
-        length, date,
-        daysTasks, diff;
-
-    daysTasks = new Array(7);
-    for (var i = 0; i < 7; i++) {
-        daysTasks[i] = new Array();
-    }
-
-    checkToken(auth.token, function (error, auth) {
-        if (!error && auth) {
-            /* monta o buffer ordenado por dia */
-            for (var i in tasks) {
-                diff = Math.ceil((tasks[i].dateDeadline.getTime() - today.getTime())/(1000*3600*24));
-                daysTasks[diff].push(tasks[i]);
-            }
-
-            html += '<p>Olá '+auth.user.name.split(' ')[0]+'!</p>';
-            html += '<p>Este é um relatório automático de tarefas do EmpreendeKit. Você o receberá toda segunda-feira para poder organizar melhor sua semana.<p>';
-            html += '<br />';
-
-            for (i = 0; i < 7; i++) {
-                length = daysTasks[i].length;
-                date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
-                html += '<p style="font-weight:bold">'+weekDays[i]+' ('+date.getDate()+' de '+months[date.getMonth()]+' de '+date.getFullYear()+')</p>';
-                html += '<ul>';
-                if (length) {
-                    for (var j = 0; j < length; j++) {
-                        if (daysTasks[i][j].important) {
-                            html += '<li>'+daysTasks[i][j].title+' <span style="font-style:italic;color:#a00;">(importante)</span></li>';
-                        } else {
-                            html += '<li>'+daysTasks[i][j].title+'</li>';
-                        }
-                    }
-                } else {
-                    html += '<li style="color:#888;font-style:italic;">nenhuma tarefa</li>';
-                }
-                html += '</ul>';
-            }
-
-            html += '<br />';
-            html += '<p>Quer adicionar mais tarefas e organizar sua semana? <a href="http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=relatorio-tarefas&utm_campaign=lifecycle#!/tarefas">Clique aqui</a>.';
-
-            /* manda email para o usuário */
-            require('needle').post(
-                'http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail/self',
-                {
-                    token : auth.token,
-                    service : 'tasks',
-                    subject : 'Suas tarefas desta semana',
-                    name : 'relatorio de tarefas',
-                    html : html
-                },
-                function (error, response, data) {
-                    if (error) {
-                        console.log(error);
-                    }
-                }
-            );
-
-        }
-    })
-}
-var mailPreviousWeek = function (auth) {
-    var html = '', date;
-
-    checkToken(auth.token, function (error, auth) {
-        if (!error && auth) {
-            html += '<p>Olá '+auth.user.name.split(' ')[0]+'!</p>';
-            html += '<p>Este é um relatório automático de tarefas do EmpreendeKit. Você o receberá toda segunda-feira para poder organizar melhor sua semana.<p>';
-            html += '<br />';
-
-            for (var i = 0; i < 7; i++) {
-                date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
-                html += '<p style="font-weight:bold">'+weekDays[i]+' ('+date.getDate()+' de '+months[date.getMonth()]+' de '+date.getFullYear()+')</p>';
-                html += '<ul>';
-                html += '<li style="color:#888;font-style:italic;">nenhuma tarefa</li>';
-                html += '</ul>';
-            }
-
-            html += '<br />';
-            html += '<p>Quer adicionar mais tarefas e organizar sua semana? <a href="http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=relatorio-tarefas&utm_campaign=lifecycle#!/tarefas">Clique aqui</a>.'
-
-            /* manda email para o usuário */
-            require('needle').post(
-                'http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail/self',
-                {
-                    token : auth.token,
-                    service : 'tasks',
-                    subject : 'Suas tarefas desta semana',
-                    name : 'relatorio de tarefas',
-                    html : html
-                },
-                function (error, response, data) {
-                    if (error) {
-                        console.log(error);
-                    }
-                }
-            );
-
-        }
-    })
-}
-
-model.Auth.find().distinct('user._id', function (error, usersIds){
-    for (var i in usersIds) {
-        if (usersIds[i]) {
-            /* procura o token mais novo */
-            model.Auth.find().where('user._id', usersIds[i]).sort({expiration : -1}).exec(function (error, auths) {
-                if (!error && auths.length > 0 && auths[0].user && auths[0].user._id) {
-                    var auth = auths[0];
-
-                    /* tarefas para esta semana */
-                    model.Task.find({
-                        user : auth.user._id,
-                        done : false,
-                        dateDeadline : {$gte : today, $lt : nextWeek}
-                    },
-                    null,
-                    {
-                        dateDeadline : 1,
-                        priority : 1
-                    },
-                    function (error, tasks) {
-                        if (!error && tasks && tasks.length > 0) {
-                            mailThisWeek(auth, tasks);
-                        } else {
-                            /* cadastrou só semana passada */
-                            model.Task.find({
-                                user : auth.user._id,
-                                dateDeadline : {$gte : prePreviousWeek, $lt : today}
-                            },
-                            function (error, tasks) {
-                                if (!error && tasks && tasks.length > 0) {
-                                    mailPreviousWeek(auth);
-                                }
-                            });
-                        }
-                    });
+/**
+ * Pega as informações do usuário
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-06
+ */
+var findUser = function (user_id, cb) {
+    var auth;
+    /* procura o auth do cara */
+    model.Auth.find().where('user._id', user_id).sort({expiration : -1}).exec(function (error, auths) {
+        if (error) {
+            console.log(error);
+        } else if (auths && auths.length > 0) {
+            auth = auths[0];
+            /* verifica o token no serviço auth */
+            checkToken(auth.token, function (error, auth) {
+                if (error) {
+                    console.log(error);
+                } else if (auth) {
+                    cb(auth);
                 }
             });
+        }
+    });
+}
+
+/**
+ * Envia email
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-06
+ */
+var sendMail = function (data) {
+    require('needle').post(
+        'http://' + config.services.jaiminho.url + ':' + config.services.jaiminho.port + '/mail/self',
+        {
+            token : data.token,
+            service : 'tasks',
+            subject : data.subject,
+            name : data.name,
+            html : data.html,
+            from : 'lucas@empreendemia.com.br'
+        },
+        function (error, response, data) {
+            if (error) {
+                console.log(error);
+            }
+        }
+    );
+}
+
+/**
+ * Monta e envia o email
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-06
+ */
+var mail = function (templateName, user_id) {
+    if (templateName && templates[templateName]) {
+        findUser(user_id, function (auth) {
+            var template = templates[templateName](auth);
+            sendMail({
+                token : auth.token,
+                html : template.html,
+                subject : template.subject,
+                name : template.name
+            })
+        });
+    }
+}
+
+/**
+ * Templates dos emails
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-06
+ */
+var templates = {
+
+    /**
+     * lc engajamento 1t
+     * email enviado 1 dia depois da ativação
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    active1day : function (auth) {
+        var subject, name, html = '';
+
+        subject = 'Agora falta pouco para se tornar um mestre de produtividade!';
+        name = 'lc engajamento 1t';
+
+        html += '<p>Olá '+auth.user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Meus parabéns! Você já começou com o pé direito o uso do Empreendekit.</p>';
+        html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, adicione mais tarefas e não se esqueça de marcá-las como feitas.<br />Medir seus avanços na semana é fundamental para aumentar sua produtividade.</p>';
+        html += '<p>Para acessar o EmpreendeKit, <a href="http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4t&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+
+    /**
+     * lc engajamento 4t
+     * email enviado 4 dias depois da ativação
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    active4days : function (auth) {
+        var subject, name, html = '';
+
+        subject = 'Recursos legais do EmpreendeKit que você pode não ter visto ainda';
+        name = 'lc engajamento 4t';
+
+        html += '<p>Olá '+auth.user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Você chegou a ver nossos lembretes por email no EmpreendeKit?</p>';
+        html += '<p>Enviaremos o lembrete diretamente para seu email para você não se preocupar mais em esquecer de fazer alguma tarefa.</p>';
+        html += '<p>É só adicionar uma tarefa com data e clicar em "mais informações".<br/>Depois disso é só clicar no período que você deseja ser lembrado.</p>';
+        html += '<p>Para acessar o EmpreendeKit e configurar seus lembretes, é só <a href="http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4t&utm_campaign=lifecycle">clicar aqui</a>.</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    }
+}
+
+
+
+
+model.Statistic.find(function (error, statistics){
+    if (error) {
+        console.log(error)
+    } else {
+        var statistic, dateDiff, template;
+        for (var i in statistics) {
+            template = null;
+            statistic = statistics[i];
+            dateDiff = Math.ceil((today.getTime() - statistic.date.getTime())/(1000*3600*24));
+
+            if (statistic.label === 'retained') {
+
+            }
+            else if (statistic.label === 'engaged') {
+            }
+            else if (statistic.label === 'active') {
+                if (dateDiff === 1) {
+                    template = 'active1day';
+                } else if (dateDiff === 4) {
+                    template = 'active4days';
+                }
+            }
+            else {
+
+            }
+
+            if (template) {
+                mail(template, statistic.user);
+            }
         }
     }
 });

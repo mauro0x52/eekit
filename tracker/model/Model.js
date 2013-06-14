@@ -16,3 +16,4 @@ if (config.mongodb.username && config.mongodb.password) {
 
 /*  Exportar name-space  */
 exports.Event = require('./Event.js').Event;
+exports.Statistic = require('./Statistic.js').Statistic;

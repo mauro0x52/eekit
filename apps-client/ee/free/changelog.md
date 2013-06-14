@@ -6,6 +6,9 @@ Changelog
 Features
 - Botões de pagamento do PagSeguro
 
+Melhorias
+- Nome no cadastro aceita acentos
+
 
 ## 2.3.1 (2013-06-03)
 

@@ -222,6 +222,7 @@ module.exports = function (params) {
                     response.send({error : error});
                 } else {
                     response.send({event : newevent});
+                    params.model.Statistic.inc(newevent);
                 }
             });
         });

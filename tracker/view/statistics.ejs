@@ -1,0 +1,117 @@
+<html>
+<head>
+<title>EmpreendeKit</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+    table {
+        margin: auto;
+    }
+    th, td {
+        font-family: Verdana, Helvetica, sans-serif;
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .count {
+        text-align: center;
+        background-color: #333;
+        color: #fff;
+        padding: 5px;
+    }
+
+    #filterForm {
+        padding: 40px 0;
+        text-align: right;
+        width: 800px;
+        display: block;
+        margin: auto;
+    }
+
+    #filter {
+        width: 800px;
+        height: 200px;
+    }
+</style>
+</head>
+<body>
+    <div id="filterForm">
+        <textarea id="filter" name="filter"><%= filter %></textarea><br />
+        <input type="button" name="submit" value="filtrar" onclick="filter()" />
+    </div>
+    <div class="count">
+        <strong><%= statistics.length %></strong> usuários encontrados
+    </div>
+    <table>
+        <tr>
+            <th>ID do usuário</th>
+            <th>Cadastro</th>
+            <th>Atividade</th>
+            <th>Tarefas</th>
+            <th>Contatos</th>
+            <th>Finanças</th>
+            <th>Boletos</th>
+        </tr>
+        <% for (var i in statistics) { %>
+        <tr>
+            <td><a href="/user/<%= statistics[i].user %>/statistic?secret=tr4ck3r"><%= statistics[i].user %></a></td>
+            <td><%= statistics[i].signupDate %></td>
+            <td><%= statistics[i].activityDate %></td>
+            <td><%= statistics[i].apps.tarefas ? statistics[i].apps.tarefas.status : '-' %></td>
+            <td><%= statistics[i].apps.contatos ? statistics[i].apps.contatos.status : '-' %></td>
+            <td><%= statistics[i].apps.financas ? statistics[i].apps.financas.status : '-' %></td>
+            <td><%= statistics[i].apps.boletos ? statistics[i].apps.boletos.status : '-' %></td>
+        </tr>
+        <% } %>
+    </table>
+</body>
+<script>
+
+    queryString=function(obj,label){var query_string="",key;label=label||'';if(obj!==null&&obj!==undefined){if(obj.constructor===Object||obj.constructor===Array){for(key in obj){if(obj.hasOwnProperty(key)){query_string+=query(obj[key],(label?label+'['+key+']':key))+'&'}}return query_string.slice(0,query_string.length-1)}else{return label+'='+obj}}else{return'null'}};
+    function filter() {
+        var query;
+        query = queryString(document.getElementById('filter').value, 'filter');
+        window.location = '/statistics?secret=tr4ck3r&'+query;
+    }
+    document.getElementById("filter").onkeydown = function(e) {
+        if (!e && event.keyCode == 9)
+        {
+          event.returnValue = false;
+          insertAtCursor(document.getElementById("filter"), "    ");
+        }
+        else if (e.keyCode == 9)
+        {
+          e.preventDefault();
+          insertAtCursor(document.getElementById("filter"), "    ");
+        }
+      };
+
+      //http://alexking.org/blog/2003/06/02/inserting-at-the-cursor-using-javascript#comment-3817
+      function insertAtCursor(myField, myValue) {
+        //IE support
+        if (document.selection) {
+          var temp;
+          myField.focus();
+          sel = document.selection.createRange();
+          temp = sel.text.length;
+          sel.text = myValue;
+          if (myValue.length == 0) {
+            sel.moveStart('character', myValue.length);
+            sel.moveEnd('character', myValue.length);
+          } else {
+            sel.moveStart('character', -myValue.length + temp);
+          }
+          sel.select();
+        }
+        //MOZILLA/NETSCAPE support
+        else if (myField.selectionStart || myField.selectionStart == '0') {
+          var startPos = myField.selectionStart;
+          var endPos = myField.selectionEnd;
+          myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
+          myField.selectionStart = startPos + myValue.length;
+          myField.selectionEnd = startPos + myValue.length;
+        } else {
+          myField.value += myValue;
+        }
+      }
+</script>
+</html>

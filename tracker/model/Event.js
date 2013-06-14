@@ -245,35 +245,6 @@ eventSchema.statics.signupUsersIds = function (days, cb) {
     });
 };
 
-eventSchema.statics.lifeCycle = function (days, required, forbidden, cb) {
-    Event.signupUsersIds(days, function(error, users_ids) {
-        if (error) {
-            cb(error)
-        } else {
-            Event.groupByUserFilter({
-                label : {$in : required.labels.concat(forbidden.labels)},
-                app : {$in : [required.app, forbidden.app]},
-                user : {$in : users_ids}
-            }, function (error, users) {
-                    if (error) {
-                            cb(error, null);
-                    } else {
-                            result = [];
-                            for (var i in users) {
-                                    if (
-                                            users[i].ocurrences(required.app, required.labels) >= required.minimum &&
-                                            users[i].ocurrences(forbidden.app, forbidden.labels) < forbidden.minimum
-                                    ) {
-                                            result.push(users[i]);
-                                    }
-                            }
-                            cb(null, result);
-                    }
-            });
-        }
-    });
-
-};
 
 eventSchema.statics.cohort = function (app, frequency, cb) {
 	Event.groupByUser(function (error, users) {
