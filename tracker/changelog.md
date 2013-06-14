@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.1
+## 1.1 (2013-06-14)
 
 Features
 - Estatísticas dos usuários

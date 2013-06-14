@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.3.2
+## 1.3.2 (2013-06-07)
 
 Melhorias
 - Todos os tokens valem por 30 dias

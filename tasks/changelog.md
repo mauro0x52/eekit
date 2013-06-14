@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.1
+## 1.1 (2013-06-07)
 
 Features
 - Relatório de tarefas por email
