@@ -175,18 +175,20 @@ statisticSchema.methods.updateStatus = function () {
 
                 }
 
-            /* se bateu com algum critério e mudou o status*/
-            if (match && statistic.apps[app].status !== status) {
-
-                    updated = true;
-                    statistic.apps[app].status = status;
-                    statistic.apps[app].statusDate = new Date();
-                    statistic.markModified('apps.'+app+'.status');
-                    statistic.markModified('apps.'+app+'.statusDate');
-                    /* zera os contadores do status */
-                    for (var event in statistic.apps[app].events) {
-                        statistic.apps[app].events[event].statusCount = 0;
-                        statistic.markModified('apps.'+app+'.events.'+event+'.statusCount');
+                /* se bateu com algum critério e mudou o status*/
+                if (match) {
+                    
+                    if (statistic.apps[app].status !== status) {
+                        updated = true;
+                        statistic.apps[app].status = status;
+                        statistic.apps[app].statusDate = new Date();
+                        statistic.markModified('apps.'+app+'.status');
+                        statistic.markModified('apps.'+app+'.statusDate');
+                        /* zera os contadores do status */
+                        for (var event in statistic.apps[app].events) {
+                            statistic.apps[app].events[event].statusCount = 0;
+                            statistic.markModified('apps.'+app+'.events.'+event+'.statusCount');
+                        }
                     }
                     break;
 
@@ -196,9 +198,7 @@ statisticSchema.methods.updateStatus = function () {
         }
     }
 
-    if (updated) {
-        statistic.save();
-    }
+    statistic.save();
 };
 
 /**
@@ -212,6 +212,7 @@ statisticSchema.statics.inc = function (event) {
     if (event.app && event.label && event.user) {
         var app = event.app.replace('.','');
         var label = event.label.replace('.','');
+
         Statistic.findOne({user : event.user}, function(error, statistic) {
             /* se as estatísticas do usuário ainda não está criado */
             if (!statistic) {
@@ -221,6 +222,7 @@ statisticSchema.statics.inc = function (event) {
             /* se o app ainda não tem estatística */
             if (!statistic.apps[app]) {
                 statistic.apps[app] = newApp();
+                statistic.markModified('apps.'+app);
             }
 
             /* se o evento ainda não tem estatística */
@@ -232,9 +234,12 @@ statisticSchema.statics.inc = function (event) {
             statistic.apps[app].events[label].totalCount++;
             statistic.apps[app].events[label].statusCount++;
             statistic.apps[app].events[label].lastDate = new Date();
-            statistic.apps[app].activityDate = new Date();
-            statistic.activityDate = new Date();
             statistic.markModified('apps.'+app+'.events.'+label);
+
+            statistic.apps[app].activityDate = new Date();
+            statistic.markModified('apps.'+app+'.activityDate');
+
+            statistic.activityDate = new Date();
 
             statistic.updateStatus();
         });
