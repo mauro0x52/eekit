@@ -175,7 +175,7 @@ statisticSchema.methods.updateStatus = function () {
 
                 }
 
-                /* se bateu com algum critério */
+            /* se bateu com algum critério e mudou o status*/
             if (match && statistic.apps[app].status !== status) {
 
                     updated = true;
