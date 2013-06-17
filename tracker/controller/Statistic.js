@@ -25,7 +25,9 @@ module.exports = function (params) {
         var filter = request.param('filter');
         if (!filter) filter = '{}';
 
-        params.model.Statistic.find(eval('('+filter+')'), function (error, statistics) {
+        filter = eval('('+filter+')');
+
+        params.model.Statistic.find(filter, function (error, statistics) {
             if (error) {
                 response.send(error);
             } else {

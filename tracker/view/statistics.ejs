@@ -35,7 +35,7 @@
 </head>
 <body>
     <div id="filterForm">
-        <textarea id="filter" name="filter"><%= filter %></textarea><br />
+        <textarea id="filter" name="filter"><%= JSON.stringify(filter, undefined, 4) %></textarea><br />
         <input type="button" name="submit" value="filtrar" onclick="filter()" />
     </div>
     <div class="count">
