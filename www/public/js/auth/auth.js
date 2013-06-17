@@ -58,8 +58,10 @@ module.exports({
                         user    : data.user._id,
                         company : data.company._id
                     });
-                    $zopim.livechat.setEmail(data.user.username);
-                    $zopim.livechat.setName(data.user.name);
+                    if (window.$zopim) {
+                        $zopim.livechat.setEmail(data.user.username);
+                        $zopim.livechat.setName(data.user.name);
+                    }
                 }
             });
         }

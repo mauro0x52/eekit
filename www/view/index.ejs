@@ -61,8 +61,6 @@
             %>
             var url_query = /.*token\=([^&]*).*/.exec(location.search);
             var token = url_query && url_query[1] ? url_query[1] : null;
-            console.log(location.search)
-            console.log(token)
             if (token) setToken(token);
 
             if (navigator.userAgent.indexOf('MSIE') === -1) {
