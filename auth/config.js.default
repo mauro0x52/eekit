@@ -48,7 +48,7 @@ module.exports = {
             secret : 'www',
             permissions : {
                 users     : false,
-                username  : false,
+                username  : true,
                 tokens    : true,
                 auth      : true,
                 informations : false
