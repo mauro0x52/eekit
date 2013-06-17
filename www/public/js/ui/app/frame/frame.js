@@ -84,6 +84,19 @@ module.exports(new Class(function (context) {
             if (click_cb) {
                 click_cb.apply(self);
             }
+
+            if (
+                context.route().indexOf('/ee/precos-e-planos') >= 0 ||
+                context.route().indexOf('/ee/como-funciona') >= 0 ||
+                context.route().indexOf('/ee/suporte') >= 0 ||
+                context.route().indexOf('/ee/cadastrar') >= 0
+            ) {
+                if (!$zopim.hide) {
+                    $zopim.livechat.window.show();
+                    $zopim.hide = true;
+                }
+            }
+
         }
     };
 
