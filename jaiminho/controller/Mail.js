@@ -58,7 +58,6 @@ module.exports = function (params) {
                                     replyTo : from ? from : '"'+params.config.emails.contact.name+'"<'+params.config.emails.contact.address+'>',
                                     to      : userEmail,
                                     subject : subject,
-                                    categories : categoriesArray,
                                     html    : html + '<br /><br /><br />',
                                     bcc     : 'lucas@empreendemia.com.br'
                                 }
@@ -71,12 +70,15 @@ module.exports = function (params) {
                                         if (success) {
                                             mail.name = name;
                                             mail.categories = categoriesArray;
+                                            console.log({mail : mail});
                                             response.send({mail : mail});
                                         } else {
                                             response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
                                         }
                                     });
                                 } else {
+                                    mail.name = name;
+                                    mail.categories = categoriesArray;
                                     console.log({mail : mail});
                                     response.send({mail : mail});
                                 }
@@ -146,8 +148,7 @@ module.exports = function (params) {
                                 replyTo : userEmail,
                                 to      : to,
                                 subject : subject,
-                                categories : categoriesArray,
-                                html    : html + '<br /><br /><br />',
+                                html    : html + '<br /><br /><br />'
                             }
 
                             sgEmail = new Sendgrid.Email(mail);
@@ -158,12 +159,15 @@ module.exports = function (params) {
                                     if (success) {
                                         mail.name = name;
                                         mail.categories = categoriesArray;
+                                        console.log({mail : mail});
                                         response.send({mail : mail});
                                     } else {
                                         response.send({error : {message : 'Mail not sent', name : 'ServerError'}});
                                     }
                                 });
                             } else {
+                                mail.name = name;
+                                mail.categories = categoriesArray;
                                 console.log({mail : mail});
                                 response.send({mail : mail});
                             }
