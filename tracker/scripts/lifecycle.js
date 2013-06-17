@@ -35,7 +35,7 @@ var findUser = function (user_id, cb) {
                 cb({
                     _id : data.user._id,
                     name : data.user.name,
-                    token : token
+                    token : token.token
                 });
             } else {
                 console.log('usuário '+user_id+' sem token válido');

@@ -32,10 +32,38 @@ module.exports = function (params) {
                 service.slug = i;
             }
         }
-
+console.log(request.body)
         if (service === null) {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
-        } else {
+        }
+        /* se tiver permissão de usar os tokens */
+        else if (service.permissions.tokens) {
+            params.model.User.findByToken(request.param('token', null), function (error, user) {
+                if (error) {
+                    response.send({error : { message : 'invalid token', name : 'InvalidTokenError'}});
+                } else if (user === null) {
+                    response.send({error : {message :  'invalid token', name : 'InvalidTokenError' }});
+                } else if (user.checkToken(request.param('token', null))) {
+                    result.user = {_id : user._id, name : user.name};
+                    result.company = {_id : user.company};
+                    result.token = request.param('token', null);
+                    if (service.permissions.username) {
+                        result.user.username = user.username;
+                    }
+                    if (service.permissions.tokens) {
+                        result.tokens = user.tokens;
+                    }
+                    if (service.permissions.informations) {
+                        result.informations = user.informations;
+                    }
+                    response.send(result);
+                } else {
+                    response.send({ error : { message : 'Invalid token', name : 'InvalidTokenError'}});
+                }
+            });
+        }
+        /* se não tiver permissão de usar os tokens */
+        else {
             params.model.User.findByTokenService(request.param('token', null), service.slug, function (error, user) {
                 if (error) {
                     response.send({error : { message : 'invalid token', name : 'InvalidTokenError'}});

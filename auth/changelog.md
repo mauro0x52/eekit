@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.3.3 (2013-07-17)
+
+Melhorias
+- Serviços que tem acesso a tokens podem usá-los.
+
 ## 1.3.2 (2013-06-07)
 
 Melhorias

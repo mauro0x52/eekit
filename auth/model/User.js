@@ -107,9 +107,8 @@ userSchema.statics.findByTokenService = function (tokenKey, service, cb) {
  * @since  2013-02
  *
  * @param tokenKey      token do usuário
- * @param serviceKey    serviço do token
  */
-userSchema.methods.checkToken = function (tokenKey, serviceKey) {
+userSchema.methods.checkToken = function (tokenKey) {
     "use strict";
 
     var i, j, token, expiration;
@@ -117,7 +116,6 @@ userSchema.methods.checkToken = function (tokenKey, serviceKey) {
     for (i = 0; i < this.tokens.length; i++) {// in this.tokens) {
         expiration = new Date(this.tokens[i].dateExpiration);
         if (
-            this.tokens[i].service === serviceKey &&
             this.tokens[i].token.toString() === tokenKey.toString() &&
             (new Date() <= expiration)
         ) {

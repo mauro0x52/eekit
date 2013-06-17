@@ -136,10 +136,10 @@ module.exports = function (params) {
         if (service === null || !service.permissions.auth) {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         } else {
-            params.model.User.findByToken(request.param('token', null), function (error, user) {
+            params.model.User.findByTokenService(request.param('token', null), service.slug, function (error, user) {
                 if (error || user === null) {
                     response.send({error : {message :  'invalid token', name : 'InvalidTokenError', id : request.params.login, path : 'user' }});
-                } else  if (user.checkToken(request.param('token', null), service.slug)) {
+                } else  if (user.checkToken(request.param('token', null))) {
                     params.model.Company.findById(user.company, function (error, company) {
                        if (error || !company) {
                             response.send({error : { message : 'company not found', name : 'NotFoundError', id : user.company, path : 'company'}});

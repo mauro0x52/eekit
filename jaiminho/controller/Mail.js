@@ -8,7 +8,8 @@
  */
 
 module.exports = function (params) {
-    var needle = require('needle');
+    var needle = require('needle'),
+        querystring = require('querystring');
 
     params.app.post('/mail/self', function (request, response) {
         response.contentType('json');
@@ -35,11 +36,7 @@ module.exports = function (params) {
             } else if (from && /^.*\@empreendemia\.com\.br$/.test(from) === false) {
             response.send({error : { message : 'Must be a valid email address', name : 'ValidatorError', path : 'from', type : 'format'}});
             } else {
-                needle.post('http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/service/jaiminho/authorize',
-                    {
-                        token  : token,
-                        secret : params.config.security.secret
-                    },
+                needle.get('http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/validate?token='+querystring.escape(token)+'&secret='+querystring.escape(params.config.security.secret),
                     function (error, resp, data) {
                         if (error) {
                             response.send({error : error});
@@ -61,6 +58,7 @@ module.exports = function (params) {
                                     replyTo : from ? from : '"'+params.config.emails.contact.name+'"<'+params.config.emails.contact.address+'>',
                                     to      : userEmail,
                                     subject : subject,
+                                    categories : categoriesArray,
                                     html    : html + '<br /><br /><br />',
                                     bcc     : 'lucas@empreendemia.com.br'
                                 }
@@ -116,7 +114,7 @@ module.exports = function (params) {
         } else if (to && /^.*\@empreendemia\.com\.br$/.test(to) === false) {
             response.send({error : { message : 'Must be a valid email address', name : 'ValidatorError', path : 'to', type : 'format'}});
         } else {
-            needle.post('http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/service/jaiminho/authorize',
+            needle.get('http://'+params.config.services.auth.url+':'+params.config.services.auth.port+'/validate?token='+querystring.escape(token)+'&secret='+querystring.escape(params.config.security.secret),
                 {
                     token  : token,
                     secret : params.config.security.secret
@@ -148,6 +146,7 @@ module.exports = function (params) {
                                 replyTo : userEmail,
                                 to      : to,
                                 subject : subject,
+                                categories : categoriesArray,
                                 html    : html + '<br /><br /><br />',
                             }
 
