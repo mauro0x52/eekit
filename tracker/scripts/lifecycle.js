@@ -33,15 +33,15 @@ var findUser = function (user_id, cb) {
             }
             if (found) {
                 cb({
-                    _id : user._id,
-                    name : user.name,
+                    _id : data.user._id,
+                    name : data.user.name,
                     token : token
                 });
             } else {
-                console.log('usuário '+user._id+' sem token válido');
+                console.log('usuário '+user_id+' sem token válido');
             }
         } else {
-            console.log('usuário '+user._id+' sem token');
+            console.log('usuário '+user_id+' sem token');
         }
     });
 }
