@@ -25,7 +25,7 @@ var findUser = function (user_id, cb) {
         } else if (data && data.user && data.user.tokens && data.user.tokens.length > 0) {
             /* procura um token válido */
             for (var i in data.user.tokens) {
-                if (data.user.tokens[i].dateExpiration > new Date()) {
+                if (new Date(data.user.tokens[i].dateExpiration) > new Date()) {
                     token = data.user.tokens[i];
                     found = true;
                     break;
