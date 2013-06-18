@@ -326,7 +326,7 @@ Statistic.find({
 Statistic.find({
     'signupDate' : {
         $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 15),
-        $lt : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 4)
+        $lt : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 14)
     }
 }, function (error, statistics) {
     if (error) {
