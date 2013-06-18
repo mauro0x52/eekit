@@ -100,6 +100,9 @@ var mail = function (templateName, user) {
  */
 var templates = {
 
+    /* ---------------------------------------------------------------------- */
+    /* TAREFAS                                                                */
+    /* ---------------------------------------------------------------------- */
     /**
      * lc ativacao 1t
      *
@@ -155,6 +158,9 @@ var templates = {
         }
     },
 
+    /* ---------------------------------------------------------------------- */
+    /* CONTATOS                                                               */
+    /* ---------------------------------------------------------------------- */
     /**
      * lc ativacao 1c
      *
@@ -210,6 +216,9 @@ var templates = {
         }
     },
 
+    /* ---------------------------------------------------------------------- */
+    /* FINANÇAS                                                               */
+    /* ---------------------------------------------------------------------- */
     /**
      * lc ativacao 1f
      *
@@ -239,6 +248,35 @@ var templates = {
         }
     },
 
+    /**
+     * lc engajamento 1f
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_engajamento_1f : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Agora falta pouco para se tornar um mestre da produtividade!';
+        name = 'lc engajamento 1f';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Meus parabéns! Você já começou com o pé direito o uso do Empreendekit.</p>';
+        html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, coloque as categorias de receitas e despesas mais adequadas para a rotina da sua empresa e adicione mais movimentações financeiras já com essas novas categorias.<br />Ter seu fluxo de caixa organizado é fundamental para controlar sua empresa e aumentar sua produtividade.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-1c&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+
+    /* ---------------------------------------------------------------------- */
+    /* GERAL                                                                  */
+    /* ---------------------------------------------------------------------- */
     /**
      * lc geral 1
      *
@@ -293,9 +331,7 @@ var templates = {
 
 
 /* -------------------------------------------------------------------------- */
-/*                                                                            */
 /* TAREFAS                                                                    */
-/*                                                                            */
 /* -------------------------------------------------------------------------- */
 /* Usuários novos que cadastraram ontem no tarefas */
 Statistic.find({
@@ -335,9 +371,7 @@ Statistic.find({
 });
 
 /* -------------------------------------------------------------------------- */
-/*                                                                            */
 /* CONTATOS                                                                   */
-/*                                                                            */
 /* -------------------------------------------------------------------------- */
 /* Galera que se cadastrou ontem no contatos e não ativou */
 Statistic.find({
@@ -361,7 +395,7 @@ Statistic.find({
 Statistic.find({
     'apps.contatos.status' : 'active',
     'apps.financas.status' : {$ne : 'active'},
-    'apps.tarefas.statusDate' : {
+    'apps.contatos.statusDate' : {
         $gte : oneDayAgo,
         $lt : today
     }
@@ -376,12 +410,9 @@ Statistic.find({
 });
 
 /* -------------------------------------------------------------------------- */
-/*                                                                            */
 /* FINANÇAS                                                                   */
-/*                                                                            */
 /* -------------------------------------------------------------------------- */
-/* Galera que se cadastrou 24h no finanças e não ativou                       */
-/* -------------------------------------------------------------------------- */
+/* Galera que se cadastrou 24h no finanças e não ativou */
 Statistic.find({
     'apps.financas.status' : 'new',
     'apps.ee.events.marcar: finanças.totalCount' : {$gte : 1},
@@ -395,6 +426,23 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             mail('lc_ativacao_1f', statistics[i].user)
+        }
+    }
+});
+
+/* Usuário ativos um dia depois de terem ativado */
+Statistic.find({
+    'apps.financas.status' : 'active',
+    'apps.financas.statusDate' : {
+        $gte : oneDayAgo,
+        $lt : today
+    }
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            mail('lc_engajamento_1f', statistics[i].user)
         }
     }
 });
