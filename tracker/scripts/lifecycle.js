@@ -185,6 +185,32 @@ var templates = {
     },
 
     /**
+     * lc engajamento 1c
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_engajamento_1c : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Agora falta pouco para se tornar um mestre da produtividade!';
+        name = 'lc engajamento 1c';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Meus parabéns! Você já começou com o pé direito o uso do Empreendekit.</p>';
+        html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, adicione mais contatos e tarefas para cada um deles.<br />Saber o que deve ser feito para cada cliente é fundamental para aumentar sua produtividade e vender mais.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-1c&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+
+    /**
      * lc ativacao 1f
      *
      * @author Mauro Ribeiro
@@ -313,8 +339,7 @@ Statistic.find({
 /* CONTATOS                                                                   */
 /*                                                                            */
 /* -------------------------------------------------------------------------- */
-/* Galera que se cadastrou ontem no contatos e não ativou                     */
-/* -------------------------------------------------------------------------- */
+/* Galera que se cadastrou ontem no contatos e não ativou */
 Statistic.find({
     'apps.contatos.status' : 'new',
     'apps.ee.events.marcar: contatos.totalCount' : {$gte : 1},
@@ -328,6 +353,24 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             mail('lc_ativacao_1c', statistics[i].user)
+        }
+    }
+});
+
+/* Usuário ativos um dia depois de terem ativado */
+Statistic.find({
+    'apps.contatos.status' : 'active',
+    'apps.financas.status' : {$ne : 'active'},
+    'apps.tarefas.statusDate' : {
+        $gte : oneDayAgo,
+        $lt : today
+    }
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            mail('lc_engajamento_1c', statistics[i].user)
         }
     }
 });
