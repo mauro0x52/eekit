@@ -102,12 +102,11 @@ var templates = {
 
     /**
      * lc ativacao 1t
-     * email enviado 1 dia depois do cadastro para usuário não ativo do tarefas
      *
      * @author Mauro Ribeiro
      * @since  2013-06
      */
-    tasksNew1day : function (user) {
+    lc_ativacao_1t : function (user) {
         var subject, name, html = '';
 
         subject = '2 dicas fáceis para organizar as suas tarefas na empresa';
@@ -131,13 +130,38 @@ var templates = {
     },
 
     /**
-     * lc ativacao 1c
-     * email enviado 1 dia depois do cadastro para usuário não ativo do contatos
+     * lc engajamento 1t
      *
      * @author Mauro Ribeiro
      * @since  2013-06
      */
-    contactsNew1day : function (user) {
+    lc_engajamento_1t : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Agora falta pouco para se tornar um mestre da produtividade!';
+        name = 'lc engajamento 1t';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Meus parabéns! Você já começou com o pé direito o uso do Empreendekit.</p>';
+        html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, adicione mais tarefas e não se esqueça de marcá-las como feitas.<br />Medir seus avanços na semana é fundamental para aumentar sua produtividade.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-1t&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+
+    /**
+     * lc ativacao 1c
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_ativacao_1c : function (user) {
         var subject, name, html = '';
 
         subject = '2 dicas fáceis para cuidar dos prazos de seus clientes';
@@ -162,12 +186,11 @@ var templates = {
 
     /**
      * lc ativacao 1f
-     * email enviado 1 dia depois do cadastro para usuário não ativo do finanças
      *
      * @author Mauro Ribeiro
      * @since  2013-06
      */
-    financesNew1day : function (user) {
+    lc_ativacao_1f : function (user) {
         var subject, name, html = '';
 
         subject = 'O ultimo passo para sair da planilha';
@@ -192,12 +215,11 @@ var templates = {
 
     /**
      * lc geral 1
-     * Test drive acabando, enviado 10 dias depois do cadastro
      *
      * @author Mauro Ribeiro
      * @since  2013-06
      */
-    payment10days : function (user) {
+    lc_geral_1 : function (user) {
         var subject, name, html = '';
 
         subject = 'Seu período de testes do EmpreendeKit acaba em 5 dias';
@@ -217,12 +239,11 @@ var templates = {
 
     /**
      * lc geral 2
-     * Test drive acabou, enviado 15 dias após o cadastro
      *
      * @author Mauro Ribeiro
      * @since  2013-06
      */
-    payment15days : function (user) {
+    lc_geral_2 : function (user) {
         var subject, name, html = '';
 
         subject = 'Fim do seu teste no EmpreendeKit';
@@ -246,29 +267,14 @@ var templates = {
 
 
 /* -------------------------------------------------------------------------- */
-/* Galera que se cadastrou ontem no contatos e não ativou                     */
+/*                                                                            */
+/* TAREFAS                                                                    */
+/*                                                                            */
 /* -------------------------------------------------------------------------- */
-Statistic.find({
-    'apps.contatos.status' : 'new',
-    'apps.contatos.statusDate' : {
-        $gte : oneDayAgo,
-        $lt : today
-    }
-}, function (error, statistics) {
-    if (error) {
-        console.log(error)
-    } else {
-        for (var i in statistics) {
-            mail('contactsNew1day', statistics[i].user)
-        }
-    }
-});
-
-/* -------------------------------------------------------------------------- */
-/* Galera que se cadastrou ontem no tarefas e não ativou                      */
-/* -------------------------------------------------------------------------- */
+/* Usuários novos que cadastraram ontem no tarefas */
 Statistic.find({
     'apps.tarefas.status' : 'new',
+    'apps.ee.events.marcar: tarefas.totalCount' : {$gte : 1},
     'apps.tarefas.statusDate' : {
         $gte : oneDayAgo,
         $lt : today
@@ -278,16 +284,64 @@ Statistic.find({
         console.log(error)
     } else {
         for (var i in statistics) {
-            mail('tasksNew1day', statistics[i].user)
+            mail('lc_ativacao_1t', statistics[i].user)
+        }
+    }
+});
+
+/* Usuário ativos um dia depois de terem ativado */
+Statistic.find({
+    'apps.tarefas.status' : 'active',
+    'apps.contatos.status' : {$ne : 'active'},
+    'apps.financas.status' : {$ne : 'active'},
+    'apps.tarefas.statusDate' : {
+        $gte : oneDayAgo,
+        $lt : today
+    }
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            mail('lc_engajamento_1t', statistics[i].user)
         }
     }
 });
 
 /* -------------------------------------------------------------------------- */
+/*                                                                            */
+/* CONTATOS                                                                   */
+/*                                                                            */
+/* -------------------------------------------------------------------------- */
+/* Galera que se cadastrou ontem no contatos e não ativou                     */
+/* -------------------------------------------------------------------------- */
+Statistic.find({
+    'apps.contatos.status' : 'new',
+    'apps.ee.events.marcar: contatos.totalCount' : {$gte : 1},
+    'apps.contatos.statusDate' : {
+        $gte : oneDayAgo,
+        $lt : today
+    }
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            mail('lc_ativacao_1c', statistics[i].user)
+        }
+    }
+});
+
+/* -------------------------------------------------------------------------- */
+/*                                                                            */
+/* FINANÇAS                                                                   */
+/*                                                                            */
+/* -------------------------------------------------------------------------- */
 /* Galera que se cadastrou 24h no finanças e não ativou                       */
 /* -------------------------------------------------------------------------- */
 Statistic.find({
     'apps.financas.status' : 'new',
+    'apps.ee.events.marcar: finanças.totalCount' : {$gte : 1},
     'apps.financas.statusDate' : {
         $gte : oneDayAgo,
         $lt : today
@@ -297,7 +351,7 @@ Statistic.find({
         console.log(error)
     } else {
         for (var i in statistics) {
-            mail('financesNew1day', statistics[i].user)
+            mail('lc_ativacao_1f', statistics[i].user)
         }
     }
 });
@@ -315,7 +369,7 @@ Statistic.find({
         console.log(error)
     } else {
         for (var i in statistics) {
-            mail('payment10days', statistics[i].user)
+            mail('lc_geral_1', statistics[i].user)
         }
     }
 });
@@ -333,7 +387,7 @@ Statistic.find({
         console.log(error)
     } else {
         for (var i in statistics) {
-            mail('payment15days', statistics[i].user)
+            mail('lc_geral_2', statistics[i].user)
         }
     }
 });
