@@ -118,8 +118,8 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Bem vindo ao EmpreendeKit!<br />Para te ajudar a continuar organizando as suas tarefas, separei 2 dicas:</p>';
         html += '<ol>';
-        html += '<li>adicione uma tarefa que você tem que fazer hoje</li>';
-        html += '<li>assim que terminar a tarefa, marque a tarefa como feita</li>';
+        html += '<li>Adicione uma tarefa que você tem que fazer hoje</li>';
+        html += '<li>Assim que terminar a tarefa, marque a tarefa como feita</li>';
         html += '</ol>';
         html += '<p>Recomendo que faça isso para suas 3 principais tarefas. Você já vai ver a diferença!</p>';
         html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=ativacao-1t&utm_campaign=lifecycle">clique aqui.</p>';
@@ -157,6 +157,31 @@ var templates = {
             name : name
         }
     },
+    /**
+     * lc engajamento 4f
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_engajamento_4t : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Recursos legais do EmpreendeKit que você pode não ter visto ainda';
+        name = 'lc engajamento 4f';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Você chegou a ver nossos lembretes por email no EmpreendeKit?</p>';
+        html += '<p>Enviaremos o lembrete diretamente para seu email para você não se preocupar mais em esquecer de fazer alguma tarefa.</p>';
+        html += '<p>É só adicionar uma tarefa com data e clicar em "Mais informações".<br />Depois disso é só clicar no período que você deseja ser lembrado.</p>';
+        html += '<p>Para acessar o EmpreendeKit e configurar seus lembretes, é só <a href=" http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4t&utm_campaign=lifecycle">clicar aqui.</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
 
     /* ---------------------------------------------------------------------- */
     /* CONTATOS                                                               */
@@ -176,8 +201,8 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Bem vindo ao Empreendekit!<br />Para te ajudar a continuar organizando os seus contatos, separei 2 dicas:</p>';
         html += '<ol>';
-        html += '<li>adicione um contato</li>';
-        html += '<li>adicione uma tarefa no contato</li>';
+        html += '<li>Adicione um contato</li>';
+        html += '<li>Adicione uma tarefa no contato</li>';
         html += '</ol>';
         html += '<p>Recomendo que faça isso para seus 3 principais contatos. Você já vai ver a diferença!</p>';
         html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, é só <a href="http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=ativacao-1c&utm_campaign=lifecycle">clicar aqui</a>.</p>';
@@ -215,6 +240,34 @@ var templates = {
             name : name
         }
     },
+    /**
+     * lc engajamento 4c
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_engajamento_4c : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Recursos legais do EmpreendeKit que você pode não ter visto ainda';
+        name = 'lc engajamento 4c';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Você chegou a ver nossos campos e categorias personalizáveis no EmpreendeKit?</p>';
+        html += '<p>Com os campos personalizados, você consegue inserir em seus contatos apenas as informações relevantes para sua empresa. A partir dai, sempre que for adicionar ou editar um contato, aparecerá o campo que você adicionou para preencher.</p>';
+        html += '<p>Já com as categorias, você consegue adaptar a ferramenta para o seu processo de vendas.</p>';
+        html += '<p>Para fazer isso, é só clicar em categorias ou campos personalizados, logo na barra lateral esquerda. A partir dai, é só adicionar a categoria ou campo que você quiser.</p>';
+        html += '<p>Para começar a deixar a ferramenta do seu jeito, <a href=" http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-4c&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Se quiser, posso te ajudar a fazer essa configuração.<br />É só me responder esse email.</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+
 
     /* ---------------------------------------------------------------------- */
     /* FINANÇAS                                                               */
@@ -263,8 +316,33 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Meus parabéns! Você já começou com o pé direito o uso do Empreendekit.</p>';
         html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, coloque as categorias de receitas e despesas mais adequadas para a rotina da sua empresa e adicione mais movimentações financeiras já com essas novas categorias.<br />Ter seu fluxo de caixa organizado é fundamental para controlar sua empresa e aumentar sua produtividade.</p>';
-        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-1c&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/financas?utm_source=eekit&utm_medium=email&utm_content=engajamento-1f&utm_campaign=lifecycle">clique aqui.</p>';
         html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+    /**
+     * lc engajamento 4f
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_engajamento_4f : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Recursos legais do EmpreendeKit que você pode não ter visto ainda';
+        name = 'lc engajamento 4f';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Você chegou a ver que é possível exportar seus dados financeiros no EmpreendeKit?</p>';
+        html += '<p>Você pode mandar periodicamente as informações para seu contador e facilitar a contabilidade na sua empresa.</p>';
+        html += '<p>Dentro do Finanças, é só clicar em "baixar dados" que ele vai te gerar um arquivo com todas as movimentações que você tem no período selecionado.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já baixar as informações financeiras da sua empresa, é só <a href=" http://www.empreendekit.com.br/financas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4f&utm_campaign=lifecycle">clique aqui.</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -277,6 +355,87 @@ var templates = {
     /* ---------------------------------------------------------------------- */
     /* GERAL                                                                  */
     /* ---------------------------------------------------------------------- */
+    /**
+     * lc retenção 1
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_retencao_1 : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Parabéns! Você é praticamente um mestre da produtividade';
+        name = 'lc retencao 1';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Você já usou grande parte dos recursos do EmpreendeKit e é praticamente um mestre da produtividade.<br />Isso vai te ajudar bastante a organizar e profissionalizar sua empresa.</p>';
+        html += '<p>Separamos algumas coisas que você pode fazer para aproveitar integrar os recursos da ferramenta e ganhar cada vez mais agilidade.</p>';
+        html += '<ul>';
+        html += '<li>Ao clicar em um contato, você consegue criar tarefas específicas para ele</li>';
+        html += '<li>Dentro do contato você também pode adicionar uma transação financeira</li>';
+        html += '</ul>';
+        html += '<p>As transações criadas dentro de um contato podem ser vistas, também, dentro do Financeiro. A mesma coisa acontece com as tarefas, que podem ser vistas tanto dentro do contato, quanto no aplicativo de tarefas.</p>';
+        html += '<p>Para acessar o EmpreendeKi e continuar a sua jornada em busca da produtividade, <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=retencao-1&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+    /**
+     * lc ativacao 3
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_ativacao_3 : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Não se preocupe, já pensamos em tudo!';
+        name = 'lc ativacao 3';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Estamos muito felizes que você resolveu testar o EmpreendeKit.</p>';
+        html += '<p>É comum termos algumas dúvidas sempre que vamos testar uma nova ferramenta.<br />Pensando nisso, resolvi te mandar esse email para te assegurar: nós já pensamos em tudo!</p>';
+        html += '<ul>';
+        html += '<li>O EmpreendeKit é seguro - Nos preocupamos com a sua segurança e garantimos a confidencialidade das suas informações</li>';
+        html += '<li>Você não vai ser cobrado se não quiser - Nós só te enviamos cobrança se você realmente quiser continuar usando</li>';
+        html += '<li>Também somos empreendedores e desenhamos a ferramenta abrangendo tudo que uma pequena empresa precisa.</li>';
+        html += '</ul>';
+        html += '<p>Quer dar mais uma olhada no sistema? É só <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=ativacao-3&utm_campaign=lifecycle">clicar aqui.</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+    /**
+     * lc ativacao 4
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_ativacao_4 : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Suporte EmpreendeKit';
+        name = 'lc ativacao 4';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Espero que o Empreendekit consiga ajudar no dia a dia da sua empresa.</p>';
+        html += '<p>Você ficou com alguma dúvida? O que acha de marcarmos um horário para conversar e eu te ajudar a configurar o Empreendekit?</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
     /**
      * lc geral 1
      *
@@ -319,6 +478,30 @@ var templates = {
         html += '<br /><br /><!-- INICIO FORMULARIO BOTAO PAGSEGURO --><form target="pagseguro" action="https://pagseguro.uol.com.br/v2/pre-approvals/request.html" method="post"><!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --><input type="hidden" name="code" value="4D1DC72FC7C7FF9FF4CD2F9A1B9DDB2B" /><input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/assinaturas/209x48-assinar-assina.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" /></form><!-- FINAL FORMULARIO BOTAO PAGSEGURO --><br /><br />';
         html += 'Se ainda tiver alguma dúvida e quiser falar conosco, é só me responder ou entrar em contato através de um dos canais abaixo, que ficaremos felizões de te atender. Eventualmente podemos até estender seu teste.<br />Você pode entrar em contato comigo por esse email, ou pelo telefone: (11) 3230-9233.';
         html += 'Se você quiser, também temos outros planos para períodos maiores com um desconto bacana.<br />Para acessar nossa página de planos, é só <a href=" http://www.empreendekit.com.br/ee/precos-e-planos?utm_source=eekit&utm_medium=email&utm_content=geral-2&utm_campaign=lifecycle">clicar aqui</a>.'
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+
+    /**
+     * lc nutricao 1
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_nutricao_1 : function (user) {
+        var subject, name, html = '';
+
+        subject = 'O que você achou do EmpreendeKit?';
+        name = 'lc nutricao 1';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Sempre estamos querendo melhorar a ferramenta e construir melhores recursos para empreendedores.<br />Para nós a sua opinião é extremamente importante.</p>';
+        html += '<p>O que você achou do EmpreendeKit?<br />Ficou faltando alguma coisa?</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -370,6 +553,25 @@ Statistic.find({
     }
 });
 
+/* Usuário ativos quatro dias depois de terem ativado */
+Statistic.find({
+    'apps.tarefas.status' : 'active',
+    'apps.contatos.status' : {$ne : 'active'},
+    'apps.financas.status' : {$ne : 'active'},
+    'apps.tarefas.statusDate' : {
+        $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 4),
+        $lt : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3)
+    }
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            mail('lc_engajamento_4t', statistics[i].user)
+        }
+    }
+});
+
 /* -------------------------------------------------------------------------- */
 /* CONTATOS                                                                   */
 /* -------------------------------------------------------------------------- */
@@ -405,6 +607,24 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             mail('lc_engajamento_1c', statistics[i].user)
+        }
+    }
+});
+
+/* Usuário ativos quatro dias depois de terem ativado */
+Statistic.find({
+    'apps.contatos.status' : 'active',
+    'apps.financas.status' : {$ne : 'active'},
+    'apps.contatos.statusDate' : {
+        $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 4),
+        $lt : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3)
+    }
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            mail('lc_engajamento_4c', statistics[i].user)
         }
     }
 });
@@ -447,9 +667,104 @@ Statistic.find({
     }
 });
 
+/* Usuário ativos quatro dias depois de terem ativado */
+Statistic.find({
+    'apps.financas.status' : 'active',
+    'apps.financas.statusDate' : {
+        $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 4),
+        $lt : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3)
+    }
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            mail('lc_engajamento_4f', statistics[i].user)
+        }
+    }
+});
+
 /* -------------------------------------------------------------------------- */
-/* Email de pagamento 10 dias após o cadastro                                 */
+/* GERAL                                                                      */
 /* -------------------------------------------------------------------------- */
+
+/* Usuário não ativo depois de 3 dias do cadastro */
+Statistic.find({
+    'apps.tarefas.status': {'$nin': ['active', 'engaged', 'retained']},
+    'apps.contatos.status': {'$nin': ['active', 'engaged', 'retained']},
+    'apps.financas.status': {'$nin': ['active', 'engaged', 'retained']},
+    'signupDate' : {
+        $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3),
+        $lt : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2)
+    }
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            mail('lc_ativacao_3', statistics[i].user)
+        }
+    }
+});
+
+/* Usuários engajados um dia depois */
+Statistic.find({
+    '$or': [
+        {
+            'apps.tarefas.status': 'engaged',
+            'apps.contatos.status': {$ne : 'engaged'},
+            'apps.financas.status': {$ne : 'engaged'},
+            'apps.tarefas.statusDate' : {
+                $gte : oneDayAgo,
+                $lt : today
+            }
+        },
+        {
+            'apps.contatos.status': 'engaged',
+            'apps.financas.status': {$ne : 'engaged'},
+            'apps.tarefas.statusDate' : {
+                $gte : oneDayAgo,
+                $lt : today
+            }
+        },
+        {
+            'apps.financas.status': 'engaged',
+            'apps.tarefas.statusDate' : {
+                $gte : oneDayAgo,
+                $lt : today
+            }
+        }
+    ]
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            mail('lc_retencao_1', statistics[i].user)
+        }
+    }
+});
+
+/* Usuário não ativo depois de 4 dias do cadastro */
+Statistic.find({
+    'apps.tarefas.status': {'$nin': ['active', 'engaged', 'retained']},
+    'apps.contatos.status': {'$nin': ['active', 'engaged', 'retained']},
+    'apps.financas.status': {'$nin': ['active', 'engaged', 'retained']},
+    'signupDate' : {
+        $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 4),
+        $lt : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3)
+    }
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            mail('lc_ativacao_4', statistics[i].user)
+        }
+    }
+});
+
+/* Email de pagamento 10 dias após o cadastro */
 Statistic.find({
     'signupDate' : {
         $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 10),
@@ -465,9 +780,7 @@ Statistic.find({
     }
 });
 
-/* -------------------------------------------------------------------------- */
-/* Email de pagamento 15 dias após o cadastro                                 */
-/* -------------------------------------------------------------------------- */
+/* Email de pagamento 15 dias após o cadastro */
 Statistic.find({
     'signupDate' : {
         $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 15),
@@ -479,6 +792,22 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             mail('lc_geral_2', statistics[i].user)
+        }
+    }
+});
+
+/* Usuários cadastrados a 17 dias */
+Statistic.find({
+    'signupDate' : {
+        $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 17),
+        $lt : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 16)
+    }
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            mail('lc_nutricao_1', statistics[i].user)
         }
     }
 });

@@ -19,4 +19,3 @@ exports.Auth = require('./Auth.js').Auth;
 exports.Task = require('./Task.js').Task;
 exports.Category = require('./Category.js').Category;
 exports.Company = require('./Company.js').Company;
-exports.Statistic = require('./Statistic.js').Statistic;

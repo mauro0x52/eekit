@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.2 (2013-06-18)
+
+Features
+- Emails de lifecycle
+
 ## 1.1 (2013-06-14)
 
 Features
