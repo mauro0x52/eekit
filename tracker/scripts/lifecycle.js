@@ -40,10 +40,10 @@ var findUser = function (user_id, cb) {
                     token : token.token
                 });
             } else {
-                console.log('usuário '+user_id+' sem token válido');
+                console.log('usuario '+user_id+' sem token valido');
             }
         } else {
-            console.log('usuário '+user_id+' sem token');
+            console.log('usuario '+user_id+' sem token');
         }
     });
 }
@@ -83,6 +83,7 @@ var mail = function (templateName, user) {
     if (templateName && templates[templateName]) {
         findUser(user, function (user) {
             var template = templates[templateName](user);
+            console.log('Enviando email para: ' + user.name + ' ' + user._id)
             sendMail({
                 token : user.token,
                 html : template.html,
