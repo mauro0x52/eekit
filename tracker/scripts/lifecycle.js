@@ -388,6 +388,82 @@ var templates = {
     /* GERAL                                                                  */
     /* ---------------------------------------------------------------------- */
     /**
+     * lc ativacao 3
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_ativacao_3 : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Não se preocupe, já pensamos em tudo!';
+        name = 'lc ativacao 3';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Estamos muito felizes que você resolveu testar o EmpreendeKit.</p>';
+        html += '<p>É comum termos algumas dúvidas sempre que vamos testar uma nova ferramenta.<br />Pensando nisso, resolvi te mandar esse email para te assegurar: nós já pensamos em tudo!</p>';
+        html += '<ul>';
+        html += '<li>O EmpreendeKit é seguro - Nos preocupamos com a sua segurança e garantimos a confidencialidade das suas informações</li>';
+        html += '<li>Você não vai ser cobrado se não quiser - Nós só te enviamos cobrança se você realmente quiser continuar usando</li>';
+        html += '<li>Também somos empreendedores e desenhamos a ferramenta abrangendo tudo que uma pequena empresa precisa.</li>';
+        html += '</ul>';
+        html += '<p>Quer dar mais uma olhada no sistema? É só <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=ativacao-3&utm_campaign=lifecycle">clicar aqui</a>.</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+    /**
+     * lc ativacao 4
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_ativacao_4 : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Suporte EmpreendeKit';
+        name = 'lc ativacao 4';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Espero que o Empreendekit consiga ajudar no dia a dia da sua empresa.</p>';
+        html += '<p>Você ficou com alguma dúvida? O que acha de marcarmos um horário para conversar e eu te ajudar a configurar o Empreendekit?</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+    /**
+     * lc engajamento 2
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_engajamento_2 : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Quer aumentar a produtividade e profissionalizar sua empresa?';
+        name = 'lc engajamento 2';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Temos tantas coisas para fazer no dia-a-dia, que diversas acabam não cabendo em 24h.<br />Entretanto, isso pode ser amenizado quando usamos a tecnologia em nosso favor.';
+        html += '<p>As ferramentas de produtividade poupam tempo que você gastaria se organizando e evitam que você tenha que ficar se lembrando de tudo o que precisa fazer. Ou seja, faz a sua gestão ficar mais ágil e profissional.</p>';
+        html += '<p>Ter uma empresa produtiva do nunca foi tão rápido e fácil. É só <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=engajamento-2&utm_campaign=lifecycle">clicar aqui</a>.</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+    /**
      * lc retenção 1
      *
      * @author Mauro Ribeiro
@@ -462,58 +538,6 @@ var templates = {
         html += '<p>Como empreendedores estamos sempre procurando aumentar a nossa produtividade, seja através de hábitos, ou usufruindo melhor as ferramentas que usamos no dia-a-dia.</p>';
         html += '<p>Sabemos que isso não é só conosco e estamos dispostos a fazer uma consultoria para te ajudar a usar melhor os recursos do EmpreendeKit.<br />Queremos te ajudar a fazer melhor e mais rápido.</p>';
         html += '<p>Vamos marcar uma conversa por telefone ou Skype/Hangout?/p>';
-        html += '<p>Abraços,<br />Lucas</p>';
-
-        return {
-            subject : subject,
-            html : html,
-            name : name
-        }
-    },
-    /**
-     * lc ativacao 3
-     *
-     * @author Mauro Ribeiro
-     * @since  2013-06
-     */
-    lc_ativacao_3 : function (user) {
-        var subject, name, html = '';
-
-        subject = 'Não se preocupe, já pensamos em tudo!';
-        name = 'lc ativacao 3';
-
-        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
-        html += '<p>Estamos muito felizes que você resolveu testar o EmpreendeKit.</p>';
-        html += '<p>É comum termos algumas dúvidas sempre que vamos testar uma nova ferramenta.<br />Pensando nisso, resolvi te mandar esse email para te assegurar: nós já pensamos em tudo!</p>';
-        html += '<ul>';
-        html += '<li>O EmpreendeKit é seguro - Nos preocupamos com a sua segurança e garantimos a confidencialidade das suas informações</li>';
-        html += '<li>Você não vai ser cobrado se não quiser - Nós só te enviamos cobrança se você realmente quiser continuar usando</li>';
-        html += '<li>Também somos empreendedores e desenhamos a ferramenta abrangendo tudo que uma pequena empresa precisa.</li>';
-        html += '</ul>';
-        html += '<p>Quer dar mais uma olhada no sistema? É só <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=ativacao-3&utm_campaign=lifecycle">clicar aqui</a>.</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
-
-        return {
-            subject : subject,
-            html : html,
-            name : name
-        }
-    },
-    /**
-     * lc ativacao 4
-     *
-     * @author Mauro Ribeiro
-     * @since  2013-06
-     */
-    lc_ativacao_4 : function (user) {
-        var subject, name, html = '';
-
-        subject = 'Suporte EmpreendeKit';
-        name = 'lc ativacao 4';
-
-        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
-        html += '<p>Espero que o Empreendekit consiga ajudar no dia a dia da sua empresa.</p>';
-        html += '<p>Você ficou com alguma dúvida? O que acha de marcarmos um horário para conversar e eu te ajudar a configurar o Empreendekit?</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -793,6 +817,69 @@ Statistic.find({
     }
 });
 
+/* Usuário não ativo depois de 4 dias do cadastro */
+Statistic.find({
+    'apps.tarefas.status': {'$nin': ['active', 'engaged', 'retained']},
+    'apps.contatos.status': {'$nin': ['active', 'engaged', 'retained']},
+    'apps.financas.status': {'$nin': ['active', 'engaged', 'retained']},
+    'signupDate' : {
+        $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 4),
+        $lt : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3)
+    }
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            mail('lc_ativacao_4', statistics[i].user)
+        }
+    }
+});
+
+/* Usuários ativos dois dias depois */
+Statistic.find({
+    '$or': [
+        {
+            'apps.tarefas.status': 'active',
+            'apps.contatos.status': {$nin : ['engaged', 'retained']},
+            'apps.financas.status': {$nin : ['engaged', 'retained']},
+            'apps.tarefas.statusDate' : {
+                $gte : twoDaysAgo,
+                $lt : oneDayAgo
+            }
+        },
+        {
+            'apps.tarefas.status': {$nin : ['engaged', 'retained']},
+            'apps.contatos.status': 'active',
+            'apps.financas.status': {$nin : ['engaged', 'retained']},
+            'apps.contatos.statusDate' : {
+                $gte : twoDaysAgo,
+                $lt : oneDayAgo
+            }
+        },
+        {
+            'apps.tarefas.status': {$nin : ['engaged', 'retained']},
+            'apps.contatos.status': {$nin : ['engaged', 'retained']},
+            'apps.financas.status': 'active',
+            'apps.financas.statusDate' : {
+                $gte : twoDaysAgo,
+                $lt : oneDayAgo
+            }
+        }
+    ]
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            var minDate = minStatusDate(statistics[i], 'active', ['tarefas', 'contatos', 'financas']);
+            if (minDate >= new twoDaysAgo && minDate < oneDayAgo) {
+                mail('lc_engajamento_2', statistics[i].user);
+            }
+        }
+    }
+});
+
 /* Usuários engajados um dia depois */
 Statistic.find({
     '$or': [
@@ -912,25 +999,6 @@ Statistic.find({
             if (minDate >= new threeDaysAgo && minDate < twoDaysAgo) {
                 mail('lc_retencao_3', statistics[i].user);
             }
-        }
-    }
-});
-
-/* Usuário não ativo depois de 4 dias do cadastro */
-Statistic.find({
-    'apps.tarefas.status': {'$nin': ['active', 'engaged', 'retained']},
-    'apps.contatos.status': {'$nin': ['active', 'engaged', 'retained']},
-    'apps.financas.status': {'$nin': ['active', 'engaged', 'retained']},
-    'signupDate' : {
-        $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 4),
-        $lt : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3)
-    }
-}, function (error, statistics) {
-    if (error) {
-        console.log(error)
-    } else {
-        for (var i in statistics) {
-            mail('lc_ativacao_4', statistics[i].user)
         }
     }
 });
