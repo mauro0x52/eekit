@@ -388,6 +388,30 @@ var templates = {
     /* GERAL                                                                  */
     /* ---------------------------------------------------------------------- */
     /**
+     * lc ativacao 2
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_ativacao_2 : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Como um de nossos usuários melhorou o gerenciamento de sua empresa com o EmpreendeKit';
+        name = 'lc ativacao 2';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Recebemos um depoimento muito bacana de um usuário nosso e achamos tão legal, que pensamos em repassar para você.</p>';
+        html += '<p><span style="italic">O Empreendekit me ajudou a ter sempre claro quais são as próximas tarefas a serem feitas, e de qual área da empresa ou do meu processo de entrega do serviço ela corresponde. Nos contatos posso reunir todas as informações de um cliente, relatar contatos anteriores e adicionar tarefas para aquele cliente, em uma data única ou com recorrência. É muito fácil controlar o fluxo de caixa com o Empreendekit porque é simples adicionar receitas ou despesas.</span><br />Leandro do Carmo - Alto Rendimento Assessoria Esportiva</p>';
+        html += '<p>Quer fazer igual o Leandro e organizar mais a sua empresa? <a href="http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=ativacao-2&utm_campaign=lifecycle">clique aqui</a>.</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+    /**
      * lc ativacao 3
      *
      * @author Mauro Ribeiro
@@ -797,6 +821,25 @@ Statistic.find({
 /* -------------------------------------------------------------------------- */
 /* GERAL                                                                      */
 /* -------------------------------------------------------------------------- */
+
+/* Usuário não ativo depois de 2 dias do cadastro */
+Statistic.find({
+    'apps.tarefas.status': {'$nin': ['active', 'engaged', 'retained']},
+    'apps.contatos.status': {'$nin': ['active', 'engaged', 'retained']},
+    'apps.financas.status': {'$nin': ['active', 'engaged', 'retained']},
+    'signupDate' : {
+        $gte : twoDaysAgo,
+        $lt : oneDayAgo
+    }
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            mail('lc_ativacao_2', statistics[i].user)
+        }
+    }
+});
 
 /* Usuário não ativo depois de 3 dias do cadastro */
 Statistic.find({
