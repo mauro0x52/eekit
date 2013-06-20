@@ -22,16 +22,38 @@ module.exports = function (params) {
 
         response.contentType('text/html');
 
-        var filter = request.param('filter');
+        var filter = request.param('filter'),
+            now, today, oneDayAgo,
+            filterJson, filterStr;
+
+        now = new Date();
+        today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        oneDayAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+
         if (!filter) filter = '{}';
 
-        filter = eval('('+filter+')');
+        filterJson = eval('('+filter+')');
 
-        params.model.Statistic.find(filter, function (error, statistics) {
+        params.model.Statistic.find(filterJson, function (error, statistics) {
             if (error) {
                 response.send(error);
             } else {
-                response.render('../view/statistics', {statistics : statistics, filter : filter});
+                filterStr = filter;
+
+                /* poe as aspas */
+                filterStr = filterStr.replace(/(new Date\([0-9a-zA-Z\,\s\.\+\-\*\/\(\)]*\))/g, '\"$1\"');
+                filterStr = filterStr.replace(/(((now)|(today)|(oneDayAgo))(\.[a-zA-Z]+\(\))?)/g, '\'$1\'');
+                
+                /* converta para json */
+                filterStr = eval('('+filterStr+')');
+                /* converte para string identada */
+                filterStr = JSON.stringify(filterStr, undefined, 4);
+
+                /* tira as aspas */
+                filterStr = filterStr.replace(/['"](((now)|(today)|(oneDayAgo))(\.[a-zA-Z]+\(\))?)['"]/g, '$1');
+                filterStr = filterStr.replace(/"(new Date\([0-9a-zA-Z\,\s\.\+\-\*\/\(\)]*\))"/g, '$1');
+
+                response.render('../view/statistics', {statistics : statistics, filter : filterStr});
             }
         });
     });

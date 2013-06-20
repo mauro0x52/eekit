@@ -91,6 +91,36 @@ var mail = function (templateName, user) {
     }
 }
 
+/**
+ * Menor data da alteração de status para um status
+ *
+ * @author Mauro Ribeiro
+ * @since  2013-06
+ */
+var minStatusDate = function (statistic, status, apps) {
+    var found = false,
+        min = new Date(3000, 0),
+        current;
+
+    for (var i in statistic.apps) {
+        current = new Date(statistic.apps[i].statusDate);
+        if (statistic.apps[i].status === status) {
+            if (current < min) {
+                if (apps) {
+                    if (apps.indexOf(i) >= 0) {
+                        min = current;
+                        found = true;
+                    }
+                } else {
+                    min = current;
+                    found = true;
+                }
+            }
+        }
+    }
+
+    return found ? min : null;
+}
 
 /**
  * Templates dos emails
@@ -712,25 +742,63 @@ Statistic.find({
     '$or': [
         {
             'apps.tarefas.status': 'engaged',
-            'apps.contatos.status': {$ne : 'engaged'},
-            'apps.financas.status': {$ne : 'engaged'},
-            'apps.tarefas.statusDate' : {
-                $gte : oneDayAgo,
-                $lt : today
-            }
+            'apps.contatos.status': {$ne : 'retained'},
+            'apps.financas.status': {$ne : 'retained'},
+            'apps.tarefas.statusDate' : { $gte : oneDayAgo, $lt : today }
         },
         {
+            'apps.tarefas.status': {$ne : 'retained'},
             'apps.contatos.status': 'engaged',
-            'apps.financas.status': {$ne : 'engaged'},
+            'apps.financas.status': {$ne : 'retained'},
+            'apps.contatos.statusDate' : { $gte : oneDayAgo, $lt : today }
+        },
+        {
+            'apps.tarefas.status': {$ne : 'retained'},
+            'apps.contatos.status': {$ne : 'retained'},
+            'apps.financas.status': 'engaged',
+            'apps.financas.statusDate' : { $gte : oneDayAgo, $lt : today }
+        }
+    ]
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            var minDate = minStatusDate(statistics[i], 'engaged', ['tarefas', 'contatos', 'financas']);
+            if (minDate >= oneDayAgo && minDate < today) {
+                mail('lc_retencao_1', statistics[i].user);
+            }
+        }
+    }
+});
+
+/* Usuários engajados dois dias depois */
+Statistic.find({
+    '$or': [
+        {
+            'apps.tarefas.status': 'engaged',
+            'apps.contatos.status': {$ne : 'retained'},
+            'apps.financas.status': {$ne : 'retained'},
             'apps.tarefas.statusDate' : {
-                $gte : oneDayAgo,
+                $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2),
+                $lt : oneDayAgo
+            }
+        },
+        {
+            'apps.tarefas.status': {$ne : 'retained'},
+            'apps.contatos.status': 'engaged',
+            'apps.financas.status': {$ne : 'retained'},
+            'apps.contatos.statusDate' : {
+                $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2),
                 $lt : today
             }
         },
         {
+            'apps.tarefas.status': {$ne : 'retained'},
+            'apps.contatos.status': {$ne : 'retained'},
             'apps.financas.status': 'engaged',
-            'apps.tarefas.statusDate' : {
-                $gte : oneDayAgo,
+            'apps.financas.statusDate' : {
+                $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2),
                 $lt : today
             }
         }
@@ -740,7 +808,10 @@ Statistic.find({
         console.log(error)
     } else {
         for (var i in statistics) {
-            mail('lc_retencao_1', statistics[i].user)
+            var minDate = minStatusDate(statistics[i], 'engaged', ['tarefas', 'contatos', 'financas']);
+            if (minDate >= oneDayAgo && minDate < today) {
+                mail('lc_retencao_1', statistics[i].user);
+            }
         }
     }
 });
