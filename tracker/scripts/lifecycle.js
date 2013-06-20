@@ -790,7 +790,7 @@ Statistic.find({
             'apps.financas.status': {$ne : 'retained'},
             'apps.contatos.statusDate' : {
                 $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2),
-                $lt : today
+                $lt : oneDayAgo
             }
         },
         {
@@ -799,7 +799,7 @@ Statistic.find({
             'apps.financas.status': 'engaged',
             'apps.financas.statusDate' : {
                 $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2),
-                $lt : today
+                $lt : oneDayAgo
             }
         }
     ]
@@ -809,8 +809,8 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             var minDate = minStatusDate(statistics[i], 'engaged', ['tarefas', 'contatos', 'financas']);
-            if (minDate >= oneDayAgo && minDate < today) {
-                mail('lc_retencao_1', statistics[i].user);
+            if (minDate >= new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2) && minDate < oneDayAgo) {
+                mail('lc_retencao_2', statistics[i].user);
             }
         }
     }
