@@ -1,12 +1,14 @@
 var Statistic = require('../model/Model').Statistic,
     config = require('../config.js'),
     needle = require('needle'),
-    today, oneDayAgo, twoDaysAgo;
+    today, oneDayAgo, twoDaysAgo, threeDaysAgo, fourDaysAgo;
 
 today = new Date();
 today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 oneDayAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
 twoDaysAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2);
+threeDaysAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3);
+fourDaysAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 4);
 
 console.log('Iniciando cron de LifeCycle');
 
@@ -152,7 +154,7 @@ var templates = {
         html += '<li>Assim que terminar a tarefa, marque a tarefa como feita</li>';
         html += '</ol>';
         html += '<p>Recomendo que faça isso para suas 3 principais tarefas. Você já vai ver a diferença!</p>';
-        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=ativacao-1t&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=ativacao-1t&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -177,7 +179,7 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Meus parabéns! Você já começou com o pé direito o uso do Empreendekit.</p>';
         html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, adicione mais tarefas e não se esqueça de marcá-las como feitas.<br />Medir seus avanços na semana é fundamental para aumentar sua produtividade.</p>';
-        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-1t&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-1t&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
@@ -203,7 +205,7 @@ var templates = {
         html += '<p>Você chegou a ver nossos lembretes por email no EmpreendeKit?</p>';
         html += '<p>Enviaremos o lembrete diretamente para seu email para você não se preocupar mais em esquecer de fazer alguma tarefa.</p>';
         html += '<p>É só adicionar uma tarefa com data e clicar em "Mais informações".<br />Depois disso é só clicar no período que você deseja ser lembrado.</p>';
-        html += '<p>Para acessar o EmpreendeKit e configurar seus lembretes, é só <a href=" http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4t&utm_campaign=lifecycle">clicar aqui.</p>';
+        html += '<p>Para acessar o EmpreendeKit e configurar seus lembretes, é só <a href=" http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4t&utm_campaign=lifecycle">clicar aqui</a>.</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -260,7 +262,7 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Meus parabéns! Você já começou com o pé direito o uso do Empreendekit.</p>';
         html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, adicione mais contatos e tarefas para cada um deles.<br />Saber o que deve ser feito para cada cliente é fundamental para aumentar sua produtividade e vender mais.</p>';
-        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-1c&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-1c&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
@@ -287,7 +289,7 @@ var templates = {
         html += '<p>Com os campos personalizados, você consegue inserir em seus contatos apenas as informações relevantes para sua empresa. A partir dai, sempre que for adicionar ou editar um contato, aparecerá o campo que você adicionou para preencher.</p>';
         html += '<p>Já com as categorias, você consegue adaptar a ferramenta para o seu processo de vendas.</p>';
         html += '<p>Para fazer isso, é só clicar em categorias ou campos personalizados, logo na barra lateral esquerda. A partir dai, é só adicionar a categoria ou campo que você quiser.</p>';
-        html += '<p>Para começar a deixar a ferramenta do seu jeito, <a href=" http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-4c&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Para começar a deixar a ferramenta do seu jeito, <a href=" http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-4c&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Se quiser, posso te ajudar a fazer essa configuração.<br />É só me responder esse email.</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
@@ -346,7 +348,7 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Meus parabéns! Você já começou com o pé direito o uso do Empreendekit.</p>';
         html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, coloque as categorias de receitas e despesas mais adequadas para a rotina da sua empresa e adicione mais movimentações financeiras já com essas novas categorias.<br />Ter seu fluxo de caixa organizado é fundamental para controlar sua empresa e aumentar sua produtividade.</p>';
-        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/financas?utm_source=eekit&utm_medium=email&utm_content=engajamento-1f&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/financas?utm_source=eekit&utm_medium=email&utm_content=engajamento-1f&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
@@ -372,7 +374,7 @@ var templates = {
         html += '<p>Você chegou a ver que é possível exportar seus dados financeiros no EmpreendeKit?</p>';
         html += '<p>Você pode mandar periodicamente as informações para seu contador e facilitar a contabilidade na sua empresa.</p>';
         html += '<p>Dentro do Finanças, é só clicar em "baixar dados" que ele vai te gerar um arquivo com todas as movimentações que você tem no período selecionado.</p>';
-        html += '<p>Para acessar o EmpreendeKit e já baixar as informações financeiras da sua empresa, é só <a href=" http://www.empreendekit.com.br/financas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4f&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já baixar as informações financeiras da sua empresa, é só <a href=" http://www.empreendekit.com.br/financas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4f&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -405,7 +407,61 @@ var templates = {
         html += '<li>Dentro do contato você também pode adicionar uma transação financeira</li>';
         html += '</ul>';
         html += '<p>As transações criadas dentro de um contato podem ser vistas, também, dentro do Financeiro. A mesma coisa acontece com as tarefas, que podem ser vistas tanto dentro do contato, quanto no aplicativo de tarefas.</p>';
-        html += '<p>Para acessar o EmpreendeKi e continuar a sua jornada em busca da produtividade, <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=retencao-1&utm_campaign=lifecycle">clique aqui.</p>';
+        html += '<p>Para acessar o EmpreendeKi e continuar a sua jornada em busca da produtividade, <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=retencao-1&utm_campaign=lifecycle">clique aqui</a>.</p>';
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+    /**
+     * lc retenção 2
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_retencao_2 : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Personalizando o EmpreendeKit para a sua empresa';
+        name = 'lc retencao 2';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Nós criamos o EmpreendeKit com o intuito de ser completo, simples, mas principalmente, personalizável para a realidade de cada empresa.</p>';
+        html += '<p>Dentro de nossa ferramenta existem alguns recursos que podem te ajudar a fazer isso:</p>';
+        html += '<h3>Categorias</h3>';
+        html += '<p>Você pode criar rótulos que te ajudam a visualizar e filtrar suas tarefas, contatos e finanças.<br />Para isso, é só clicar em "Categorias" na barra lateral esquerda de qualquer aplicativo e adicionar, editar ou remover as categorias para deixar o EmpreendeKit com a cara da sua empresa.</p>';
+        html += '<h3>Campos Personalizados</h3>';
+        html += '<p>Sabemos que cada empresa tem necessidades diferentes ao cadastrar clientes e fornecedores, portanto abrimos a possibilidade de criar campos personalizados no Contatos.<br />É só clicar na barra lateral esquerda do Contatos e adicionar, editar ou removar os campos que você quer que apareçam no seu contato.<br />Dessa forma, sempre que você for adicionar ou editar um contato, haverá um espaço adicional personalizado para você colocar as informações que importam no seu processo de vendas.</p>';
+        html += '<h3>Contas</h3>';
+        html += '<p>É importante na organização de nossas finanças termos separado todas as nossas contas e centro de custo.<br />No Finanças, também na barra lateral esquerda, você pode clicar em contas para editar e adicionar as contas da sua empresa, organizando ainda mais a gestão financeira da sua empresa.</p>';
+        html += '<p>Quer começar a personalizar o EmpreendeKit para a sua empresa? <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=retencao-2&utm_campaign=lifecycle">Clique aqui</a>.</p>'
+        html += '<p>Abraços,<br />Lucas</p>';
+
+        return {
+            subject : subject,
+            html : html,
+            name : name
+        }
+    },
+    /**
+     * lc retenção 3
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-06
+     */
+    lc_retencao_3 : function (user) {
+        var subject, name, html = '';
+
+        subject = 'Preparamos uma Consultoria para te ajudar a ser mais produtivo com o EmpreendeKit';
+        name = 'lc retencao 3';
+
+        html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
+        html += '<p>Como empreendedores estamos sempre procurando aumentar a nossa produtividade, seja através de hábitos, ou usufruindo melhor as ferramentas que usamos no dia-a-dia.</p>';
+        html += '<p>Sabemos que isso não é só conosco e estamos dispostos a fazer uma consultoria para te ajudar a usar melhor os recursos do EmpreendeKit.<br />Queremos te ajudar a fazer melhor e mais rápido.</p>';
+        html += '<p>Vamos marcar uma conversa por telefone ou Skype/Hangout?/p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -434,7 +490,7 @@ var templates = {
         html += '<li>Você não vai ser cobrado se não quiser - Nós só te enviamos cobrança se você realmente quiser continuar usando</li>';
         html += '<li>Também somos empreendedores e desenhamos a ferramenta abrangendo tudo que uma pequena empresa precisa.</li>';
         html += '</ul>';
-        html += '<p>Quer dar mais uma olhada no sistema? É só <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=ativacao-3&utm_campaign=lifecycle">clicar aqui.</p>';
+        html += '<p>Quer dar mais uma olhada no sistema? É só <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=ativacao-3&utm_campaign=lifecycle">clicar aqui</a>.</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -506,8 +562,8 @@ var templates = {
         html += '<p>O seu período de testes acabou, mas não precisa ser assim!<br />Você pode ativar o EmpreendeKit fazendo o pagamento de R$59,90 mensais (que você só paga no mês que usar).</p>';
         html += '<p>Para isso, é só clicar no botão abaixo.</p>';
         html += '<br /><br /><!-- INICIO FORMULARIO BOTAO PAGSEGURO --><form target="pagseguro" action="https://pagseguro.uol.com.br/v2/pre-approvals/request.html" method="post"><!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --><input type="hidden" name="code" value="4D1DC72FC7C7FF9FF4CD2F9A1B9DDB2B" /><input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/assinaturas/209x48-assinar-assina.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" /></form><!-- FINAL FORMULARIO BOTAO PAGSEGURO --><br /><br />';
-        html += 'Se ainda tiver alguma dúvida e quiser falar conosco, é só me responder ou entrar em contato através de um dos canais abaixo, que ficaremos felizões de te atender. Eventualmente podemos até estender seu teste.<br />Você pode entrar em contato comigo por esse email, ou pelo telefone: (11) 3230-9233.';
-        html += 'Se você quiser, também temos outros planos para períodos maiores com um desconto bacana.<br />Para acessar nossa página de planos, é só <a href=" http://www.empreendekit.com.br/ee/precos-e-planos?utm_source=eekit&utm_medium=email&utm_content=geral-2&utm_campaign=lifecycle">clicar aqui</a>.'
+        html += '<p>Se ainda tiver alguma dúvida e quiser falar conosco, é só me responder ou entrar em contato através de um dos canais abaixo, que ficaremos felizões de te atender. Eventualmente podemos até estender seu teste.<br />Você pode entrar em contato comigo por esse email, ou pelo telefone: (11) 3230-9233.</p>';
+        html += '<p>Se você quiser, também temos outros planos para períodos maiores com um desconto bacana.<br />Para acessar nossa página de planos, é só <a href=" http://www.empreendekit.com.br/ee/precos-e-planos?utm_source=eekit&utm_medium=email&utm_content=geral-2&utm_campaign=lifecycle">clicar aqui</a>.</p>'
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -780,7 +836,7 @@ Statistic.find({
             'apps.contatos.status': {$ne : 'retained'},
             'apps.financas.status': {$ne : 'retained'},
             'apps.tarefas.statusDate' : {
-                $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2),
+                $gte : twoDaysAgo,
                 $lt : oneDayAgo
             }
         },
@@ -789,7 +845,7 @@ Statistic.find({
             'apps.contatos.status': 'engaged',
             'apps.financas.status': {$ne : 'retained'},
             'apps.contatos.statusDate' : {
-                $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2),
+                $gte : twoDaysAgo,
                 $lt : oneDayAgo
             }
         },
@@ -798,7 +854,7 @@ Statistic.find({
             'apps.contatos.status': {$ne : 'retained'},
             'apps.financas.status': 'engaged',
             'apps.financas.statusDate' : {
-                $gte : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2),
+                $gte : twoDaysAgo,
                 $lt : oneDayAgo
             }
         }
@@ -809,8 +865,52 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             var minDate = minStatusDate(statistics[i], 'engaged', ['tarefas', 'contatos', 'financas']);
-            if (minDate >= new Date(today.getFullYear(), today.getMonth(), today.getDate() - 2) && minDate < oneDayAgo) {
+            if (minDate >= new twoDaysAgo && minDate < oneDayAgo) {
                 mail('lc_retencao_2', statistics[i].user);
+            }
+        }
+    }
+});
+
+/* Usuários engajados três dias depois */
+Statistic.find({
+    '$or': [
+        {
+            'apps.tarefas.status': 'engaged',
+            'apps.contatos.status': {$ne : 'retained'},
+            'apps.financas.status': {$ne : 'retained'},
+            'apps.tarefas.statusDate' : {
+                $gte : threeDaysAgo,
+                $lt : twoDaysAgo
+            }
+        },
+        {
+            'apps.tarefas.status': {$ne : 'retained'},
+            'apps.contatos.status': 'engaged',
+            'apps.financas.status': {$ne : 'retained'},
+            'apps.contatos.statusDate' : {
+                $gte : threeDaysAgo,
+                $lt : twoDaysAgo
+            }
+        },
+        {
+            'apps.tarefas.status': {$ne : 'retained'},
+            'apps.contatos.status': {$ne : 'retained'},
+            'apps.financas.status': 'engaged',
+            'apps.financas.statusDate' : {
+                $gte : threeDaysAgo,
+                $lt : twoDaysAgo
+            }
+        }
+    ]
+}, function (error, statistics) {
+    if (error) {
+        console.log(error)
+    } else {
+        for (var i in statistics) {
+            var minDate = minStatusDate(statistics[i], 'engaged', ['tarefas', 'contatos', 'financas']);
+            if (minDate >= new threeDaysAgo && minDate < twoDaysAgo) {
+                mail('lc_retencao_3', statistics[i].user);
             }
         }
     }
