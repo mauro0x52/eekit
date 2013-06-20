@@ -154,7 +154,7 @@ var templates = {
         html += '<li>Assim que terminar a tarefa, marque a tarefa como feita</li>';
         html += '</ol>';
         html += '<p>Recomendo que faça isso para suas 3 principais tarefas. Você já vai ver a diferença!</p>';
-        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=ativacao-1t&utm_campaign=lifecycle">clique aqui</a>.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href="http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=ativacao-1t&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -179,7 +179,7 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Meus parabéns! Você já começou com o pé direito o uso do Empreendekit.</p>';
         html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, adicione mais tarefas e não se esqueça de marcá-las como feitas.<br />Medir seus avanços na semana é fundamental para aumentar sua produtividade.</p>';
-        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-1t&utm_campaign=lifecycle">clique aqui</a>.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href="http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-1t&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
@@ -205,7 +205,7 @@ var templates = {
         html += '<p>Você chegou a ver nossos lembretes por email no EmpreendeKit?</p>';
         html += '<p>Enviaremos o lembrete diretamente para seu email para você não se preocupar mais em esquecer de fazer alguma tarefa.</p>';
         html += '<p>É só adicionar uma tarefa com data e clicar em "Mais informações".<br />Depois disso é só clicar no período que você deseja ser lembrado.</p>';
-        html += '<p>Para acessar o EmpreendeKit e configurar seus lembretes, é só <a href=" http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4t&utm_campaign=lifecycle">clicar aqui</a>.</p>';
+        html += '<p>Para acessar o EmpreendeKit e configurar seus lembretes, é só <a href="http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4t&utm_campaign=lifecycle">clicar aqui</a>.</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -262,7 +262,7 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Meus parabéns! Você já começou com o pé direito o uso do Empreendekit.</p>';
         html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, adicione mais contatos e tarefas para cada um deles.<br />Saber o que deve ser feito para cada cliente é fundamental para aumentar sua produtividade e vender mais.</p>';
-        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-1c&utm_campaign=lifecycle">clique aqui</a>.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href="http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-1c&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
@@ -289,7 +289,7 @@ var templates = {
         html += '<p>Com os campos personalizados, você consegue inserir em seus contatos apenas as informações relevantes para sua empresa. A partir dai, sempre que for adicionar ou editar um contato, aparecerá o campo que você adicionou para preencher.</p>';
         html += '<p>Já com as categorias, você consegue adaptar a ferramenta para o seu processo de vendas.</p>';
         html += '<p>Para fazer isso, é só clicar em categorias ou campos personalizados, logo na barra lateral esquerda. A partir dai, é só adicionar a categoria ou campo que você quiser.</p>';
-        html += '<p>Para começar a deixar a ferramenta do seu jeito, <a href=" http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-4c&utm_campaign=lifecycle">clique aqui</a>.</p>';
+        html += '<p>Para começar a deixar a ferramenta do seu jeito, <a href="http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-4c&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Se quiser, posso te ajudar a fazer essa configuração.<br />É só me responder esse email.</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
@@ -348,7 +348,7 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Meus parabéns! Você já começou com o pé direito o uso do Empreendekit.</p>';
         html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, coloque as categorias de receitas e despesas mais adequadas para a rotina da sua empresa e adicione mais movimentações financeiras já com essas novas categorias.<br />Ter seu fluxo de caixa organizado é fundamental para controlar sua empresa e aumentar sua produtividade.</p>';
-        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href=" http://www.empreendekit.com.br/financas?utm_source=eekit&utm_medium=email&utm_content=engajamento-1f&utm_campaign=lifecycle">clique aqui</a>.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href="http://www.empreendekit.com.br/financas?utm_source=eekit&utm_medium=email&utm_content=engajamento-1f&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
@@ -374,7 +374,7 @@ var templates = {
         html += '<p>Você chegou a ver que é possível exportar seus dados financeiros no EmpreendeKit?</p>';
         html += '<p>Você pode mandar periodicamente as informações para seu contador e facilitar a contabilidade na sua empresa.</p>';
         html += '<p>Dentro do Finanças, é só clicar em "baixar dados" que ele vai te gerar um arquivo com todas as movimentações que você tem no período selecionado.</p>';
-        html += '<p>Para acessar o EmpreendeKit e já baixar as informações financeiras da sua empresa, é só <a href=" http://www.empreendekit.com.br/financas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4f&utm_campaign=lifecycle">clique aqui</a>.</p>';
+        html += '<p>Para acessar o EmpreendeKit e já baixar as informações financeiras da sua empresa, é só <a href="http://www.empreendekit.com.br/financas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4f&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -407,7 +407,7 @@ var templates = {
         html += '<li>Você não vai ser cobrado se não quiser - Nós só te enviamos cobrança se você realmente quiser continuar usando</li>';
         html += '<li>Também somos empreendedores e desenhamos a ferramenta abrangendo tudo que uma pequena empresa precisa.</li>';
         html += '</ul>';
-        html += '<p>Quer dar mais uma olhada no sistema? É só <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=ativacao-3&utm_campaign=lifecycle">clicar aqui</a>.</p>';
+        html += '<p>Quer dar mais uma olhada no sistema? É só <a href="http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=ativacao-3&utm_campaign=lifecycle">clicar aqui</a>.</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -454,7 +454,7 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Temos tantas coisas para fazer no dia-a-dia, que diversas acabam não cabendo em 24h.<br />Entretanto, isso pode ser amenizado quando usamos a tecnologia em nosso favor.';
         html += '<p>As ferramentas de produtividade poupam tempo que você gastaria se organizando e evitam que você tenha que ficar se lembrando de tudo o que precisa fazer. Ou seja, faz a sua gestão ficar mais ágil e profissional.</p>';
-        html += '<p>Ter uma empresa produtiva do nunca foi tão rápido e fácil. É só <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=engajamento-2&utm_campaign=lifecycle">clicar aqui</a>.</p>';
+        html += '<p>Ter uma empresa produtiva do nunca foi tão rápido e fácil. É só <a href="http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=engajamento-2&utm_campaign=lifecycle">clicar aqui</a>.</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -483,7 +483,7 @@ var templates = {
         html += '<li>Dentro do contato você também pode adicionar uma transação financeira</li>';
         html += '</ul>';
         html += '<p>As transações criadas dentro de um contato podem ser vistas, também, dentro do Financeiro. A mesma coisa acontece com as tarefas, que podem ser vistas tanto dentro do contato, quanto no aplicativo de tarefas.</p>';
-        html += '<p>Para acessar o EmpreendeKi e continuar a sua jornada em busca da produtividade, <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=retencao-1&utm_campaign=lifecycle">clique aqui</a>.</p>';
+        html += '<p>Para acessar o EmpreendeKi e continuar a sua jornada em busca da produtividade, <a href="http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=retencao-1&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -513,7 +513,7 @@ var templates = {
         html += '<p>Sabemos que cada empresa tem necessidades diferentes ao cadastrar clientes e fornecedores, portanto abrimos a possibilidade de criar campos personalizados no Contatos.<br />É só clicar na barra lateral esquerda do Contatos e adicionar, editar ou removar os campos que você quer que apareçam no seu contato.<br />Dessa forma, sempre que você for adicionar ou editar um contato, haverá um espaço adicional personalizado para você colocar as informações que importam no seu processo de vendas.</p>';
         html += '<h3>Contas</h3>';
         html += '<p>É importante na organização de nossas finanças termos separado todas as nossas contas e centro de custo.<br />No Finanças, também na barra lateral esquerda, você pode clicar em contas para editar e adicionar as contas da sua empresa, organizando ainda mais a gestão financeira da sua empresa.</p>';
-        html += '<p>Quer começar a personalizar o EmpreendeKit para a sua empresa? <a href=" http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=retencao-2&utm_campaign=lifecycle">Clique aqui</a>.</p>'
+        html += '<p>Quer começar a personalizar o EmpreendeKit para a sua empresa? <a href="http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=retencao-2&utm_campaign=lifecycle">Clique aqui</a>.</p>'
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -587,7 +587,7 @@ var templates = {
         html += '<p>Para isso, é só clicar no botão abaixo.</p>';
         html += '<br /><br /><!-- INICIO FORMULARIO BOTAO PAGSEGURO --><form target="pagseguro" action="https://pagseguro.uol.com.br/v2/pre-approvals/request.html" method="post"><!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --><input type="hidden" name="code" value="4D1DC72FC7C7FF9FF4CD2F9A1B9DDB2B" /><input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/assinaturas/209x48-assinar-assina.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" /></form><!-- FINAL FORMULARIO BOTAO PAGSEGURO --><br /><br />';
         html += '<p>Se ainda tiver alguma dúvida e quiser falar conosco, é só me responder ou entrar em contato através de um dos canais abaixo, que ficaremos felizões de te atender. Eventualmente podemos até estender seu teste.<br />Você pode entrar em contato comigo por esse email, ou pelo telefone: (11) 3230-9233.</p>';
-        html += '<p>Se você quiser, também temos outros planos para períodos maiores com um desconto bacana.<br />Para acessar nossa página de planos, é só <a href=" http://www.empreendekit.com.br/ee/precos-e-planos?utm_source=eekit&utm_medium=email&utm_content=geral-2&utm_campaign=lifecycle">clicar aqui</a>.</p>'
+        html += '<p>Se você quiser, também temos outros planos para períodos maiores com um desconto bacana.<br />Para acessar nossa página de planos, é só <a href="http://www.empreendekit.com.br/ee/precos-e-planos?utm_source=eekit&utm_medium=email&utm_content=geral-2&utm_campaign=lifecycle">clicar aqui</a>.</p>'
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
