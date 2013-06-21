@@ -562,7 +562,7 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Como empreendedores estamos sempre procurando aumentar a nossa produtividade, seja através de hábitos, ou usufruindo melhor as ferramentas que usamos no dia-a-dia.</p>';
         html += '<p>Sabemos que isso não é só conosco e estamos dispostos a fazer uma consultoria para te ajudar a usar melhor os recursos do EmpreendeKit.<br />Queremos te ajudar a fazer melhor e mais rápido.</p>';
-        html += '<p>Vamos marcar uma conversa por telefone ou Skype/Hangout?/p>';
+        html += '<p>Vamos marcar uma conversa por telefone ou Skype/Hangout?</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
