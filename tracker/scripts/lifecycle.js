@@ -917,7 +917,7 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             var minDate = minStatusDate(statistics[i], 'active', ['tarefas', 'contatos', 'financas']);
-            if (minDate >= new twoDaysAgo && minDate < oneDayAgo) {
+            if (minDate >= twoDaysAgo && minDate < oneDayAgo) {
                 mail('lc_engajamento_2', statistics[i].user);
             }
         }
@@ -996,7 +996,7 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             var minDate = minStatusDate(statistics[i], 'engaged', ['tarefas', 'contatos', 'financas']);
-            if (minDate >= new twoDaysAgo && minDate < oneDayAgo) {
+            if (minDate >= twoDaysAgo && minDate < oneDayAgo) {
                 mail('lc_retencao_2', statistics[i].user);
             }
         }
@@ -1040,7 +1040,7 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             var minDate = minStatusDate(statistics[i], 'engaged', ['tarefas', 'contatos', 'financas']);
-            if (minDate >= new threeDaysAgo && minDate < twoDaysAgo) {
+            if (minDate >= threeDaysAgo && minDate < twoDaysAgo) {
                 mail('lc_retencao_3', statistics[i].user);
             }
         }
