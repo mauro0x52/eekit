@@ -1,7 +1,12 @@
 Changelog
 =========
 
-## 1.3.3 (2013-07-17)
+## 1.3.4 (2013-06-25)
+
+Melhorias
+- Alterando emails para millor
+
+## 1.3.3 (2013-06-17)
 
 Melhorias
 - Serviços que tem acesso a tokens podem usá-los.

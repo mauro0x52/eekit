@@ -63,7 +63,7 @@ var sendMail = function (data) {
             subject : data.subject,
             name : data.name,
             html : data.html,
-            from : 'lucas@empreendemia.com.br'
+            from : 'millor@empreendemia.com.br'
         },
         function (error, response, data) {
             if (error) {

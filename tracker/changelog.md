@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.3.1 (2013-06-25)
+
+Melhorias
+- Alterando emails para millor
+
 ## 1.3 (2013-06-20)
 
 Features
