@@ -32,7 +32,6 @@ module.exports = function (params) {
                 service.slug = i;
             }
         }
-console.log(request.body)
         if (service === null) {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         }
@@ -56,6 +55,9 @@ console.log(request.body)
                     if (service.permissions.informations) {
                         result.informations = user.informations;
                     }
+console.log(new Date());
+console.log(service);
+console.log(result);
                     response.send(result);
                 } else {
                     response.send({ error : { message : 'Invalid token', name : 'InvalidTokenError'}});
