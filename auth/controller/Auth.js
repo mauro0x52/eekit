@@ -55,9 +55,6 @@ module.exports = function (params) {
                     if (service.permissions.informations) {
                         result.informations = user.informations;
                     }
-console.log(new Date());
-console.log(service);
-console.log(result);
                     response.send(result);
                 } else {
                     response.send({ error : { message : 'Invalid token', name : 'InvalidTokenError'}});
