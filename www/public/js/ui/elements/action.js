@@ -172,7 +172,6 @@ module.exports(new Class(function (params) {
             } else {
                 anchor.attribute('target').set('');
             }
-            console.log(value)
             anchor.attribute('href').set(value);
         } else {
             return anchor.attribute('href').get();
