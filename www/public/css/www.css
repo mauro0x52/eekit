@@ -1150,6 +1150,9 @@ form {
     -o-transition: all 0.2s linear;
 }
 
+.sheets > .sheet.dragging .body > .groups .item > .description {
+    display: none;
+}
 
 /* -------------------------------------------------------------------------- */
 /* List Filter                                                                */
