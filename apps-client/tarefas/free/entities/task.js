@@ -275,10 +275,7 @@ app.routes.entity('/tarefa/:id', function (params, data) {
 
                 app.open({
                     app : appa,
-                    route : route,
-                    open : function (tool) {
-                        app.ui.embbeds.add(tool);
-                    }
+                    route : route
                 })
             }
         });
