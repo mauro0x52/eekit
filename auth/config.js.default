@@ -102,18 +102,6 @@ module.exports = {
                 informations : false
             }
         },
-        kamisama : {
-            url  : 'localhost',
-            port : 8008,
-            secret : 'kamisama',
-            permissions : {
-                users     : true,
-                username  : false,
-                tokens    : true,
-                auth      : true,
-                informations : false
-            }
-        },
         billets : {
             url  : 'localhost',
             port : 8009,

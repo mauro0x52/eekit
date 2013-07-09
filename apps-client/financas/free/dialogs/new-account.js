@@ -80,7 +80,8 @@ app.routes.dialog('/adicionar-conta', function (params, data) {
             };
             var account = new app.models.account(data);
             account.save(function () {
-                app.close(account);
+                app.trigger('create account', account);
+                app.close();
             });
         });
 

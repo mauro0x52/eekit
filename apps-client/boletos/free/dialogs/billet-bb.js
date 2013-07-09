@@ -250,6 +250,7 @@ app.routes.dialog('/boleto/bb/:id', function (params, data) {
                 billet.demonstrative = fields.demonstrative.value();
                 billet.instructions = fields.instructions.value();
                 billet.save(function() {
+                    app.trigger('create billet', billet);
                     app.close();
                 });
             }

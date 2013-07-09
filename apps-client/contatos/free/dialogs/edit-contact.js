@@ -163,7 +163,8 @@ app.routes.dialog('/editar-contato/:id', function (params, data) {
                 })
             }
             contact.save(function () {
-                app.close(contact);
+                app.trigger('update contact ' + contact._id, contact);
+                app.close();
             });
         });
 

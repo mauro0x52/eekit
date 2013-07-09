@@ -1,4 +1,4 @@
-/** 
+/**
  * Field
  *
  * @author : Rafael Erthal
@@ -43,7 +43,6 @@ module.exports = function (params) {
                             if (error) {
                                 response.send({error : error});
                             } else {
-                                params.kamisama.trigger(request.param('token'), 'create field', field);
                                 response.send({field : field});
                             }
                         });
@@ -159,7 +158,6 @@ module.exports = function (params) {
                                     if (error) {
                                         response.send({error: error});
                                     } else {
-                                        params.kamisama.trigger(request.param('token'), 'update field ' + field._id, field);
                                         response.send({field : field});
                                     }
                                 });
@@ -206,7 +204,6 @@ module.exports = function (params) {
                                     if (error) {
                                         response.send({error: error});
                                     } else {
-                                        params.kamisama.trigger(request.param('token'), 'remove field ' + field._id, field);
                                         response.send(null);
                                     }
                                 });

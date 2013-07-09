@@ -53,7 +53,6 @@ module.exports = function (params) {
                             if (error) {
                                 response.send({error : error});
                             } else {
-                                params.kamisama.trigger(request.param('token'), 'create contact', contact);
                                 response.send({contact : contact});
                             }
                         });
@@ -190,8 +189,6 @@ module.exports = function (params) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
-                                        params.kamisama.trigger(request.param('token'), 'update contact ' + contact._id, contact);
-                                        params.kamisama.trigger(request.param('token'), 'update embed', {embed : '/contatos/contato-relacionado/' + contact._id, subtitle : contact.name});
                                         response.send({contact : contact});
                                     }
                                 });
@@ -238,8 +235,6 @@ module.exports = function (params) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
-                                        params.kamisama.trigger(request.param('token'), 'remove contact ' + contact._id, contact);
-                                        params.kamisama.trigger(request.param('token'), 'delete embed', {embed : '/contatos/contato-relacionado/' + contact._id});
                                         response.send(null);
                                     }
                                 });

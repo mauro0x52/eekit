@@ -17,8 +17,10 @@ app.routes.dialog('/remover-boleto/:id', function (params, data) {
         app.ui.description("Você realmente deseja apagar este boleto para sempre?");
 
         app.ui.form.submit(function() {
-            billet.remove();
-            app.close(true);
+            billet.remove(function () {
+                app.trigger('remove billet ' + billet._id);
+                app.close();
+            });
         });
     });
 });

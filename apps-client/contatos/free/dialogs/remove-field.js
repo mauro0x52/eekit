@@ -17,8 +17,10 @@ app.routes.dialog('/remover-campo-personalizado/:id', function (params, data) {
         app.ui.description("As informações dos seus contatos contidas nesse campo serão apagadas. Deseja continuar?");
 
         app.ui.form.submit(function() {
-            field.remove(function () {});
-            app.close(true);
+            field.remove(function () {
+                app.trigger('remove field ' + field._id);
+                app.close(true);
+            });
         });
     });
 });

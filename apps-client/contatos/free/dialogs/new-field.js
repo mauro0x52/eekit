@@ -40,7 +40,8 @@ app.routes.dialog('/adicionar-campo-personalizado', function (params, data) {
             };
             var field = new app.models.field(data);
             field.save(function () {
-                app.close(field);
+                app.trigger('create field', field);
+                app.close();
             });
         });
 

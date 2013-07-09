@@ -10,7 +10,6 @@
         <script type="text/javascript" src="/js/class.min.js"></script>
         <script type="text/javascript" src="/js/ajax.min.js"></script>
         <script type="text/javascript" src="/js/namespace.min.js"></script>
-        <script src="http://<%=config.services.kamisama.url%>:<%=config.services.kamisama.port%>/socket.io/socket.io.js"></script>
     </head>
     <body>
         <script type="text/javascript">
@@ -82,21 +81,6 @@
                     ui      : folder + 'ui/ui.js'
                 }, function () {
                     var self = this;
-
-                    /* Comunicação com o kami-sama */
-                    Empreendekit.socket = io.connect('http://' + this.config.services.kamisama.host + ':' + this.config.services.kamisama.port);
-                    Empreendekit.socket.on('trigger', function (evt) {
-                        var apps = self.ui.apps.get();
-                        for (var i in apps) {
-                            apps[i].context().trigger(evt.label, evt.data);
-                            if (apps[i].context().ui.embeds) {
-                                var embeds = apps[i].context().ui.embeds.get();
-                                for (var j in embeds) {
-                                    embeds[j].context().trigger(evt.label, evt.data);
-                                }
-                            }
-                        }
-                    });
                     this.auth.user.validate();
 
                     /* Abre o app da rota ou a home*/

@@ -47,7 +47,6 @@ module.exports = function (params) {
                             if (error) {
                                 response.send({error : error});
                             } else {
-                                params.kamisama.trigger(request.param('token'), 'create category', category);
                                 response.send({category : category});
                             }
                         });
@@ -165,7 +164,6 @@ module.exports = function (params) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
-                                        params.kamisama.trigger(request.param('token'), 'update category ' + category._id, category);
                                         response.send({category : category});
                                     }
                                 });
@@ -213,7 +211,6 @@ module.exports = function (params) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
-                                        params.kamisama.trigger(request.param('token'), 'remove category ' + category._id, category);
                                         response.send(null);
                                     }
                                 });

@@ -45,10 +45,6 @@ module.exports = {
             url  : 'localhost',
             port : 8005
         },
-        kamisama : {
-            url  : 'localhost',
-            port : 8008
-        },
         jaiminho : {
             url  : 'localhost',
             port : 8010

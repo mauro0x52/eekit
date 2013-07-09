@@ -50,6 +50,7 @@ app.routes.dialog('/editar-categoria/:id', function (params, data) {
         app.ui.form.submit(function() {
             category.name = fields.name.value();
             category.save(function () {
+                app.trigger('update category ' + category._id, category);
                 app.close(category);
             });
         });

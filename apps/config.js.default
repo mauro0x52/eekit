@@ -26,10 +26,6 @@ module.exports = {
         apps : {
             url  : 'localhost',
             port : 8002
-        },
-        kamisama : {
-            url  : 'localhost',
-            port : 8008
         }
     }
 };

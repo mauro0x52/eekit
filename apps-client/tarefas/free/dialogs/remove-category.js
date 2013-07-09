@@ -18,7 +18,8 @@ app.routes.dialog('/remover-categoria/:id', function (params, data) {
 
         app.ui.form.submit(function() {
             category.remove(function () {
-                app.close(true);
+                app.trigger('remove category ' + category._id);
+                app.close();
             });
         });
     });
