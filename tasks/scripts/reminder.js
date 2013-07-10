@@ -46,7 +46,7 @@ model.Task.find({reminder : {$gte : 0}, dateDeadline : {$gte : today}}, function
     for (i in tasks) {
         diff = (tasks[i].dateDeadline.getTime() - now)/(24*3600*1000);
         /* Verifica se esta no dia de mandar a mensagem */
-        if (diff <  1) {
+        if (diff <  tasks[i].reminder && diff >  tasks[i].reminder - 1) {
             message(tasks[i]);
         }
     }
