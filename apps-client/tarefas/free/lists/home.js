@@ -265,7 +265,7 @@ app.routes.list('/', function (params, data) {
 
         /* Exibe a descrição da tarefa */
         this.description = function (value) {
-            this.item.description(value);
+            this.item.description(value || ' ');
         };
 
         /* Exibe a importância da tarefa */
