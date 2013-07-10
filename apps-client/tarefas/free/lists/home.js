@@ -390,7 +390,12 @@ app.routes.list('/', function (params, data) {
         app.bind('remove task ' + task._id, this.item.detach);
 
         /* Pegando a marcação como feita da tarefa */
-        app.bind('do task ' + task._id, this.item.detach);
+        app.bind('do task ' + task._id, function (newtask) {
+            that.item.detach();
+            if (newtask._id !== task._id) {
+                fitGroup(newtask).items.add((new Item(newtask)).item);
+            }
+        });
 
         /* Pegando quando o filtro é acionado */
         app.bind('filter task', function (fields) {
