@@ -77,7 +77,7 @@ app.routes.entity('/contato/:id', function (params, data) {
 
         /* Exibe as notas do contato */
         this.notes = function (value) {
-            app.ui.description(value);
+            app.ui.description(value || ' ');
         }
 
         /* Exibe o email do contato */

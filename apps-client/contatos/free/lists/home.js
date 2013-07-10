@@ -237,7 +237,7 @@ app.routes.list('/', function (params, data) {
 
         /* Exibe as notas do contato */
         this.notes = function (value) {
-            this.item.description(value);
+            this.item.description(value || ' ');
         };
 
         this.category = function (value) {
