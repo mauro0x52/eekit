@@ -152,7 +152,7 @@ app.routes.list('/', function (params, data) {
      * @param  transaction : transaction
      * @return ui.group
      */
-    function fitGroup (transaction, reorder) {
+    function fitGroup (transaction) {
         var i,
             groups,
             groupz,
@@ -180,11 +180,7 @@ app.routes.list('/', function (params, data) {
         /* Caso não tenha grupo para a transação cria-o e ordena os grupos */
         group = new Group(transaction.date);
         groups.push(group.group);
-        if (reorder) {
-            reorderGroups();
-        } else {
-            groupsets.groupset.groups.add(group.group);
-        }
+        groupsets.groupset.groups.add(group.group);
         return group.group;
     }
 
@@ -319,13 +315,14 @@ app.routes.list('/', function (params, data) {
             transaction = new app.models.transaction(data);
             newGroup = fitGroup(transaction);
 
-            if (oldGroup !== fitGroup(transaction)) {
+            if (oldGroup !== newGroup) {
                 that.item.detach();
                 if (oldGroup.items.get().length === 0) {
                     oldGroup.detach();
                     delete oldGroup;
                 }
-                fitGroup(transaction).items.add(that.item);
+                newGroup.items.add(that.item);
+                reorderGroups();
             }
 
             if (transaction) {
@@ -684,6 +681,7 @@ app.routes.list('/', function (params, data) {
                     /* Pegando transações que são cadastradas ao longo do uso do app */
                     app.bind('create transaction', function (transaction) {
                         fitGroup(transaction).items.add((new Item(transaction)).item);
+                        reorderGroups();
                         app.ui.filter.submit();
                     });
 

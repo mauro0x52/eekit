@@ -124,7 +124,7 @@ module.exports = function (params) {
                         if (request.param('filterByEmbeddeds')) {
                             query.embeddeds = {$in : [request.param('filterByEmbeddeds')]};
                         }
-                        params.model.Transaction.find(query, function (error, transactions) {
+                        params.model.Transaction.find(query).sort({date : 1}).exec(function (error, transactions) {
                             if (error) {
                                 response.send({error : error});
                             } else {
