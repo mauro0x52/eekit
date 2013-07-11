@@ -125,7 +125,7 @@ module.exports = function (params) {
                         ) {
                             query.done = false;
                         }
-                        params.model.Task.find(query, function (error, tasks) {
+                        params.model.Task.find(query).sort({priority : 1}).exec(function (error, tasks) {
                             if (error) {
                                 response.send({error : error});
                             } else {
