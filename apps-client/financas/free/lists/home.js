@@ -48,19 +48,6 @@ app.routes.list('/', function (params, data) {
     };
     app.ui.groups.add([groupsets.groupset])
 
-    /**
-     * Grupo
-     *
-     * @author Mauro Ribeiro
-     * @since  2012-12
-     *
-     * @param  group : group
-     * @return ui.groupset
-     */
-    function fitGroupset (group) {
-        return groupsets.groupset;
-    }
-
     /* montando os grupos */
     Group = function (data) {
         var that = this,
@@ -165,24 +152,45 @@ app.routes.list('/', function (params, data) {
      * @param  transaction : transaction
      * @return ui.group
      */
-    function fitGroup (transaction) {
+    function fitGroup (transaction, reorder) {
         var i,
             groups,
-            groupz;
+            groupz,
+            transactionDate,
+            dateYear, dateMonth, dateDay;
 
         groups = groupsets.groupset.groups.get();
-        for (i in groups) {
-            if (
-                groups[i].date.getFullYear() === new Date(transaction.date).getFullYear() &&
-                groups[i].date.getMonth() === new Date(transaction.date).getMonth() &&
-                groups[i].date.getDate() === new Date(transaction.date).getDate()
-            ) {
-                return groups[i];
+
+        if (groups) {
+            transactionDate = new Date(transaction.date);
+            dateYear = transactionDate.getFullYear();
+            dateMonth = transactionDate.getMonth();
+            dateDay = transactionDate.getDate();
+
+            for (i in groups) {
+                if (
+                    groups[i].date.getFullYear() === dateYear &&
+                    groups[i].date.getMonth() === dateMonth &&
+                    groups[i].date.getDate() === dateDay
+                ) {
+                    return groups[i];
+                }
             }
         }
         /* Caso não tenha grupo para a transação cria-o e ordena os grupos */
         group = new Group(transaction.date);
         groups.push(group.group);
+        if (reorder) {
+            reorderGroups();
+        } else {
+            groupsets.groupset.groups.add(group.group);
+        }
+        return group.group;
+    }
+
+    function reorderGroups() {
+        groups = groupsets.groupset.groups.get();
+
         groups.sort(function (a, b) {
             var aDate = a.date || new Date(),
                 bDate = b.date || new Date();
@@ -193,9 +201,8 @@ app.routes.list('/', function (params, data) {
         });
         groupsets.groupset.groups.remove();
         for (i in groups) {
-            fitGroupset(groups[i]).groups.add(groups[i]);
+            groupsets.groupset.groups.add(groups[i]);
         }
-        return group.group;
     }
 
     /* montando os items */
@@ -306,9 +313,11 @@ app.routes.list('/', function (params, data) {
 
         /* Pegando a edição da transação */
         app.bind('update transaction ' + transaction._id, function (data) {
-            var oldGroup = fitGroup(transaction);
+            var newGroup,
+                oldGroup = fitGroup(transaction);
 
             transaction = new app.models.transaction(data);
+            newGroup = fitGroup(transaction);
 
             if (oldGroup !== fitGroup(transaction)) {
                 that.item.detach();
@@ -594,14 +603,14 @@ app.routes.list('/', function (params, data) {
                             values;
 
                         url += 'query=' + fields.query.value() + '&';
-                        
+
                         j = 0;
                         values = fields.accounts.value();
                         for (var i in values) {
                             url += 'accounts[' + j + ']=' + values[i] + '&';
                             j++;
                         }
-                        
+
                         j = 0;
                         values = fields.categories.debt.value().concat(fields.categories.credit.value());
                         for (var i in values) {
@@ -670,6 +679,7 @@ app.routes.list('/', function (params, data) {
                     for (var i in transactions) {
                         fitGroup(transactions[i]).items.add((new Item(transactions[i])).item);
                     }
+                    reorderGroups();
 
                     /* Pegando transações que são cadastradas ao longo do uso do app */
                     app.bind('create transaction', function (transaction) {
