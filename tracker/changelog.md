@@ -1,6 +1,19 @@
 Changelog
 =========
 
+## 1.3.1 (2013-06-25)
+
+Melhorias
+- Alterando emails para millor
+
+## 1.3 (2013-06-20)
+
+Features
+- Mais uma caralhada de emails de lifecycle
+
+Ajustes
+- Corrigindo os links dos lifecycles
+
 ## 1.2 (2013-06-18)
 
 Features

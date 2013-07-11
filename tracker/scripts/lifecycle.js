@@ -63,7 +63,7 @@ var sendMail = function (data) {
             subject : data.subject,
             name : data.name,
             html : data.html,
-            from : 'lucas@empreendemia.com.br'
+            from : 'millor@empreendemia.com.br'
         },
         function (error, response, data) {
             if (error) {
@@ -562,7 +562,7 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Como empreendedores estamos sempre procurando aumentar a nossa produtividade, seja através de hábitos, ou usufruindo melhor as ferramentas que usamos no dia-a-dia.</p>';
         html += '<p>Sabemos que isso não é só conosco e estamos dispostos a fazer uma consultoria para te ajudar a usar melhor os recursos do EmpreendeKit.<br />Queremos te ajudar a fazer melhor e mais rápido.</p>';
-        html += '<p>Vamos marcar uma conversa por telefone ou Skype/Hangout?/p>';
+        html += '<p>Vamos marcar uma conversa por telefone ou Skype/Hangout?</p>';
         html += '<p>Abraços,<br />Lucas</p>';
 
         return {
@@ -917,7 +917,7 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             var minDate = minStatusDate(statistics[i], 'active', ['tarefas', 'contatos', 'financas']);
-            if (minDate >= new twoDaysAgo && minDate < oneDayAgo) {
+            if (minDate >= twoDaysAgo && minDate < oneDayAgo) {
                 mail('lc_engajamento_2', statistics[i].user);
             }
         }
@@ -996,7 +996,7 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             var minDate = minStatusDate(statistics[i], 'engaged', ['tarefas', 'contatos', 'financas']);
-            if (minDate >= new twoDaysAgo && minDate < oneDayAgo) {
+            if (minDate >= twoDaysAgo && minDate < oneDayAgo) {
                 mail('lc_retencao_2', statistics[i].user);
             }
         }
@@ -1040,7 +1040,7 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             var minDate = minStatusDate(statistics[i], 'engaged', ['tarefas', 'contatos', 'financas']);
-            if (minDate >= new threeDaysAgo && minDate < twoDaysAgo) {
+            if (minDate >= threeDaysAgo && minDate < twoDaysAgo) {
                 mail('lc_retencao_3', statistics[i].user);
             }
         }

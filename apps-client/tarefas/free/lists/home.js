@@ -67,7 +67,7 @@ app.routes.list('/', function (params, data) {
             friday    : date(12 - now.getDay()),
             saturday  : date(13 - now.getDay())
         },
-        later    : date(14 - now.getDay()),
+        later    : date(14 - now.getDay())
     };
 
     /**
@@ -597,16 +597,6 @@ app.routes.list('/', function (params, data) {
 
         /* montando a listagem */
         app.models.task.list({filterByDone : false}, function (tasks) {
-
-            /* ordenando as tarefas */
-            tasks.sort(function (a,b) {
-                var a_priority = a.priority || 1;
-                var b_priority = b.priority || 1;
-
-                if (a_priority < b_priority)  return -1;
-                if (a_priority > b_priority)  return  1;
-                return 0;
-            });
 
             /* listando as tarefas */
             for (i in tasks) {

@@ -38,7 +38,7 @@ module.exports = function (params) {
                 };
             }
         }
-
+        console.log(result);
         response.send({services : result});
     });
 
