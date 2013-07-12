@@ -8,22 +8,6 @@
 module.exports = function (params) {
     "use strict";
 
-    params.kamisama.bind('update embed', function (data) {
-        params.model.Transaction.find({'embeddeds' : [data.embed]}, function (error, transactions) {
-            for (var i in transactions) {
-                transactions[i].subtitle = data.subtitle;
-                transactions[i].save();
-            }
-        });
-    });
-    params.kamisama.bind('delete embed', function (data) {
-        params.model.Transaction.find({'embeddeds' : [data.embed]}, function (error, transactions) {
-            for (var i in transactions) {
-                transactions[i].remove();
-            }
-        });
-    });
-
     /** POST /transaction
      *
      * @autor : Rafael Erthal
@@ -71,7 +55,6 @@ module.exports = function (params) {
                             if (error) {
                                 response.send({error : error});
                             } else {
-                                params.kamisama.trigger(request.param('token'), 'create transaction', transaction);
                                 response.send({transaction : transaction});
                             }
                         });
@@ -124,7 +107,7 @@ module.exports = function (params) {
                         if (request.param('filterByEmbeddeds')) {
                             query.embeddeds = {$in : [request.param('filterByEmbeddeds')]};
                         }
-                        params.model.Transaction.find(query, function (error, transactions) {
+                        params.model.Transaction.find(query).sort({date : 1}).exec(function (error, transactions) {
                             if (error) {
                                 response.send({error : error});
                             } else {
@@ -226,7 +209,6 @@ module.exports = function (params) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
-                                        params.kamisama.trigger(request.param('token'), 'remove transaction ' + transaction._id, transaction);
                                         response.send(null);
                                     }
                                 });
@@ -285,7 +267,6 @@ module.exports = function (params) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
-                                        params.kamisama.trigger(request.param('token'), 'update transaction '  + transaction._id, transaction);
                                         response.send({transaction : transaction});
                                     }
                                 });

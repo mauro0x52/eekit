@@ -161,11 +161,6 @@ module.exports = function (params) {
                                             username : newUser.username
                                         }
                                     });
-                                    params.kamisama.trigger(request.param('token'), 'create user', {
-                                        _id : newUser._id,
-                                        name : newUser.name,
-                                        username : newUser.username
-                                    });
                                     // salva a empresa com novo usuário
                                     company.save();
                                 }

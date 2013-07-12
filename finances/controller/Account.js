@@ -44,7 +44,6 @@ module.exports = function (params) {
                             if (error) {
                                 response.send({error : error});
                             } else {
-                                params.kamisama.trigger(request.param('token'), 'create account', account);
                                 response.send({account : account});
                             }
                         });
@@ -167,7 +166,6 @@ module.exports = function (params) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
-                                        params.kamisama.trigger(request.param('token'), 'update account ' + account._id, account);
                                         response.send({account : account});
                                     }
                                 });
@@ -216,7 +214,6 @@ module.exports = function (params) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
-                                params.kamisama.trigger(request.param('token'), 'remove account ' + account._id, account);
                                         response.send(null);
                                     }
                                 });

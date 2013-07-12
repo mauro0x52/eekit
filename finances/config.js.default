@@ -23,10 +23,6 @@ module.exports = {
         finances : {
             url  : 'localhost',
             port : 8007
-        },
-        kamisama : {
-            url  : 'localhost',
-            port : 8008
         }
     }
 };

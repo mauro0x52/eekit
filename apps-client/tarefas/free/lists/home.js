@@ -67,7 +67,7 @@ app.routes.list('/', function (params, data) {
             friday    : date(12 - now.getDay()),
             saturday  : date(13 - now.getDay())
         },
-        later    : date(14 - now.getDay()),
+        later    : date(14 - now.getDay())
     };
 
     /**
@@ -265,7 +265,7 @@ app.routes.list('/', function (params, data) {
 
         /* Exibe a descrição da tarefa */
         this.description = function (value) {
-            this.item.description(value);
+            this.item.description(value || ' ');
         };
 
         /* Exibe a importância da tarefa */
@@ -390,7 +390,12 @@ app.routes.list('/', function (params, data) {
         app.bind('remove task ' + task._id, this.item.detach);
 
         /* Pegando a marcação como feita da tarefa */
-        app.bind('do task ' + task._id, this.item.detach);
+        app.bind('do task ' + task._id, function (newtask) {
+            that.item.detach();
+            if (newtask._id !== task._id) {
+                fitGroup(newtask).items.add((new Item(newtask)).item);
+            }
+        });
 
         /* Pegando quando o filtro é acionado */
         app.bind('filter task', function (fields) {
@@ -592,16 +597,6 @@ app.routes.list('/', function (params, data) {
 
         /* montando a listagem */
         app.models.task.list({filterByDone : false}, function (tasks) {
-
-            /* ordenando as tarefas */
-            tasks.sort(function (a,b) {
-                var a_priority = a.priority || 1;
-                var b_priority = b.priority || 1;
-
-                if (a_priority < b_priority)  return -1;
-                if (a_priority > b_priority)  return  1;
-                return 0;
-            });
 
             /* listando as tarefas */
             for (i in tasks) {

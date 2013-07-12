@@ -293,6 +293,7 @@ module.exports(Element = new Class(function (tag, params) {
 
         attach : function (value) {
             if (!value) {
+                console.log(element)
                 throw new Error({
                     source     : 'element.js',
                     method     : 'html.attach',

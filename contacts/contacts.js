@@ -27,34 +27,29 @@ app.configure(function () {
 });
 
 var model = require('./model/Model'),
-    auth = require('./utils/auth'),
-    kamisama = require('./utils/kamisama');
+    auth = require('./utils/auth');
 /*  Chamando controllers */
 require('./controller/Company.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });
 require('./controller/Category.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });
 require('./controller/Contact.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });
 require('./controller/Field.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });
@@ -140,7 +135,7 @@ app.get('/export.csv', function (request, response) {
                             if (contacts[i].fieldValues) {
                                 for (var j = 0; j < contacts[i].fieldValues.length; j++) {
                                     contact += ', ' + contacts[i].fieldValues[j].value;
-                                }   
+                                }
                             }
                             response.write(contact.toString("utf8") + '\n');
 

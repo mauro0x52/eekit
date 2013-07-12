@@ -237,7 +237,7 @@ app.routes.list('/', function (params, data) {
 
         /* Exibe as notas do contato */
         this.notes = function (value) {
-            this.item.description(value);
+            this.item.description(value || ' ');
         };
 
         this.category = function (value) {
@@ -362,18 +362,6 @@ app.routes.list('/', function (params, data) {
                         category = categories[i].name;
                     }
                 }
-
-                if (categories.indexOf(contact.category) > -1) {
-                    app.ui.actions.get()[0].href(
-                        app.ui.actions.get()[0].href() +
-                        escape(contact.name)  + ' %2C' +
-                        escape(contact.phone) + ' %2C' +
-                        escape(contact.phone) + ' %2C' +
-                        escape(category) +
-                        fields        +
-                        '%0A'
-                    )
-                };
             }
         });
 
@@ -512,8 +500,6 @@ app.routes.list('/', function (params, data) {
                 }));
                 /* dispara o evento de filtro */
                 app.ui.filter.submit(function () {
-                    var header = 'nome %2Ctelefone %2Cemail %2Ccategoria';
-
                     var url = 'http://' + app.config.services.contacts.host + ':' + app.config.services.contacts.port + '/export.csv?',
                         j,
                         values;

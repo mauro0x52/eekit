@@ -174,7 +174,7 @@ module.exports(new Class (function (params) {
 
     };
 
-    /* Escuta um evento do kamisama
+    /* Escuta um evento
      *
      * @author Rafael Erthal
      * @since  2013-05
@@ -199,7 +199,7 @@ module.exports(new Class (function (params) {
             });
         }
 
-        events.push({label : label, callback : callback})
+        events.push({label : label, callback : callback});
 
     };
 
@@ -208,7 +208,7 @@ module.exports(new Class (function (params) {
      * @author Rafael Erthal
      * @since  2013-05
      */
-    this.trigger = function (label, data) {
+    this.trigger = function (label, data, reflow) {
 
         if (!label || label.constructor !== String) {
             throw new Error({
@@ -219,12 +219,24 @@ module.exports(new Class (function (params) {
             });
         }
 
-        for (var i in events) {
-            if (events[i].label === label) {
-                events[i].callback(data);
+        if (reflow) {
+            for (var i in events) {
+                if (events[i].label === label) {
+                    events[i].callback(data);
+                }
+            }
+        } else {
+            var apps = Empreendekit.ui.apps.get();
+            for (var i in apps) {
+                apps[i].context().trigger(label, data, true);
+                if (apps[i].context().ui.embeds) {
+                    var embeds = apps[i].context().ui.embeds.get();
+                    for (var j in embeds) {
+                        embeds[j].context().trigger(label, data, true);
+                    }
+                }
             }
         }
-
     };
 
     /* Controla a biblioteca de rotas do app

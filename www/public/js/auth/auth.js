@@ -41,10 +41,6 @@ module.exports({
             for (var i in Empreendekit.config.services) {
                 Empreendekit.config.services[i].token = undefined;
             }
-            Empreendekit.socket.emit('auth', {
-                user    : null,
-                company : null
-            });
         },
 
         validate : function () {
@@ -54,10 +50,6 @@ module.exports({
             }}, function (data) {
                 if (data && data.user) {
                     Empreendekit.config.user = data.user;
-                    Empreendekit.socket.emit('auth', {
-                        user    : data.user._id,
-                        company : data.company._id
-                    });
                     if (window.$zopim) {
                         $zopim.livechat.setEmail(data.user.username);
                         $zopim.livechat.setName(data.user.name);

@@ -17,8 +17,10 @@ app.routes.dialog('/remover-tarefa/:id', function (params, data) {
         app.ui.description("Você tem certeza que gostaria de excluir essa tarefa?");
 
         app.ui.form.submit(function() {
-            task.remove(function () {});
-            app.close();
+            task.remove(function () {
+                app.trigger('remove task ' + task._id);
+                app.close();
+            });
         });
     });
 });

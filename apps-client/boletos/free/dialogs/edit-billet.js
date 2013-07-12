@@ -283,6 +283,7 @@ app.routes.dialog('/editar-boleto/:id', function (params, data) {
                 app.ui.error('Escolha uma carteira');
             } else {
                 billet.save(function() {
+                    app.trigger('update billet ' + billet._id, billet);
                     app.close();
                 });
             }

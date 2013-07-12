@@ -154,6 +154,8 @@ app.routes.dialog('/adicionar-transferencia', function (params, data) {
 
             source.save(function () {
                 destiny.save(function () {
+                    app.trigger('create transaction', source);
+                    app.trigger('create transaction', destiny);
                     app.close({ source : source, destiny : destiny});
                 });
             });

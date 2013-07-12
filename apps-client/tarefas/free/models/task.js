@@ -89,6 +89,7 @@ app.models.task = function (params) {
             if (cb) {
                 cb();
             }
+            app.trigger('do task ' + that._id, data.task);
             app.event('marcar tarefa como feita');
         });
     };

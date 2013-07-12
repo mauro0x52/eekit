@@ -16,8 +16,10 @@ app.routes.dialog('/remover-categoria/:id', function (params, data) {
         app.ui.description("Ao excluir essa categoria, as transações relacionadas a ela serão excluidas. Tem certeza que quer fazer isso?");
 
         app.ui.form.submit(function() {
-            category.remove();
-            app.close(true);
+            category.remove(function () {
+                app.trigger('remove category ' + category._id);
+                app.close();
+            });
         });
     });
 });

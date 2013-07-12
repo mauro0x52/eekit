@@ -1,8 +1,0 @@
-{
-  "name": "Kami-sama",
-  "version": "0.0.1",
-  "dependencies" : {
-      "needle": "0.4.8",
-      "socket.io": "0.9.14"
-  }
-}

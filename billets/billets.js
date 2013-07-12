@@ -28,13 +28,11 @@ app.configure(function () {
 });
 
 var model = require('./model/Model'),
-    auth = require('./utils/auth'),
-    kamisama = require('./utils/kamisama');
+    auth = require('./utils/auth');
 /*  Chamando controllers */
 require('./controller/Billet.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });

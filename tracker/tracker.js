@@ -28,13 +28,11 @@ app.configure(function () {
 });
 
 var model = require('./model/Model'),
-    auth = require('./utils/auth'),
-    kamisama = require('./utils/kamisama');
+    auth = require('./utils/auth');
 /*  Chamando controllers */
 require('./controller/Event.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });
@@ -45,35 +43,30 @@ require('./controller/Statistic.js')({
 require('./controller/Tasks.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });
 require('./controller/Contacts.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });
 require('./controller/Finances.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });
 require('./controller/Utm.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });
 require('./controller/www.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });

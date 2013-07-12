@@ -41,27 +41,23 @@ app.configure(function () {
 });
 
 var auth = require('./utils/auth'),
-    kamisama = require('./utils/kamisama'),
     model = require('./model/Model');
 /*  Chamando controllers */
 require('./controller/Company.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });
 require('./controller/Category.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });
 require('./controller/Task.js')({
     app      : app,
     model    : model,
-    kamisama : kamisama,
     auth     : auth,
     config   : config
 });

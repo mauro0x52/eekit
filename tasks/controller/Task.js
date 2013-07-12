@@ -8,22 +8,6 @@
 module.exports = function (params) {
     "use strict";
 
-    params.kamisama.bind('update embed', function (data) {
-        params.model.Task.find({'embeddeds' : [data.embed]}, function (error, tasks) {
-            for (var i in tasks) {
-                tasks[i].subtitle = data.subtitle;
-                tasks[i].save();
-            }
-        });
-    });
-    params.kamisama.bind('delete embed', function (data) {
-        params.model.Task.find({'embeddeds' : [data.embed]}, function (error, tasks) {
-            for (var i in tasks) {
-                tasks[i].remove();
-            }
-        });
-    });
-
     /** POST /task
      *
      * @autor : Rafael Erthal
@@ -72,7 +56,6 @@ module.exports = function (params) {
                             if (error) {
                                 response.send({error : error});
                             } else {
-                                params.kamisama.trigger(request.param('token'), 'create task', task);
                                 response.send({task : task});
                             }
                         });
@@ -125,7 +108,7 @@ module.exports = function (params) {
                         ) {
                             query.done = false;
                         }
-                        params.model.Task.find(query, function (error, tasks) {
+                        params.model.Task.find(query).sort({priority : 1}).exec(function (error, tasks) {
                             if (error) {
                                 response.send({error : error});
                             } else {
@@ -211,7 +194,6 @@ module.exports = function (params) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
-                                        params.kamisama.trigger(request.param('token'), 'remove task ' + task._id, task);
                                         response.send(null);
                                     }
                                 });
@@ -259,7 +241,6 @@ module.exports = function (params) {
                                 task.dateUpdated = new Date();
                                 task.save(function (error) {
                                     var newTask;
-                                    params.kamisama.trigger(request.param('token'), 'remove task ' + task._id, task);
                                     if (error) {
                                         response.send({error : error});
                                     } else if (task.recurrence === 0) {
@@ -299,7 +280,6 @@ module.exports = function (params) {
                                             if (error) {
                                                 response.send({error : error});
                                             } else {
-                                                params.kamisama.trigger(request.param('token'), 'create task', newTask);
                                                 response.send({task : newTask});
                                             }
                                         });
@@ -358,7 +338,6 @@ module.exports = function (params) {
                                         response.send({error : error});
                                     } else {
                                         response.send({task : task});
-                                        params.kamisama.trigger(request.param('token'), 'update task ' + task._id, task);
                                     }
                                 });
                             }
@@ -404,7 +383,6 @@ module.exports = function (params) {
                                     if (error) {
                                         response.send({error : error});
                                     } else {
-                                        params.kamisama.trigger(request.param('token'), 'drop task '  + task._id, task);
                                         response.send({task : task});
                                     }
                                 });

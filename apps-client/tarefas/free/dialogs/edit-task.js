@@ -227,7 +227,8 @@ app.routes.dialog('/editar-tarefa/:id', function (params, data) {
             if (request.embedded) task.embeddeds = [request.embedded];
             editTask._id = task._id;
             editTask.save(function (task) {
-                app.close(task);
+                app.trigger('update task ' + task._id, task);
+                app.close();
             });
         });
 

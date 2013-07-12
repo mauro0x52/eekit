@@ -100,7 +100,8 @@ app.routes.dialog('/adicionar-categoria', function (params, data) {
             };
             var category = new app.models.category(data);
             category.save(function () {
-                app.close(category);
+                app.trigger('create category', category);
+                app.close();
             });
         });
 

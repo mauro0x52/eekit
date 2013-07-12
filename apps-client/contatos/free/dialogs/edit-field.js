@@ -41,7 +41,8 @@ app.routes.dialog('/editar-campo-personalizado/:id', function (params, data) {
         app.ui.form.submit(function() {
             field.name = fields.name.value();
             field.save(function () {
-                app.close(field);
+                app.trigger('update field ' + field._id, field);
+                app.close();
             });
         });
 

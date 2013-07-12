@@ -200,6 +200,7 @@ app.routes.dialog('/adicionar-despesa', function (params, data) {
              */
             saveTransaction = function (i, repetitions) {
                 transactions[i].save(function () {
+                    app.trigger('create transaction', transactions[i]);
                     if (i === repetitions - 1) {
                         app.close(transactions);
                     }

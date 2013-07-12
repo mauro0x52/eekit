@@ -16,8 +16,10 @@ app.routes.dialog('/remover-transacao/:id', function (params, data) {
         app.ui.description("Você tem certeza que gostaria de excluir essa transação?");
 
         app.ui.form.submit(function() {
-            transaction.remove(function () {});
-            app.close();
+            transaction.remove(function () {
+                app.trigger('remove transaction ' + transaction._id);
+                app.close();
+            });
         });
     });
 });

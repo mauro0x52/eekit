@@ -84,7 +84,7 @@ app.routes.entity('/tarefa/:id', function (params, data) {
 
         /* Exibe a descrição da tarefa */
         this.description = function (value) {
-            app.ui.description(value);
+            app.ui.description(value || ' ');
         }
 
         /* Exibe o prazo da tarefa */
@@ -275,10 +275,7 @@ app.routes.entity('/tarefa/:id', function (params, data) {
 
                 app.open({
                     app : appa,
-                    route : route,
-                    open : function (tool) {
-                        app.ui.embbeds.add(tool);
-                    }
+                    route : route
                 })
             }
         });
