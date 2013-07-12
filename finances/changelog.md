@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 1.0.4
+## 1.0.4 (2013-07-12)
 
 Ajustes
 - Ordenando as transações por data

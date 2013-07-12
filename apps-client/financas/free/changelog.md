@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## 2.1.3
+## 2.1.3 (2013-07-12)
 
 Ajustes
 - Melhorando o desempenho do fluxo de caixa
