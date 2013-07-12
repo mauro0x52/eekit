@@ -11,6 +11,20 @@ var express = require('express'),
 
 var app = module.exports = express();
 
+
+/* log simprao */
+app.use(function(req, res, next) {
+    console.log();
+    console.log(new Date());
+    console.log('%s %s', req.method, req.url);
+    res.on('header', function () {
+        console.log('resposta enviada');
+        console.log(arguments);
+    });
+    next();
+});
+
+
 /*  Configurando o server */
 app.configure(function () {
     "use strict";
