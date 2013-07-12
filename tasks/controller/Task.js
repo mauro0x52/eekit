@@ -84,31 +84,23 @@ module.exports = function (params) {
                 response.send({error : error});
             } else {
                 params.model.Company.findOne({company : auth.company._id}, function (error, company) {
-                    var query = {};
+                    var query = {}, sort = {}, limit;
                     if (error) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else if (company === null) {
                         response.send({error : { message : 'company not found', name : 'NotFoundError', token : request.params.token, path : 'company'}});
                     } else {
+                        if (request.param('query')) {
+                            query = request.param('query');
+                        }
+                        if (request.param('sort')) {
+                            sort = request.param('sort');
+                        }
+                        if (request.param('limit')) {
+                            limit = request.param('limit');
+                        }
                         query.company = company._id;
-                        if (request.param('filterByCategory')) {
-                            query.embeddeds = {$in : request.param('filterByCategory')};
-                        }
-                        if (request.param('filterByEmbeddeds')) {
-                            query.embeddeds = {$in : [request.param('filterByEmbeddeds')]};
-                        }
-                        if (
-                            request.param('filterByDone') === true ||
-                            request.param('filterByDone') === 'true'
-                        ) {
-                            query.done = true;
-                        } else if (
-                            request.param('filterByDone') === false ||
-                            request.param('filterByDone') === 'false'
-                        ) {
-                            query.done = false;
-                        }
-                        params.model.Task.find(query).sort({priority : 1}).exec(function (error, tasks) {
+                        params.model.Task.find(query).sort(sort).limit(limit).exec(function (error, tasks) {
                             if (error) {
                                 response.send({error : error});
                             } else {
