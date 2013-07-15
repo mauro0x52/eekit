@@ -19,11 +19,11 @@ statisticSchema = new schema({
     /**
      * data da última atualização do status
      */
-    signupDate  : {type : Date, 'default' : new Date()},
+    signupDate  : {type : Date},
     /**
      * data da última atividade do usuário
      */
-    activityDate  : {type : Date, 'default' : new Date()},
+    activityDate  : {type : Date},
     /**
      * lista de apps
      */
@@ -177,7 +177,7 @@ statisticSchema.methods.updateStatus = function () {
 
                 /* se bateu com algum critério e mudou o status*/
                 if (match) {
-                    
+
                     if (statistic.apps[app].status !== status) {
                         updated = true;
                         statistic.apps[app].status = status;
@@ -216,7 +216,11 @@ statisticSchema.statics.inc = function (event) {
         Statistic.findOne({user : event.user}, function(error, statistic) {
             /* se as estatísticas do usuário ainda não está criado */
             if (!statistic) {
-                statistic = new Statistic({user : event.user});
+                statistic = new Statistic({
+                    user : event.user,
+                    signupDate : new Date(),
+                    activityDate : new Date()
+                });
             }
 
             /* se o app ainda não tem estatística */
