@@ -248,6 +248,7 @@ app.routes.dialog('/adicionar-tarefa', function (params, data) {
                 data.subtitle = request.title;
             }
             var task = new app.models.task(data);
+            console.log(task.description);
             if (request.embeddeds) task.embeddeds = request.embeddeds;
             task.save(function (task) {
                 app.trigger('create task', task);
