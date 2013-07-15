@@ -32,7 +32,6 @@ module.exports = function (params) {
                 service.slug = i;
             }
         }
-console.log(request.body)
         if (service === null) {
             response.send({error : { message : 'service unauthorized', name : 'InvalidServiceError', path : 'service'}});
         }

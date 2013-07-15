@@ -59,7 +59,7 @@ module.exports = function (params) {
                                     to      : userEmail,
                                     subject : subject,
                                     html    : html + '<br /><br /><br />',
-                                    bcc     : 'lucas@empreendemia.com.br'
+                                    bcc     : 'millor@empreendemia.com.br'
                                 }
 
                                 sgEmail = new Sendgrid.Email(mail);

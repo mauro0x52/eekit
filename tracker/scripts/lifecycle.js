@@ -63,7 +63,7 @@ var sendMail = function (data) {
             subject : data.subject,
             name : data.name,
             html : data.html,
-            from : 'lucas@empreendemia.com.br'
+            from : 'millor@empreendemia.com.br'
         },
         function (error, response, data) {
             if (error) {
@@ -156,7 +156,7 @@ var templates = {
         html += '</ol>';
         html += '<p>Recomendo que faça isso para suas 3 principais tarefas. Você já vai ver a diferença!</p>';
         html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href="http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=ativacao-1t&utm_campaign=lifecycle">clique aqui</a>.</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -182,7 +182,7 @@ var templates = {
         html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, adicione mais tarefas e não se esqueça de marcá-las como feitas.<br />Medir seus avanços na semana é fundamental para aumentar sua produtividade.</p>';
         html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href="http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-1t&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -207,7 +207,7 @@ var templates = {
         html += '<p>Enviaremos o lembrete diretamente para seu email para você não se preocupar mais em esquecer de fazer alguma tarefa.</p>';
         html += '<p>É só adicionar uma tarefa com data e clicar em "Mais informações".<br />Depois disso é só clicar no período que você deseja ser lembrado.</p>';
         html += '<p>Para acessar o EmpreendeKit e configurar seus lembretes, é só <a href="http://www.empreendekit.com.br/tarefas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4t&utm_campaign=lifecycle">clicar aqui</a>.</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -239,7 +239,7 @@ var templates = {
         html += '</ol>';
         html += '<p>Recomendo que faça isso para seus 3 principais contatos. Você já vai ver a diferença!</p>';
         html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, é só <a href="http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=ativacao-1c&utm_campaign=lifecycle">clicar aqui</a>.</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -265,7 +265,7 @@ var templates = {
         html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, adicione mais contatos e tarefas para cada um deles.<br />Saber o que deve ser feito para cada cliente é fundamental para aumentar sua produtividade e vender mais.</p>';
         html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href="http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-1c&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -292,7 +292,7 @@ var templates = {
         html += '<p>Para fazer isso, é só clicar em categorias ou campos personalizados, logo na barra lateral esquerda. A partir dai, é só adicionar a categoria ou campo que você quiser.</p>';
         html += '<p>Para começar a deixar a ferramenta do seu jeito, <a href="http://www.empreendekit.com.br/contatos?utm_source=eekit&utm_medium=email&utm_content=engajamento-4c&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Se quiser, posso te ajudar a fazer essa configuração.<br />É só me responder esse email.</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -325,7 +325,7 @@ var templates = {
         html += '</ol>';
         html += '<p>Assim você não se preocupa em esquecer de fazer pagamentos  ou cobranças e pode se dedicar mais a seus clientes.</p>';
         html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, é só <a href="http://www.empreendekit.com.br/financas?utm_source=eekit&utm_medium=email&utm_content=ativacao-1f&utm_campaign=lifecycle">clicar aqui</a>.</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -351,7 +351,7 @@ var templates = {
         html += '<p>O próximo passo é se tornar um mestre da produtividade!<br />Para isso, coloque as categorias de receitas e despesas mais adequadas para a rotina da sua empresa e adicione mais movimentações financeiras já com essas novas categorias.<br />Ter seu fluxo de caixa organizado é fundamental para controlar sua empresa e aumentar sua produtividade.</p>';
         html += '<p>Para acessar o EmpreendeKit e já aplicar as dicas, <a href="http://www.empreendekit.com.br/financas?utm_source=eekit&utm_medium=email&utm_content=engajamento-1f&utm_campaign=lifecycle">clique aqui</a>.</p>';
         html += '<p>Se tiver alguma dúvida, é só me mandar um email =)</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -376,7 +376,7 @@ var templates = {
         html += '<p>Você pode mandar periodicamente as informações para seu contador e facilitar a contabilidade na sua empresa.</p>';
         html += '<p>Dentro do Finanças, é só clicar em "baixar dados" que ele vai te gerar um arquivo com todas as movimentações que você tem no período selecionado.</p>';
         html += '<p>Para acessar o EmpreendeKit e já baixar as informações financeiras da sua empresa, é só <a href="http://www.empreendekit.com.br/financas?utm_source=eekit&utm_medium=email&utm_content=engajamento-4f&utm_campaign=lifecycle">clique aqui</a>.</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -404,7 +404,7 @@ var templates = {
         html += '<p>Recebemos um depoimento muito bacana de um usuário nosso e achamos tão legal, que pensamos em repassar para você.</p>';
         html += '<p><span style="italic">O Empreendekit me ajudou a ter sempre claro quais são as próximas tarefas a serem feitas, e de qual área da empresa ou do meu processo de entrega do serviço ela corresponde. Nos contatos posso reunir todas as informações de um cliente, relatar contatos anteriores e adicionar tarefas para aquele cliente, em uma data única ou com recorrência. É muito fácil controlar o fluxo de caixa com o Empreendekit porque é simples adicionar receitas ou despesas.</span><br />Leandro do Carmo - Alto Rendimento Assessoria Esportiva</p>';
         html += '<p>Quer fazer igual o Leandro e organizar mais a sua empresa? <a href="http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=ativacao-2&utm_campaign=lifecycle">clique aqui</a>.</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -433,7 +433,7 @@ var templates = {
         html += '<li>Também somos empreendedores e desenhamos a ferramenta abrangendo tudo que uma pequena empresa precisa.</li>';
         html += '</ul>';
         html += '<p>Quer dar mais uma olhada no sistema? É só <a href="http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=ativacao-3&utm_campaign=lifecycle">clicar aqui</a>.</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -456,7 +456,7 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Espero que o Empreendekit consiga ajudar no dia a dia da sua empresa.</p>';
         html += '<p>Você ficou com alguma dúvida? O que acha de marcarmos um horário para conversar e eu te ajudar a configurar o Empreendekit?</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -480,7 +480,7 @@ var templates = {
         html += '<p>Temos tantas coisas para fazer no dia-a-dia, que diversas acabam não cabendo em 24h.<br />Entretanto, isso pode ser amenizado quando usamos a tecnologia em nosso favor.';
         html += '<p>As ferramentas de produtividade poupam tempo que você gastaria se organizando e evitam que você tenha que ficar se lembrando de tudo o que precisa fazer. Ou seja, faz a sua gestão ficar mais ágil e profissional.</p>';
         html += '<p>Ter uma empresa produtiva do nunca foi tão rápido e fácil. É só <a href="http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=engajamento-2&utm_campaign=lifecycle">clicar aqui</a>.</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -509,7 +509,7 @@ var templates = {
         html += '</ul>';
         html += '<p>As transações criadas dentro de um contato podem ser vistas, também, dentro do Financeiro. A mesma coisa acontece com as tarefas, que podem ser vistas tanto dentro do contato, quanto no aplicativo de tarefas.</p>';
         html += '<p>Para acessar o EmpreendeKi e continuar a sua jornada em busca da produtividade, <a href="http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=retencao-1&utm_campaign=lifecycle">clique aqui</a>.</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -539,7 +539,7 @@ var templates = {
         html += '<h3>Contas</h3>';
         html += '<p>É importante na organização de nossas finanças termos separado todas as nossas contas e centro de custo.<br />No Finanças, também na barra lateral esquerda, você pode clicar em contas para editar e adicionar as contas da sua empresa, organizando ainda mais a gestão financeira da sua empresa.</p>';
         html += '<p>Quer começar a personalizar o EmpreendeKit para a sua empresa? <a href="http://www.empreendekit.com.br/?utm_source=eekit&utm_medium=email&utm_content=retencao-2&utm_campaign=lifecycle">Clique aqui</a>.</p>'
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -562,8 +562,8 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Como empreendedores estamos sempre procurando aumentar a nossa produtividade, seja através de hábitos, ou usufruindo melhor as ferramentas que usamos no dia-a-dia.</p>';
         html += '<p>Sabemos que isso não é só conosco e estamos dispostos a fazer uma consultoria para te ajudar a usar melhor os recursos do EmpreendeKit.<br />Queremos te ajudar a fazer melhor e mais rápido.</p>';
-        html += '<p>Vamos marcar uma conversa por telefone ou Skype/Hangout?/p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Vamos marcar uma conversa por telefone ou Skype/Hangout?</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -586,7 +586,7 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Estou mandando este e-mail porque o seu período de testes do EmpreendeKit está terminando.</p>';
         html += '<p>Existe alguma forma em que eu possa te ajudar, ou sanar alguma dúvida?</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -613,7 +613,7 @@ var templates = {
         html += '<br /><br /><!-- INICIO FORMULARIO BOTAO PAGSEGURO --><form target="pagseguro" action="https://pagseguro.uol.com.br/v2/pre-approvals/request.html" method="post"><!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO --><input type="hidden" name="code" value="4D1DC72FC7C7FF9FF4CD2F9A1B9DDB2B" /><input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/assinaturas/209x48-assinar-assina.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" /></form><!-- FINAL FORMULARIO BOTAO PAGSEGURO --><br /><br />';
         html += '<p>Se ainda tiver alguma dúvida e quiser falar conosco, é só me responder ou entrar em contato através de um dos canais abaixo, que ficaremos felizões de te atender. Eventualmente podemos até estender seu teste.<br />Você pode entrar em contato comigo por esse email, ou pelo telefone: (11) 3230-9233.</p>';
         html += '<p>Se você quiser, também temos outros planos para períodos maiores com um desconto bacana.<br />Para acessar nossa página de planos, é só <a href="http://www.empreendekit.com.br/ee/precos-e-planos?utm_source=eekit&utm_medium=email&utm_content=geral-2&utm_campaign=lifecycle">clicar aqui</a>.</p>'
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -637,7 +637,7 @@ var templates = {
         html += '<p>Olá '+user.name.split(' ')[0]+', tudo bem?</p>';
         html += '<p>Sempre estamos querendo melhorar a ferramenta e construir melhores recursos para empreendedores.<br />Para nós a sua opinião é extremamente importante.</p>';
         html += '<p>O que você achou do EmpreendeKit?<br />Ficou faltando alguma coisa?</p>';
-        html += '<p>Abraços,<br />Lucas</p>';
+        html += '<p>Abraços,<br />Millor</p>';
 
         return {
             subject : subject,
@@ -917,7 +917,7 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             var minDate = minStatusDate(statistics[i], 'active', ['tarefas', 'contatos', 'financas']);
-            if (minDate >= new twoDaysAgo && minDate < oneDayAgo) {
+            if (minDate >= twoDaysAgo && minDate < oneDayAgo) {
                 mail('lc_engajamento_2', statistics[i].user);
             }
         }
@@ -996,7 +996,7 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             var minDate = minStatusDate(statistics[i], 'engaged', ['tarefas', 'contatos', 'financas']);
-            if (minDate >= new twoDaysAgo && minDate < oneDayAgo) {
+            if (minDate >= twoDaysAgo && minDate < oneDayAgo) {
                 mail('lc_retencao_2', statistics[i].user);
             }
         }
@@ -1040,7 +1040,7 @@ Statistic.find({
     } else {
         for (var i in statistics) {
             var minDate = minStatusDate(statistics[i], 'engaged', ['tarefas', 'contatos', 'financas']);
-            if (minDate >= new threeDaysAgo && minDate < twoDaysAgo) {
+            if (minDate >= threeDaysAgo && minDate < twoDaysAgo) {
                 mail('lc_retencao_3', statistics[i].user);
             }
         }

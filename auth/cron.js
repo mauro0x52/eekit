@@ -4,10 +4,12 @@ var model = require('./model/Model.js'),
 
 saveAll = function () {
     var user = usersArray.pop();
-    user.save(function (error, saved) {
-        if (--totalUsers) saveAll();
-        else console.log('Tokens removidos');
-    });
+    if (user) {
+        user.save(function (error, saved) {
+            if (--totalUsers) saveAll();
+            else console.log('Tokens removidos');
+        });
+    }
 }
 
 model.User.find({'tokens.dateExpiration' : {$lt : now}}, function (error, users) {
