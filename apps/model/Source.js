@@ -20,8 +20,8 @@ Source.findOne = function (params, cb) {
     "use strict";
 
     var fs = require('fs'),
-        jsp = require('uglify-js').parser,
-        pro = require('uglify-js').uglify,
+        //jsp = require('uglify-js').parser,
+        //pro = require('uglify-js').uglify,
         File = require('file-utils').File,
         folderPath, appSlug,
         source,
@@ -34,7 +34,7 @@ Source.findOne = function (params, cb) {
 
     folderPath = config.appsFiles.path + '/' + appSlug + '/' + params.type;
     folderPath = folderPath.replace('//', '/');
-    
+
     new File(folderPath).list(function (name, path) {
         if (name === 'menu.js') {
             srcMenu = {name : 'menu', path : path};
