@@ -121,7 +121,7 @@ module.exports = {
             permissions : {
                 users     : false,
                 username  : true,
-                tokens    : false,
+                tokens    : true,
                 auth      : true,
                 informations : false
             }
