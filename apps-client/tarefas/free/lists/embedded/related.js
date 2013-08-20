@@ -300,7 +300,7 @@ app.routes.embedList('/relacionadas', function (params, data) {
         app.ui.title('Tarefas relacionadas');
 
         /* montando a listagem */
-        app.models.task.list({ filterByEmbeddeds : response.embed }, function (tasks) {
+        app.models.task.list({query : {embeddeds : {$in : response.embed}}}, function (tasks) {
 
             /* ordenando as tarefas */
             tasks.sort(function (a,b) {
