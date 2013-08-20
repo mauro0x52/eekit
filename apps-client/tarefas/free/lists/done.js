@@ -98,6 +98,9 @@ app.routes.list('/feitas', function (params, data) {
         before     : group('Antes', null)
     };
 
+    groups.lastWeek.visibility('hide');
+    groups.before.visibility('hide');
+
     app.ui.groups.add([groups.today, groups.thisWeek.thisWeek, groups.lastWeek, groups.before]);
     /* Essa semana */
 
@@ -341,6 +344,24 @@ app.routes.list('/feitas', function (params, data) {
         }
     };
 
+    /**
+     * Monta lista
+     *
+     * @author Mauro Ribeiro
+     * @since  2013-07
+     */
+    listTasks = function (query, clear) {
+        app.models.task.list({query : query, sort : {dateUpdated : -1}}, function (tasks) {
+
+            /* listando as tarefas */
+            for (i in tasks) {
+                fitGroup(tasks[i]).items.add((new Item(tasks[i])).item);
+            }
+
+            app.ui.filter.submit();
+        });
+    }
+
     /* autenticando usuário e pegando categorias */
     app.models.category.list(function (data) {
         var fields = {};
@@ -359,6 +380,62 @@ app.routes.list('/feitas', function (params, data) {
             type : 'text',
             name : 'query',
             change : app.ui.filter.submit
+        });
+        fields.date = new app.ui.inputSelector({
+            type    : 'single',
+            legend  : 'Mostrar desde',
+            options : [
+                new app.ui.inputOption({
+                    legend  : 'esta semana',
+                    value   : 'thisWeek',
+                    click : true
+                }),
+                new app.ui.inputOption({
+                    legend  : 'semana passada',
+                    value   : 'lastWeek'
+                }),
+                new app.ui.inputOption({
+                    legend  : 'sempre',
+                    value   : 'always'
+                })
+            ],
+            change  : function () {
+                var date;
+
+                /* limpa os grupos */
+                groups.today.items.remove();
+                groups.thisWeek.sunday.items.remove();
+                groups.thisWeek.monday.items.remove();
+                groups.thisWeek.tuesday.items.remove();
+                groups.thisWeek.wednesday.items.remove();
+                groups.thisWeek.thursday.items.remove();
+                groups.thisWeek.friday.items.remove();
+                groups.thisWeek.saturday.items.remove();
+                groups.lastWeek.items.remove();
+                groups.before.items.remove();
+
+                switch (fields.date.value()[0]) {
+                    case 'always' :
+                        listTasks({done : true});
+                        break;
+                    case 'lastWeek' :
+                        listTasks({
+                            done : true,
+                            dateUpdated : {$gte : dates.lastWeek}
+                        });
+                        groups.lastWeek.visibility('show');
+                        groups.before.visibility('hide');
+                        break;
+                    default :
+                        listTasks({
+                            done : true,
+                            dateUpdated : {$gte : dates.thisWeek.sunday}
+                        });
+                        groups.lastWeek.visibility('hide');
+                        groups.before.visibility('hide');
+                }
+
+            }
         });
         /* filtro de categorias */
         function categoryOption(type) {
@@ -469,33 +546,14 @@ app.routes.list('/feitas', function (params, data) {
         /* fieldset principal */
         app.ui.filter.fieldsets.add(new app.ui.fieldset({
             legend : 'Filtrar tarefas',
-            fields : [fields.query, fields.user, fields.categories.general, fields.categories.meetings, fields.categories.finances, fields.categories.sales, fields.categories.projects, fields.categories.personals, fields.important]
+            fields : [fields.query, fields.date, fields.user, fields.categories.general, fields.categories.meetings, fields.categories.finances, fields.categories.sales, fields.categories.projects, fields.categories.personals, fields.important]
         }));
         /* dispara o evento de filtro */
         app.ui.filter.submit(function () {
             app.trigger('filter task', fields);
         });
 
-        /* montando a listagem */
-        app.models.task.list({filterByDone : true}, function (tasks) {
-
-            /* ordenando as tarefas */
-            tasks.sort(function (a,b) {
-                var a_priority = a.dateUpdated || new Date();
-                var b_priority = b.dateUpdated || new Date();
-
-                if (a_priority > b_priority)  return -1;
-                if (a_priority < b_priority)  return  1;
-                return 0;
-            });
-
-            /* listando as tarefas */
-            for (i in tasks) {
-                fitGroup(tasks[i]).items.add((new Item(tasks[i])).item);
-            }
-
-            app.ui.filter.submit();
-        });
+        listTasks({done : true, dateUpdated : {$gte : dates.thisWeek.sunday}});
     });
 
 });

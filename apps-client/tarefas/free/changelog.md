@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 2.1.3
+
+Ajustes
+- Filtro de janela de tempo no tarefas feitas
+- Novo jeito de filtrar tarefas
+
 ## 2.1.2 (2013-06-03)
 
 Ajustes

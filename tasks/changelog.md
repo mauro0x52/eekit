@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.1.2
+
+Ajustes
+- Novo jeito de filtrar tarefas
+
 ## 1.1 (2013-06-07)
 
 Features

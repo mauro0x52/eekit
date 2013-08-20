@@ -114,7 +114,7 @@ module.exports(new Class(function (params) {
 
     arrow.event('click').bind(function () {
         if (self.filterable()) {
-            input.focus();
+            input.event('focus').trigger();
             options.attribute('class').set('options filterable');
         }
     });

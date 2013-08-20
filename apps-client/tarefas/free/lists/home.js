@@ -596,7 +596,7 @@ app.routes.list('/', function (params, data) {
         });
 
         /* montando a listagem */
-        app.models.task.list({filterByDone : false}, function (tasks) {
+        app.models.task.list({query : {done : false}, sort : {priority : 1}}, function (tasks) {
 
             /* listando as tarefas */
             for (i in tasks) {

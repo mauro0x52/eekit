@@ -277,7 +277,7 @@ module.exports(new Class(function (params) {
             }
 
             description.attribute('class').set('description');
-            description.html.set(value);
+            description.html.set(value.replace(/%0A/g, ' '));
         } else {
             return description.html.get()[0];
         }
