@@ -7,85 +7,102 @@
  */
 
 var express = require('express'),
-    config  = require('./config.js');
+    config  = require('./config.js'),
+    cluster = require('cluster');
 
-var app = module.exports = express();
+if (cluster.isMaster) {
+    cluster.on('disconnect', cluster.fork);
 
-/*  Configurando o server */
-app.configure(function () {
-    "use strict";
-
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-
-    /* caso seja ambiente de produção, esconder erros */
-    if (config.host.debuglevel === 0) {
-        app.use(express.errorHandler({ dumpExceptions: true }));
+    for (i = 0; i < require('os').cpus().length; i = i + 1) {
+        cluster.fork();
     }
+} else {
+    var app = module.exports = express();
 
-    app.use(app.router);
-});
+    /*  Configurando o server */
+    app.configure(function () {
+        "use strict";
 
-var auth = require('./utils/auth'),
-    model = require('./model/Model');
-/*  Chamando controllers */
-require('./controller/Company.js')({
-    app      : app,
-    model    : model,
-    auth     : auth,
-    config   : config
-});
-require('./controller/Category.js')({
-    app      : app,
-    model    : model,
-    auth     : auth,
-    config   : config
-});
-require('./controller/Task.js')({
-    app      : app,
-    model    : model,
-    auth     : auth,
-    config   : config
-});
+        app.use(express.bodyParser());
+        app.use(express.methodOverride());
 
-/*  Métodos para dev e teste */
-app.get('/ping', function (request, response) {
-    "use strict";
-    response.header('Access-Control-Allow-Origin', '*');
-    response.send(true);
-});
-
-app.get('/version', function (request, response) {
-    "use strict";
-
-    response.contentType('json');
-    response.header('Access-Control-Allow-Origin', '*');
-
-    var fs = require('fs'), regexm;
-
-    fs.readFile('changelog.md', 'utf8', function(error, data) {
-        if (error) response.send({error : error});
-        else {
-            regexm = data.match(/\#{2}\s*([0-9]+\.[0-9]+\.?[0-9]?)\s*(\((.*)\))?/);
-            response.send({ version : regexm[1], date : regexm[3] });
+        /* caso seja ambiente de produção, esconder erros */
+        if (config.host.debuglevel === 0) {
+            app.use(express.errorHandler({ dumpExceptions: true }));
         }
+
+        app.use(app.router);
     });
-});
 
-app.get('/status', function (request, response) {
-    "use strict";
-    var Model = require('./model/Task.js').Task;
+    var auth = require('./utils/auth'),
+        model = require('./model/Model');
+    /*  Chamando controllers */
+    require('./controller/Company.js')({
+        app      : app,
+        model    : model,
+        auth     : auth,
+        config   : config
+    });
+    require('./controller/Category.js')({
+        app      : app,
+        model    : model,
+        auth     : auth,
+        config   : config
+    });
+    require('./controller/Task.js')({
+        app      : app,
+        model    : model,
+        auth     : auth,
+        config   : config
+    });
 
-    response.contentType('json');
-    response.header('Access-Control-Allow-Origin', '*');
+    /*  Métodos para dev e teste */
+    app.get('/ping', function (request, response) {
+        "use strict";
+        response.header('Access-Control-Allow-Origin', '*');
+        response.send(true);
+    });
 
-    Model.count(function (error, count) {
-        if (error) response.send({error : error})
-        else {
-            response.send({count : count});
+    app.get('/version', function (request, response) {
+        "use strict";
+
+        response.contentType('json');
+        response.header('Access-Control-Allow-Origin', '*');
+
+        var fs = require('fs'), regexm;
+
+        fs.readFile('changelog.md', 'utf8', function(error, data) {
+            if (error) response.send({error : error});
+            else {
+                regexm = data.match(/\#{2}\s*([0-9]+\.[0-9]+\.?[0-9]?)\s*(\((.*)\))?/);
+                response.send({ version : regexm[1], date : regexm[3] });
+            }
+        });
+    });
+
+    app.get('/status', function (request, response) {
+        "use strict";
+        var Model = require('./model/Task.js').Task;
+
+        response.contentType('json');
+        response.header('Access-Control-Allow-Origin', '*');
+
+        Model.count(function (error, count) {
+            if (error) response.send({error : error});
+            else {
+                response.send({count : count});
+            }
+        });
+    });
+
+    setInterval(function () {
+        'use strict';
+
+        if (process.memoryUsage().heapUsed > 150000000) {
+            process.exit();
         }
-    })
-});
+    }, 30000);
 
-/*  Ativando o server */
-app.listen(config.host.port);
+    /*  Ativando o server */
+    app.listen(config.host.port);
+}
